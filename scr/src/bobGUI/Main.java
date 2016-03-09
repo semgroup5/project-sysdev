@@ -21,10 +21,7 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root, 500, 275));
         primaryStage.show();
 
-        primaryStage.setWidth(Screen.getPrimary().getVisualBounds().getWidth());
-        primaryStage.setHeight(Screen.getPrimary().getVisualBounds().getHeight());
-        primaryStage.setX(100);
-        primaryStage.setY(100);
+       primaryStage.setMaximized(true);
     }
 
 
