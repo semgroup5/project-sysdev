@@ -18,7 +18,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("BobGUI.fxml"));
         primaryStage.setTitle("Bob the SmartCar");
-        primaryStage.setScene(new Scene(root, 500, 275));
+        primaryStage.setScene(new Scene(root, 300, 250));
         primaryStage.show();
 
        primaryStage.setMaximized(true);
