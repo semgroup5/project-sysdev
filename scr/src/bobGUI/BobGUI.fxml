@@ -53,7 +53,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button fx:id="map" mnemonicParsing="false" prefHeight="55.0" prefWidth="67.0" text="Map" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <Button fx:id="map" onAction="#sayHi" mnemonicParsing="false" prefHeight="55.0" prefWidth="67.0" text="Map" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <font>
                         <Font name="System Italic" size="17.0" />
                      </font>

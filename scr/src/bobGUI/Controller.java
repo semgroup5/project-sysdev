@@ -29,7 +29,7 @@ public class Controller {
     public Button load;
 
     public void sayHi(ActionEvent actionEvent){
-        
+       textFeedback.setText("Hi I'm mapping!");
     }
 
     public void closeApplication(ActionEvent actionEvent) {
