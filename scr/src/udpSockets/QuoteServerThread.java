@@ -51,7 +51,7 @@ public class QuoteServerThread extends Thread {
         try {
             in = new BufferedReader(new FileReader("one-liners.txt"));
         } catch (FileNotFoundException e) {
-            System.err.println("Could not open quote file. Serving time instead.");
+            System.err.println("Could not open quote file. Serving time instead. ");
         }
     }
     public void run() {
