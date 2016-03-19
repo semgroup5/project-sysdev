@@ -30,23 +30,18 @@ public static void main(String[] args)
 	while (running)
 	{
 		
-	String PWM;
-	PWM =  JOptionPane.showInputDialog(null, "Enter a PWM between 0 and 1");
-	if (PWM.equalsIgnoreCase("quit"))
+	int PWM;
+		PWM =  JOptionPane.showConfirmDialog(null, "hello", "retuh", JOptionPane.YES_NO_OPTION);;
+		if (PWM == JOptionPane.YES_OPTION)
 	{
 		running = false;
 	}
-	else 
+	else
 		{running = true;
-	
-	double percentage = Double.parseDouble(PWM);
-	
-	try {
-		client.motor(pin, percentage);
-	} catch (IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
+
+
+
+
 	}
 	}
 }
@@ -55,7 +50,7 @@ public static void main(String[] args)
 	{
 
 		int port = 1234; //port number
-		String pi = "129.16.78.84"; //IP address
+		String pi = "192.168.1.83"; //IP address
 
 		System.out.println("Welcome to the MotorController client for the Rasberry Pi.");
 
