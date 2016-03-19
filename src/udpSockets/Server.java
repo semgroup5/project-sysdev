@@ -7,11 +7,6 @@ import java.util.*;
 /*This is an example of a Java server which accepts a client and prints entries.
  * This file also interacts with a Shell script on our Raspberry Pi (/home/pi/scripts/motorcontrol.sh)
  * It forwards the inputs from the client to motorcontrol.sh and runs the file which echos values to Pi-Blaster
- * Check out the blog at for more info:
- * http://robogoby.blogspot.com
- * 
- * Limbeck Engineering
- * 10/20
  */
 
 public class Server 

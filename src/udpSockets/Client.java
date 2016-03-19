@@ -10,11 +10,6 @@ import javax.swing.JOptionPane;
  * We are using the Pi's IP (10.0.1.201) and port 1234 to connect
  * String PWM will be modified to only take doubles and not strings
  * This program will send any values entered in the string to the Server
- * To learn more about our project visit:
- * http://robogoby.blogspot.com
- * 
- * Limbeck Engineering
- * 10/20
  */
 
 public class Client {
