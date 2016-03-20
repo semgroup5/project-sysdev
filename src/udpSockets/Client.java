@@ -1,10 +1,12 @@
 package udpSockets;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.*;
 import java.util.*;
 
-import javax.swing.JOptionPane;
+import javax.swing.*;
 
 /*This is an example of a Java Client which connects to a server..
  * We are using the Pi's IP (10.0.1.201) and port 1234 to connect
@@ -53,24 +55,41 @@ public static void main(String[] args)
 
 		boolean running = true;
 
-		try{
+
+        JFrame jFrame = new JFrame("hey");
+        BufferedImage bi = new BufferedImage(640, 480, BufferedImage.TYPE_INT_RGB);
+
+        Graphics g1 = bi.getGraphics();
+        g1.setColor(Color.GREEN);
+        g1.fillRect(0,0,640,480);
+
+        ImageIcon ii = new ImageIcon(bi);
+        JLabel lbl=new JLabel();
+        lbl.setIcon(ii);
+        jFrame.add(lbl);
+
+        //jFrame.getContentPane().add(j, BorderLayout.CENTER);
+        jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        jFrame.setSize(640,480);
+        jFrame.setVisible(true);
+
+        Graphics g;
+        try{
 			while (running)
 			{
-				int PWM;
-				PWM =  JOptionPane.showConfirmDialog(null, "Ping", "Server", JOptionPane.WARNING_MESSAGE, JOptionPane.YES_NO_OPTION);
-				if (PWM == JOptionPane.YES_OPTION)
 				{
-					running = true;
 					out.write(5);
-
-					while(in.available() > 0) {
-						System.out.println("Starting to read");
-						System.out.print(in.read());
+                    int count = 0;
+					while(in.available() > 0 && count<614400) {
+                        int b = in.read() << in.read();
+                        count++;
+                        bi.setRGB(count%640, (count/640)%480, b);
 					}
-				}
-				else
-				{
-					running = false;
+                    System.out.println("count" + count);
+                    g = bi.getGraphics();
+                    lbl.paint(g);
+                    jFrame.repaint();
+                    Thread.sleep(1000);
 				}
 			}
 		}
