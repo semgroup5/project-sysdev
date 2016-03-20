@@ -54,19 +54,19 @@
               </rowConstraints>
                <children>
                   <Button fx:id="map" mnemonicParsing="false" onAction="#sayHi" prefHeight="55.0" prefWidth="67.0" style="-fx-background-color: linear-gradient(#ffd65b, #e68400),        linear-gradient(#ffef84, #f2ba44),        linear-gradient(#ffea6a, #efaa22),        linear-gradient(#ffe657 0%, #f8c202 50%, #eea10b 100%),        linear-gradient(from 0% 0% to 15% 50%, rgba(255,255,255,0.9), rgba(255,255,255,0)); -fx-background-radius: 30; -fx-background-insets: 0,1,2,3,0; -fx-text-fill: #654b00; -fx-font-weight: bold;" text="Map" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                     <font>
+                      <font>
                         <Font name="System Italic" size="17.0" />
                      </font>
                   </Button>
-                  <Button fx:id="up" mnemonicParsing="false" prefHeight="56.0" prefWidth="67.0" style="-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        linear-gradient(#020b02, #3a3a3a),        linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        linear-gradient(#f5f5f5 0%, #dbdbdb 50%, #cacaca 51%, #d7d7d7 100%); -fx-background-insets: 0,1,4,5; -fx-font-weight: bold; -fx-font-family: &quot;Helvetica&quot;; -fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); -fx-background-radius: 25 25 0 0;" text="Up" GridPane.columnIndex="1">
-                     <font>
+                  <Button fx:id="up" mnemonicParsing="false" onMouseClicked="#setFocused" prefHeight="56.0" prefWidth="67.0" style="-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        linear-gradient(#020b02, #3a3a3a),        linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        linear-gradient(#f5f5f5 0%, #dbdbdb 50%, #cacaca 51%, #d7d7d7 100%); -fx-background-insets: 0,1,4,5; -fx-font-weight: bold; -fx-font-family: &quot;Helvetica&quot;; -fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); -fx-background-radius: 25 25 0 0;" text="Up" GridPane.columnIndex="1">
+                      <font>
                         <Font name="System Italic" size="16.0" />
                      </font>
                      <GridPane.margin>
                         <Insets bottom="2.0" />
                      </GridPane.margin>
                   </Button>
-                  <Button fx:id="down" mnemonicParsing="false" prefHeight="39.0" prefWidth="91.0" style="-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        linear-gradient(#020b02, #3a3a3a),        linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        linear-gradient(#f5f5f5 0%, #dbdbdb 50%, #cacaca 51%, #d7d7d7 100%); -fx-background-insets: 0,1,4,5; -fx-font-weight: bold; -fx-font-family: &quot;Helvetica&quot;; -fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); -fx-background-radius: 0 0 25 25;" text="Down" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                  <Button fx:id="down" mnemonicParsing="false" onMouseClicked="#setFocused" prefHeight="39.0" prefWidth="91.0" style="-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        linear-gradient(#020b02, #3a3a3a),        linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        linear-gradient(#f5f5f5 0%, #dbdbdb 50%, #cacaca 51%, #d7d7d7 100%); -fx-background-insets: 0,1,4,5; -fx-font-weight: bold; -fx-font-family: &quot;Helvetica&quot;; -fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); -fx-background-radius: 0 0 25 25;" text="Down" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <font>
                         <Font name="System Italic" size="16.0" />
                      </font>
@@ -74,34 +74,25 @@
                         <Insets top="7.0" />
                      </GridPane.margin>
                   </Button>
-                  <Button fx:id="left" mnemonicParsing="false" prefHeight="60.0" prefWidth="66.0" style="-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        linear-gradient(#020b02, #3a3a3a),        linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        linear-gradient(#f5f5f5 0%, #dbdbdb 50%, #cacaca 51%, #d7d7d7 100%); -fx-background-insets: 0,1,4,5; -fx-font-weight: bold; -fx-font-family: &quot;Helvetica&quot;; -fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); -fx-background-radius: 25 0 0 25;" text="Left" GridPane.rowIndex="1">
+                  <Button fx:id="left" mnemonicParsing="false" onMouseClicked="#setFocused" prefHeight="60.0" prefWidth="66.0" style="-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        linear-gradient(#020b02, #3a3a3a),        linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        linear-gradient(#f5f5f5 0%, #dbdbdb 50%, #cacaca 51%, #d7d7d7 100%); -fx-background-insets: 0,1,4,5; -fx-font-weight: bold; -fx-font-family: &quot;Helvetica&quot;; -fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); -fx-background-radius: 25 0 0 25;" text="Left" GridPane.rowIndex="1">
                      <font>
                         <Font name="System Italic" size="16.0" />
                      </font>
                   </Button>
-                  <Button fx:id="right" mnemonicParsing="false" prefHeight="81.0" prefWidth="67.0" style="-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        linear-gradient(#020b02, #3a3a3a),        linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        linear-gradient(#f5f5f5 0%, #dbdbdb 50%, #cacaca 51%, #d7d7d7 100%); -fx-background-insets: 0,1,4,5; -fx-font-weight: bold; -fx-font-family: &quot;Helvetica&quot;; -fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); -fx-background-radius: 0 25 25 0;" text="Right" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                  <Button fx:id="right" mnemonicParsing="false" onMouseClicked="#setFocused" prefHeight="81.0" prefWidth="67.0" style="-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        linear-gradient(#020b02, #3a3a3a),        linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        linear-gradient(#f5f5f5 0%, #dbdbdb 50%, #cacaca 51%, #d7d7d7 100%); -fx-background-insets: 0,1,4,5; -fx-font-weight: bold; -fx-font-family: &quot;Helvetica&quot;; -fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); -fx-background-radius: 0 25 25 0;" text="Right" GridPane.columnIndex="2" GridPane.rowIndex="1">
                      <font>
                         <Font name="System Italic" size="16.0" />
                      </font>
                   </Button>
                </children>
             </GridPane>
-            <TextArea fx:id="textFeedback" layoutX="10.0" prefHeight="104.0" prefWidth="493.0" wrapText="true" AnchorPane.bottomAnchor="11.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="477.0">
+            <TextArea fx:id="textFeedback" editable="false" layoutX="10.0" prefHeight="104.0" prefWidth="457.0" stylesheets="@textAreaStyle.css" wrapText="true" AnchorPane.bottomAnchor="11.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="513.0">
                <font>
                   <Font name="Bookman Old Style Italic" size="23.0" />
                </font></TextArea>
-            <Button fx:id="connect" layoutX="510.0" layoutY="14.0" mnemonicParsing="false" prefWidth="80.0" style="-fx-background-color: linear-gradient(#f0ff35, #a9ff00),        radial-gradient(center 50% -40%, radius 200%, #b8ee36 45%, #80c800 50%); -fx-background-insets: 0, 1; -fx-text-fill: #395306; -fx-background-radius: 25 0 0 0;" text="Connect" AnchorPane.rightAnchor="390.0">
-               <effect>
-                  <DropShadow spread="0.78" />
-               </effect></Button>
-            <Button fx:id="save" layoutX="510.0" layoutY="47.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="80.0" style="-fx-background-color: #a6b5c9,        linear-gradient(#303842 0%, #3e5577 20%, #375074 100%),        linear-gradient(#768aa5 0%, #849cbb 5%, #5877a2 50%, #486a9a 51%, #4a6c9b 100%); -fx-background-insets: 0 0 -1 0,0,1; -fx-text-fill: #242d35; -fx-font-family: &quot;Helvetica&quot;; -fx-text-fill: white;" text="Save" AnchorPane.rightAnchor="390.0">
-               <effect>
-                  <DropShadow spread="0.63" />
-               </effect></Button>
-            <Button fx:id="load" layoutX="510.0" layoutY="80.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="80.0" style="-fx-background-color: #a6b5c9,        linear-gradient(#303842 0%, #3e5577 20%, #375074 100%),        linear-gradient(#768aa5 0%, #849cbb 5%, #5877a2 50%, #486a9a 51%, #4a6c9b 100%); -fx-background-insets: 0 0 -1 0,0,1; -fx-text-fill: #242d35; -fx-font-family: &quot;Helvetica&quot;; -fx-text-fill: white; -fx-background-radius: 0 0 25 0;" text="Load" AnchorPane.rightAnchor="390.0">
-               <effect>
-                  <DropShadow spread="0.6" />
-               </effect></Button>
+            <Button fx:id="connect" layoutX="510.0" layoutY="14.0" mnemonicParsing="false" onAction="#connect" onMouseClicked="#setFocused" onMouseEntered="#shadow" onMouseExited="#shadowOff" prefWidth="120.0" style="-fx-background-color: linear-gradient(#f0ff35, #a9ff00),        radial-gradient(center 50% -40%, radius 200%, #b8ee36 45%, #80c800 50%); -fx-background-insets: 0, 1; -fx-text-fill: #395306; -fx-background-radius: 25 0 0 0;" text="Connect" AnchorPane.rightAnchor="390.0" />
+            <Button fx:id="save" layoutX="510.0" layoutY="47.0" mnemonicParsing="false" onMouseClicked="#setFocused" onMouseEntered="#shadow" onMouseExited="#shadowOff" prefHeight="31.0" prefWidth="120.0" style="-fx-background-color: #a6b5c9,        linear-gradient(#303842 0%, #3e5577 20%, #375074 100%),        linear-gradient(#768aa5 0%, #849cbb 5%, #5877a2 50%, #486a9a 51%, #4a6c9b 100%); -fx-background-insets: 0 0 -1 0,0,1; -fx-text-fill: #242d35; -fx-font-family: &quot;Helvetica&quot;; -fx-text-fill: white;" text="Save" AnchorPane.rightAnchor="390.0" />
+            <Button fx:id="load" layoutX="510.0" layoutY="80.0" mnemonicParsing="false" onMouseClicked="#setFocused" onMouseEntered="#shadow" onMouseExited="#shadowOff" prefHeight="31.0" prefWidth="120.0" style="-fx-background-color: #a6b5c9,        linear-gradient(#303842 0%, #3e5577 20%, #375074 100%),        linear-gradient(#768aa5 0%, #849cbb 5%, #5877a2 50%, #486a9a 51%, #4a6c9b 100%); -fx-background-insets: 0 0 -1 0,0,1; -fx-text-fill: #242d35; -fx-font-family: &quot;Helvetica&quot;; -fx-text-fill: white; -fx-background-radius: 0 0 25 0;" text="Load" AnchorPane.rightAnchor="390.0" />
          </children>
       </AnchorPane>
    </bottom>
