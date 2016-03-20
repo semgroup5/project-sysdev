@@ -62,7 +62,7 @@ public class Controller {
     }
 
     public void change(Event event) {
-       
+
 
     }
 
@@ -80,7 +80,7 @@ public class Controller {
     public void connect(ActionEvent actionEvent) {
         if(!isConnected) {
             connect.setStyle("-fx-background-color: linear-gradient(#ff6767, #ff1a1a),        " +
-                    "radial-gradient(center 50% -40%, radius 200%, #ff1a1a 45%, #ff0000 50%); " +
+                    "radial-gradient(center 50% -40%, radius 200%, #ff4d4d 45%, #ff0000 50%); " +
                     "-fx-background-insets: 0, 1; " +
                     "-fx-text-fill: #f5f5f5; " +
                     "-fx-background-radius: 25 0 0 0;");
