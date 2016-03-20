@@ -15,35 +15,15 @@ import javax.swing.JOptionPane;
 public class Client {
 
 	Socket outputSocket = null;
-	PrintWriter out = null;
-	BufferedReader in = null;
+	OutputStream out = null;
+	static InputStream in ;
 
 	
 
 public static void main(String[] args)
 {
-	boolean running = true;
-
 	int pin = 5; //5 on pi-blaster (GPIO 23 or P16)
 	Client client = new Client();
-	
-	while (running)
-	{
-		
-	int PWM;
-		PWM =  JOptionPane.showConfirmDialog(null, "hello", "retuh", JOptionPane.YES_NO_OPTION);;
-		if (PWM == JOptionPane.YES_OPTION)
-	{
-		running = false;
-	}
-	else
-		{running = true;
-
-
-
-
-	}
-	}
 }
 	 
 	public Client()
@@ -60,8 +40,8 @@ public static void main(String[] args)
 			outputSocket = new Socket(pi, port);
 			System.out.println("Connected on port: " + port);
 
-			out = new PrintWriter(outputSocket.getOutputStream(), true);
-			in = new BufferedReader(new InputStreamReader(outputSocket.getInputStream()));
+			out = outputSocket.getOutputStream();
+			in = outputSocket.getInputStream();
 
 		}catch (UnknownHostException e) {
 			System.err.println("Don't know about host: Raspberry Pi.");
@@ -70,15 +50,36 @@ public static void main(String[] args)
 			System.err.println("Couldn't get I/O for " + "the connection to: Raspberry Pi.");
 			System.exit(1);
 		}
-	
-	}
-	
-	
 
-	public void motor (int pin, double percentage) throws IOException 
-	{
-		String PWM = pin + "=" + percentage;
-		out.println(PWM);
+		boolean running = true;
+
+		try{
+			while (running)
+			{
+				int PWM;
+				PWM =  JOptionPane.showConfirmDialog(null, "Ping", "Server", JOptionPane.WARNING_MESSAGE, JOptionPane.YES_NO_OPTION);
+				if (PWM == JOptionPane.YES_OPTION)
+				{
+					running = true;
+					out.write(5);
+
+					while(in.available() > 0) {
+						System.out.println("Starting to read");
+						System.out.print(in.read());
+					}
+				}
+				else
+				{
+					running = false;
+				}
+			}
+		}
+		catch(Exception e)
+		{
+			System.out.println("Caught Exception " + e.getMessage());
+		}
+
+		System.exit(1);
 	}
 }
 
