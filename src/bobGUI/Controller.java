@@ -8,12 +8,14 @@ import javafx.scene.AmbientLight;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.InnerShadow;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Border;
 import javafx.scene.media.MediaView;
 import javafx.scene.paint.Color;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import udpSockets.Client;
 
 /**
  * Created by Raphael on 06/03/2016.
@@ -24,7 +26,7 @@ public class Controller {
     public MenuBar menuBar;
     public MenuItem close;
     public MenuItem about;
-    public MediaView kinectView;
+    public ImageView kinectView;
     public Button map;
     public Button up;
     public Button down;
@@ -86,6 +88,7 @@ public class Controller {
                     "-fx-background-radius: 25 0 0 0;");
             connect.setText("Disconnect");
             isConnected = true;
+
         }
         else{
             connect.setStyle("-fx-background-color: linear-gradient(#f0ff35, #a9ff00),        " +

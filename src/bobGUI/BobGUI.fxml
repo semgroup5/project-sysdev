@@ -11,9 +11,9 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="592.0" prefWidth="980.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bobGUI.Controller">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bobGUI.Controller">
    <center>
-      <AnchorPane prefHeight="549.0" prefWidth="980.0" style="-fx-background-color: rgba(0,0,0,0.08),        linear-gradient(#9a9a9a, #909090),        linear-gradient(white 0%, #f3f3f3 50%, #ececec 51%, #f2f2f2 100%); -fx-background-insets: 0 0 -1 0,0,1;" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="549.0" prefWidth="980.0" style="-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        linear-gradient(#020b02, #3a3a3a),        linear-gradient(#9d9e9d 0%, #6b6a6b 20%, #343534 80%, #242424 100%),        linear-gradient(#8a8a8a 0%, #6b6a6b 20%, #343534 80%, #262626 100%),        linear-gradient(#777777 0%, #606060 50%, #505250 51%, #2a2b2a 100%);; -fx-background-insets: 0,1,4,5,6;;" BorderPane.alignment="CENTER">
          <children>
             <MenuBar fx:id="menuBar" layoutX="407.0" layoutY="-2.0" prefHeight="38.0" prefWidth="980.0" style="-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        linear-gradient(#020b02, #3a3a3a),        linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        linear-gradient(#f5f5f5 0%, #dbdbdb 50%, #cacaca 51%, #d7d7d7 100%); -fx-background-insets: 0,1,4,5;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-2.0">
               <menus>
@@ -34,14 +34,21 @@
                 </Menu>
               </menus>
             </MenuBar>
-            <MediaView fx:id="kinectView" fitHeight="200.0" fitWidth="200.0" layoutX="390.0" layoutY="139.0" AnchorPane.bottomAnchor="139.0" AnchorPane.leftAnchor="390.0" AnchorPane.rightAnchor="390.0" AnchorPane.topAnchor="139.0" />
+            <BorderPane layoutX="170.0" layoutY="43.0" style="-fx-border-color: rgba(0,0,0,0.08),        linear-gradient(#5a61af, #51536d),        linear-gradient(#e4fbff 0%,#cee6fb 10%, #a5d3fb 50%, #88c6fb 51%, #d5faff 100%); -fx-background-color: #090a0c,        linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),        linear-gradient(#20262b, #191d22),        radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));" AnchorPane.bottomAnchor="24.0" AnchorPane.leftAnchor="170.0" AnchorPane.rightAnchor="170.0" AnchorPane.topAnchor="43.0">
+               <center>
+                  <ImageView fx:id="kinectView" fitHeight="480.0" fitWidth="640.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;" />
+               </center>
+               <effect>
+                  <DropShadow color="#2f2e2e" height="104.97" offsetX="3.0" offsetY="10.0" radius="72.975" spread="0.36" width="188.93" />
+               </effect>
+            </BorderPane>
          </children>
       </AnchorPane>
    </center>
    <bottom>
-      <AnchorPane prefHeight="125.0" prefWidth="951.0" style="-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        linear-gradient(#020b02, #3a3a3a),        linear-gradient(#9d9e9d 0%, #6b6a6b 20%, #343534 80%, #242424 100%),        linear-gradient(#8a8a8a 0%, #6b6a6b 20%, #343534 80%, #262626 100%),        linear-gradient(#777777 0%, #606060 50%, #505250 51%, #2a2b2a 100%); -fx-background-insets: 0,1,4,5,6;" BorderPane.alignment="CENTER">
+      <AnchorPane style="-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        linear-gradient(#020b02, #3a3a3a),        linear-gradient(#9d9e9d 0%, #6b6a6b 20%, #343534 80%, #242424 100%),        linear-gradient(#8a8a8a 0%, #6b6a6b 20%, #343534 80%, #262626 100%),        linear-gradient(#777777 0%, #606060 50%, #505250 51%, #2a2b2a 100%); -fx-background-insets: 0,1,4,5,6;" BorderPane.alignment="CENTER">
          <children>
-            <GridPane layoutX="766.0" layoutY="7.0" prefHeight="110.0" prefWidth="200.0" AnchorPane.bottomAnchor="8.0" AnchorPane.rightAnchor="14.0">
+            <GridPane layoutX="739.0" layoutY="23.0" prefHeight="125.0" prefWidth="227.0" AnchorPane.bottomAnchor="9.0" AnchorPane.rightAnchor="14.0">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -53,20 +60,23 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button fx:id="map" mnemonicParsing="false" onAction="#sayHi" prefHeight="55.0" prefWidth="67.0" style="-fx-background-color: linear-gradient(#ffd65b, #e68400),        linear-gradient(#ffef84, #f2ba44),        linear-gradient(#ffea6a, #efaa22),        linear-gradient(#ffe657 0%, #f8c202 50%, #eea10b 100%),        linear-gradient(from 0% 0% to 15% 50%, rgba(255,255,255,0.9), rgba(255,255,255,0)); -fx-background-radius: 30; -fx-background-insets: 0,1,2,3,0; -fx-text-fill: #654b00; -fx-font-weight: bold;" text="Map" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <Button fx:id="map" mnemonicParsing="false" onAction="#sayHi" prefHeight="45.0" prefWidth="73.0" style="-fx-background-color: linear-gradient(#ffd65b, #e68400),        linear-gradient(#ffef84, #f2ba44),        linear-gradient(#ffea6a, #efaa22),        linear-gradient(#ffe657 0%, #f8c202 50%, #eea10b 100%),        linear-gradient(from 0% 0% to 15% 50%, rgba(255,255,255,0.9), rgba(255,255,255,0)); -fx-background-radius: 30; -fx-background-insets: 0,1,2,3,0; -fx-text-fill: #654b00; -fx-font-weight: bold;" text="Map" GridPane.columnIndex="1" GridPane.rowIndex="1">
                       <font>
                         <Font name="System Italic" size="17.0" />
                      </font>
+                     <GridPane.margin>
+                        <Insets left="2.0" top="5.0" />
+                     </GridPane.margin>
                   </Button>
-                  <Button fx:id="up" mnemonicParsing="false" onMouseClicked="#setFocused" prefHeight="56.0" prefWidth="67.0" style="-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        linear-gradient(#020b02, #3a3a3a),        linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        linear-gradient(#f5f5f5 0%, #dbdbdb 50%, #cacaca 51%, #d7d7d7 100%); -fx-background-insets: 0,1,4,5; -fx-font-weight: bold; -fx-font-family: &quot;Helvetica&quot;; -fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); -fx-background-radius: 25 25 0 0;" text="Up" GridPane.columnIndex="1">
+                  <Button fx:id="up" mnemonicParsing="false" onMouseClicked="#setFocused" prefHeight="28.0" prefWidth="76.0" style="-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        linear-gradient(#020b02, #3a3a3a),        linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        linear-gradient(#f5f5f5 0%, #dbdbdb 50%, #cacaca 51%, #d7d7d7 100%); -fx-background-insets: 0,1,4,5; -fx-font-weight: bold; -fx-font-family: &quot;Helvetica&quot;; -fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); -fx-background-radius: 25 25 0 0;" text="Up" GridPane.columnIndex="1">
                       <font>
                         <Font name="System Italic" size="16.0" />
                      </font>
                      <GridPane.margin>
-                        <Insets bottom="2.0" />
+                        <Insets bottom="2.0" top="5.0" />
                      </GridPane.margin>
                   </Button>
-                  <Button fx:id="down" mnemonicParsing="false" onMouseClicked="#setFocused" prefHeight="39.0" prefWidth="91.0" style="-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        linear-gradient(#020b02, #3a3a3a),        linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        linear-gradient(#f5f5f5 0%, #dbdbdb 50%, #cacaca 51%, #d7d7d7 100%); -fx-background-insets: 0,1,4,5; -fx-font-weight: bold; -fx-font-family: &quot;Helvetica&quot;; -fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); -fx-background-radius: 0 0 25 25;" text="Down" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                  <Button fx:id="down" mnemonicParsing="false" onMouseClicked="#setFocused" prefHeight="62.0" prefWidth="76.0" style="-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        linear-gradient(#020b02, #3a3a3a),        linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        linear-gradient(#f5f5f5 0%, #dbdbdb 50%, #cacaca 51%, #d7d7d7 100%); -fx-background-insets: 0,1,4,5; -fx-font-weight: bold; -fx-font-family: &quot;Helvetica&quot;; -fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); -fx-background-radius: 0 0 25 25;" text="Down" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <font>
                         <Font name="System Italic" size="16.0" />
                      </font>
@@ -74,19 +84,19 @@
                         <Insets top="7.0" />
                      </GridPane.margin>
                   </Button>
-                  <Button fx:id="left" mnemonicParsing="false" onMouseClicked="#setFocused" prefHeight="60.0" prefWidth="66.0" style="-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        linear-gradient(#020b02, #3a3a3a),        linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        linear-gradient(#f5f5f5 0%, #dbdbdb 50%, #cacaca 51%, #d7d7d7 100%); -fx-background-insets: 0,1,4,5; -fx-font-weight: bold; -fx-font-family: &quot;Helvetica&quot;; -fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); -fx-background-radius: 25 0 0 25;" text="Left" GridPane.rowIndex="1">
+                  <Button fx:id="left" mnemonicParsing="false" onMouseClicked="#setFocused" prefHeight="50.0" prefWidth="75.0" style="-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        linear-gradient(#020b02, #3a3a3a),        linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        linear-gradient(#f5f5f5 0%, #dbdbdb 50%, #cacaca 51%, #d7d7d7 100%); -fx-background-insets: 0,1,4,5; -fx-font-weight: bold; -fx-font-family: &quot;Helvetica&quot;; -fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); -fx-background-radius: 25 0 0 25;" text="Left" GridPane.rowIndex="1">
                      <font>
                         <Font name="System Italic" size="16.0" />
                      </font>
                   </Button>
-                  <Button fx:id="right" mnemonicParsing="false" onMouseClicked="#setFocused" prefHeight="81.0" prefWidth="67.0" style="-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        linear-gradient(#020b02, #3a3a3a),        linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        linear-gradient(#f5f5f5 0%, #dbdbdb 50%, #cacaca 51%, #d7d7d7 100%); -fx-background-insets: 0,1,4,5; -fx-font-weight: bold; -fx-font-family: &quot;Helvetica&quot;; -fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); -fx-background-radius: 0 25 25 0;" text="Right" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                  <Button fx:id="right" mnemonicParsing="false" onMouseClicked="#setFocused" prefHeight="50.0" prefWidth="78.0" style="-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        linear-gradient(#020b02, #3a3a3a),        linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        linear-gradient(#f5f5f5 0%, #dbdbdb 50%, #cacaca 51%, #d7d7d7 100%); -fx-background-insets: 0,1,4,5; -fx-font-weight: bold; -fx-font-family: &quot;Helvetica&quot;; -fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); -fx-background-radius: 0 25 25 0;" text="Right" GridPane.columnIndex="2" GridPane.rowIndex="1">
                      <font>
                         <Font name="System Italic" size="16.0" />
                      </font>
                   </Button>
                </children>
             </GridPane>
-            <TextArea fx:id="textFeedback" editable="false" layoutX="10.0" prefHeight="104.0" prefWidth="457.0" stylesheets="@textAreaStyle.css" wrapText="true" AnchorPane.bottomAnchor="11.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="513.0">
+            <TextArea fx:id="textFeedback" editable="false" layoutX="10.0" prefHeight="116.0" prefWidth="457.0" stylesheets="@textAreaStyle.css" wrapText="true" AnchorPane.bottomAnchor="11.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="513.0">
                <font>
                   <Font name="Bookman Old Style Italic" size="23.0" />
                </font></TextArea>
