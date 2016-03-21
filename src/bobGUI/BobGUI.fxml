@@ -34,12 +34,12 @@
                 </Menu>
               </menus>
             </MenuBar>
-            <BorderPane layoutX="170.0" layoutY="43.0" style="-fx-border-color: rgba(0,0,0,0.08),        linear-gradient(#5a61af, #51536d),        linear-gradient(#e4fbff 0%,#cee6fb 10%, #a5d3fb 50%, #88c6fb 51%, #d5faff 100%); -fx-background-color: #090a0c,        linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),        linear-gradient(#20262b, #191d22),        radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));" AnchorPane.bottomAnchor="24.0" AnchorPane.leftAnchor="170.0" AnchorPane.rightAnchor="170.0" AnchorPane.topAnchor="43.0">
+            <BorderPane layoutX="170.0" layoutY="49.0" prefHeight="482.0" prefWidth="642.0" style="-fx-border-color: rgba(0,0,0,0.08),        linear-gradient(#5a61af, #51536d),        linear-gradient(#e4fbff 0%,#cee6fb 10%, #a5d3fb 50%, #88c6fb 51%, #d5faff 100%); -fx-background-color: #090a0c,        linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),        linear-gradient(#20262b, #191d22),        radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));" AnchorPane.bottomAnchor="24.0" AnchorPane.leftAnchor="170.0" AnchorPane.rightAnchor="170.0" AnchorPane.topAnchor="49.0">
                <center>
                   <ImageView fx:id="kinectView" fitHeight="480.0" fitWidth="640.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;" />
                </center>
                <effect>
-                  <DropShadow color="#2f2e2e" height="104.97" offsetX="3.0" offsetY="10.0" radius="72.975" spread="0.36" width="188.93" />
+                  <DropShadow color="#252424" offsetX="3.0" radius="25.55" spread="0.51" width="83.2" />
                </effect>
             </BorderPane>
          </children>
