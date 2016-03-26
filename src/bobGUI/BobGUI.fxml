@@ -19,6 +19,9 @@
               <menus>
                 <Menu mnemonicParsing="false" text="File">
                   <items>
+                        <MenuItem fx:id="mConnect" mnemonicParsing="false" onAction="#connect" text="Connect" />
+                        <MenuItem fx:id="mSave" mnemonicParsing="false" text="Save" />
+                        <MenuItem fx:id="mLoad" mnemonicParsing="false" text="Load" />
                     <MenuItem fx:id="close" mnemonicParsing="false" onAction="#closeApplication" text="Close" />
                   </items>
                 </Menu>
@@ -84,15 +87,31 @@
                         <Insets top="7.0" />
                      </GridPane.margin>
                   </Button>
-                  <Button fx:id="left" mnemonicParsing="false" onMouseClicked="#setFocused" prefHeight="50.0" prefWidth="75.0" style="-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        linear-gradient(#020b02, #3a3a3a),        linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        linear-gradient(#f5f5f5 0%, #dbdbdb 50%, #cacaca 51%, #d7d7d7 100%); -fx-background-insets: 0,1,4,5; -fx-font-weight: bold; -fx-font-family: &quot;Helvetica&quot;; -fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); -fx-background-radius: 25 0 0 25;" text="Left" GridPane.rowIndex="1">
+                  <Button fx:id="left" mnemonicParsing="false" onMouseClicked="#setFocused" prefHeight="15.0" prefWidth="75.0" style="-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        linear-gradient(#020b02, #3a3a3a),        linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        linear-gradient(#f5f5f5 0%, #dbdbdb 50%, #cacaca 51%, #d7d7d7 100%); -fx-background-insets: 0,1,4,5; -fx-font-weight: bold; -fx-font-family: &quot;Helvetica&quot;; -fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); -fx-background-radius: 25 0 0 25;" text="Left" GridPane.rowIndex="1">
                      <font>
                         <Font name="System Italic" size="16.0" />
                      </font>
                   </Button>
-                  <Button fx:id="right" mnemonicParsing="false" onMouseClicked="#setFocused" prefHeight="50.0" prefWidth="78.0" style="-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        linear-gradient(#020b02, #3a3a3a),        linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        linear-gradient(#f5f5f5 0%, #dbdbdb 50%, #cacaca 51%, #d7d7d7 100%); -fx-background-insets: 0,1,4,5; -fx-font-weight: bold; -fx-font-family: &quot;Helvetica&quot;; -fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); -fx-background-radius: 0 25 25 0;" text="Right" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                  <Button fx:id="right" mnemonicParsing="false" onMouseClicked="#setFocused" prefHeight="2.0" prefWidth="76.0" style="-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        linear-gradient(#020b02, #3a3a3a),        linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        linear-gradient(#f5f5f5 0%, #dbdbdb 50%, #cacaca 51%, #d7d7d7 100%); -fx-background-insets: 0,1,4,5; -fx-font-weight: bold; -fx-font-family: &quot;Helvetica&quot;; -fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); -fx-background-radius: 0 25 25 0;" text="Right" GridPane.columnIndex="2" GridPane.rowIndex="1">
                      <font>
                         <Font name="System Italic" size="16.0" />
                      </font>
+                  </Button>
+                  <Button fx:id="dLeft" mnemonicParsing="false" onMouseClicked="#setFocused" prefHeight="15.0" prefWidth="75.0" style="-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        linear-gradient(#020b02, #3a3a3a),        linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        linear-gradient(#f5f5f5 0%, #dbdbdb 50%, #cacaca 51%, #d7d7d7 100%); -fx-background-insets: 0,1,4,5; -fx-font-weight: bold; -fx-font-family: &quot;Helvetica&quot;; -fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); -fx-background-radius: 25 25 0 25;" text=" ↖">
+                     <font>
+                        <Font name="System Bold Italic" size="16.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets top="5.0" />
+                     </GridPane.margin>
+                  </Button>
+                  <Button fx:id="dRight" mnemonicParsing="false" onMouseClicked="#setFocused" prefHeight="15.0" prefWidth="75.0" style="-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        linear-gradient(#020b02, #3a3a3a),        linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        linear-gradient(#f5f5f5 0%, #dbdbdb 50%, #cacaca 51%, #d7d7d7 100%); -fx-background-insets: 0,1,4,5; -fx-font-weight: bold; -fx-font-family: &quot;Helvetica&quot;; -fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); -fx-background-radius: 25 25 25 0;" text="↗" GridPane.columnIndex="2">
+                     <font>
+                        <Font name="System Italic" size="16.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets top="5.0" />
+                     </GridPane.margin>
                   </Button>
                </children>
             </GridPane>

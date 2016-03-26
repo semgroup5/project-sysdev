@@ -25,6 +25,9 @@ public class Controller {
 
     public MenuBar menuBar;
     public MenuItem close;
+    public MenuItem mConnect;
+    public MenuItem mSave;
+    public MenuItem mLoad;
     public MenuItem about;
     public ImageView kinectView;
     public Button map;
@@ -32,6 +35,8 @@ public class Controller {
     public Button down;
     public Button left;
     public Button right;
+    public Button dRight;
+    public Button dLeft;
     public TextArea textFeedback;
     public Button connect;
     public Button save;
@@ -87,6 +92,7 @@ public class Controller {
                     "-fx-text-fill: #f5f5f5; " +
                     "-fx-background-radius: 25 0 0 0;");
             connect.setText("Disconnect");
+            mConnect.setText("Disconnect");
             isConnected = true;
 
         }
@@ -97,6 +103,7 @@ public class Controller {
                     "-fx-text-fill: #395306; " +
                     "-fx-background-radius: 25 0 0 0;");
             connect.setText("Connect");
+            mConnect.setText("Connect");
             isConnected = false;
         }
     }
