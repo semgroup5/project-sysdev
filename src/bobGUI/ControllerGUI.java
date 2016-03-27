@@ -11,6 +11,7 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
@@ -73,15 +74,17 @@ public class ControllerGUI {
            fileChooser = new FileChooser();
            fileChooser.setTitle("Open a map");
            file = fileChooser.showOpenDialog(menuBar.getScene().getWindow());
-           Image img = new Image(file.toURI().toString());
-           kinectView.setImage(img);
+           if (!file.equals(null)) {
+               Image img = new Image(file.toURI().toString());
+               kinectView.setImage(img);
+           }
        }
        else if (event.getSource().equals(save) || event.getSource().equals(mSave)) {
            fileChooser = new FileChooser();
 
            //Set extension filter
-           FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
-           fileChooser.getExtensionFilters().add(extFilter);
+//           FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+//           fileChooser.getExtensionFilters().add(extFilter);
 
            //Show save file dialog
            file = fileChooser.showSaveDialog(menuBar.getScene().getWindow());
@@ -126,6 +129,11 @@ public class ControllerGUI {
      * @param event
      */
     public void keyListenersPressed(KeyEvent event) {
+        if (!isConnected) {
+            textFeedback.clear();
+            textFeedback.setText("Smartcar is disconnected!");
+        }
+        else
         switch (event.getCode()) {
             case W:
                 //sm.setSpeed(50);
@@ -179,6 +187,13 @@ public class ControllerGUI {
                 break;
             case Z:
                 map.fire();
+                break;
+            case X:
+                save.fire();
+                break;
+            case C:
+                load.fire();
+                break;
         }
 
     }
@@ -188,6 +203,11 @@ public class ControllerGUI {
      * @param event
      */
     public void keyListenersReleased(KeyEvent event) {
+        if (!isConnected) {
+            textFeedback.clear();
+            textFeedback.setText("Smartcar is disconnected!");
+        }
+        else
         switch (event.getCode()) {
             case W:
                 //sm.setSpeed(0);
@@ -291,7 +311,11 @@ public class ControllerGUI {
      * @param event
      */
     public void mouseReleased(MouseEvent event) {
-
+        if (!isConnected) {
+            textFeedback.clear();
+            textFeedback.setText("Smartcar is disconnected!");
+        }
+        else
             if (event.getSource() == up) {
                 //sm.setSpeed(0);
                 isDriving = false;
@@ -349,6 +373,11 @@ public class ControllerGUI {
      * @param event
      */
     public void mousePressed(MouseEvent event) {
+        if (!isConnected) {
+            textFeedback.clear();
+            textFeedback.setText("Smartcar is disconnected!");
+        }
+        else
         if (event.getSource() == up) {
             //sm.setSpeed(50);
             isDriving = false;
