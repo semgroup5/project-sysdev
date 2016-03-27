@@ -11,6 +11,13 @@ import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.FileChooser;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by Raphael on 06/03/2016 for project-sysdev.
@@ -40,6 +47,7 @@ public class ControllerGUI {
     public boolean isConnected = false;
     public boolean isDriving = false;
     public boolean isMapping = false;
+    public FileChooser fileChooser;
 
     /**
      * Method to handle events like mapping, load and save.
@@ -56,6 +64,25 @@ public class ControllerGUI {
                textFeedback.clear();
                textFeedback.setText("stop mapping!");
                isMapping = false;
+           }
+       }
+        else if (event.getSource().equals(load) || event.getSource().equals(mLoad)) {
+           fileChooser = new FileChooser();
+           fileChooser.setTitle("Open a map");
+           fileChooser.showOpenDialog(menuBar.getScene().getWindow());
+       }
+       else if (event.getSource().equals(save) || event.getSource().equals(mSave)) {
+           fileChooser = new FileChooser();
+
+           //Set extension filter
+           FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+           fileChooser.getExtensionFilters().add(extFilter);
+
+           //Show save file dialog
+           File file = fileChooser.showSaveDialog(menuBar.getScene().getWindow());
+
+           if(file != null){
+               SaveFile("Map", file);
            }
        }
     }
@@ -367,5 +394,18 @@ public class ControllerGUI {
             textFeedback.setText("dRight pressed");
             event.consume();
         }
+    }
+
+    private void SaveFile(String content, File file){
+        try {
+            FileWriter fileWriter = null;
+
+            fileWriter = new FileWriter(file);
+            fileWriter.write(content);
+            fileWriter.close();
+        } catch (IOException ex) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 }

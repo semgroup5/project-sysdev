@@ -1,21 +1,14 @@
 package bobGUI;
-/**
- * Created by Raphael on 06/03/2016.
- */
 
-import com.sun.org.apache.xml.internal.security.utils.JavaUtils;
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyEvent;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-import java.io.File;
-
+/**
+ * Created by Raphael on 06/03/2016 for project-sysdev.
+ */
 public class Main extends Application {
 
     @Override
