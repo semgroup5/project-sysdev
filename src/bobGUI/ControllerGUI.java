@@ -95,21 +95,21 @@ public class ControllerGUI {
      */
     public void keyListenersPressed(KeyEvent event) {
         switch (event.getCode()) {
-            case UP:
+            case W:
                 //sm.setSpeed(50);
                 isDriving = true;
                 textFeedback.clear();
                 textFeedback.setText("up pressed");
                 event.consume();
                 break;
-            case DOWN:
+            case S:
                 //sm.setSpeed(-50);
                 isDriving = true;
                 textFeedback.clear();
                 textFeedback.setText("down pressed");
                 event.consume();
                 break;
-            case LEFT:
+            case A:
                 if (isDriving)//sm.setAngle(-90);
                 ;
                 else if (!isDriving)// sm.rotate(-90);
@@ -118,7 +118,7 @@ public class ControllerGUI {
                 textFeedback.setText("left pressed");
                 event.consume();
                 break;
-            case RIGHT:
+            case D:
                 if (isDriving)//sm.setAngle(90);
                     ;
                 else if (!isDriving)// sm.rotate(90);
@@ -127,7 +127,25 @@ public class ControllerGUI {
                 textFeedback.setText("right pressed");
                 event.consume();
                 break;
-            case SHIFT:
+            case Q:
+                if (isDriving)//sm.setAngle(-45);
+                    ;
+                else if (!isDriving)// sm.rotate(-45);
+                    ;
+                textFeedback.clear();
+                textFeedback.setText("left diagonal pressed");
+                event.consume();
+                break;
+            case E:
+                if (isDriving)//sm.setAngle(45);
+                    ;
+                else if (!isDriving)// sm.rotate(45);
+                    ;
+                textFeedback.clear();
+                textFeedback.setText("right diagonal pressed");
+                event.consume();
+                break;
+            case Z:
                 map.fire();
         }
 
@@ -139,21 +157,21 @@ public class ControllerGUI {
      */
     public void keyListenersReleased(KeyEvent event) {
         switch (event.getCode()) {
-            case UP:
+            case W:
                 //sm.setSpeed(0);
                 isDriving = false;
                 textFeedback.clear();
                 textFeedback.setText("up released");
                 event.consume();
                 break;
-            case DOWN:
+            case S:
                 //sm.setSpeed(0);
                 isDriving = false;
                 textFeedback.clear();
                 textFeedback.setText("down released");
                 event.consume();
                 break;
-            case LEFT:
+            case A:
                 if (isDriving)//sm.setAngle(0);
                     ;
                 else if (!isDriving)// sm.rotate(0);
@@ -162,13 +180,31 @@ public class ControllerGUI {
                 textFeedback.setText("left released");
                 event.consume();
                 break;
-            case RIGHT:
+            case D:
                 if (isDriving)//sm.setAngle(0);
                     ;
                 else if (!isDriving)// sm.rotate(0);
                     ;
                 textFeedback.clear();
                 textFeedback.setText("right released");
+                event.consume();
+                break;
+            case Q:
+                if (isDriving)//sm.setAngle(0);
+                    ;
+                else if (!isDriving)// sm.rotate(0);
+                    ;
+                textFeedback.clear();
+                textFeedback.setText("left diagonal released");
+                event.consume();
+                break;
+            case E:
+                if (isDriving)//sm.setAngle(0);
+                    ;
+                else if (!isDriving)// sm.rotate(0);
+                    ;
+                textFeedback.clear();
+                textFeedback.setText("right diagonal released");
                 event.consume();
                 break;
         }
@@ -256,6 +292,24 @@ public class ControllerGUI {
                 textFeedback.setText("right released");
                 event.consume();
             }
+            else if (event.getSource() == dRight) {
+                if (isDriving)//sm.setAngle(0);
+                    ;
+                else if (!isDriving)// sm.rotate(0);
+                    ;
+                textFeedback.clear();
+                textFeedback.setText("dRight released");
+                event.consume();
+            }
+            else if (event.getSource() == dLeft) {
+                if (isDriving)//sm.setAngle(0);
+                    ;
+                else if (!isDriving)// sm.rotate(0);
+                    ;
+                textFeedback.clear();
+                textFeedback.setText("dLeft released");
+                event.consume();
+            }
     }
 
     /**
@@ -293,6 +347,24 @@ public class ControllerGUI {
                 ;
             textFeedback.clear();
             textFeedback.setText("right pressed");
+            event.consume();
+        }
+        else if (event.getSource() == dLeft) {
+            if (isDriving)//sm.setAngle(-45);
+                ;
+            else if (!isDriving)// sm.rotate(-45);
+                ;
+            textFeedback.clear();
+            textFeedback.setText("dLeft pressed");
+            event.consume();
+        }
+        else if (event.getSource() == dRight) {
+            if (isDriving)//sm.setAngle(45);
+                ;
+            else if (!isDriving)// sm.rotate(45);
+                ;
+            textFeedback.clear();
+            textFeedback.setText("dRight pressed");
             event.consume();
         }
     }
