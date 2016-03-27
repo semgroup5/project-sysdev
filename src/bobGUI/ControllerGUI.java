@@ -1,5 +1,6 @@
 package bobGUI;
 
+import com.sun.javafx.tk.Toolkit;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.scene.control.Button;
@@ -8,6 +9,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.InnerShadow;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -48,6 +50,7 @@ public class ControllerGUI {
     public boolean isDriving = false;
     public boolean isMapping = false;
     public FileChooser fileChooser;
+    public File file;
 
     /**
      * Method to handle events like mapping, load and save.
@@ -69,7 +72,9 @@ public class ControllerGUI {
         else if (event.getSource().equals(load) || event.getSource().equals(mLoad)) {
            fileChooser = new FileChooser();
            fileChooser.setTitle("Open a map");
-           fileChooser.showOpenDialog(menuBar.getScene().getWindow());
+           file = fileChooser.showOpenDialog(menuBar.getScene().getWindow());
+           Image img = new Image(file.toURI().toString());
+           kinectView.setImage(img);
        }
        else if (event.getSource().equals(save) || event.getSource().equals(mSave)) {
            fileChooser = new FileChooser();
@@ -79,7 +84,7 @@ public class ControllerGUI {
            fileChooser.getExtensionFilters().add(extFilter);
 
            //Show save file dialog
-           File file = fileChooser.showSaveDialog(menuBar.getScene().getWindow());
+           file = fileChooser.showSaveDialog(menuBar.getScene().getWindow());
 
            if(file != null){
                SaveFile("Map", file);
