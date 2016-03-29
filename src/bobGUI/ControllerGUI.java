@@ -3,10 +3,7 @@ package bobGUI;
 import com.sun.javafx.tk.Toolkit;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
-import javafx.scene.control.Button;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
@@ -52,6 +49,7 @@ public class ControllerGUI {
     public boolean isMapping = false;
     public FileChooser fileChooser;
     public File file;
+    public Slider speedControl;
 
     /**
      * Method to handle events like mapping, load and save.
@@ -60,11 +58,29 @@ public class ControllerGUI {
     public void handle(ActionEvent event) {
        if(event.getSource().equals(map)) {
            if (!isMapping) {
+               map.setStyle("-fx-background-color: linear-gradient(#ffd65b, #e68400),        " +
+                       "linear-gradient(#ffef84, #f2ba44),        " +
+                       "linear-gradient(#ffea6a, #efaa22),        " +
+                       "linear-gradient(#ffe657 0%, #8cff1a 50%, #72e600 100%),        " +
+                       "linear-gradient(from 0% 0% to 15% 50%, #a5ff4d, #59b300); " +
+                       "-fx-background-radius: 30; " +
+                       "-fx-background-insets: 0,1,2,3,0; " +
+                       "-fx-text-fill: #654b00; " +
+                       "-fx-font-weight: bold;");
                textFeedback.clear();
                textFeedback.setText("Hi I'm mapping!");
                isMapping = true;
            }
            else if (isMapping) {
+               map.setStyle("-fx-background-color: linear-gradient(#ffd65b, #e68400),        " +
+                       "linear-gradient(#ffef84, #f2ba44),        " +
+                       "linear-gradient(#ffea6a, #efaa22),        " +
+                       "linear-gradient(#ffe657 0%, #f8c202 50%, #eea10b 100%),        " +
+                       "linear-gradient(from 0% 0% to 15% 50%, rgba(255,255,255,0.9), rgba(255,255,255,0)); " +
+                       "-fx-background-radius: 30; " +
+                       "-fx-background-insets: 0,1,2,3,0; " +
+                       "-fx-text-fill: #654b00; " +
+                       "-fx-font-weight: bold;");
                textFeedback.clear();
                textFeedback.setText("stop mapping!");
                isMapping = false;
@@ -136,6 +152,15 @@ public class ControllerGUI {
         else
         switch (event.getCode()) {
             case W:
+                up.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%), " +
+                        "linear-gradient(#020b02, #3a3a3a), " +
+                        "linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%), " +
+                        "linear-gradient(#f5f5f5 0%, #a9c4f5 50%, #6495ed 51%, #3676e8 100%); " +
+                        "-fx-background-insets: 0,1,4,5; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-font-family: Helvetica; " +
+                        "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
+                        "-fx-background-radius: 25 25 0 0;");
                 //sm.setSpeed(50);
                 isDriving = true;
                 textFeedback.clear();
@@ -143,6 +168,15 @@ public class ControllerGUI {
                 event.consume();
                 break;
             case S:
+                down.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        " +
+                        "linear-gradient(#020b02, #3a3a3a),        " +
+                        "linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        " +
+                        "linear-gradient(#f5f5f5 0%, #a9c4f5 50%, #6495ed 51%, #3676e8 100%); " +
+                        "-fx-background-insets: 0,1,4,5; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-font-family: Helvetica; " +
+                        "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
+                        "-fx-background-radius: 0 0 25 25;");
                 //sm.setSpeed(-50);
                 isDriving = true;
                 textFeedback.clear();
@@ -150,6 +184,15 @@ public class ControllerGUI {
                 event.consume();
                 break;
             case A:
+                left.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        " +
+                        "linear-gradient(#020b02, #3a3a3a),        " +
+                        "linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        " +
+                        "linear-gradient(#f5f5f5 0%, #a9c4f5 50%, #6495ed 51%, #3676e8 100%); " +
+                        "-fx-background-insets: 0,1,4,5; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-font-family: Helvetica; " +
+                        "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
+                        "-fx-background-radius: 25 0 0 25;");
                 if (isDriving)//sm.setAngle(-90);
                 ;
                 else if (!isDriving)// sm.rotate(-90);
@@ -159,6 +202,15 @@ public class ControllerGUI {
                 event.consume();
                 break;
             case D:
+                right.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        " +
+                        "linear-gradient(#020b02, #3a3a3a),        " +
+                        "linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        " +
+                        "linear-gradient(#f5f5f5 0%, #a9c4f5 50%, #6495ed 51%, #3676e8 100%); "+
+                        "-fx-background-insets: 0,1,4,5; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-font-family: Helvetica; " +
+                        "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
+                        "-fx-background-radius: 0 25 25 0;");
                 if (isDriving)//sm.setAngle(90);
                     ;
                 else if (!isDriving)// sm.rotate(90);
@@ -168,6 +220,15 @@ public class ControllerGUI {
                 event.consume();
                 break;
             case Q:
+                dLeft.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        " +
+                        "linear-gradient(#020b02, #3a3a3a),        " +
+                        "linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        " +
+                        "linear-gradient(#f5f5f5 0%, #a9c4f5 50%, #6495ed 51%, #3676e8 100%); " +
+                        "-fx-background-insets: 0,1,4,5; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-font-family: Helvetica; " +
+                        "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
+                        "-fx-background-radius: 25 25 0 25;");
                 if (isDriving)//sm.setAngle(-45);
                     ;
                 else if (!isDriving)// sm.rotate(-45);
@@ -177,6 +238,15 @@ public class ControllerGUI {
                 event.consume();
                 break;
             case E:
+                dRight.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        " +
+                        "linear-gradient(#020b02, #3a3a3a),        " +
+                        "linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        " +
+                        "linear-gradient(#f5f5f5 0%, #a9c4f5 50%, #6495ed 51%, #3676e8 100%); " +
+                        "-fx-background-insets: 0,1,4,5; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-font-family: Helvetica; " +
+                        "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
+                        "-fx-background-radius: 25 25 25 0;");
                 if (isDriving)//sm.setAngle(45);
                     ;
                 else if (!isDriving)// sm.rotate(45);
@@ -184,6 +254,14 @@ public class ControllerGUI {
                 textFeedback.clear();
                 textFeedback.setText("right diagonal pressed");
                 event.consume();
+                break;
+            case R:
+                speedControl.increment();
+                textFeedback.setText("driving at " + speedControl.getValue());
+                break;
+            case F:
+                speedControl.decrement();
+                textFeedback.setText("driving at " + speedControl.getValue());
                 break;
             case Z:
                 map.fire();
@@ -210,6 +288,14 @@ public class ControllerGUI {
         else
         switch (event.getCode()) {
             case W:
+                up.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        " +
+                        "linear-gradient(#020b02, #3a3a3a),        linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        " +
+                        "linear-gradient(#f5f5f5 0%, #dbdbdb 50%, #cacaca 51%, #d7d7d7 100%); " +
+                        "-fx-background-insets: 0,1,4,5; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-font-family: Helvetica; " +
+                        "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
+                        "-fx-background-radius: 25 25 0 0;");
                 //sm.setSpeed(0);
                 isDriving = false;
                 textFeedback.clear();
@@ -217,6 +303,15 @@ public class ControllerGUI {
                 event.consume();
                 break;
             case S:
+                down.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        " +
+                        "linear-gradient(#020b02, #3a3a3a),        " +
+                        "linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        " +
+                        "linear-gradient(#f5f5f5 0%, #dbdbdb 50%, #cacaca 51%, #d7d7d7 100%); " +
+                        "-fx-background-insets: 0,1,4,5; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-font-family: Helvetica; " +
+                        "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
+                        "-fx-background-radius: 0 0 25 25;");
                 //sm.setSpeed(0);
                 isDriving = false;
                 textFeedback.clear();
@@ -224,6 +319,15 @@ public class ControllerGUI {
                 event.consume();
                 break;
             case A:
+                left.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        " +
+                        "linear-gradient(#020b02, #3a3a3a),        " +
+                        "linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        " +
+                        "linear-gradient(#f5f5f5 0%, #dbdbdb 50%, #cacaca 51%, #d7d7d7 100%); " +
+                        "-fx-background-insets: 0,1,4,5; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-font-family: Helvetica; " +
+                        "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
+                        "-fx-background-radius: 25 0 0 25;");
                 if (isDriving)//sm.setAngle(0);
                     ;
                 else if (!isDriving)// sm.rotate(0);
@@ -233,6 +337,15 @@ public class ControllerGUI {
                 event.consume();
                 break;
             case D:
+                right.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        " +
+                        "linear-gradient(#020b02, #3a3a3a),        " +
+                        "linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        " +
+                        "linear-gradient(#f5f5f5 0%, #dbdbdb 50%, #cacaca 51%, #d7d7d7 100%); " +
+                        "-fx-background-insets: 0,1,4,5; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-font-family: Helvetica; " +
+                        "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
+                        "-fx-background-radius: 0 25 25 0;");
                 if (isDriving)//sm.setAngle(0);
                     ;
                 else if (!isDriving)// sm.rotate(0);
@@ -242,6 +355,15 @@ public class ControllerGUI {
                 event.consume();
                 break;
             case Q:
+                dLeft.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        " +
+                        "linear-gradient(#020b02, #3a3a3a),        " +
+                        "linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        " +
+                        "linear-gradient(#f5f5f5 0%, #dbdbdb 50%, #cacaca 51%, #d7d7d7 100%); " +
+                        "-fx-background-insets: 0,1,4,5; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-font-family: Helvetica; " +
+                        "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
+                        "-fx-background-radius: 25 25 0 25;");
                 if (isDriving)//sm.setAngle(0);
                     ;
                 else if (!isDriving)// sm.rotate(0);
@@ -251,6 +373,15 @@ public class ControllerGUI {
                 event.consume();
                 break;
             case E:
+                dRight.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        " +
+                        "linear-gradient(#020b02, #3a3a3a),        " +
+                        "linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        " +
+                        "linear-gradient(#f5f5f5 0%, #dbdbdb 50%, #cacaca 51%, #d7d7d7 100%); " +
+                        "-fx-background-insets: 0,1,4,5; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-font-family: Helvetica; " +
+                        "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
+                        "-fx-background-radius: 25 25 25 0;");
                 if (isDriving)//sm.setAngle(0);
                     ;
                 else if (!isDriving)// sm.rotate(0);
