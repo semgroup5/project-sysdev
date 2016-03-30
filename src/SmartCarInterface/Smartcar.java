@@ -9,15 +9,15 @@ public class Smartcar {
    static public int port = 1234;
     Socket socket;
     Writer out;
-//    public static void main(String args[]){
-//        try {
-//
-//            System.out.println("Connecting");
-//            Smartcar smc = new Smartcar(ip,port);//change this port number
-//        } catch (Exception e) {
-//            System.out.println("Failed " + e.getMessage());
-//        }
-//    }
+    public static void main(String args[]){
+        try {
+
+            System.out.println("Connecting");
+            Smartcar smc = new Smartcar(ip,port);//change this port number
+        } catch (Exception e) {
+            System.out.println("Failed " + e.getMessage());
+        }
+    }
 
     /**
      * Initialize a new connection to a remote smartcar
@@ -40,8 +40,9 @@ public class Smartcar {
                 System.out.println("Socket established");
             while (!socket.isClosed()) {
                 System.out.println("It's in the connection loop");
-                out.append("").append("\n");
                 out.flush();
+                setSpeed(54);
+
                 System.out.println("it's going to close the socket!");
                 close();
 
@@ -80,6 +81,7 @@ public class Smartcar {
         out.write(toSend);
     }
     public void close()throws IOException{
+
         this.socket.close();
     }
 }
