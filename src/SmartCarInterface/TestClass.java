@@ -12,11 +12,11 @@ public class TestClass {
         Print(a);
     }
     public void setAngle(int angle){
-        String a = "The speed is set to "+angle;
+        String a = "The angle is set to "+angle;
         Print(a);
     }
     public void rotate(int angle){
-        String a = "The speed is set to "+angle;
+        String a = "The rotation is set to "+angle;
         Print(a);
     }
     public static void Print(String string){
