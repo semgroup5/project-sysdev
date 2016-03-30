@@ -40,7 +40,6 @@ public class RemoteControlListener {
                 {
                     char first;
                     first = buffer.charAt(0);
-
                     if (first == 's') {
                         sc.setSpeed(Integer.parseInt(buffer.substring(1)));
                         System.out.println("testing!"+Integer.parseInt(buffer.substring(1)));
