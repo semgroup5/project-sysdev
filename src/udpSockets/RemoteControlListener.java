@@ -1,4 +1,6 @@
-package Connect.TestControls;
+package udpSockets;
+
+import SmartCarInterface.TestClass;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,7 +21,7 @@ public class RemoteControlListener {
 
     public RemoteControlListener(int port) throws IOException {
         ServerSocket listener = new ServerSocket(port);
-        SCAct sc = new SCAct();
+        TestClass sc = new TestClass();
 
         Socket socket = listener.accept();
         while (true) {
@@ -30,6 +32,8 @@ public class RemoteControlListener {
                     buffer += in.read();
                     char first;
                     first = buffer.charAt(0);
+                    //TODO
+                    // Remember to change the method inside to make it work
                     if (first == 's') {
                         sc.setSpeed(Integer.valueOf(buffer.substring(1)));
                     } else if (first == 'a') {
@@ -45,7 +49,7 @@ public class RemoteControlListener {
 
     public void listen(InputStream in) throws IOException {
 
-        SCAct sc = new SCAct();
+        TestClass sc = new TestClass();
         String buffer = "";
         while (in.available() > 0) {
             buffer += in.read();

@@ -80,7 +80,7 @@ public class ControllerGUI {
                        "-fx-text-fill: #654b00; " +
                        "-fx-font-weight: bold;");
                textFeedback.clear();
-               textFeedback.setText("stop mapping!");
+               textFeedback.setText("Stop mapping!");
                isMapping = false;
            }
        }
