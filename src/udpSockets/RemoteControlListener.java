@@ -54,22 +54,4 @@ public class RemoteControlListener {
         }
 
     }
-
-//    public void listen(InputStream in) throws IOException {
-//
-//        TestClass sc = new TestClass();
-//        String buffer = "";
-//        while (in.available() > 0) {
-//            buffer += in.read();
-//            char first;
-//            first = buffer.charAt(0);
-//            if (first == 's') {
-//                sc.setSpeed(Integer.valueOf(buffer.substring(1)));
-//            } else if (first == 'a') {
-//                sc.setSpeed(Integer.valueOf(buffer.substring(1)));
-//            } else if (first == 'r') {
-//                sc.setSpeed(Integer.valueOf(buffer.substring(1)));
-//            }
-//        }
-//    }
 }
