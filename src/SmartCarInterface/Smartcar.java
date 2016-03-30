@@ -38,12 +38,7 @@ public class Smartcar {
                 socket = new Socket(ip, port);
                 out = new PrintWriter(socket.getOutputStream());
                 System.out.println("Socket established");
-            while (!socket.isClosed()) {
-
-                //out.flush();
-
-
-            }}catch(IOException e){
+           }catch(IOException e){
                 System.out.println(e);
             }
         }
@@ -64,9 +59,9 @@ public class Smartcar {
      * @param angle angle in degrees
      */
     public void setAngle(int angle) throws IOException{
-        angle =5;
-        String toSend = "a" + angle;
-        out.write(toSend);
+        String toSend = "a";
+        out.write(toSend + angle);
+        out.flush();
     }
 
     /**
@@ -75,12 +70,11 @@ public class Smartcar {
      * @param angle amount of rotation in degrees
      */
     public void rotate(int angle) throws IOException {
-        angle = 5;
-        String toSend = "r" + angle;
-        out.write(toSend);
+        String toSend = "r";
+        out.write(toSend + angle);
+        out.flush();
     }
     public void close()throws IOException{
-
         this.socket.close();
     }
 }

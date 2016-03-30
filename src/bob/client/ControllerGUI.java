@@ -206,12 +206,12 @@ public class ControllerGUI {
                         "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
                         "-fx-background-radius: 25 0 0 25;");
                 if (isDriving) try {
-                    sm.setAngle(-90);
+                    sm.setAngle(-5);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 else if (!isDriving) try {
-                    sm.rotate(-90);
+                    sm.rotate(-5);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -230,12 +230,12 @@ public class ControllerGUI {
                         "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
                         "-fx-background-radius: 0 25 25 0;");
                 if (isDriving) try {
-                    sm.setAngle(90);
+                    sm.setAngle(5);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 else if (!isDriving) try {
-                    sm.rotate(90);
+                    sm.rotate(5);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

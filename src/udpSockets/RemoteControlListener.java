@@ -24,7 +24,7 @@ public class RemoteControlListener {
         TestClass sc = new TestClass();
 
         Socket socket = listener.accept();
-        while (true) {
+        while (!socket.isClosed()) {
             try {
                 //System.out.println("in the true loop");
                 in = socket.getInputStream();
@@ -45,7 +45,7 @@ public class RemoteControlListener {
                     } else if (first == 'a') {
                         sc.setAngle(Integer.parseInt(buffer.substring(1)));
                     } else if (first == 'r') {
-                        sc.setAngle(Integer.parseInt(buffer.substring(1)));
+                        sc.rotate(Integer.parseInt(buffer.substring(1)));
                     }
                 }
 
