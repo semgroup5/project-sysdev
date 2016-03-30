@@ -9,7 +9,7 @@ public class SCAct {
 
     public void setSpeed(int speed)throws IOException{
         String a = "The speed is set to "+speed;
-        new PrintWriter(a);
+        Print(a);
     }
     public void setAngle(int angle){
         String a = "The speed is set to "+angle;
