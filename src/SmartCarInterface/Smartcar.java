@@ -26,10 +26,8 @@ public class Smartcar {
                 socket = new Socket(ip, port);
                 out = new PrintWriter(socket.getOutputStream());
                 System.out.println("Socket established");
-            while (true) {
-                out.append("").append("\n");
-                out.flush();
-            }}catch(IOException e){
+
+        }catch(IOException e){
                 System.out.println(e);
             }
         }
