@@ -61,6 +61,10 @@ public class Smartcar {
         String toSend = "r" + angle;
         out.write(toSend);
     }
+    public void close(Socket socket)throws IOException{
+        socket = this.socket;
+        socket.close();
+    }
 }
 
 

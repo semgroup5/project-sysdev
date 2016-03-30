@@ -1,8 +1,8 @@
 package udpSockets;
 
-import java.net.*;
-import java.io.*; 
-import java.util.*;
+import java.io.*;
+import java.net.ServerSocket;
+import java.net.Socket;
 
 /*This is an example of a Java server which accepts a client and prints entries.
  * This file also interacts with a Shell script on our Raspberry Pi (/home/pi/scripts/motorcontrol.sh)
