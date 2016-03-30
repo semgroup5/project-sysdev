@@ -44,6 +44,7 @@ public class Smartcar {
                 out.flush();
                 System.out.println("it's going to close the socket!");
                 close(socket);
+
             }}catch(IOException e){
                 System.out.println(e);
             }
