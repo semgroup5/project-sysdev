@@ -26,7 +26,7 @@ public class Smartcar {
                 socket = new Socket(ip, port);
                 out = new PrintWriter(socket.getOutputStream());
                 System.out.println("Socket established");
-            while (true) {
+            while (socket.isConnected()) {
                 out.append("").append("\n");
                 out.flush();
             }}catch(IOException e){
@@ -62,6 +62,10 @@ public class Smartcar {
     public void rotate(int angle) throws IOException {
         String toSend = "r" + angle;
         out.write(toSend);
+    }
+    public void close(Socket socket)throws IOException{
+        socket = this.socket;
+        socket.close();
     }
 }
 
