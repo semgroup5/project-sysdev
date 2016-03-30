@@ -29,7 +29,7 @@ public class RemoteControlListener {
                 //System.out.println("in the true loop");
                 in = socket.getInputStream();
                 String buffer = "";
-
+                //if there's any input do the following
                 while (in.available() > 0) {
                     buffer = buffer + (char)in.read();
                     //TODO
