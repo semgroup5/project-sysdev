@@ -4,7 +4,7 @@ package Connect.TestControls;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-public class SCAct {
+public class TestClass {
 
 
     public void setSpeed(int speed)throws IOException{
