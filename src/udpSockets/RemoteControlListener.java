@@ -26,15 +26,21 @@ public class RemoteControlListener {
         Socket socket = listener.accept();
         while (true) {
             try {
+                //System.out.println("in the true loop");
                 in = socket.getInputStream();
                 String buffer = "";
 
                 while (in.available() > 0) {
-                    buffer += in.read();
-                    char first;
-                    first = buffer.charAt(0);
+                    buffer = buffer + (char)in.read();
                     //TODO
                     // Remember to change the method inside to make it work
+                }
+
+                if(buffer.length() > 0)
+                {
+                    char first;
+                    first = buffer.charAt(0);
+
                     if (first == 's') {
                         sc.setSpeed(Integer.parseInt(buffer.substring(1)));
                         System.out.println("testing!"+Integer.parseInt(buffer.substring(1)));
@@ -44,6 +50,7 @@ public class RemoteControlListener {
                         sc.setSpeed(Integer.parseInt(buffer.substring(1)));
                     }
                 }
+
             }catch(Exception e){}
         }
 
