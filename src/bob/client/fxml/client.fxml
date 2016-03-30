@@ -101,7 +101,7 @@
                    </GridPane.margin>
                </Button>
            </GridPane>
-           <TextArea fx:id="textFeedback" editable="false" layoutX="10.0" prefHeight="116.0" prefWidth="457.0" stylesheets="@StylesheetBob.css" wrapText="true" AnchorPane.bottomAnchor="11.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="513.0">
+           <TextArea fx:id="textFeedback" editable="false" layoutX="10.0" prefHeight="116.0" prefWidth="457.0" stylesheets="@../css/client.css" wrapText="true" AnchorPane.bottomAnchor="11.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="513.0">
               <font>
                   <Font name="Bookman Old Style Italic" size="23.0" />
               </font>
@@ -109,7 +109,7 @@
            <Button fx:id="connect" layoutX="510.0" layoutY="14.0" mnemonicParsing="false" onAction="#connect" onMouseClicked="#setFocused" onMouseEntered="#shadow" onMouseExited="#shadowOff" prefWidth="120.0" style="-fx-background-color: linear-gradient(#f0ff35, #a9ff00),        radial-gradient(center 50% -40%, radius 200%, #b8ee36 45%, #80c800 50%); -fx-background-insets: 0, 1; -fx-text-fill: #395306; -fx-background-radius: 25 0 0 0;" text="Connect" AnchorPane.rightAnchor="390.0" />
            <Button fx:id="save" layoutX="510.0" layoutY="47.0" mnemonicParsing="false" onAction="#handle" onMouseClicked="#setFocused" onMouseEntered="#shadow" onMouseExited="#shadowOff" prefHeight="31.0" prefWidth="120.0" style="-fx-background-color: #a6b5c9,        linear-gradient(#303842 0%, #3e5577 20%, #375074 100%),        linear-gradient(#768aa5 0%, #849cbb 5%, #5877a2 50%, #486a9a 51%, #4a6c9b 100%); -fx-background-insets: 0 0 -1 0,0,1; -fx-text-fill: #242d35; -fx-font-family: &quot;Helvetica&quot;; -fx-text-fill: white;" text="Save" AnchorPane.rightAnchor="390.0" />
            <Button fx:id="load" layoutX="510.0" layoutY="80.0" mnemonicParsing="false" onAction="#handle" onMouseClicked="#setFocused" onMouseEntered="#shadow" onMouseExited="#shadowOff" prefHeight="31.0" prefWidth="120.0" style="-fx-background-color: #a6b5c9,        linear-gradient(#303842 0%, #3e5577 20%, #375074 100%),        linear-gradient(#768aa5 0%, #849cbb 5%, #5877a2 50%, #486a9a 51%, #4a6c9b 100%); -fx-background-insets: 0 0 -1 0,0,1; -fx-text-fill: #242d35; -fx-font-family: &quot;Helvetica&quot;; -fx-text-fill: white; -fx-background-radius: 0 0 25 0;" text="Load" AnchorPane.rightAnchor="390.0" />
-         <Slider fx:id="speedControl" layoutX="704.0" layoutY="7.0" orientation="VERTICAL" prefHeight="120.0" prefWidth="18.0" showTickLabels="true" showTickMarks="true" stylesheets="@StylesheetBob.css" AnchorPane.bottomAnchor="7.0" AnchorPane.rightAnchor="260.0" />
+         <Slider fx:id="speedControl" layoutX="704.0" layoutY="7.0" orientation="VERTICAL" prefHeight="120.0" prefWidth="18.0" showTickLabels="true" showTickMarks="true" stylesheets="@../css/client.css" AnchorPane.bottomAnchor="7.0" AnchorPane.rightAnchor="260.0" />
          <Label layoutX="641.0" layoutY="4.0" text="Speed" textFill="#f2eded" AnchorPane.bottomAnchor="109.0" AnchorPane.rightAnchor="299.0" />
        </AnchorPane>
    </bottom>

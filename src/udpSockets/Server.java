@@ -72,20 +72,20 @@ public class Server
 					}
 					
 				} catch(IOException e) {
-					try
-					{
-
-
-						System.out.println("Listening on port " + port);
-						server = new ServerSocket(1234);
-					}
-					catch(IOException e1) {
-						System.err.println("Could not listen on port: 1234.");
-						System.exit(1);
-					}
 					e.printStackTrace();
 					throw e;
+				}
 
+				try
+				{
+
+
+					System.out.println("Listening on port " + port);
+					server = new ServerSocket(1234);
+				}
+				catch(IOException e1) {
+					System.err.println("Could not listen on port: 1234.");
+					System.exit(1);
 				}
 			}
 			out.close();

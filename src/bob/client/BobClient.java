@@ -1,4 +1,4 @@
-package bobGUI;
+package bob.client;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -7,13 +7,13 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- * Created by Raphael on 06/03/2016 for project-sysdev.
+ * Created by jpp on 30/03/16.
  */
-public class Main extends Application {
+public class BobClient extends Application{
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("BobGUI.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("fxml/client.fxml"));
         Scene scene = new Scene(root, 0, 0);
         primaryStage.setTitle("Bob the SmartCar");
         primaryStage.setScene(scene);
