@@ -43,7 +43,7 @@ public class Smartcar {
                 out.append("").append("\n");
                 out.flush();
                 System.out.println("it's going to close the socket!");
-                close(socket);
+                close();
 
             }}catch(IOException e){
                 System.out.println(e);
@@ -79,10 +79,8 @@ public class Smartcar {
         String toSend = "r" + angle;
         out.write(toSend);
     }
-    public void close(Socket socket)throws IOException{
-        Socket Socket1 = new Socket();
-        Socket1 = this.socket;
-        Socket1.close();
+    public void close()throws IOException{
+        this.socket.close();
     }
 }
 

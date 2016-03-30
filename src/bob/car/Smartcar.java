@@ -39,7 +39,7 @@ public class Smartcar implements ISmartcar{
     }
 }
 
-public class ConnectionMaker implements Runnable{
+class ConnectionMaker implements Runnable{
     String ip;
     int port;
 

@@ -502,7 +502,11 @@ public class ControllerGUI {
                     "-fx-background-radius: 25 0 0 0;");
             connect.setText("Connect");
             mConnect.setText("Connect");
-            //sm = null;
+            try {
+                sm.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             textFeedback.setText("Disconnecting...");
             isConnected = false;
         }
