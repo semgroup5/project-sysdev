@@ -2,12 +2,22 @@ package SmartCarInterface;
 
 import java.io.*;
 import java.net.Socket;
+import java.nio.channels.SocketChannel;
 
 public class Smartcar {
     static public String ip = "127.0.0.1";
    static public int port = 1234;
     Socket socket;
     Writer out;
+//    public static void main(String args[]){
+//        try {
+//
+//            System.out.println("Connecting");
+//            Smartcar smc = new Smartcar(ip,port);//change this port number
+//        } catch (Exception e) {
+//            System.out.println("Failed " + e.getMessage());
+//        }
+//    }
 
     /**
      * Initialize a new connection to a remote smartcar
@@ -17,18 +27,23 @@ public class Smartcar {
      * @param port
      *            port at which the smartcar is listening
      */
+
     public Smartcar(String ip, int port) {
         this.ip = ip;
         this.port = port;
 
 
         try {
+
                 socket = new Socket(ip, port);
                 out = new PrintWriter(socket.getOutputStream());
                 System.out.println("Socket established");
-            while (socket.isConnected()) {
+            while (!socket.isClosed()) {
+                System.out.println("It's in the connection loop");
                 out.append("").append("\n");
                 out.flush();
+                System.out.println("it's going to close the socket!");
+                close(socket);
             }}catch(IOException e){
                 System.out.println(e);
             }
@@ -64,8 +79,9 @@ public class Smartcar {
         out.write(toSend);
     }
     public void close(Socket socket)throws IOException{
-        socket = this.socket;
-        socket.close();
+        Socket Socket1 = new Socket();
+        Socket1 = this.socket;
+        Socket1.close();
     }
 }
 
