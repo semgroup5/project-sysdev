@@ -463,7 +463,7 @@ public class ControllerGUI {
     }
 
     /**
-     * Method to set InnerShadow effect to buttons.
+     * Method to set InnerShadow effect to buttons
      * @param event
      */
     public void setFocused(Event event) {
