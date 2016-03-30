@@ -67,29 +67,4 @@ public class Smartcar {
     }
 }
 
-// int port;
-// AxelsSmartcar sc; //This is the *other* smartcar class
-//
-//
-/// **
-// * Initialize a RemoteControlListener
-// * @param port which port to listen at
-// */
-//
-// public RemoteControlListener(int port, AxelsSmartcar sc) {
-// this.port = port;
-// }
-//
-//
-// public void listen()
-// {
-// //Initialize a SocketServer at port
-//
-// //Wait for clients with .accept()
-//
-// //While there's bytes available
-//
-// //Read and react to them
-//
-// }
-// }
+
