@@ -1,6 +1,6 @@
 package udpSockets;
 
-import Connect.TestControls.TestClass;
+import SmartCarInterface.TestClass;
 
 import java.io.IOException;
 import java.io.InputStream;
