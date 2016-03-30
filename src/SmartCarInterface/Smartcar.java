@@ -8,14 +8,14 @@ public class Smartcar {
    static public int port = 1234;
     Socket socket;
     Writer out;
-    public static void main(String args[]){
-        try {
-            System.out.print("Initializing...");
-            Smartcar SCC = new Smartcar(ip,port);//change this port number
-        } catch (Exception e) {
-            System.out.print("Failed " + e.getMessage());
-        }
-    }
+//    public static void main(String args[]){
+//        try {
+//            System.out.print("Initializing...");
+//            Smartcar SCC = new Smartcar(ip,port);//change this port number
+//        } catch (Exception e) {
+//            System.out.print("Failed " + e.getMessage());
+//        }
+//    }
 
     /**
      * Initialize a new connection to a remote smartcar
@@ -34,10 +34,7 @@ public class Smartcar {
                 socket = new Socket(ip, port);
                 out = new PrintWriter(socket.getOutputStream());
                 System.out.println("Socket established");
-            while (true) {
-                out.append("").append("\n");
-                out.flush();
-            }}catch(IOException e){
+            }catch(IOException e){
                 System.out.println(e);
             }
         }
