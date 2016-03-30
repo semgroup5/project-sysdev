@@ -42,11 +42,10 @@ public class RemoteControlListener {
                     first = buffer.charAt(0);
                     if (first == 's') {
                         sc.setSpeed(Integer.parseInt(buffer.substring(1)));
-                        System.out.println("testing!"+Integer.parseInt(buffer.substring(1)));
                     } else if (first == 'a') {
-                        sc.setSpeed(Integer.parseInt(buffer.substring(1)));
+                        sc.setAngle(Integer.parseInt(buffer.substring(1)));
                     } else if (first == 'r') {
-                        sc.setSpeed(Integer.parseInt(buffer.substring(1)));
+                        sc.setAngle(Integer.parseInt(buffer.substring(1)));
                     }
                 }
 
