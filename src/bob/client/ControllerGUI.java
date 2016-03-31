@@ -148,7 +148,7 @@ public class ControllerGUI {
      * Method to handle the keylisteners when a key is pressed.
      * @param event
      */
-    public void keyListenersPressed(KeyEvent event) {
+    public void keyListenersPressed(KeyEvent event) throws IOException {
         if (!isConnected) {
             textFeedback.clear();
             textFeedback.setText("Smartcar is disconnected!");
@@ -165,11 +165,7 @@ public class ControllerGUI {
                         "-fx-font-family: Helvetica; " +
                         "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
                         "-fx-background-radius: 25 25 0 0;");
-                try {
-                    sm.setSpeed(50);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                sm.setSpeed((int) (speedControl.getValue()));
                 isDriving = true;
                 textFeedback.clear();
                 textFeedback.setText("up pressed");
@@ -185,11 +181,7 @@ public class ControllerGUI {
                         "-fx-font-family: Helvetica; " +
                         "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
                         "-fx-background-radius: 0 0 25 25;");
-                try {
-                    sm.setSpeed(-50);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                sm.setSpeed((int) -(speedControl.getValue()));
                 isDriving = true;
                 textFeedback.clear();
                 textFeedback.setText("down pressed");
@@ -205,16 +197,8 @@ public class ControllerGUI {
                         "-fx-font-family: Helvetica; " +
                         "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
                         "-fx-background-radius: 25 0 0 25;");
-                if (isDriving) try {
-                    sm.setAngle(-5);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                else if (!isDriving) try {
-                    sm.rotate(-5);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                if (isDriving) sm.setAngle(-10);
+                else if (!isDriving) sm.rotate(-10);
                 textFeedback.clear();
                 textFeedback.setText("left pressed");
                 event.consume();
@@ -229,16 +213,8 @@ public class ControllerGUI {
                         "-fx-font-family: Helvetica; " +
                         "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
                         "-fx-background-radius: 0 25 25 0;");
-                if (isDriving) try {
-                    sm.setAngle(5);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                else if (!isDriving) try {
-                    sm.rotate(5);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                if (isDriving) sm.setAngle(10);
+                else if (!isDriving) sm.rotate(10);
                 textFeedback.clear();
                 textFeedback.setText("right pressed");
                 event.consume();
@@ -253,16 +229,8 @@ public class ControllerGUI {
                         "-fx-font-family: Helvetica; " +
                         "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
                         "-fx-background-radius: 25 25 0 25;");
-                if (isDriving) try {
-                    sm.setAngle(-45);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                else if (!isDriving) try {
-                    sm.rotate(-45);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                if (isDriving) sm.setAngle(-5);
+                else if (!isDriving) sm.rotate(-5);
                 textFeedback.clear();
                 textFeedback.setText("left diagonal pressed");
                 event.consume();
@@ -277,16 +245,8 @@ public class ControllerGUI {
                         "-fx-font-family: Helvetica; " +
                         "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
                         "-fx-background-radius: 25 25 25 0;");
-                if (isDriving) try {
-                    sm.setAngle(45);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                else if (!isDriving) try {
-                    sm.rotate(45);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                if (isDriving) sm.setAngle(5);
+                else if (!isDriving) sm.rotate(5);
                 textFeedback.clear();
                 textFeedback.setText("right diagonal pressed");
                 event.consume();
@@ -316,7 +276,7 @@ public class ControllerGUI {
      * Method to handle keylisteners when a key is released.
      * @param event
      */
-    public void keyListenersReleased(KeyEvent event) {
+    public void keyListenersReleased(KeyEvent event) throws IOException {
         if (event.getCode() == KeyCode.V) connect();
         if (!isConnected) {
             textFeedback.clear();
@@ -333,11 +293,7 @@ public class ControllerGUI {
                         "-fx-font-family: Helvetica; " +
                         "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
                         "-fx-background-radius: 25 25 0 0;");
-                try {
-                    sm.setSpeed(0);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                sm.setSpeed(0);
                 isDriving = false;
                 textFeedback.clear();
                 textFeedback.setText("up released");
@@ -353,11 +309,7 @@ public class ControllerGUI {
                         "-fx-font-family: Helvetica; " +
                         "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
                         "-fx-background-radius: 0 0 25 25;");
-                try {
-                    sm.setSpeed(0);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                sm.setSpeed(0);
                 isDriving = false;
                 textFeedback.clear();
                 textFeedback.setText("down released");
@@ -373,16 +325,8 @@ public class ControllerGUI {
                         "-fx-font-family: Helvetica; " +
                         "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
                         "-fx-background-radius: 25 0 0 25;");
-                if (isDriving) try {
-                    sm.setAngle(0);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                else if (!isDriving) try {
-                    sm.rotate(0);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                if (isDriving) sm.setAngle(0);
+                else if (!isDriving) sm.rotate(0);
                 textFeedback.clear();
                 textFeedback.setText("left released");
                 event.consume();
@@ -397,16 +341,8 @@ public class ControllerGUI {
                         "-fx-font-family: Helvetica; " +
                         "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
                         "-fx-background-radius: 0 25 25 0;");
-                if (isDriving) try {
-                    sm.setAngle(0);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                else if (!isDriving) try {
-                    sm.rotate(0);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                if (isDriving) sm.setAngle(0);
+                else if (!isDriving) sm.rotate(0);
                 textFeedback.clear();
                 textFeedback.setText("right released");
                 event.consume();
@@ -421,16 +357,8 @@ public class ControllerGUI {
                         "-fx-font-family: Helvetica; " +
                         "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
                         "-fx-background-radius: 25 25 0 25;");
-                if (isDriving) try {
-                    sm.setAngle(0);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                else if (!isDriving) try {
-                    sm.rotate(0);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                if (isDriving) sm.setAngle(0);
+                else if (!isDriving) sm.rotate(0);
                 textFeedback.clear();
                 textFeedback.setText("left diagonal released");
                 event.consume();
@@ -445,16 +373,8 @@ public class ControllerGUI {
                         "-fx-font-family: Helvetica; " +
                         "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
                         "-fx-background-radius: 25 25 25 0;");
-                if (isDriving) try {
-                    sm.setAngle(0);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                else if (!isDriving) try {
-                    sm.rotate(0);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                if (isDriving) sm.setAngle(0);
+                else if (!isDriving) sm.rotate(0);
                 textFeedback.clear();
                 textFeedback.setText("right diagonal released");
                 event.consume();
@@ -480,7 +400,7 @@ public class ControllerGUI {
     /**
      * Method to set connection with the smartcar.
      */
-    public void connect() {
+    public void connect() throws IOException {
         if(!isConnected) {
             connect.setStyle("-fx-background-color: linear-gradient(#ff6767, #ff1a1a),        " +
                     "radial-gradient(center 50% -40%, radius 200%, #ff4d4d 45%, #ff0000 50%); " +
@@ -502,11 +422,7 @@ public class ControllerGUI {
                     "-fx-background-radius: 25 0 0 0;");
             connect.setText("Connect");
             mConnect.setText("Connect");
-            try {
-                sm.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            sm.close();
             textFeedback.setText("Disconnecting...");
             isConnected = false;
         }
@@ -516,58 +432,54 @@ public class ControllerGUI {
      * Method to handle mouseReleased events on the smartcar control
      * @param event
      */
-    public void mouseReleased(MouseEvent event) {
+    public void mouseReleased(MouseEvent event) throws IOException {
         if (!isConnected) {
             textFeedback.clear();
             textFeedback.setText("Smartcar is disconnected!");
         }
         else
             if (event.getSource() == up) {
-                //sm.setSpeed(0);
+                sm.setSpeed(0);
                 isDriving = false;
                 textFeedback.clear();
                 textFeedback.setText("up released");
                 event.consume();
             }
             else if (event.getSource() == down) {
-                //sm.setSpeed(0);
+                sm.setSpeed(0);
                 isDriving = false;
                 textFeedback.clear();
                 textFeedback.setText("down released");
                 event.consume();
             }
             else if (event.getSource() == left) {
-                if (isDriving)//sm.setAngle(0);
-                    ;
-                else if (!isDriving)// sm.rotate(0);
-                    ;
+                if (isDriving) sm.setAngle(0);
+                else if (!isDriving) sm.rotate(0);
+
                 textFeedback.clear();
                 textFeedback.setText("left released");
                 event.consume();
             }
             else if (event.getSource() == right) {
-                if (isDriving)//sm.setAngle(0);
-                    ;
-                else if (!isDriving)// sm.rotate(0);
-                    ;
+                if (isDriving) sm.setAngle(0);
+                else if (!isDriving) sm.rotate(0);
+
                 textFeedback.clear();
                 textFeedback.setText("right released");
                 event.consume();
             }
             else if (event.getSource() == dRight) {
-                if (isDriving)//sm.setAngle(0);
-                    ;
-                else if (!isDriving)// sm.rotate(0);
-                    ;
+                if (isDriving) sm.setAngle(0);
+                else if (!isDriving) sm.rotate(0);
+
                 textFeedback.clear();
                 textFeedback.setText("dRight released");
                 event.consume();
             }
             else if (event.getSource() == dLeft) {
-                if (isDriving)//sm.setAngle(0);
-                    ;
-                else if (!isDriving)// sm.rotate(0);
-                    ;
+                if (isDriving) sm.setAngle(0);
+                else if (!isDriving) sm.rotate(0);
+
                 textFeedback.clear();
                 textFeedback.setText("dLeft released");
                 event.consume();
@@ -578,58 +490,54 @@ public class ControllerGUI {
      * Method to handle mousePressed events on the smartcar control.
      * @param event
      */
-    public void mousePressed(MouseEvent event) {
+    public void mousePressed(MouseEvent event) throws IOException {
         if (!isConnected) {
             textFeedback.clear();
             textFeedback.setText("Smartcar is disconnected!");
         }
         else
         if (event.getSource() == up) {
-            //sm.setSpeed(50);
+            sm.setSpeed((int) (speedControl.getValue()));
             isDriving = false;
             textFeedback.clear();
             textFeedback.setText("up pressed");
             event.consume();
         }
         else if (event.getSource() == down) {
-            //sm.setSpeed(-50);
+            sm.setSpeed((int) -(speedControl.getValue()));
             isDriving = false;
             textFeedback.clear();
             textFeedback.setText("down pressed");
             event.consume();
         }
         else if (event.getSource() == left) {
-            if (isDriving)//sm.setAngle(-90);
-                ;
-            else if (!isDriving)// sm.rotate(-90);
-                ;
+            if (isDriving) sm.setAngle(-10);
+            else if (!isDriving) sm.rotate(-10);
+
             textFeedback.clear();
             textFeedback.setText("left pressed");
             event.consume();
         }
         else if (event.getSource() == right) {
-            if (isDriving)//sm.setAngle(90);
-                ;
-            else if (!isDriving)// sm.rotate(90);
-                ;
+            if (isDriving) sm.setAngle(10);
+            else if (!isDriving) sm.rotate(10);
+
             textFeedback.clear();
             textFeedback.setText("right pressed");
             event.consume();
         }
         else if (event.getSource() == dLeft) {
-            if (isDriving)//sm.setAngle(-45);
-                ;
-            else if (!isDriving)// sm.rotate(-45);
-                ;
+            if (isDriving) sm.setAngle(-5);
+            else if (!isDriving) sm.rotate(-5);
+
             textFeedback.clear();
             textFeedback.setText("dLeft pressed");
             event.consume();
         }
         else if (event.getSource() == dRight) {
-            if (isDriving)//sm.setAngle(45);
-                ;
-            else if (!isDriving)// sm.rotate(45);
-                ;
+            if (isDriving) sm.setAngle(5);
+            else if (!isDriving) sm.rotate(5);
+
             textFeedback.clear();
             textFeedback.setText("dRight pressed");
             event.consume();

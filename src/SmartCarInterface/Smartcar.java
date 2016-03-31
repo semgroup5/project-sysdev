@@ -1,23 +1,26 @@
 package SmartCarInterface;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Writer;
 import java.net.Socket;
-import java.nio.channels.SocketChannel;
 
 public class Smartcar {
-    static public String ip = "127.0.0.1";
-   static public int port = 1234;
+    //"127.0.0.1"
+    static public String ip;
+    //1234
+   static public int port;
     Socket socket;
     Writer out;
-    public static void main(String args[]){
-        try {
-
-            System.out.println("Connecting");
-            Smartcar smc = new Smartcar(ip,port);//change this port number
-        } catch (Exception e) {
-            System.out.println("Failed " + e.getMessage());
-        }
-    }
+//    public static void main(String args[]){
+//        try {
+//
+//            System.out.println("Connecting");
+//            Smartcar smc = new Smartcar(ip,port);//change this port number
+//        } catch (Exception e) {
+//            System.out.println("Failed " + e.getMessage());
+//        }
+//    }
 
     /**
      * Initialize a new connection to a remote smartcar
@@ -34,7 +37,6 @@ public class Smartcar {
 
 
         try {
-
                 socket = new Socket(ip, port);
                 out = new PrintWriter(socket.getOutputStream());
                 System.out.println("Socket established");
