@@ -1,7 +1,6 @@
 package bob.client;
 
-import SmartCarInterface.Smartcar;
-import javafx.application.Platform;
+import SmartCarInterface.SmartCar;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.scene.control.*;
@@ -13,7 +12,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
-import javafx.util.*;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -45,7 +43,7 @@ public class ControllerGUI {
     public Button connect;
     public Button save;
     public Button load;
-    private Smartcar sm;
+    private SmartCar sm;
     public boolean isConnected = false;
     public boolean isDriving = false;
     public boolean isMapping = false;
@@ -151,7 +149,7 @@ public class ControllerGUI {
     public void keyListenersPressed(KeyEvent event) throws IOException {
         if (!isConnected) {
             textFeedback.clear();
-            textFeedback.setText("Smartcar is disconnected!");
+            textFeedback.setText("SmartCar is disconnected!");
         }
         else
         switch (event.getCode()) {
@@ -280,7 +278,7 @@ public class ControllerGUI {
         if (event.getCode() == KeyCode.V) connect();
         if (!isConnected) {
             textFeedback.clear();
-            textFeedback.setText("Smartcar is disconnected!");
+            textFeedback.setText("SmartCar is disconnected!");
         }
         else
         switch (event.getCode()) {
@@ -409,7 +407,7 @@ public class ControllerGUI {
                     "-fx-background-radius: 25 0 0 0;");
             connect.setText("Disconnect");
             mConnect.setText("Disconnect");
-            sm = new Smartcar("127.0.0.1", 1234);
+            sm = new SmartCar("127.0.0.1", 1234);
             textFeedback.setText("Connecting...");
             isConnected = true;
 
@@ -435,7 +433,7 @@ public class ControllerGUI {
     public void mouseReleased(MouseEvent event) throws IOException {
         if (!isConnected) {
             textFeedback.clear();
-            textFeedback.setText("Smartcar is disconnected!");
+            textFeedback.setText("SmartCar is disconnected!");
         }
         else
             if (event.getSource() == up) {
@@ -493,7 +491,7 @@ public class ControllerGUI {
     public void mousePressed(MouseEvent event) throws IOException {
         if (!isConnected) {
             textFeedback.clear();
-            textFeedback.setText("Smartcar is disconnected!");
+            textFeedback.setText("SmartCar is disconnected!");
         }
         else
         if (event.getSource() == up) {

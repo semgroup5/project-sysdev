@@ -5,7 +5,7 @@ import java.io.PrintWriter;
 import java.io.Writer;
 import java.net.Socket;
 
-public class Smartcar {
+public class SmartCar {
     //"127.0.0.1"
     static public String ip;
     //1234
@@ -16,7 +16,7 @@ public class Smartcar {
 //        try {
 //
 //            System.out.println("Connecting");
-//            Smartcar smc = new Smartcar(ip,port);//change this port number
+//            SmartCar smc = new SmartCar(ip,port);//change this port number
 //        } catch (Exception e) {
 //            System.out.println("Failed " + e.getMessage());
 //        }
@@ -31,7 +31,7 @@ public class Smartcar {
      *            port at which the smartcar is listening
      */
 
-    public Smartcar(String ip, int port) {
+    public SmartCar(String ip, int port) {
         this.ip = ip;
         this.port = port;
 
@@ -46,7 +46,7 @@ public class Smartcar {
         }
 
     /**
-     * Set speed of the remote Smartcar
+     * Set speed of the remote SmartCar
      *
      * @param speed speed in percentage of max capacity
      */
@@ -56,7 +56,7 @@ public class Smartcar {
     }
 
     /**
-     * Set angle at which to turn the remote Smartcar
+     * Set angle at which to turn the remote SmartCar
      *
      * @param angle angle in degrees
      */
