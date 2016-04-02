@@ -5,7 +5,7 @@ import java.io.PrintWriter;
 import java.io.Writer;
 import java.net.Socket;
 
-public class SmartCar {
+public class Smartcar {
     //"127.0.0.1"
     static public String ip;
     //1234
@@ -31,7 +31,7 @@ public class SmartCar {
      *            port at which the smartcar is listening
      */
 
-    public SmartCar(String ip, int port) {
+    public Smartcar(String ip, int port) {
         this.ip = ip;
         this.port = port;
 

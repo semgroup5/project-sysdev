@@ -6,6 +6,7 @@ package bob.client;
 import SmartCarInterface.Smartcar;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
+import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.InnerShadow;
@@ -13,7 +14,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.stage.FileChooser;
-
+import bob.client.MultipleKeyHandler.MultiKeyEventHandler;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -49,6 +50,7 @@ public class ControllerGUIv2 {
     public FileChooser fileChooser;
     public File file;
     public Slider speedControl;
+    boolean isW, isA, isD, isS = false;
 
 
 
@@ -147,152 +149,221 @@ public class ControllerGUIv2 {
      *
      */
 
-    private void initKeyEventHandler(){
-        final MultipleKeyHandler keyHandler =
-                new MultipleKeyHandler(new MultipleKeyHandler.MultiKeyEventHandler() {
-
-                    public void handle(MultipleKeyHandler.MultiKeyEvent event) {
-
-                        if (event.isPressed(KeyCode.W) ) {
-                            try {
-                                up.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%), " +
-                                        "linear-gradient(#020b02, #3a3a3a), " +
-                                        "linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%), " +
-                                        "linear-gradient(#f5f5f5 0%, #a9c4f5 50%, #6495ed 51%, #3676e8 100%); " +
-                                        "-fx-background-insets: 0,1,4,5; " +
-                                        "-fx-font-weight: bold; " +
-                                        "-fx-font-family: Helvetica; " +
-                                        "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
-                                        "-fx-background-radius: 25 25 0 0;");
-                                sm.setSpeed((int) (speedControl.getValue()));
-                                isDriving = true;
-                                textFeedback.clear();
-                                textFeedback.setText("up pressed");
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        if (event.isPressed(KeyCode.W)  && event.isPressed(KeyCode.A)) {
-                            try {
-                                dLeft.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        " +
-                                        "linear-gradient(#020b02, #3a3a3a),        " +
-                                        "linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        " +
-                                        "linear-gradient(#f5f5f5 0%, #a9c4f5 50%, #6495ed 51%, #3676e8 100%); " +
-                                        "-fx-background-insets: 0,1,4,5; " +
-                                        "-fx-font-weight: bold; " +
-                                        "-fx-font-family: Helvetica; " +
-                                        "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
-                                        "-fx-background-radius: 25 25 0 25;");
-                                if (isDriving) sm.setAngle(-5);
-                                else if (!isDriving) sm.rotate(-5);
-                                textFeedback.clear();
-                                textFeedback.setText("left diagonal pressed");
-
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        if (event.isPressed(KeyCode.W) && event.isPressed(KeyCode.D)) {
-                            try {
-                                dRight.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        " +
-                                        "linear-gradient(#020b02, #3a3a3a),        " +
-                                        "linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        " +
-                                        "linear-gradient(#f5f5f5 0%, #a9c4f5 50%, #6495ed 51%, #3676e8 100%); " +
-                                        "-fx-background-insets: 0,1,4,5; " +
-                                        "-fx-font-weight: bold; " +
-                                        "-fx-font-family: Helvetica; " +
-                                        "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
-                                        "-fx-background-radius: 25 25 25 0;");
-                                if (isDriving) sm.setAngle(5);
-                                else if (!isDriving) sm.rotate(5);
-                                textFeedback.clear();
-                                textFeedback.setText("right diagonal pressed");
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-
-                        if (event.isPressed(KeyCode.A) ) {
-                            try {
-                                left.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        " +
-                                        "linear-gradient(#020b02, #3a3a3a),        " +
-                                        "linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        " +
-                                        "linear-gradient(#f5f5f5 0%, #a9c4f5 50%, #6495ed 51%, #3676e8 100%); " +
-                                        "-fx-background-insets: 0,1,4,5; " +
-                                        "-fx-font-weight: bold; " +
-                                        "-fx-font-family: Helvetica; " +
-                                        "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
-                                        "-fx-background-radius: 25 0 0 25;");
-                                if (isDriving) sm.setAngle(-10);
-                                else if (!isDriving) sm.rotate(-10);
-                                textFeedback.clear();
-                                textFeedback.setText("left pressed");
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        if (event.isPressed(KeyCode.D) ) {
-                            try {
-                                right.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        " +
-                                        "linear-gradient(#020b02, #3a3a3a),        " +
-                                        "linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        " +
-                                        "linear-gradient(#f5f5f5 0%, #a9c4f5 50%, #6495ed 51%, #3676e8 100%); "+
-                                        "-fx-background-insets: 0,1,4,5; " +
-                                        "-fx-font-weight: bold; " +
-                                        "-fx-font-family: Helvetica; " +
-                                        "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
-                                        "-fx-background-radius: 0 25 25 0;");
-                                if (isDriving) sm.setAngle(10);
-                                else if (!isDriving) sm.rotate(10);
-                                textFeedback.clear();
-                                textFeedback.setText("right pressed");
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        if (event.isPressed(KeyCode.S) ) {
-                            try {
-                                down.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        " +
-                                        "linear-gradient(#020b02, #3a3a3a),        " +
-                                        "linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        " +
-                                        "linear-gradient(#f5f5f5 0%, #a9c4f5 50%, #6495ed 51%, #3676e8 100%); " +
-                                        "-fx-background-insets: 0,1,4,5; " +
-                                        "-fx-font-weight: bold; " +
-                                        "-fx-font-family: Helvetica; " +
-                                        "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
-                                        "-fx-background-radius: 0 0 25 25;");
-                                sm.setSpeed((int) -(speedControl.getValue()));
-                                isDriving = true;
-                                textFeedback.clear();
-                                textFeedback.setText("down pressed");
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        if (event.isPressed(KeyCode.R) ) {
-                            speedControl.increment();
-                            textFeedback.setText("driving at " + speedControl.getValue());
-                        }
-
-                        if (event.isPressed(KeyCode.F) ) {
-                            speedControl.decrement();
-                            textFeedback.setText("driving at " + speedControl.getValue());
-                        }
-                        if (event.isPressed(KeyCode.Z) ) {
-                            map.fire();
-                        }
-                        if (event.isPressed(KeyCode.X) ) {
-                            save.fire();
-                        }
-                        if (event.isPressed(KeyCode.C) ) {
-                            load.fire();
-                        }
-
+    public void keyListenersPressed(KeyEvent event) throws IOException {
+        if (!isConnected) {
+            textFeedback.clear();
+            textFeedback.setText("SmartCar is disconnected!");
+        }
+        else
+        switch (event.getCode()) {
+            case W:
+                up.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%), " +
+                        "linear-gradient(#020b02, #3a3a3a), " +
+                        "linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%), " +
+                        "linear-gradient(#f5f5f5 0%, #a9c4f5 50%, #6495ed 51%, #3676e8 100%); " +
+                        "-fx-background-insets: 0,1,4,5; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-font-family: Helvetica; " +
+                        "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
+                        "-fx-background-radius: 25 25 0 0;");
+                isW = true;
+                if (isA){
+                    sm.setSpeed((int) (speedControl.getValue()));
+                    sm.setAngle(-10);
+                    textFeedback.setText("forward and left pressed");
+                }else if(isD){
+                    sm.setSpeed((int) (speedControl.getValue()));
+                    sm.setAngle(10);
+                    textFeedback.setText("forward and right pressed");
+                }else{
+                    sm.setSpeed((int) (speedControl.getValue()));
+                    textFeedback.clear();
+                    textFeedback.setText("forward pressed");
                 }
-
-
-                });
+                event.consume();
+                break;
+            case S:
+                down.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        " +
+                        "linear-gradient(#020b02, #3a3a3a),        " +
+                        "linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        " +
+                        "linear-gradient(#f5f5f5 0%, #a9c4f5 50%, #6495ed 51%, #3676e8 100%); " +
+                        "-fx-background-insets: 0,1,4,5; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-font-family: Helvetica; " +
+                        "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
+                        "-fx-background-radius: 0 0 25 25;");
+                isS = true;
+                if (isA){
+                    sm.setSpeed((int) -(speedControl.getValue()));
+                    sm.setAngle(-10);
+                    textFeedback.setText("down and left pressed");
+                }else if(isD){
+                    sm.setSpeed((int) -(speedControl.getValue()));
+                    sm.setAngle(10);
+                    textFeedback.setText("down and right pressed");
+                }else{
+                    sm.setSpeed((int) -(speedControl.getValue()));
+                    textFeedback.setText("down pressed");
+                }
+                event.consume();
+                break;
+            case A:
+                left.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        " +
+                        "linear-gradient(#020b02, #3a3a3a),        " +
+                        "linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        " +
+                        "linear-gradient(#f5f5f5 0%, #a9c4f5 50%, #6495ed 51%, #3676e8 100%); " +
+                        "-fx-background-insets: 0,1,4,5; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-font-family: Helvetica; " +
+                        "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
+                        "-fx-background-radius: 25 0 0 25;");
+                isA = true;
+                if (isW){
+                    sm.setSpeed((int) (speedControl.getValue()));
+                    sm.setAngle(-10);
+                    textFeedback.setText("forward and left pressed");
+                }else if(isS){
+                    sm.setSpeed((int) -(speedControl.getValue()));
+                    sm.setAngle(-10);
+                    textFeedback.setText("back and left pressed");
+                }else{
+                    sm.rotate(-10);
+                    textFeedback.setText("rotate left pressed");
+                }
+                event.consume();
+                break;
+            case D:
+                right.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        " +
+                        "linear-gradient(#020b02, #3a3a3a),        " +
+                        "linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        " +
+                        "linear-gradient(#f5f5f5 0%, #a9c4f5 50%, #6495ed 51%, #3676e8 100%); "+
+                        "-fx-background-insets: 0,1,4,5; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-font-family: Helvetica; " +
+                        "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
+                        "-fx-background-radius: 0 25 25 0;");
+                isD = true;
+                if (isW){
+                sm.setSpeed((int) (speedControl.getValue()));
+                sm.setAngle(10);
+                textFeedback.setText("forward and right pressed");
+            }else if(isS){
+                sm.setSpeed((int) -(speedControl.getValue()));
+                sm.setAngle(10);
+                textFeedback.setText("back and right pressed");
+            }else{
+                sm.rotate(10);
+                textFeedback.setText("rotate right pressed");
+            }
+                event.consume();
+                break;
+            case R:
+                speedControl.increment();
+                textFeedback.setText("driving at " + speedControl.getValue());
+                break;
+            case F:
+                speedControl.decrement();
+                textFeedback.setText("driving at " + speedControl.getValue());
+                break;
+            case Z:
+                map.fire();
+                break;
+            case X:
+                save.fire();
+                break;
+            case C:
+                load.fire();
+                break;
+        }
     }
+
+    public void keyListenersReleased(KeyEvent event) throws IOException {
+        if (event.getCode() == KeyCode.V) connect();
+        if (!isConnected) {
+            textFeedback.clear();
+            textFeedback.setText("SmartCar is disconnected!");
+        }
+        else
+            switch (event.getCode()) {
+                case W:
+                    up.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        " +
+                            "linear-gradient(#020b02, #3a3a3a),        linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        " +
+                            "linear-gradient(#f5f5f5 0%, #dbdbdb 50%, #cacaca 51%, #d7d7d7 100%); " +
+                            "-fx-background-insets: 0,1,4,5; " +
+                            "-fx-font-weight: bold; " +
+                            "-fx-font-family: Helvetica; " +
+                            "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
+                            "-fx-background-radius: 25 25 0 0;");
+                    isW = false;
+                    sm.setSpeed(0);
+                    textFeedback.clear();
+                    textFeedback.setText("forward released");
+                    event.consume();
+                    break;
+                case S:
+                    down.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        " +
+                            "linear-gradient(#020b02, #3a3a3a),        " +
+                            "linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        " +
+                            "linear-gradient(#f5f5f5 0%, #dbdbdb 50%, #cacaca 51%, #d7d7d7 100%); " +
+                            "-fx-background-insets: 0,1,4,5; " +
+                            "-fx-font-weight: bold; " +
+                            "-fx-font-family: Helvetica; " +
+                            "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
+                            "-fx-background-radius: 0 0 25 25;");
+                    isS = false;
+                    sm.setSpeed(0);
+                    textFeedback.clear();
+                    textFeedback.setText("down released");
+                    event.consume();
+                    break;
+                case A:
+                    left.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        " +
+                            "linear-gradient(#020b02, #3a3a3a),        " +
+                            "linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        " +
+                            "linear-gradient(#f5f5f5 0%, #dbdbdb 50%, #cacaca 51%, #d7d7d7 100%); " +
+                            "-fx-background-insets: 0,1,4,5; " +
+                            "-fx-font-weight: bold; " +
+                            "-fx-font-family: Helvetica; " +
+                            "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
+                            "-fx-background-radius: 25 0 0 25;");
+                    isA = false;
+                    if (isW){
+                        sm.setSpeed((int) (speedControl.getValue()));
+                    }else if(isS){
+                        sm.setSpeed((int) -(speedControl.getValue()));
+                    }else sm.rotate(0);
+                    textFeedback.clear();
+                    textFeedback.setText("left released");
+                    event.consume();
+                    break;
+                case D:
+                    right.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        " +
+                            "linear-gradient(#020b02, #3a3a3a),        " +
+                            "linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        " +
+                            "linear-gradient(#f5f5f5 0%, #dbdbdb 50%, #cacaca 51%, #d7d7d7 100%); " +
+                            "-fx-background-insets: 0,1,4,5; " +
+                            "-fx-font-weight: bold; " +
+                            "-fx-font-family: Helvetica; " +
+                            "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
+                            "-fx-background-radius: 0 25 25 0;");
+                    isD = false;
+                    if (isW){
+                        sm.setSpeed((int) (speedControl.getValue()));
+                    }else if(isS){
+                        sm.setSpeed((int) -(speedControl.getValue()));
+                    }else sm.rotate(0);
+                    textFeedback.clear();
+                    textFeedback.setText("right released");
+                    event.consume();
+                    break;
+            }
+    }
+
+
+
+
+
+
 
 
     /**

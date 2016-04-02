@@ -10,21 +10,21 @@ import javafx.scene.input.KeyEvent;
 
 /**
  *
- * @author Paul
+ * @author Emanuel
  */
 public class MultipleKeyHandler implements EventHandler<KeyEvent> {
 
-    private final Set<KeyCode> buffer = EnumSet.noneOf(KeyCode.class);
-    private final MultiKeyEvent multiKeyEvent = new MultiKeyEvent();
+    private Set<KeyCode> buffer = EnumSet.noneOf(KeyCode.class);
+    private MultiKeyEvent multiKeyEvent = new MultiKeyEvent();
 
-    private final MultiKeyEventHandler Handler;
+    private MultiKeyEventHandler Handler;
 
-    public MultipleKeyHandler(final MultiKeyEventHandler handler) {
+    public MultipleKeyHandler(MultiKeyEventHandler handler) {
         this.Handler = handler;
     }
 
-    public void handle(final KeyEvent event) {
-        final KeyCode code = event.getCode();
+    public void handle(KeyEvent event) {
+        KeyCode code = event.getCode();
 
         if (KeyEvent.KEY_PRESSED.equals(event.getEventType())) {
             buffer.add(code);
