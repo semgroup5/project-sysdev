@@ -51,7 +51,7 @@ public class SmartCar {
      * @param speed speed in percentage of max capacity
      */
     public void setSpeed(int speed) throws IOException{
-        out.write("s" + speed);
+        out.write("s" + speed + "/");
         out.flush();
     }
 
@@ -62,7 +62,7 @@ public class SmartCar {
      */
     public void setAngle(int angle) throws IOException{
         String toSend = "a";
-        out.write(toSend + angle);
+        out.write(toSend + angle + "/");
         out.flush();
     }
 
@@ -73,7 +73,7 @@ public class SmartCar {
      */
     public void rotate(int angle) throws IOException {
         String toSend = "r";
-        out.write(toSend + angle);
+        out.write(toSend + angle + "/");
         out.flush();
     }
     public void close()throws IOException{
