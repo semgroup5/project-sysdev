@@ -42,6 +42,7 @@ public class ControllerGUI {
     public Button connect;
     public Button save;
     public Button load;
+    public ImageView kinectView1;
     private SmartCar sm;
     public boolean isConnected = false;
     public boolean isDriving = false;
