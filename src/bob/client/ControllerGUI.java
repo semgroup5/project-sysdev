@@ -715,9 +715,9 @@ public class ControllerGUI {
 
     /**
      * Method to handle the keylisteners when a key is pressed.
-     *
+     * @param event
+     * @throws IOException
      */
-
     public void keyListenersPressed(KeyEvent event) throws IOException {
         if (!isConnected) {
             textFeedback.clear();
@@ -735,20 +735,23 @@ public class ControllerGUI {
                             "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
                             "-fx-background-radius: 25 25 0 0;");
                     isW = true;
-                    if (isA) {
-                        sm.setSpeed((int) (speedControl.getValue()));
-                        sm.setAngle(-10);
-                        textFeedback.setText("forward and left pressed");
-                    } else if (isD) {
-                        sm.setSpeed((int) (speedControl.getValue()));
-                        sm.setAngle(10);
-                        textFeedback.setText("forward and right pressed");
-                    } else {
-                        sm.setSpeed((int) (speedControl.getValue()));
-                        textFeedback.clear();
-                        textFeedback.setText("forward pressed");
+                    if (!isDriving) {
+                        if (isA) {
+                            sm.setSpeed((int) (speedControl.getValue()));
+                            sm.setAngle(-90);
+                            textFeedback.setText("forward and left pressed");
+                        } else if (isD) {
+                            sm.setSpeed((int) (speedControl.getValue()));
+                            sm.setAngle(90);
+                            textFeedback.setText("forward and right pressed");
+                        } else {
+                            sm.setSpeed((int) (speedControl.getValue()));
+                            textFeedback.clear();
+                            textFeedback.setText("forward pressed");
+                        }
+                        isDriving = true;
+                        event.consume();
                     }
-                    event.consume();
                     break;
                 case S:
                     down.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        " +
@@ -761,19 +764,22 @@ public class ControllerGUI {
                             "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
                             "-fx-background-radius: 0 0 25 25;");
                     isS = true;
-                    if (isA) {
-                        sm.setSpeed((int) -(speedControl.getValue()));
-                        sm.setAngle(-10);
-                        textFeedback.setText("down and left pressed");
-                    } else if (isD) {
-                        sm.setSpeed((int) -(speedControl.getValue()));
-                        sm.setAngle(10);
-                        textFeedback.setText("down and right pressed");
-                    } else {
-                        sm.setSpeed((int) -(speedControl.getValue()));
-                        textFeedback.setText("down pressed");
+                    if (!isDriving) {
+                        if (isA) {
+                            sm.setSpeed((int) -(speedControl.getValue()));
+                            sm.setAngle(-90);
+                            textFeedback.setText("down and left pressed");
+                        } else if (isD) {
+                            sm.setSpeed((int) -(speedControl.getValue()));
+                            sm.setAngle(90);
+                            textFeedback.setText("down and right pressed");
+                        } else {
+                            sm.setSpeed((int) -(speedControl.getValue()));
+                            textFeedback.setText("down pressed");
+                        }
+                        isDriving = true;
+                        event.consume();
                     }
-                    event.consume();
                     break;
                 case A:
                     left.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        " +
@@ -786,19 +792,22 @@ public class ControllerGUI {
                             "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
                             "-fx-background-radius: 25 0 0 25;");
                     isA = true;
-                    if (isW) {
-                        sm.setSpeed((int) (speedControl.getValue()));
-                        sm.setAngle(-10);
-                        textFeedback.setText("forward and left pressed");
-                    } else if (isS) {
-                        sm.setSpeed((int) -(speedControl.getValue()));
-                        sm.setAngle(-10);
-                        textFeedback.setText("back and left pressed");
-                    } else {
-                        sm.rotate(-50);
-                        textFeedback.setText("rotate left pressed");
+                    if (!isTurn) {
+                        if (isW) {
+                            sm.setSpeed((int) (speedControl.getValue()));
+                            sm.setAngle(-90);
+                            textFeedback.setText("forward and left pressed");
+                        } else if (isS) {
+                            sm.setSpeed((int) -(speedControl.getValue()));
+                            sm.setAngle(-90);
+                            textFeedback.setText("back and left pressed");
+                        } else {
+                            sm.rotate(-1);
+                            textFeedback.setText("rotate left pressed");
+                        }
+                        isTurn = true;
+                        event.consume();
                     }
-                    event.consume();
                     break;
                 case D:
                     right.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        " +
@@ -811,19 +820,22 @@ public class ControllerGUI {
                             "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
                             "-fx-background-radius: 0 25 25 0;");
                     isD = true;
-                    if (isW) {
-                        sm.setSpeed((int) (speedControl.getValue()));
-                        sm.setAngle(10);
-                        textFeedback.setText("forward and right pressed");
-                    } else if (isS) {
-                        sm.setSpeed((int) -(speedControl.getValue()));
-                        sm.setAngle(10);
-                        textFeedback.setText("back and right pressed");
-                    } else {
-                        sm.rotate(50);
-                        textFeedback.setText("rotate right pressed");
+                    if (!isTurn) {
+                        if (isW) {
+                            sm.setSpeed((int) (speedControl.getValue()));
+                            sm.setAngle(90);
+                            textFeedback.setText("forward and right pressed");
+                        } else if (isS) {
+                            sm.setSpeed((int) -(speedControl.getValue()));
+                            sm.setAngle(90);
+                            textFeedback.setText("back and right pressed");
+                        } else {
+                            sm.rotate(1);
+                            textFeedback.setText("rotate right pressed");
+                        }
+                        isTurn = true;
+                        event.consume();
                     }
-                    event.consume();
                     break;
                 case R:
                     speedControl.increment();
@@ -846,10 +858,15 @@ public class ControllerGUI {
         }
     }
 
+    /**
+     * Method to handle the keylisteners when a key is released.
+     * @param event
+     * @throws IOException
+     */
     public void keyListenersReleased(KeyEvent event) throws IOException {
         if (!isConnected) {
             textFeedback.clear();
-            textFeedback.setText("SmartCar is disconnected!");
+            textFeedback.setText("SmartCar is disconnected...");
         } else {
             switch (event.getCode()) {
                 case W:
@@ -862,10 +879,13 @@ public class ControllerGUI {
                             "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
                             "-fx-background-radius: 25 25 0 0;");
                     isW = false;
-                    sm.setSpeed(0);
-                    textFeedback.clear();
-                    textFeedback.setText("forward released");
-                    event.consume();
+                    if (isDriving) {
+                        sm.setSpeed(0);
+                        textFeedback.clear();
+                        textFeedback.setText("forward released");
+                        isDriving = false;
+                        event.consume();
+                    }
                     break;
                 case S:
                     down.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        " +
@@ -878,10 +898,13 @@ public class ControllerGUI {
                             "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
                             "-fx-background-radius: 0 0 25 25;");
                     isS = false;
-                    sm.setSpeed(0);
-                    textFeedback.clear();
-                    textFeedback.setText("down released");
-                    event.consume();
+                    if (isDriving) {
+                        sm.setSpeed(0);
+                        textFeedback.clear();
+                        textFeedback.setText("down released");
+                        isDriving = false;
+                        event.consume();
+                    }
                     break;
                 case A:
                     left.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        " +
@@ -894,14 +917,17 @@ public class ControllerGUI {
                             "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
                             "-fx-background-radius: 25 0 0 25;");
                     isA = false;
-                    if (isW) {
-                        sm.setSpeed((int) (speedControl.getValue()));
-                    } else if (isS) {
-                        sm.setSpeed((int) -(speedControl.getValue()));
-                    } else sm.rotate(0);
-                    textFeedback.clear();
-                    textFeedback.setText("left released");
-                    event.consume();
+                    if (isTurn) {
+                        if (isW) {
+                            sm.setSpeed((int) (speedControl.getValue()));
+                        } else if (isS) {
+                            sm.setSpeed((int) -(speedControl.getValue()));
+                        } else sm.rotate(0);
+                        textFeedback.clear();
+                        textFeedback.setText("left released");
+                        isTurn = false;
+                        event.consume();
+                    }
                     break;
                 case D:
                     right.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        " +
@@ -914,14 +940,17 @@ public class ControllerGUI {
                             "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
                             "-fx-background-radius: 0 25 25 0;");
                     isD = false;
-                    if (isW) {
-                        sm.setSpeed((int) (speedControl.getValue()));
-                    } else if (isS) {
-                        sm.setSpeed((int) -(speedControl.getValue()));
-                    } else sm.rotate(0);
-                    textFeedback.clear();
-                    textFeedback.setText("right released");
-                    event.consume();
+                    if (isTurn) {
+                        if (isW) {
+                            sm.setSpeed((int) (speedControl.getValue()));
+                        } else if (isS) {
+                            sm.setSpeed((int) -(speedControl.getValue()));
+                        } else sm.rotate(0);
+                        textFeedback.clear();
+                        textFeedback.setText("right released");
+                        isTurn = false;
+                        event.consume();
+                    }
                     break;
             }
         }
@@ -954,10 +983,9 @@ public class ControllerGUI {
                     "-fx-background-radius: 25 0 0 0;");
             connect.setText("Disconnect");
             mConnect.setText("Disconnect");
-            sm = new SmartCar("192.168.137.141", 1234);
+            sm = new SmartCar("192.168.244.101", 1234);
             textFeedback.setText("Connecting...");
             isConnected = true;
-
         }
         else{
             connect.setStyle("-fx-background-color: linear-gradient(#f0ff35, #a9ff00),        " +
@@ -980,54 +1008,66 @@ public class ControllerGUI {
     public void mouseReleased(MouseEvent event) throws IOException {
         if (!isConnected) {
             textFeedback.clear();
-            textFeedback.setText("SmartCar is disconnected!");
+            textFeedback.setText("SmartCar is disconnected...");
         }
-        else
-        if (event.getSource() == up) {
-            sm.setSpeed(0);
-            isDriving = false;
-            textFeedback.clear();
-            textFeedback.setText("up released");
-            event.consume();
-        }
-        else if (event.getSource() == down) {
-            sm.setSpeed(0);
-            isDriving = false;
-            textFeedback.clear();
-            textFeedback.setText("down released");
-            event.consume();
-        }
-        else if (event.getSource() == left) {
-            if (isDriving) sm.setAngle(0);
-            else if (!isDriving) sm.rotate(0);
-
-            textFeedback.clear();
-            textFeedback.setText("left released");
-            event.consume();
-        }
-        else if (event.getSource() == right) {
-            if (isDriving) sm.setAngle(0);
-            else if (!isDriving) sm.rotate(0);
-
-            textFeedback.clear();
-            textFeedback.setText("right released");
-            event.consume();
-        }
-        else if (event.getSource() == dRight) {
-            if (isDriving) sm.setAngle(0);
-            else if (!isDriving) sm.rotate(0);
-
-            textFeedback.clear();
-            textFeedback.setText("dRight released");
-            event.consume();
-        }
-        else if (event.getSource() == dLeft) {
-            if (isDriving) sm.setAngle(0);
-            else if (!isDriving) sm.rotate(0);
-
-            textFeedback.clear();
-            textFeedback.setText("dLeft released");
-            event.consume();
+        else {
+            if (event.getSource() == up) {
+                if (isDriving) {
+                    sm.setSpeed(0);
+                    isDriving = false;
+                    textFeedback.clear();
+                    textFeedback.setText("up released");
+                    event.consume();
+                }
+            } else if (event.getSource() == down) {
+                if (isDriving) {
+                    sm.setSpeed(0);
+                    isDriving = false;
+                    textFeedback.clear();
+                    textFeedback.setText("down released");
+                    event.consume();
+                }
+            } else if (event.getSource() == left) {
+                if (isTurn) {
+                    if (isDriving) sm.setAngle(0);
+                    else if (!isDriving) sm.rotate(0);
+                    isTurn = false;
+                    textFeedback.clear();
+                    textFeedback.setText("left released");
+                    event.consume();
+                }
+            } else if (event.getSource() == right) {
+                if (isTurn) {
+                    if (isDriving) sm.setAngle(0);
+                    else if (!isDriving) sm.rotate(0);
+                    isTurn = false;
+                    textFeedback.clear();
+                    textFeedback.setText("right released");
+                    event.consume();
+                }
+            } else if (event.getSource() == dRight) {
+                if (isTurn) {
+                    if (isDriving) {
+                        sm.setSpeed(0);
+                        sm.setAngle(0);
+                    }
+                    isTurn = false;
+                    textFeedback.clear();
+                    textFeedback.setText("dRight released");
+                    event.consume();
+                }
+            } else if (event.getSource() == dLeft) {
+                if (isTurn) {
+                    if (isDriving) {
+                        sm.setSpeed(0);
+                        sm.setAngle(0);
+                    }
+                    isTurn = false;
+                    textFeedback.clear();
+                    textFeedback.setText("dLeft released");
+                    event.consume();
+                }
+            }
         }
     }
 
@@ -1038,57 +1078,74 @@ public class ControllerGUI {
     public void mousePressed(MouseEvent event) throws IOException {
         if (!isConnected) {
             textFeedback.clear();
-            textFeedback.setText("SmartCar is disconnected!");
+            textFeedback.setText("SmartCar is disconnected...");
         }
-        else
-        if (event.getSource() == up) {
-            sm.setSpeed((int) (speedControl.getValue()));
-            isDriving = false;
-            textFeedback.clear();
-            textFeedback.setText("up pressed");
-            event.consume();
-        }
-        else if (event.getSource() == down) {
-            sm.setSpeed((int) -(speedControl.getValue()));
-            isDriving = false;
-            textFeedback.clear();
-            textFeedback.setText("down pressed");
-            event.consume();
-        }
-        else if (event.getSource() == left) {
-            if (isDriving) sm.setAngle(-10);
-            else if (!isDriving) sm.rotate(-10);
-
-            textFeedback.clear();
-            textFeedback.setText("left pressed");
-            event.consume();
-        }
-        else if (event.getSource() == right) {
-            if (isDriving) sm.setAngle(10);
-            else if (!isDriving) sm.rotate(10);
-
-            textFeedback.clear();
-            textFeedback.setText("right pressed");
-            event.consume();
-        }
-        else if (event.getSource() == dLeft) {
-            if (isDriving) sm.setAngle(-5);
-            else if (!isDriving) sm.rotate(-5);
-
-            textFeedback.clear();
-            textFeedback.setText("dLeft pressed");
-            event.consume();
-        }
-        else if (event.getSource() == dRight) {
-            if (isDriving) sm.setAngle(5);
-            else if (!isDriving) sm.rotate(5);
-
-            textFeedback.clear();
-            textFeedback.setText("dRight pressed");
-            event.consume();
+        else {
+            if (event.getSource() == up) {
+                if (!isDriving) {
+                    sm.setSpeed((int) (speedControl.getValue()));
+                    isDriving = true;
+                    textFeedback.clear();
+                    textFeedback.setText("up pressed");
+                    event.consume();
+                }
+            } else if (event.getSource() == down) {
+                if (!isDriving) {
+                    sm.setSpeed((int) -(speedControl.getValue()));
+                    isDriving = true;
+                    textFeedback.clear();
+                    textFeedback.setText("down pressed");
+                    event.consume();
+                }
+            } else if (event.getSource() == left) {
+                if (!isTurn) {
+                    if (isDriving) sm.setAngle(-90);
+                    else if (!isDriving) sm.rotate(-1);
+                    isTurn = true;
+                    textFeedback.clear();
+                    textFeedback.setText("left pressed");
+                    event.consume();
+                }
+            } else if (event.getSource() == right) {
+                if (!isTurn) {
+                    if (isDriving) sm.setAngle(90);
+                    else if (!isDriving) sm.rotate(1);
+                    isTurn = true;
+                    textFeedback.clear();
+                    textFeedback.setText("right pressed");
+                    event.consume();
+                }
+            } else if (event.getSource() == dLeft) {
+                if (!isTurn) {
+                    if (isDriving) {
+                        sm.setAngle(-45);
+                        sm.setSpeed((int) speedControl.getValue());
+                    }
+                    isTurn = true;
+                    textFeedback.clear();
+                    textFeedback.setText("dLeft pressed");
+                    event.consume();
+                }
+            } else if (event.getSource() == dRight) {
+                if (!isTurn) {
+                    if (isDriving) {
+                        sm.setAngle(45);
+                        sm.setSpeed((int) speedControl.getValue());
+                    }
+                    isTurn = true;
+                    textFeedback.clear();
+                    textFeedback.setText("dRight pressed");
+                    event.consume();
+                }
+            }
         }
     }
 
+    /**
+     * Method to save maps in the computer's directory.
+     * @param content
+     * @param file
+     */
     private void SaveFile(String content, File file){
         try {
             FileWriter fileWriter = null;
