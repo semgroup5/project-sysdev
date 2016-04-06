@@ -1,3 +1,5 @@
+package udpSockets;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -10,6 +12,14 @@ import java.util.logging.Logger;
  */
 public class Discovery implements Runnable{
     DatagramSocket socket;
+
+    public static void main(String[] args)
+    {
+        Discovery d = new Discovery();
+        Thread t = new Thread(d);
+        t.start();
+    }
+
     @Override
     public void run() {
         try{

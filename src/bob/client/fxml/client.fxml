@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" onKeyPressed="#keyListenersPressed" onKeyReleased="#keyListenersReleased" prefHeight="689.0" prefWidth="1404.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bob.client.ControllerGUI">
    <center>
        <AnchorPane prefHeight="549.0" prefWidth="1413.0" style="-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        linear-gradient(#020b02, #3a3a3a),        linear-gradient(#9d9e9d 0%, #6b6a6b 20%, #343534 80%, #242424 100%),        linear-gradient(#8a8a8a 0%, #6b6a6b 20%, #343534 80%, #262626 100%),        linear-gradient(#777777 0%, #606060 50%, #505250 51%, #2a2b2a 100%);; -fx-background-insets: 0,1,4,5,6;;" BorderPane.alignment="CENTER">
@@ -23,29 +27,24 @@
                    <MenuItem fx:id="about" mnemonicParsing="false" text="About" />
                </Menu>
            </MenuBar>
-           <SplitPane dividerPositions="0.5" layoutX="55.0" layoutY="47.0" AnchorPane.bottomAnchor="24.0"
-                      AnchorPane.leftAnchor="55.0" AnchorPane.rightAnchor="55.0" AnchorPane.topAnchor="47.0">
+           <SplitPane dividerPositions="0.5" layoutX="55.0" layoutY="47.0" AnchorPane.bottomAnchor="24.0" AnchorPane.leftAnchor="55.0" AnchorPane.rightAnchor="55.0" AnchorPane.topAnchor="47.0">
                <effect>
-                   <DropShadow color="#1e1d1d" offsetX="3.0" radius="23.2175" spread="0.65" width="73.87"/>
+                   <DropShadow color="#1e1d1d" offsetX="3.0" radius="23.2175" spread="0.65" width="73.87" />
                </effect>
-               <BorderPane prefHeight="482.0" prefWidth="642.0"
-                           style="-fx-border-color: rgba(0,0,0,0.08),        linear-gradient(#5a61af, #51536d),        linear-gradient(#e4fbff 0%,#cee6fb 10%, #a5d3fb 50%, #88c6fb 51%, #d5faff 100%); -fx-background-color: #090a0c,        linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),        linear-gradient(#20262b, #191d22),        radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));">
+               <BorderPane prefHeight="482.0" prefWidth="642.0" style="-fx-border-color: rgba(0,0,0,0.08),        linear-gradient(#5a61af, #51536d),        linear-gradient(#e4fbff 0%,#cee6fb 10%, #a5d3fb 50%, #88c6fb 51%, #d5faff 100%); -fx-background-color: #090a0c,        linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),        linear-gradient(#20262b, #191d22),        radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));">
                    <center>
-                       <ImageView fx:id="kinectView" fitHeight="480.0" fitWidth="640.0" pickOnBounds="true"
-                                  preserveRatio="true" style="-fx-cursor: hand;"/>
+                       <ImageView fx:id="kinectView" fitHeight="480.0" fitWidth="640.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;" />
                    </center>
                    <effect>
-                       <DropShadow color="#252424" offsetX="3.0" radius="25.55" spread="0.51" width="83.2"/>
+                       <DropShadow color="#252424" offsetX="3.0" radius="25.55" spread="0.51" width="83.2" />
                    </effect>
                </BorderPane>
-               <BorderPane prefHeight="482.0" prefWidth="642.0"
-                           style="-fx-border-color: rgba(0,0,0,0.08),        linear-gradient(#5a61af, #51536d),        linear-gradient(#e4fbff 0%,#cee6fb 10%, #a5d3fb 50%, #88c6fb 51%, #d5faff 100%); -fx-background-color: #090a0c,        linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),        linear-gradient(#20262b, #191d22),        radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));">
+               <BorderPane prefHeight="482.0" prefWidth="642.0" style="-fx-border-color: rgba(0,0,0,0.08),        linear-gradient(#5a61af, #51536d),        linear-gradient(#e4fbff 0%,#cee6fb 10%, #a5d3fb 50%, #88c6fb 51%, #d5faff 100%); -fx-background-color: #090a0c,        linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),        linear-gradient(#20262b, #191d22),        radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));">
                    <center>
-                       <ImageView fx:id="kinectView1" fitHeight="480.0" fitWidth="640.0" pickOnBounds="true"
-                                  preserveRatio="true" style="-fx-cursor: hand;"/>
+                       <ImageView fx:id="kinectView1" fitHeight="480.0" fitWidth="640.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;" />
                    </center>
                    <effect>
-                       <DropShadow color="#252424" offsetX="3.0" radius="25.55" spread="0.51" width="83.2"/>
+                       <DropShadow color="#252424" offsetX="3.0" radius="25.55" spread="0.51" width="83.2" />
                    </effect>
                </BorderPane>
            </SplitPane>
