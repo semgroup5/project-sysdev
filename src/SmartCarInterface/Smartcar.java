@@ -6,40 +6,19 @@ import java.io.Writer;
 import java.net.Socket;
 
 public class SmartCar {
-    //"127.0.0.1"
-    static public String ip;
-    //1234
-   static public int port;
     Socket socket;
     Writer out;
-//    public static void main(String args[]){
-//        try {
-//
-//            System.out.println("Connecting");
-//            SmartCar smc = new SmartCar(ip,port);//change this port number
-//        } catch (Exception e) {
-//            System.out.println("Failed " + e.getMessage());
-//        }
-//    }
 
     /**
      * Initialize a new connection to a remote smartcar
      *
-     * @param ip
-     *            IP at which the smartcar is connected to the network
-     * @param port
-     *            port at which the smartcar is listening
+     * @param socket
      */
 
-    public SmartCar(String ip, int port) {
-        this.ip = ip;
-        this.port = port;
-
-
+    public SmartCar(Socket socket) {
         try {
-                socket = new Socket(ip, port);
-                out = new PrintWriter(socket.getOutputStream());
-                System.out.println("Socket established");
+        this.socket = socket;
+        this.out = new PrintWriter(socket.getOutputStream());
            }catch(IOException e){
                 System.out.println(e);
             }
