@@ -1,5 +1,7 @@
 package udpSockets;
 
+import bob.client.Connecter;
+
 import java.io.IOException;
 import java.net.*;
 import java.util.Enumeration;
@@ -9,15 +11,17 @@ import java.util.logging.Logger;
 /**
  * Created by Emanuel on 4/4/2016.
  */
-public class DiscoveryClient implements Runnable {
+public class DiscoveryListener implements Runnable {
     DatagramSocket c;
+    String ip = "";
+    Connecter con = new Connecter();
 
-    public static void main(String[] args)
-    {
-        DiscoveryClient d = new DiscoveryClient();
-        Thread t = new Thread(d);
-        t.start();
-    }
+//    public static void main(String[] args)
+//    {
+//        DiscoveryListener d = new DiscoveryListener();
+//        Thread t = new Thread(d);
+//        t.start();
+//    }
 
     @Override
     public void run() {
@@ -26,7 +30,7 @@ public class DiscoveryClient implements Runnable {
             c.setBroadcast(true);
             byte[] sendData = "Discovery_Pi_Request".getBytes();
 
-            //Try the 255.255.255.255
+            //Try with 255.255.255.255
             try{
                 DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName("255.255.255.255"), 1235);
                 c.send(sendPacket);
@@ -69,17 +73,21 @@ public class DiscoveryClient implements Runnable {
                 //Check if message checks
                 String message = new String(receivePacket.getData()).trim();
                 if (message.equals("Discovery_Pi_Response")) {
-                    //Do something with the IP we receive
 
-                    System.out.println("Emanuel e um pe no saco: " + receivePacket.getAddress().toString().substring(1));
+                    this.ip = receivePacket.getAddress().toString().substring(1);
+                    System.out.println("Found Pi at ip: " + receivePacket.getAddress().toString().substring(1));
+                    con.connect(ip);
                     break;
                 }
             }
 
         }catch (IOException ex) {
-            Logger.getLogger(DiscoveryClient.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DiscoveryListener.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
 
+    public String getIp() {
+        return this.ip;
+    }
 }

@@ -401,35 +401,7 @@ public class ControllerGUI {
 
     }
 
-    /**
-     * Method to set connection with the smartcar.
-     */
-    public void connect() throws IOException {
-        if(!isConnected) {
-            connect.setStyle("-fx-background-color: linear-gradient(#ff6767, #ff1a1a),        " +
-                    "radial-gradient(center 50% -40%, radius 200%, #ff4d4d 45%, #ff0000 50%); " +
-                    "-fx-background-insets: 0, 1; " +
-                    "-fx-text-fill: #f5f5f5; " +
-                    "-fx-background-radius: 25 0 0 0;");
-            connect.setText("Disconnect");
-            mConnect.setText("Disconnect");
-            sm = new SmartCar("192.168.0.7", 1234);
-            textFeedback.setText("Connecting...");
-            isConnected = true;
-        }
-        else{
-            connect.setStyle("-fx-background-color: linear-gradient(#f0ff35, #a9ff00),        " +
-                    "radial-gradient(center 50% -40%, radius 200%, #b8ee36 45%, #80c800 50%); " +
-                    "-fx-background-insets: 0, 1; " +
-                    "-fx-text-fill: #395306; " +
-                    "-fx-background-radius: 25 0 0 0;");
-            connect.setText("Connect");
-            mConnect.setText("Connect");
-            sm.close();
-            textFeedback.setText("Disconnecting...");
-            isConnected = false;
-        }
-    }
+
 
     /**
      * Method to handle mouseReleased events on the smartcar control

@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import udpSockets.DiscoveryListener;
 
 /**
  * Created by jpp on 30/03/16.
@@ -25,5 +26,8 @@ public class BobClient extends Application{
 
     public static void main(String[] args) {
         launch(args);
+        DiscoveryListener d = new DiscoveryListener();
+        Thread t = new Thread(d);
+        t.start();
     }
 }
