@@ -1,25 +1,20 @@
 package udpSockets;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.*;
-import java.util.*;
-
-import javax.swing.*;
-import javax.xml.crypto.Data;
 
 /*This is an example of a Java Client which connects to a server..
- * We are using the Pi's IP (10.0.1.201) and port 1234 to connect
+ * We are using the Pi's IP and port 1234 to connect
  * String PWM will be modified to only take doubles and not strings
  * This program will send any values entered in the string to the Server
  */
 
 public class Client {
-
+	DiscoveryListener dc = new DiscoveryListener();
 	Socket outputSocket = null;
 	OutputStream out = null;
 	static InputStream in ;
+
 
 	
 
@@ -29,11 +24,10 @@ public static void main(String[] args)
 	Client client = new Client();
 }
 	 
-	public Client()
-	{
+	public Client() {
 
 		int port = 1234; //port number
-		String pi = "192.168.1.12"; //IP address
+		String pi = dc.getIp();
 
 		System.out.println("Welcome to the MotorController client for the Rasberry Pi.");
 

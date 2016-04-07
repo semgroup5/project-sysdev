@@ -12,6 +12,7 @@ import udpSockets.DiscoveryListener;
  */
 public class BobClient extends Application{
 
+
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("fxml/client.fxml"));
@@ -26,8 +27,8 @@ public class BobClient extends Application{
 
     public static void main(String[] args) {
         launch(args);
-        DiscoveryListener d = new DiscoveryListener();
-        Thread t = new Thread(d);
+        ConnectionManager cm = new ConnectionManager();
+        Thread t = new Thread(cm);
         t.start();
     }
 }

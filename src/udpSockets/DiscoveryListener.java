@@ -1,6 +1,6 @@
 package udpSockets;
 
-import bob.client.Connecter;
+import bob.client.ConnectionManager;
 
 import java.io.IOException;
 import java.net.*;
@@ -11,10 +11,10 @@ import java.util.logging.Logger;
 /**
  * Created by Emanuel on 4/4/2016.
  */
-public class DiscoveryListener implements Runnable {
+public class DiscoveryListener {
     DatagramSocket c;
     String ip = "";
-    Connecter con = new Connecter();
+    ConnectionManager con = new ConnectionManager();
 
 //    public static void main(String[] args)
 //    {
@@ -22,8 +22,6 @@ public class DiscoveryListener implements Runnable {
 //        Thread t = new Thread(d);
 //        t.start();
 //    }
-
-    @Override
     public void run() {
         try {
             c = new DatagramSocket(1235);
@@ -62,7 +60,7 @@ public class DiscoveryListener implements Runnable {
             System.out.println(getClass().getClass() + "Waiting for a reply");
             while (true) {
                 //waiting for response
-                byte[] recvBuf = new byte[15000];
+                byte[] recvBuf = new byte[32];
                 DatagramPacket receivePacket = new DatagramPacket(recvBuf, recvBuf.length);
                 c.receive(receivePacket);
 
@@ -73,10 +71,8 @@ public class DiscoveryListener implements Runnable {
                 //Check if message checks
                 String message = new String(receivePacket.getData()).trim();
                 if (message.equals("Discovery_Pi_Response")) {
-
                     this.ip = receivePacket.getAddress().toString().substring(1);
                     System.out.println("Found Pi at ip: " + receivePacket.getAddress().toString().substring(1));
-                    con.connect(ip);
                     break;
                 }
             }

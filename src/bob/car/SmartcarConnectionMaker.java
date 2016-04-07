@@ -18,7 +18,7 @@ public class SmartcarConnectionMaker implements Runnable{
             car.setConnection(new Socket(ip, port));
         }
         catch(Exception e){
-           car.setConnectionException(e);
+        car.setConnectionException(e);
         }
     }
 }
