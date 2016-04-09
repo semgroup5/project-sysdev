@@ -1,7 +1,7 @@
 package bob.car;
 
-import org.openkinect.freenect.FrameMode;
 import org.libjpegturbo.turbojpeg.*;
+import org.openkinect.freenect.FrameMode;
 
 import java.nio.ByteBuffer;
 import java.util.Observable;

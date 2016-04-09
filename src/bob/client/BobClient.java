@@ -11,7 +11,7 @@ import udpSockets.DiscoveryListener;
  * Created by jpp on 30/03/16.
  */
 public class BobClient extends Application{
-
+    public static ConnectionManager cm;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -21,14 +21,10 @@ public class BobClient extends Application{
         primaryStage.setScene(scene);
         primaryStage.show();
         primaryStage.setMaximized(true);
-
     }
 
 
     public static void main(String[] args) {
         launch(args);
-        ConnectionManager cm = new ConnectionManager();
-        Thread t = new Thread(cm);
-        t.start();
     }
 }

@@ -11,11 +11,11 @@ import java.net.Socket;
  */
 public class ConnectionManager implements Runnable {
     private boolean isConnected;
-    SmartCar sm;
     String ip;
     DiscoveryListener d;
     Socket socket;
-    Writer out;
+    SmartCar sm = new SmartCar(this.socket);
+
 
     public void run() {
         try {
@@ -39,5 +39,11 @@ public class ConnectionManager implements Runnable {
         }catch(IOException e){
             System.out.println(e);
         }
+    }
+    public String getIP(){
+        return this.ip;
+    }
+    public SmartCar getSmartCar(){
+        return this.sm;
     }
 }

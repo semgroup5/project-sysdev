@@ -11,17 +11,17 @@ import java.util.logging.Logger;
 /**
  * Created by Emanuel on 4/4/2016.
  */
-public class DiscoveryListener {
+public class DiscoveryListener implements Runnable {
     DatagramSocket c;
     String ip = "";
     ConnectionManager con = new ConnectionManager();
 
-//    public static void main(String[] args)
-//    {
-//        DiscoveryListener d = new DiscoveryListener();
-//        Thread t = new Thread(d);
-//        t.start();
-//    }
+    public static void main(String[] args)
+    {
+        DiscoveryListener d = new DiscoveryListener();
+        Thread t = new Thread(d);
+        t.start();
+    }
     public void run() {
         try {
             c = new DatagramSocket(1235);
