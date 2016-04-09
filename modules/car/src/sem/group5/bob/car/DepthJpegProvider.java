@@ -1,4 +1,4 @@
-package bob.car;
+package sem.group5.bob.car;
 
 import org.libjpegturbo.turbojpeg.*;
 import org.openkinect.freenect.FrameMode;

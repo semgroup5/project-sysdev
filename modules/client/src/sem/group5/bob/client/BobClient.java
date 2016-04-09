@@ -1,4 +1,4 @@
-package bob.client;
+package sem.group5.bob.client;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

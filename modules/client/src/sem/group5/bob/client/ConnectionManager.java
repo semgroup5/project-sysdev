@@ -1,6 +1,4 @@
-package bob.client;
-import SmartCarInterface.SmartCar;
-import udpSockets.DiscoveryListener;
+package sem.group5.bob.client;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;

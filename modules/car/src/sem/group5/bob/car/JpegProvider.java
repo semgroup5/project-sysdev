@@ -1,4 +1,4 @@
-package bob.car;
+package sem.group5.bob.car;
 
 /**
  * Created by jpp on 09/04/16.

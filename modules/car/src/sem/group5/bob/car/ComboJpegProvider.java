@@ -1,4 +1,4 @@
-package bob.car;
+package sem.group5.bob.car;
 
 import org.libjpegturbo.turbojpeg.TJ;
 import org.libjpegturbo.turbojpeg.TJCompressor;

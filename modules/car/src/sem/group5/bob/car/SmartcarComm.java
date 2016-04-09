@@ -1,4 +1,4 @@
-package bob.car;
+package sem.group5.bob.car;
 
 import java.io.BufferedReader;
 import java.io.OutputStream;

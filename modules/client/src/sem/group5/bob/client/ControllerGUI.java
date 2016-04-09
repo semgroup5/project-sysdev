@@ -1,8 +1,8 @@
-package bob.client;
+package sem.group5.bob.client;
 
 import SmartCarInterface.SmartCar;
-import bob.car.BobCar;
-import bob.car.DepthJpegProvider;
+import group5.bob.car.BobCar;
+import group5.bob.car.DepthJpegProvider;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
