@@ -30,7 +30,7 @@ public class DiscoveryBroadcaster implements Runnable{
             while(true){
                 System.out.println(getClass().getName() + " Ready to receive broadcast packets");
                 //Receive a packet
-                byte[] recvBuf = new byte[15000];
+                byte[] recvBuf = new byte[32];
                 DatagramPacket packet = new DatagramPacket(recvBuf, recvBuf.length);
                 socket.receive(packet);
 
