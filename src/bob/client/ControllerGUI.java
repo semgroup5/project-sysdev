@@ -56,7 +56,7 @@ public class ControllerGUI {
     public SmartCar sm = cm.getSmartCar();
 
 
-    public void initiateConnection(){
+    public void connect(){
         cm = new ConnectionManager();
         Thread t = new Thread(cm);
         t.start();
