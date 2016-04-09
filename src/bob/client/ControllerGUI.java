@@ -15,6 +15,7 @@ import javafx.stage.FileChooser;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Connection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -43,7 +44,6 @@ public class ControllerGUI {
     public Button save;
     public Button load;
     public ImageView kinectView1;
-    private SmartCar sm;
     public boolean isConnected = false;
     public boolean isDriving = false;
     public boolean isTurn = false;
@@ -52,8 +52,15 @@ public class ControllerGUI {
     public File file;
     public Slider speedControl;
     boolean isW, isA, isD, isS = false;
+    public ConnectionManager cm;
+    public SmartCar sm = cm.getSmartCar();
 
 
+    public void initiateConnection(){
+        cm = new ConnectionManager();
+        Thread t = new Thread(cm);
+        t.start();
+    }
     /**
      * Method to handle events like mapping, load and save.
      * @param event
