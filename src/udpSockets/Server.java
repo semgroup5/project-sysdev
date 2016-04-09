@@ -67,12 +67,7 @@ public class Server
 					BufferedReader in2 = new BufferedReader(new InputStreamReader(p.getInputStream()));
 					String line = null;
 					while ((line = in2.readLine()) != null)
-					{
-						System.out.print(line);
-					}
-					
-				} catch(IOException e) {
-					e.printStackTrace();
+						e.printStackTrace();
 					throw e;
 				}
 
@@ -87,7 +82,12 @@ public class Server
 					System.err.println("Could not listen on port: 1234.");
 					System.exit(1);
 				}
-			}
+			}					{
+						System.out.print(line);
+					}
+					
+				} catch(IOException e) {
+
 			out.close();
 			in.close();
 			client.close();

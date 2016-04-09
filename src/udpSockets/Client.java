@@ -101,7 +101,7 @@ public static void main(String[] args)
 //                    bi.setRGB(count%640, (count/640)%480, b);
 //                }
 //                System.out.println("count" + count);
-//                g = bi.getGraphics();
+//                g = bi.gtGraphics();
 //                lbl.paint(g);
 //                jFrame.repaint();
 //                Thread.sleep(1000);
