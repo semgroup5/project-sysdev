@@ -12,6 +12,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -43,6 +44,7 @@ public class ControllerGUI {
     public Button save;
     public Button load;
     public ImageView kinectView1;
+    public BufferedImage bi;
     private SmartCar sm;
     public boolean isConnected = false;
     public boolean isDriving = false;
@@ -55,6 +57,7 @@ public class ControllerGUI {
 
 
     /**
+     *
      * Method to handle events like mapping, load and save.
      * @param event
      */
