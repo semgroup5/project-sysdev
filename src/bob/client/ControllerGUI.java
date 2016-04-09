@@ -1,6 +1,9 @@
 package bob.client;
 
 import SmartCarInterface.SmartCar;
+import bob.car.BobCar;
+import bob.car.DepthJpegProvider;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.scene.control.*;
@@ -11,10 +14,16 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
+import udpSockets.MultiPartsParse;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.InetAddress;
+import java.net.Socket;
 import java.sql.Connection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -54,6 +63,7 @@ public class ControllerGUI {
     boolean isW, isA, isD, isS = false;
     public ConnectionManager cm;
     public SmartCar sm = cm.getSmartCar();
+    BufferedImage img;
 
 
     public void connect(){
@@ -80,6 +90,22 @@ public class ControllerGUI {
                 textFeedback.clear();
                 textFeedback.setText("Hi I'm mapping!");
                 isMapping = true;
+
+                try {
+                    Socket s = new Socket(InetAddress.getByName(cm.getIP()), 50001);
+                    InputStream in = s.getInputStream();
+                    s.getOutputStream().write("start".getBytes());
+                    s.getOutputStream().flush();
+                    MultiPartsParse parse = new MultiPartsParse();
+
+                    img = ImageIO.read(in);
+                    Image image = SwingFXUtils.toFXImage(img, null);
+                    parse.readImage(in , img);
+                    kinectView.setImage(image);
+
+                }catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
             else if (isMapping) {
                 map.setStyle("-fx-background-color: linear-gradient(#ffd65b, #e68400),        " +
