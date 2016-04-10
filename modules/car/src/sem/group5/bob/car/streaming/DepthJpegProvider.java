@@ -1,20 +1,15 @@
-package sem.group5.bob.car;
+package sem.group5.bob.car.streaming;
 
-import org.libjpegturbo.turbojpeg.TJ;
-import org.libjpegturbo.turbojpeg.TJCompressor;
+import org.libjpegturbo.turbojpeg.*;
 import org.openkinect.freenect.FrameMode;
 
 import java.nio.ByteBuffer;
 import java.util.Observable;
 
-public class ComboJpegProvider extends Observable implements JpegProvider {
-    static ByteBuffer latestVideoFrame;
+public class DepthJpegProvider extends Observable implements JpegProvider {
     static ByteBuffer latestDepthFrame;
 
-    public void receiveVideo(FrameMode frameMode, ByteBuffer byteBuffer, int i) {
-        latestVideoFrame = byteBuffer;
-    }
-    public void receiveDepth(FrameMode frameMode, ByteBuffer byteBuffer, int i) {
+   public void receiveDepth(FrameMode frameMode, ByteBuffer byteBuffer, int i) {
         latestDepthFrame = byteBuffer;
     }
 
@@ -24,12 +19,6 @@ public class ComboJpegProvider extends Observable implements JpegProvider {
     public byte[] getLatestJpeg() throws Exception{
         if(latestDepthFrame == null)
             Thread.sleep(1000);
-
-        int videoFrameSize = 640*480*2;
-        byte[] vFrame = new byte[videoFrameSize];
-        ByteBuffer lvf = latestVideoFrame;
-        lvf.rewind();
-        lvf.get(vFrame);
 
         int depthFrameSize = 640*480*2;
         byte[] dFrame = new byte[depthFrameSize];
@@ -41,9 +30,7 @@ public class ComboJpegProvider extends Observable implements JpegProvider {
 
         for (int i =0; i < imageSize; i = i + pixelWidth) {
             int pixel = (i / pixelWidth) * 2; // 2 bytes per pixel for both depth and video
-            comboFrame[i + 0] =  (byte)( ( ( dFrame[pixel +1] & 0xFF ) << 6) | ( dFrame[pixel+0] & 0xFF >>> 3)  ); // squish depth
-            comboFrame[i + 1] = vFrame[pixel];
-            comboFrame[i + 2] = vFrame[pixel + 1];
+            comboFrame[i] =  (byte)( ( ( dFrame[pixel +1] & 0xFF ) << 6) | ( dFrame[pixel+0] & 0xFF >>> 3)  ); // squish depth
         }
 
         System.out.println("Compressing Frame");
@@ -53,7 +40,7 @@ public class ComboJpegProvider extends Observable implements JpegProvider {
 
             tjc.setJPEGQuality(20);
             tjc.setSubsamp(TJ.SAMP_GRAY);
-            tjc.setSourceImage(comboFrame, 640, (640*pixelWidth), 480, TJ.PF_RGB);
+            tjc.setSourceImage(comboFrame, 640, (640*pixelWidth), 480, TJ.PF_GRAY);
 
             int flags = 0;
             byte[] compressed = tjc.compress(flags);

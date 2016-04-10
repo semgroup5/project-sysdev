@@ -1,7 +1,5 @@
 package sem.group5.bob.client;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.Writer;
 import java.net.Socket;
 
 /**
@@ -12,7 +10,7 @@ public class ConnectionManager implements Runnable {
     String ip;
     DiscoveryListener d;
     Socket socket;
-    SmartCar sm = new SmartCar(this.socket);
+    Smartcar sm = new Smartcar(this.socket);
 
 
     public void run() {
@@ -20,7 +18,7 @@ public class ConnectionManager implements Runnable {
             if (!isConnected) {
                 d = new DiscoveryListener();
                 this.ip = d.getIp();
-                sm = new SmartCar(this.socket);
+                sm = new Smartcar(this.socket);
                 isConnected = true;
             } else {
                 sm.close();
@@ -41,7 +39,7 @@ public class ConnectionManager implements Runnable {
     public String getIP(){
         return this.ip;
     }
-    public SmartCar getSmartCar(){
+    public Smartcar getSmartCar(){
         return this.sm;
     }
 }

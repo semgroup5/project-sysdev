@@ -5,42 +5,27 @@ import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class RemoteControlListener {
+public class RemoteControlListener implements Runnable{
     private InputStream in;
+    int port;
     SmartcarComm sc;
 
-    public static void main(String[] args) {
-        try {
-            System.out.println("Listening");
-            SmartcarComm sc = new SmartcarComm();
-            RemoteControlListener rcl = new RemoteControlListener(1234, sc);
-
-        } catch (Exception e) {
-            System.out.println("Failed " + e.getMessage());
-        }
-
-        Thread t = new Thread() {
-            public void run() {
-                // the following line will keep this app alive for 1000 seconds,
-                // waiting for events to occur and responding to them (printing
-                // incoming messages to console).
-                try {
-                    Thread.sleep(1500);
-                } catch (InterruptedException ie) {
-                    ie.printStackTrace();
-                }
-            }
-        };
-        t.start();
-        System.out.println("Started");
-
+    public RemoteControlListener(int port, SmartcarComm sc) {
+        this.port = port;
+        this.sc = sc;
     }
 
-    public RemoteControlListener(int port, SmartcarComm sc) throws IOException {
-        ServerSocket listener = new ServerSocket(port);
-        this.sc = sc;
+    public void listen()
+    {
+        Socket socket = null;
 
-        Socket socket = listener.accept();
+        try{
+            ServerSocket listener = new ServerSocket(port);
+            socket = listener.accept();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
         while (!socket.isClosed()) {
             try {
                 in = socket.getInputStream();
@@ -66,6 +51,9 @@ public class RemoteControlListener {
                 e.printStackTrace();
             }
         }
+    }
 
+    public void run(){
+        listen();
     }
 }

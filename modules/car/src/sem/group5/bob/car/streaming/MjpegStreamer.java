@@ -1,4 +1,4 @@
-package sem.group5.bob.car;
+package sem.group5.bob.car.streaming;
 
 import java.io.OutputStream;
 import java.net.Socket;

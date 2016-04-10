@@ -1,4 +1,4 @@
-package sem.group5.bob.car;
+package sem.group5.bob.car.network;
 
 import java.io.IOException;
 import java.net.DatagramPacket;

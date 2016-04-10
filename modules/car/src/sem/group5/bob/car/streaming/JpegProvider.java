@@ -1,4 +1,4 @@
-package sem.group5.bob.car;
+package sem.group5.bob.car.streaming;
 
 /**
  * Created by jpp on 09/04/16.

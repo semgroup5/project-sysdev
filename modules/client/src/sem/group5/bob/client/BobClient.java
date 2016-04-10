@@ -5,7 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import udpSockets.DiscoveryListener;
+import sem.group5.bob.client.DiscoveryListener;
 
 /**
  * Created by jpp on 30/03/16.
@@ -17,7 +17,7 @@ public class BobClient extends Application{
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("fxml/client.fxml"));
         Scene scene = new Scene(root, 0, 0);
-        primaryStage.setTitle("Bob the SmartCar");
+        primaryStage.setTitle("Bob the Smartcar");
         primaryStage.setScene(scene);
         primaryStage.show();
         primaryStage.setMaximized(true);

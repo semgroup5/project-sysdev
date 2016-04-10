@@ -1,6 +1,8 @@
 package sem.group5.bob.car;
 
 import org.openkinect.freenect.*;
+import sem.group5.bob.car.streaming.DepthJpegProvider;
+import sem.group5.bob.car.streaming.MjpegStreamer;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,17 +19,28 @@ public class BobCar {
     static Boolean waiting = false;
     static ServerSocket server = null;
 
-    public void startRemoteListener()
+    public static void Main(String[] args)
+    {
+        System.out.println("Starting remote listener");
+        startRemoteListener();
+
+        System.out.println("Starting video streamer");
+        streamVideo();
+    }
+
+    public static void startRemoteListener()
     {
         try{
             RemoteControlListener rcl = new RemoteControlListener(1234, new SmartcarComm());
+            Thread t = new Thread(rcl);
+            t.run();
         } catch(Exception e) {
             e.printStackTrace();
         }
 
     }
 
-    public void streamVideo()
+    public static void streamVideo()
     {
         Context context = Freenect.createContext();
         Device d = context.openDevice(0);
