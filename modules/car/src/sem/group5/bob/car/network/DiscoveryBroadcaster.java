@@ -13,13 +13,6 @@ import java.util.logging.Logger;
 public class DiscoveryBroadcaster implements Runnable{
     DatagramSocket socket;
 
-    public static void main(String[] args)
-    {
-        DiscoveryBroadcaster d = new DiscoveryBroadcaster();
-        Thread t = new Thread(d);
-        t.start();
-    }
-
     @Override
     public void run() {
         try{

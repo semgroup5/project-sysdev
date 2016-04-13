@@ -1,19 +1,20 @@
 package sem.group5.bob.car;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
-
-import java.lang.reflect.Field;
 import java.util.Enumeration;
+import java.util.Properties;
 
 public class SerialConnect implements SerialPortEventListener {
 
     public SerialPort serialPort;
+
     /**
      * The port we're normally going to use.
      */
@@ -38,7 +39,15 @@ public class SerialConnect implements SerialPortEventListener {
     public void initialize(){
         // the next line is for Raspberry Pi and
         // gets us into the while loop and was suggested here was suggested http://www.raspberrypi.org/phpBB3/viewtopic.php?f=81&t=32186
-        System.setProperty("gnu.io.rxtx.SerialPorts", "/dev/ttyACM0");
+        //System.setProperty("gnu.io.rxtx.SerialPorts", "/dev/ttyACM0");
+
+        Properties properties = System.getProperties();
+        String currentPorts = properties.getProperty("gnu.io.rxtx.SerialPorts", "/dev/ttyACM0");
+        if (currentPorts.equals("/dev/ttyACM0")) {
+            properties.setProperty("gnu.io.rxtx.SerialPorts", "/dev/ttyACM0");
+        } else {
+            properties.setProperty("gnu.io.rxtx.SerialPorts", currentPorts + File.pathSeparator + "/dev/ttyACM0");
+        }
 
         CommPortIdentifier portId = null;
         Enumeration portEnum = CommPortIdentifier.getPortIdentifiers();
@@ -56,6 +65,7 @@ public class SerialConnect implements SerialPortEventListener {
         }
         if (portId == null) {
             System.out.println("Could not find COM port.");
+            System.exit(1);
             return;
         }
 
@@ -102,17 +112,5 @@ public class SerialConnect implements SerialPortEventListener {
                 System.err.println(e.toString());
             }
         }
-
     }
-
-    public static synchronized void writeData(String data) {
-        System.out.println("Sent: " + data);
-        try {
-            output.write(data.getBytes());
-        } catch (Exception e) {
-            System.out.println("could not write to port");
-        }
-    }
-
-
 }

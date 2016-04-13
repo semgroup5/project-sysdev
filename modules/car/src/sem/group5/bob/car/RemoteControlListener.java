@@ -1,6 +1,5 @@
 package sem.group5.bob.car;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -8,9 +7,9 @@ import java.net.Socket;
 public class RemoteControlListener implements Runnable{
     private InputStream in;
     int port;
-    SmartcarComm sc;
+    SmartCarComm sc;
 
-    public RemoteControlListener(int port, SmartcarComm sc) {
+    public RemoteControlListener(int port, SmartCarComm sc) {
         this.port = port;
         this.sc = sc;
     }
@@ -30,6 +29,7 @@ public class RemoteControlListener implements Runnable{
             try {
                 in = socket.getInputStream();
                 String buffer = "";
+
                 //if there's any input do the following
                 while (in.available() > 0) {
                     buffer += (char)in.read();
@@ -44,6 +44,14 @@ public class RemoteControlListener implements Runnable{
                         sc.setAngle(Integer.parseInt(buffer.substring(1,buffer.indexOf('/'))));
                     } else if (first == 'r') {
                         sc.setRotate(Integer.parseInt(buffer.substring(1,buffer.indexOf('/'))));
+                    } else if (first == 'c') {
+                        char second = buffer.charAt(1);
+                        switch (second) {
+                            case 'c':
+                                sc.closeConnection();
+                            default:
+                                System.out.println("Wrong command received");
+                        }
                     }
                 }
 

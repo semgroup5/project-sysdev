@@ -1,6 +1,7 @@
 package sem.group5.bob.car;
 
 import org.openkinect.freenect.*;
+import sem.group5.bob.car.network.DiscoveryBroadcaster;
 import sem.group5.bob.car.streaming.DepthJpegProvider;
 import sem.group5.bob.car.streaming.MjpegStreamer;
 
@@ -21,6 +22,12 @@ public class BobCar {
 
     public static void main(String[] args)
     {
+        System.out.println("Starting IP address broadcast");
+        DiscoveryBroadcaster d = new DiscoveryBroadcaster();
+        Thread t = new Thread(d);
+        t.start();
+
+        System.out.println(System.getProperty("java.classpath"));
         System.out.println("Starting remote listener");
         startRemoteListener();
 
@@ -31,7 +38,7 @@ public class BobCar {
     public static void startRemoteListener()
     {
         try{
-            RemoteControlListener rcl = new RemoteControlListener(1234, new SmartcarComm());
+            RemoteControlListener rcl = new RemoteControlListener(1234, new SmartCarComm());
             Thread t = new Thread(rcl);
             t.run();
         } catch(Exception e) {

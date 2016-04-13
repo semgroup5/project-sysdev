@@ -5,26 +5,30 @@ import java.net.Socket;
 /**
  * Created by Emanuel on 4/7/2016.
  */
-public class ConnectionManager implements Runnable {
+public class ConnectionManager {
     private boolean isConnected;
     String ip;
     DiscoveryListener d;
     Socket socket;
-    Smartcar sm = new Smartcar(this.socket);
+    SmartCar sm;
 
-
-    public void run() {
+    public void init() {
         try {
             if (!isConnected) {
                 d = new DiscoveryListener();
+                Thread t = new Thread(d);
+                t.start();
+
                 this.ip = d.getIp();
-                sm = new Smartcar(this.socket);
+                socket();
+                if (!this.ip.equals(null)) sm = new SmartCar(this.socket);
                 isConnected = true;
             } else {
                 sm.close();
                 isConnected = false;
             }
         } catch (IOException ie) {
+            ie.printStackTrace();
         }
     }
 
@@ -39,7 +43,8 @@ public class ConnectionManager implements Runnable {
     public String getIP(){
         return this.ip;
     }
-    public Smartcar getSmartCar(){
+
+    public SmartCar getSmartCar(){
         return this.sm;
     }
 }

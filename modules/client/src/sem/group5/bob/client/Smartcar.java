@@ -5,7 +5,7 @@ import java.io.PrintWriter;
 import java.io.Writer;
 import java.net.Socket;
 
-public class Smartcar {
+public class SmartCar {
     Socket socket;
     Writer out;
 
@@ -15,7 +15,7 @@ public class Smartcar {
      * @param socket
      */
 
-    public Smartcar(Socket socket) {
+    public SmartCar(Socket socket) {
         try {
         this.socket = socket;
         this.out = new PrintWriter(socket.getOutputStream());
@@ -25,7 +25,7 @@ public class Smartcar {
         }
 
     /**
-     * Set speed of the remote Smartcar
+     * Set speed of the remote SmartCar
      *
      * @param speed speed in percentage of max capacity
      */
@@ -35,7 +35,7 @@ public class Smartcar {
     }
 
     /**
-     * Set angle at which to turn the remote Smartcar
+     * Set angle at which to turn the remote SmartCar
      *
      * @param angle angle in degrees
      */
@@ -47,7 +47,6 @@ public class Smartcar {
 
     /**
      * Rotate the remote smartcar on the spot
-     *
      * @param angle amount of rotation in degrees
      */
     public void rotate(int angle) throws IOException {
@@ -56,6 +55,9 @@ public class Smartcar {
         out.flush();
     }
     public void close()throws IOException{
+        out.write("cc");
+        out.flush();
+        out.close();
         this.socket.close();
     }
 }

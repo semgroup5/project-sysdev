@@ -57,15 +57,42 @@ public class ControllerGUI {
     public Slider speedControl;
     boolean isW, isA, isD, isS = false;
     public ConnectionManager cm;
-    public Smartcar sm;
+    public SmartCar sm;
     BufferedImage img;
 
+    /**
+     * 
+     * @throws IOException
+     */
+    public void connect() throws IOException {
+        if(!isConnected) {
+            connect.setStyle("-fx-background-color: linear-gradient(#ff6767, #ff1a1a),        " +
+            "radial-gradient(center 50% -40%, radius 200%, #ff4d4d 45%, #ff0000 50%); " +
+            "-fx-background-insets: 0, 1; " +
+            "-fx-text-fill: #f5f5f5; " +
+            "-fx-background-radius: 25 0 0 0;");
+            connect.setText("Disconnect");
+            mConnect.setText("Disconnect");
+            cm = new ConnectionManager();
+            cm.init();
+            sm = cm.getSmartCar();
+            textFeedback.setText("Connecting...");
+            isConnected = true;
+            }
+            else{
+            connect.setStyle("-fx-background-color: linear-gradient(#f0ff35, #a9ff00),        " +
+            "radial-gradient(center 50% -40%, radius 200%, #b8ee36 45%, #80c800 50%); " +
+            "-fx-background-insets: 0, 1; " +
+            "-fx-text-fill: #395306; " +
+            "-fx-background-radius: 25 0 0 0;");
+            connect.setText("Connect");
+            mConnect.setText("Connect");
+            sm.close();
+            textFeedback.setText("Disconnecting...");
+            isConnected = false;
+            }
+        }
 
-    public void connect(){
-        cm = new ConnectionManager();
-        Thread t = new Thread(cm);
-        t.start();
-    }
     /**
      * Method to handle events like mapping, load and save.
      * @param event
@@ -179,7 +206,7 @@ public class ControllerGUI {
     public void keyListenersPressed(KeyEvent event) throws IOException {
         if (!isConnected) {
             textFeedback.clear();
-            textFeedback.setText("Smartcar is disconnected...");
+            textFeedback.setText("SmartCar is disconnected...");
         } else {
             switch (event.getCode()) {
                 case W:
@@ -324,7 +351,7 @@ public class ControllerGUI {
     public void keyListenersReleased(KeyEvent event) throws IOException {
         if (!isConnected) {
             textFeedback.clear();
-            textFeedback.setText("Smartcar is disconnected...");
+            textFeedback.setText("SmartCar is disconnected...");
         } else {
             switch (event.getCode()) {
                 case W:
@@ -438,7 +465,7 @@ public class ControllerGUI {
     public void mouseReleased(MouseEvent event) throws IOException {
         if (!isConnected) {
             textFeedback.clear();
-            textFeedback.setText("Smartcar is disconnected...");
+            textFeedback.setText("SmartCar is disconnected...");
         }
         else {
             if (event.getSource() == up) {
@@ -508,7 +535,7 @@ public class ControllerGUI {
     public void mousePressed(MouseEvent event) throws IOException {
         if (!isConnected) {
             textFeedback.clear();
-            textFeedback.setText("Smartcar is disconnected...");
+            textFeedback.setText("SmartCar is disconnected...");
         }
         else {
             if (event.getSource() == up) {
