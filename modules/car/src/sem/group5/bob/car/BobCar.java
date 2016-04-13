@@ -19,7 +19,7 @@ public class BobCar {
     static Boolean waiting = false;
     static ServerSocket server = null;
 
-    public static void Main(String[] args)
+    public static void main(String[] args)
     {
         System.out.println("Starting remote listener");
         startRemoteListener();
