@@ -10,14 +10,5 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="freenect-1.0" level="project" />
     <orderEntry type="library" exported="" name="jna-3.1.0" level="project" />
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES />
-        <JAVADOC />
-        <SOURCES>
-          <root url="file://$MODULE_DIR$/src" />
-        </SOURCES>
-      </library>
-    </orderEntry>
   </component>
 </module>

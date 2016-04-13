@@ -1,7 +1,5 @@
 package sem.group5.bob.car;
 
-import sem.group5.bob.car.streaming.SerialPortConnect;
-
 import java.io.BufferedReader;
 import java.io.OutputStream;
 
