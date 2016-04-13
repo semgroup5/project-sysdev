@@ -72,6 +72,7 @@ public class ControllerGUI {
         t.start();
     }
     /**
+     *
      * Method to handle events like mapping, load and save.
      * @param event
      */
