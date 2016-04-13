@@ -42,8 +42,8 @@ public class ComboJpegProvider extends Observable implements JpegProvider {
         for (int i =0; i < imageSize; i = i + pixelWidth) {
             int pixel = (i / pixelWidth) * 2; // 2 bytes per pixel for both depth and video
             comboFrame[i + 0] =  (byte)( ( ( dFrame[pixel +1] & 0xFF ) << 6) | ( dFrame[pixel+0] & 0xFF >>> 3)  ); // squish depth
-            //comboFrame[i + 1] = vFrame.get(pixel);
-            //comboFrame[i + 2] = vFrame.get(pixel + 1);
+            comboFrame[i + 1] = vFrame[pixel];
+            comboFrame[i + 2] = vFrame[pixel + 1];
         }
 
         System.out.println("Compressing Frame");
@@ -53,7 +53,7 @@ public class ComboJpegProvider extends Observable implements JpegProvider {
 
             tjc.setJPEGQuality(20);
             tjc.setSubsamp(TJ.SAMP_GRAY);
-            tjc.setSourceImage(comboFrame, 640, (640*pixelWidth), 480, TJ.PF_GRAY);
+            tjc.setSourceImage(comboFrame, 640, (640*pixelWidth), 480, TJ.PF_RGB);
 
             int flags = 0;
             byte[] compressed = tjc.compress(flags);
