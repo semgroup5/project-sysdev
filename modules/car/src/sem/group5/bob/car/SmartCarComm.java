@@ -7,7 +7,7 @@ public class SmartCarComm {
     public BufferedReader input;
     public OutputStream output;
     SerialConnect obj;
-    SerialPortConnect con;
+    //SerialPortConnect con;
 
     public SmartCarComm() throws NoSuchFieldError{
         obj = new SerialConnect();
