@@ -1,3 +1,4 @@
 Manifest-Version: 1.0
+Class-Path: /usr/share/java:/usr/lib/jni
 Main-Class: sem.group5.bob.car.BobCar
 
