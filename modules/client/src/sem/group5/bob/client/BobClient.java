@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 import sem.group5.bob.client.DiscoveryListener;
 
 /**
- * Created by jpp on 30/03/16.
+ * Created by Rapha on 30/03/16.
  */
 public class BobClient extends Application{
     public static ConnectionManager cm;

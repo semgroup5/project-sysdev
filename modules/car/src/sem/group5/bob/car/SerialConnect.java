@@ -98,8 +98,14 @@ public class SerialConnect implements SerialPortEventListener {
 
     public synchronized void close() {
         if (serialPort != null) {
-            serialPort.removeEventListener();
-            serialPort.close();
+            try {
+                serialPort.removeEventListener();
+                serialPort.close();
+                System.out.println("Serial Port Closed Successfully");
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
+
         }
     }
 

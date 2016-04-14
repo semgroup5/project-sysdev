@@ -49,5 +49,6 @@ public class SmartCarComm {
      */
     public void closeConnection() {
         obj.close();
+        System.out.println("Closing Serial Port");
     }
 }

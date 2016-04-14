@@ -44,8 +44,14 @@ public class RemoteControlListener implements Runnable{
                         sc.setAngle(Integer.parseInt(buffer.substring(1,buffer.indexOf('/'))));
                     } else if (first == 'r') {
                         sc.setRotate(Integer.parseInt(buffer.substring(1,buffer.indexOf('/'))));
-                    } else if (first == 'c') {
-                        sc.closeConnection();
+                    } else if (buffer.substring(0,buffer.indexOf('/')).equals("close")) {
+                        try {
+                            sc.closeConnection();
+                            socket.close();
+                            System.out.println("All connections were closed!");
+                        }catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
 

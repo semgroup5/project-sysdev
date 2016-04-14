@@ -27,11 +27,11 @@ public class BobCar {
         Thread t = new Thread(d);
         t.start();
 
-        System.out.println("Starting remote listener");
-        startRemoteListener();
-
         System.out.println("Starting video streamer");
         streamVideo();
+
+        System.out.println("Starting remote listener");
+        startRemoteListener();
     }
 
     public static void startRemoteListener()

@@ -55,7 +55,7 @@ public class Smartcar {
         out.flush();
     }
     public void close()throws IOException{
-        out.write("c");
+        out.write("close/");
         out.flush();
         this.socket.close();
     }
