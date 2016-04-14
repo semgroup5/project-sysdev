@@ -27,7 +27,6 @@ public class BobCar {
         Thread t = new Thread(d);
         t.start();
 
-        System.out.println(System.getProperty("java.classpath"));
         System.out.println("Starting remote listener");
         startRemoteListener();
 

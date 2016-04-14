@@ -57,7 +57,7 @@ public class ControllerGUI {
     public Slider speedControl;
     boolean isW, isA, isD, isS = false;
     public ConnectionManager cm;
-    public SmartCar sm;
+    public Smartcar sm;
     BufferedImage img;
 
     /**

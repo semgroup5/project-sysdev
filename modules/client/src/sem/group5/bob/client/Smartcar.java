@@ -5,7 +5,7 @@ import java.io.PrintWriter;
 import java.io.Writer;
 import java.net.Socket;
 
-public class SmartCar {
+public class Smartcar {
     Socket socket;
     Writer out;
 
@@ -15,7 +15,7 @@ public class SmartCar {
      * @param socket
      */
 
-    public SmartCar(Socket socket) {
+    public Smartcar(Socket socket) {
         try {
         this.socket = socket;
         this.out = new PrintWriter(socket.getOutputStream());
@@ -55,9 +55,8 @@ public class SmartCar {
         out.flush();
     }
     public void close()throws IOException{
-        out.write("cc");
+        out.write("c");
         out.flush();
-        out.close();
         this.socket.close();
     }
 }

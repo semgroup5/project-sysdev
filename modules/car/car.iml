@@ -8,8 +8,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="freenect-1.0" level="project" />
     <orderEntry type="library" exported="" name="jna-3.1.0" level="project" />
-    <orderEntry type="library" name="car libs" level="project" />
+    <orderEntry type="library" exported="" name="car libs" level="project" />
+    <orderEntry type="library" exported="" name="car libs" level="project" />
   </component>
 </module>

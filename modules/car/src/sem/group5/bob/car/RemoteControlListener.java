@@ -45,13 +45,7 @@ public class RemoteControlListener implements Runnable{
                     } else if (first == 'r') {
                         sc.setRotate(Integer.parseInt(buffer.substring(1,buffer.indexOf('/'))));
                     } else if (first == 'c') {
-                        char second = buffer.charAt(1);
-                        switch (second) {
-                            case 'c':
-                                sc.closeConnection();
-                            default:
-                                System.out.println("Wrong command received");
-                        }
+                        sc.closeConnection();
                     }
                 }
 

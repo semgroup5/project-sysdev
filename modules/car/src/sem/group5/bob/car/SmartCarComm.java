@@ -14,18 +14,7 @@ public class SmartCarComm {
         obj.initialize();
         input = SerialConnect.input;
         output = SerialConnect.output;
-//        con = new SerialPortConnect();
-//        con.initialize();
     }
-
-//    public synchronized void writeData(String data) {
-//        try {
-//            System.out.println("Sending : " + data);
-//            con.write(data);
-//        } catch (Exception e) {
-//            System.out.println("could not write to port");
-//        }
-//    }
 
     public synchronized void writeData(String data) {
         try {
@@ -56,7 +45,7 @@ public class SmartCarComm {
     }
 
     /**
-     * here
+     *
      */
     public void closeConnection() {
         obj.close();

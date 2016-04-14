@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 /**
  * Created by Emanuel on 4/4/2016.
  */
-public class DiscoveryListener implements Runnable {
+public class DiscoveryListener {
     DatagramSocket c;
     String ip = "";
 

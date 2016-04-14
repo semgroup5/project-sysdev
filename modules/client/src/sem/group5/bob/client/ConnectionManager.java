@@ -10,18 +10,17 @@ public class ConnectionManager {
     String ip;
     DiscoveryListener d;
     Socket socket;
-    SmartCar sm;
+    Smartcar sm;
 
     public void init() {
         try {
             if (!isConnected) {
                 d = new DiscoveryListener();
-                Thread t = new Thread(d);
-                t.start();
+                d.run();
 
                 this.ip = d.getIp();
                 socket();
-                if (!this.ip.equals(null)) sm = new SmartCar(this.socket);
+                if (!this.ip.equals(null)) sm = new Smartcar(this.socket);
                 isConnected = true;
             } else {
                 sm.close();
@@ -44,7 +43,7 @@ public class ConnectionManager {
         return this.ip;
     }
 
-    public SmartCar getSmartCar(){
+    public Smartcar getSmartCar(){
         return this.sm;
     }
 }
