@@ -64,7 +64,7 @@ public class ControllerGUI {
      * 
      * @throws IOException
      */
-    public void connect() throws IOException {
+    public void connect() throws IOException, InterruptedException {
         if(!isConnected) {
             connect.setStyle("-fx-background-color: linear-gradient(#ff6767, #ff1a1a),        " +
             "radial-gradient(center 50% -40%, radius 200%, #ff4d4d 45%, #ff0000 50%); " +
@@ -76,8 +76,8 @@ public class ControllerGUI {
             cm = new ConnectionManager();
             cm.init();
             sm = cm.getSmartCar();
-            textFeedback.setText("Connecting...");
             isConnected = true;
+            textFeedback.setText("Connected");
             }
             else{
             connect.setStyle("-fx-background-color: linear-gradient(#f0ff35, #a9ff00),        " +
@@ -87,8 +87,10 @@ public class ControllerGUI {
             "-fx-background-radius: 25 0 0 0;");
             connect.setText("Connect");
             mConnect.setText("Connect");
+            cm.getDiscoverListener().close();
             sm.close();
-            textFeedback.setText("Disconnecting...");
+            cm.socket.close();
+            textFeedback.setText("Disconnected.");
             isConnected = false;
             }
         }
@@ -110,24 +112,24 @@ public class ControllerGUI {
                         "-fx-text-fill: #654b00; " +
                         "-fx-font-weight: bold;");
                 textFeedback.clear();
-                textFeedback.setText("Hi I'm mapping!");
+                textFeedback.setText("Start mapping!");
                 isMapping = true;
 
-                try {
-                    Socket s = new Socket(InetAddress.getByName(cm.getIP()), 50001);
-                    InputStream in = s.getInputStream();
-                    s.getOutputStream().write("start".getBytes());
-                    s.getOutputStream().flush();
-                    MultiPartsParse parse = new MultiPartsParse();
-
-                    img = ImageIO.read(in);
-                    Image image = SwingFXUtils.toFXImage(img, null);
-                    parse.readImage(in , img);
-                    kinectView.setImage(image);
-
-                }catch (Exception e) {
-                    e.printStackTrace();
-                }
+//                try {
+//                    Socket s = new Socket(InetAddress.getByName(cm.getIP()), 50001);
+//                    InputStream in = s.getInputStream();
+//                    s.getOutputStream().write("start".getBytes());
+//                    s.getOutputStream().flush();
+//                    MultiPartsParse parse = new MultiPartsParse();
+//
+//                    img = ImageIO.read(in);
+//                    Image image = SwingFXUtils.toFXImage(img, null);
+//                    parse.readImage(in , img);
+//                    kinectView.setImage(image);
+//
+//                }catch (Exception e) {
+//                    e.printStackTrace();
+//                }
             }
             else if (isMapping) {
                 map.setStyle("-fx-background-color: linear-gradient(#ffd65b, #e68400),        " +
@@ -224,15 +226,15 @@ public class ControllerGUI {
                         if (isA) {
                             sm.setSpeed((int) (speedControl.getValue()));
                             sm.setAngle(-90);
-                            textFeedback.setText("forward and left pressed");
+
                         } else if (isD) {
                             sm.setSpeed((int) (speedControl.getValue()));
                             sm.setAngle(90);
-                            textFeedback.setText("forward and right pressed");
+
                         } else {
                             sm.setSpeed((int) (speedControl.getValue()));
                             textFeedback.clear();
-                            textFeedback.setText("forward pressed");
+
                         }
                         isDriving = true;
                         event.consume();
@@ -253,14 +255,14 @@ public class ControllerGUI {
                         if (isA) {
                             sm.setSpeed((int) -(speedControl.getValue()));
                             sm.setAngle(-90);
-                            textFeedback.setText("down and left pressed");
+
                         } else if (isD) {
                             sm.setSpeed((int) -(speedControl.getValue()));
                             sm.setAngle(90);
-                            textFeedback.setText("down and right pressed");
+
                         } else {
                             sm.setSpeed((int) -(speedControl.getValue()));
-                            textFeedback.setText("down pressed");
+
                         }
                         isDriving = true;
                         event.consume();
@@ -281,14 +283,14 @@ public class ControllerGUI {
                         if (isW) {
                             sm.setSpeed((int) (speedControl.getValue()));
                             sm.setAngle(-90);
-                            textFeedback.setText("forward and left pressed");
+
                         } else if (isS) {
                             sm.setSpeed((int) -(speedControl.getValue()));
                             sm.setAngle(-90);
-                            textFeedback.setText("back and left pressed");
+
                         } else {
                             sm.rotate(-1);
-                            textFeedback.setText("rotate left pressed");
+
                         }
                         isTurn = true;
                         event.consume();
@@ -309,14 +311,14 @@ public class ControllerGUI {
                         if (isW) {
                             sm.setSpeed((int) (speedControl.getValue()));
                             sm.setAngle(90);
-                            textFeedback.setText("forward and right pressed");
+
                         } else if (isS) {
                             sm.setSpeed((int) -(speedControl.getValue()));
                             sm.setAngle(90);
-                            textFeedback.setText("back and right pressed");
+
                         } else {
                             sm.rotate(1);
-                            textFeedback.setText("rotate right pressed");
+
                         }
                         isTurn = true;
                         event.consume();
@@ -324,11 +326,11 @@ public class ControllerGUI {
                     break;
                 case R:
                     speedControl.increment();
-                    textFeedback.setText("driving at " + speedControl.getValue());
+                    textFeedback.setText("driving at " + speedControl.getValue() + "%");
                     break;
                 case F:
                     speedControl.decrement();
-                    textFeedback.setText("driving at " + speedControl.getValue());
+                    textFeedback.setText("driving at " + speedControl.getValue() + "%");
                     break;
                 case Z:
                     map.fire();
@@ -366,8 +368,6 @@ public class ControllerGUI {
                     isW = false;
                     if (isDriving) {
                         sm.setSpeed(0);
-                        textFeedback.clear();
-                        textFeedback.setText("forward released");
                         isDriving = false;
                         event.consume();
                     }
@@ -385,8 +385,6 @@ public class ControllerGUI {
                     isS = false;
                     if (isDriving) {
                         sm.setSpeed(0);
-                        textFeedback.clear();
-                        textFeedback.setText("down released");
                         isDriving = false;
                         event.consume();
                     }
@@ -408,8 +406,6 @@ public class ControllerGUI {
                         } else if (isS) {
                             sm.setSpeed((int) -(speedControl.getValue()));
                         } else sm.rotate(0);
-                        textFeedback.clear();
-                        textFeedback.setText("left released");
                         isTurn = false;
                         event.consume();
                     }
@@ -431,8 +427,6 @@ public class ControllerGUI {
                         } else if (isS) {
                             sm.setSpeed((int) -(speedControl.getValue()));
                         } else sm.rotate(0);
-                        textFeedback.clear();
-                        textFeedback.setText("right released");
                         isTurn = false;
                         event.consume();
                     }

@@ -4,16 +4,27 @@ import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+/**
+ * Class responsible for establishing connection between client and raspberry pi and use received data to forward it to the arduino
+ */
 public class RemoteControlListener implements Runnable{
     private InputStream in;
     int port;
     SmartCarComm sc;
 
+    /**
+     * Constructor
+     * @param port
+     * @param sc
+     */
     public RemoteControlListener(int port, SmartCarComm sc) {
         this.port = port;
         this.sc = sc;
     }
 
+    /**
+     * Method to open up the port and handle received inputs in it
+     */
     public void listen()
     {
         Socket socket = null;
@@ -46,9 +57,10 @@ public class RemoteControlListener implements Runnable{
                         sc.setRotate(Integer.parseInt(buffer.substring(1,buffer.indexOf('/'))));
                     } else if (buffer.substring(0,buffer.indexOf('/')).equals("close")) {
                         try {
-                            sc.closeConnection();
                             socket.close();
                             System.out.println("All connections were closed!");
+                            BobCar.startDiscoveryListener();
+                            run();
                         }catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -61,6 +73,9 @@ public class RemoteControlListener implements Runnable{
         }
     }
 
+    /**
+     * Method used by the thread to run this application simultaneously
+     */
     public void run(){
         listen();
     }

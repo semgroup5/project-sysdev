@@ -8,13 +8,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * Class that will be broadcasting the raspberry pi when needed
  * Created by Emanuel on 4/4/2016.
  */
-public class DiscoveryBroadcaster implements Runnable{
-    DatagramSocket socket;
+public class DiscoveryBroadcaster {
+    private DatagramSocket socket;
 
-    @Override
-    public void run() {
+    /**
+     * Method to start the broadcasting
+     */
+    public void startBroadcast() {
         try{
             //Open a socket to listen to UPD traffic that is aimed at this port
             socket = new DatagramSocket(1235, InetAddress.getByName("0.0.0.0"));
@@ -41,6 +44,9 @@ public class DiscoveryBroadcaster implements Runnable{
                     socket.send(sendPacket);
 
                     System.out.println(getClass().getName() + "Sent packet to: " +  sendPacket.getAddress().getHostAddress());
+                    System.out.println("Done Broadcasting IP");
+                    socket.close();
+                    break;
                 }
             }
         }catch(IOException ex){

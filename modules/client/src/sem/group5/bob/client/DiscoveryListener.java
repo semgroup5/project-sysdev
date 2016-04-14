@@ -76,6 +76,11 @@ public class DiscoveryListener {
 
     }
 
+    public void close() {
+        c.close();
+        System.out.println("Discovery listener closed");
+    }
+
     public String getIp() {
         return this.ip;
     }

@@ -6,7 +6,6 @@ import java.net.Socket;
  * Created by Emanuel on 4/7/2016.
  */
 public class ConnectionManager {
-    private boolean isConnected;
     String ip;
     DiscoveryListener d;
     Socket socket;
@@ -14,20 +13,14 @@ public class ConnectionManager {
 
     public void init() {
         try {
-            if (!isConnected) {
-                d = new DiscoveryListener();
-                d.run();
+            d = new DiscoveryListener();
+            d.run();
 
-                this.ip = d.getIp();
-                socket();
-                if (!this.ip.equals(null)) sm = new Smartcar(this.socket);
-                isConnected = true;
-            } else {
-                sm.close();
-                isConnected = false;
-            }
-        } catch (IOException ie) {
-            ie.printStackTrace();
+            this.ip = d.getIp();
+            socket();
+            if (!this.ip.equals(null)) sm = new Smartcar(this.socket);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -46,4 +39,6 @@ public class ConnectionManager {
     public Smartcar getSmartCar(){
         return this.sm;
     }
+
+    public DiscoveryListener getDiscoverListener(){ return this.d; }
 }

@@ -11,9 +11,12 @@ import gnu.io.SerialPortEventListener;
 import java.util.Enumeration;
 import java.util.Properties;
 
+/**
+ * Class responsible for establishing the serial port connection between the raspberry pi and the arduino.
+ */
 public class SerialConnect implements SerialPortEventListener {
 
-    public SerialPort serialPort;
+    private SerialPort serialPort;
 
     /**
      * The port we're normally going to use.
@@ -25,8 +28,8 @@ public class SerialConnect implements SerialPortEventListener {
             "COM4", // Windows
     };
 
-    public static BufferedReader input;
-    public static OutputStream output;
+    private BufferedReader input;
+    private OutputStream output;
     /**
      * Milliseconds to block while waiting for port open
      */
@@ -36,6 +39,9 @@ public class SerialConnect implements SerialPortEventListener {
      */
     public static final int DATA_RATE = 9600;
 
+    /**
+     * Method to establish the serial connection
+     */
     public void initialize(){
         // the next line is for Raspberry Pi and
         // gets us into the while loop and was suggested here was suggested http://www.raspberrypi.org/phpBB3/viewtopic.php?f=81&t=32186
@@ -96,19 +102,43 @@ public class SerialConnect implements SerialPortEventListener {
         }
     }
 
+    /**
+     * Method to close the serial connection
+     */
     public synchronized void close() {
         if (serialPort != null) {
             try {
+                output.close();
+                input.close();
                 serialPort.removeEventListener();
                 serialPort.close();
                 System.out.println("Serial Port Closed Successfully");
             }catch (Exception e) {
                 e.printStackTrace();
             }
-
         }
     }
 
+    /**
+     * Method to return this BufferReader
+     * @return
+     */
+    public BufferedReader getBufferReader() {
+        return this.input;
+    }
+
+    /**
+     * Method to return this OutputStream
+     * @return
+     */
+    public OutputStream getOutputStream() {
+        return this.output;
+    }
+
+    /**
+     * Method that will be watching over events in the serial connection port
+     * @param oEvent
+     */
     public synchronized void serialEvent(SerialPortEvent oEvent) {
         if (oEvent.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
             try {

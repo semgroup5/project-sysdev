@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" onKeyPressed="#keyListenersPressed" onKeyReleased="#keyListenersReleased" prefHeight="689.0" prefWidth="1404.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sem.group5.bob.client.ControllerGUI">
    <center>
        <AnchorPane prefHeight="549.0" prefWidth="1413.0" style="-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        linear-gradient(#020b02, #3a3a3a),        linear-gradient(#9d9e9d 0%, #6b6a6b 20%, #343534 80%, #242424 100%),        linear-gradient(#8a8a8a 0%, #6b6a6b 20%, #343534 80%, #262626 100%),        linear-gradient(#777777 0%, #606060 50%, #505250 51%, #2a2b2a 100%);; -fx-background-insets: 0,1,4,5,6;;" BorderPane.alignment="CENTER">
            <MenuBar fx:id="menuBar" layoutX="407.0" layoutY="-2.0" prefHeight="38.0" prefWidth="980.0" style="-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        linear-gradient(#020b02, #3a3a3a),        linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        linear-gradient(#f5f5f5 0%, #dbdbdb 50%, #cacaca 51%, #d7d7d7 100%); -fx-background-insets: 0,1,4,5;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-2.0">
                <Menu mnemonicParsing="false" text="File">
-                   <MenuItem fx:id="mConnect" onAction="#connect" mnemonicParsing="false" text="Connect" />
+                   <MenuItem fx:id="mConnect" mnemonicParsing="false" onAction="#connect" text="Connect" />
                    <MenuItem fx:id="mSave" mnemonicParsing="false" onAction="#handle" text="Save" />
                    <MenuItem fx:id="mLoad" mnemonicParsing="false" onAction="#handle" text="Load" />
                    <MenuItem fx:id="close" mnemonicParsing="false" onAction="#closeApplication" text="Close" />
@@ -118,7 +122,7 @@
            <Button fx:id="connect" layoutX="510.0" layoutY="14.0" mnemonicParsing="false" onAction="#connect" onMouseClicked="#setFocused" onMouseEntered="#shadow" onMouseExited="#shadowOff" prefWidth="120.0" style="-fx-background-color: linear-gradient(#f0ff35, #a9ff00),        radial-gradient(center 50% -40%, radius 200%, #b8ee36 45%, #80c800 50%); -fx-background-insets: 0, 1; -fx-text-fill: #395306; -fx-background-radius: 25 0 0 0;" text="Connect" AnchorPane.rightAnchor="390.0" />
            <Button fx:id="save" layoutX="510.0" layoutY="47.0" mnemonicParsing="false" onAction="#handle" onMouseClicked="#setFocused" onMouseEntered="#shadow" onMouseExited="#shadowOff" prefHeight="31.0" prefWidth="120.0" style="-fx-background-color: #a6b5c9,        linear-gradient(#303842 0%, #3e5577 20%, #375074 100%),        linear-gradient(#768aa5 0%, #849cbb 5%, #5877a2 50%, #486a9a 51%, #4a6c9b 100%); -fx-background-insets: 0 0 -1 0,0,1; -fx-text-fill: #242d35; -fx-font-family: &quot;Helvetica&quot;; -fx-text-fill: white;" text="Save" AnchorPane.rightAnchor="390.0" />
            <Button fx:id="load" layoutX="510.0" layoutY="80.0" mnemonicParsing="false" onAction="#handle" onMouseClicked="#setFocused" onMouseEntered="#shadow" onMouseExited="#shadowOff" prefHeight="31.0" prefWidth="120.0" style="-fx-background-color: #a6b5c9,        linear-gradient(#303842 0%, #3e5577 20%, #375074 100%),        linear-gradient(#768aa5 0%, #849cbb 5%, #5877a2 50%, #486a9a 51%, #4a6c9b 100%); -fx-background-insets: 0 0 -1 0,0,1; -fx-text-fill: #242d35; -fx-font-family: &quot;Helvetica&quot;; -fx-text-fill: white; -fx-background-radius: 0 0 25 0;" text="Load" AnchorPane.rightAnchor="390.0" />
-         <Slider fx:id="speedControl" layoutX="704.0" layoutY="7.0" majorTickUnit="20.0" minorTickCount="0" orientation="VERTICAL" prefHeight="120.0" prefWidth="18.0" showTickLabels="true" showTickMarks="true" stylesheets="@client.css" AnchorPane.bottomAnchor="7.0" AnchorPane.rightAnchor="260.0" />
+         <Slider fx:id="speedControl" layoutX="704.0" layoutY="7.0" majorTickUnit="10.0" min="30.0" minorTickCount="0" orientation="VERTICAL" prefHeight="120.0" prefWidth="18.0" showTickLabels="true" showTickMarks="true" stylesheets="@client.css" value="30.0" AnchorPane.bottomAnchor="7.0" AnchorPane.rightAnchor="260.0" />
          <Label layoutX="641.0" layoutY="4.0" text="Speed" textFill="#f2eded" AnchorPane.bottomAnchor="109.0" AnchorPane.rightAnchor="299.0" />
        </AnchorPane>
    </bottom>
