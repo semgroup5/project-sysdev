@@ -65,7 +65,7 @@ public class DiscoveryListener {
                 String message = new String(receivePacket.getData()).trim();
                 if (message.equals("Discovery_Pi_Response")) {
                     this.ip = receivePacket.getAddress().toString().substring(1);
-                    System.out.println("Found Pi at ip: " + receivePacket.getAddress().toString().substring(1));
+                    System.out.println("Found Pi at carIp: " + receivePacket.getAddress().toString().substring(1));
                     break;
                 }
             }

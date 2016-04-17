@@ -20,7 +20,7 @@ public class BobCar {
     static BufferedReader in;
     static OutputStream out;
     static Boolean waiting = false;
-    static ServerSocket server = null;
+    static ServerSocket serverSocket = null;
     static DiscoveryBroadcaster d;
 
     public static void main(String[] args)
@@ -83,19 +83,10 @@ public class BobCar {
         int port = 50001;
 
         try {
-            server = new ServerSocket(port);
+            serverSocket = new ServerSocket(port);
         }
         catch(Exception e) {
             System.out.println("Couldn't create socket");
-            System.exit(1);
-        }
-
-        try {
-            System.out.println("Listening on port " + port);
-            socket = server.accept();
-        }
-        catch(IOException e) {
-            System.err.println("Could not listen on port:" + port);
             System.exit(1);
         }
 
@@ -107,7 +98,7 @@ public class BobCar {
             d.startDepth(depthJpegProvider::receiveDepth);
             Thread.sleep(1000);
 
-            MjpegStreamer mjpegStreamer = new MjpegStreamer(socket, depthJpegProvider);
+            MjpegStreamer mjpegStreamer = new MjpegStreamer(serverSocket, depthJpegProvider);
             Thread t = new Thread(mjpegStreamer);
             t.run();
         }

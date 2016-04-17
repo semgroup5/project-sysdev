@@ -1,21 +1,23 @@
 package sem.group5.bob.car.streaming;
 
 import java.io.OutputStream;
+import java.net.ServerSocket;
 import java.net.Socket;
 
 public class MjpegStreamer implements Runnable{
     String ip;
     int port;
-    Socket socket;
+    ServerSocket serverSocket;
     DepthJpegProvider cjp;
 
-    public MjpegStreamer(Socket s, DepthJpegProvider cjp) {
-        this.socket = s;
+    public MjpegStreamer(ServerSocket s, DepthJpegProvider cjp) {
+        this.serverSocket = s;
         this.cjp = cjp;
     }
 
     public void stream() throws Exception
     {
+        Socket socket = serverSocket.accept();
         OutputStream out = socket.getOutputStream();
         out.write( ( "HTTP/1.0 200 OK\r\n" +
                      "Server: YourServerName\r\n" +

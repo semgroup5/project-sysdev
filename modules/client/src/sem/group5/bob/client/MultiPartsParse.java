@@ -15,7 +15,6 @@ public class MultiPartsParse extends Observable {
     public void readImage(InputStream depthStream, BufferedImage img) {
         byte[] boundary = "--BoundaryString".getBytes();
 
-        @SuppressWarnings("deprecation")
         MultipartStream multipartStream = new MultipartStream(depthStream, boundary);
 
         boolean nextPart;
