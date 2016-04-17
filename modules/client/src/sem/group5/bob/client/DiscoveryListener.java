@@ -25,7 +25,7 @@ public class DiscoveryListener {
             try{
                 DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName("255.255.255.255"), 1235);
                 c.send(sendPacket);
-                System.out.println(getClass().getName() + "Request packet sent to: 255.255.255.255");
+                System.out.println(getClass().getName() + " Request packet sent to: 255.255.255.255");
             }catch (Exception e){
             }
             Enumeration interfaces = NetworkInterface.getNetworkInterfaces();
@@ -46,11 +46,11 @@ public class DiscoveryListener {
                        c.send(sendPacket);
                    }catch(Exception e){
                    }
-                   System.out.println(getClass().getName() + "Request package sent to: " + broadcast.getHostAddress() + "; Interface: " + networkInterface.getDisplayName());
+                   System.out.println(getClass().getName() + " Request package sent to: " + broadcast.getHostAddress() + "; Interface: " + networkInterface.getDisplayName());
 
                }
             }
-            System.out.println(getClass().getClass() + "Waiting for a reply");
+            System.out.println(getClass().getClass() + " Waiting for a reply");
             while (true) {
                 //waiting for response
                 byte[] recvBuf = new byte[32];
@@ -58,7 +58,7 @@ public class DiscoveryListener {
                 c.receive(receivePacket);
 
                 //Getting a response
-                System.out.println(getClass().getName() + "Broadcast response from: " + receivePacket.getAddress().getHostAddress());
+                System.out.println(getClass().getName() + " Broadcast response from: " + receivePacket.getAddress().getHostAddress());
                 System.out.println(receivePacket.getData());
 
                 //Check if message checks

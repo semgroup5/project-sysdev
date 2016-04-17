@@ -1,26 +1,33 @@
 package sem.group5.bob.client;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import sem.group5.bob.client.DiscoveryListener;
 
 /**
  * Created by Rapha on 30/03/16.
  */
 public class BobClient extends Application{
-    public static ConnectionManager cm;
-
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("fxml/client.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/client.fxml"));
+        Parent root = loader.load();
         Scene scene = new Scene(root, 0, 0);
         primaryStage.setTitle("Bob the SmartCar");
         primaryStage.setScene(scene);
         primaryStage.show();
         primaryStage.setMaximized(true);
+        ControllerGUI controller = loader.getController();
+        controller.fireConnection();
+        primaryStage.setOnCloseRequest(event -> {
+            controller.fireConnection();
+            System.exit(0);
+        });
     }
 
 

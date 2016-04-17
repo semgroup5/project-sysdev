@@ -4,8 +4,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.net.Socket;
+import java.util.Observable;
 
-public class Smartcar {
+public class Smartcar extends Observable{
     Socket socket;
     Writer out;
 
@@ -15,12 +16,17 @@ public class Smartcar {
      * @param socket
      */
 
-    public Smartcar(Socket socket) {
+    public Smartcar(Socket socket, ControllerGUI ctr) {
         try {
+        addObserver(ctr);
         this.socket = socket;
+        this.socket.setTcpNoDelay(true);
+        this.socket.setReuseAddress(true);
         this.out = new PrintWriter(socket.getOutputStream());
            }catch(IOException e){
-                System.out.println(e);
+            setChanged();
+            notifyObservers(this);
+            e.printStackTrace();
             }
         }
 
@@ -30,8 +36,14 @@ public class Smartcar {
      * @param speed speed in percentage of max capacity
      */
     public void setSpeed(int speed) throws IOException{
-        out.write("s" + speed + "/");
-        out.flush();
+        try {
+            out.write("s" + speed + "/");
+            out.flush();
+        } catch (IOException e) {
+            setChanged();
+            notifyObservers(this);
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -40,9 +52,15 @@ public class Smartcar {
      * @param angle angle in degrees
      */
     public void setAngle(int angle) throws IOException{
-        String toSend = "a";
-        out.write(toSend + angle + "/");
-        out.flush();
+        try {
+            String toSend = "a";
+            out.write(toSend + angle + "/");
+            out.flush();
+        } catch (IOException e) {
+            setChanged();
+            notifyObservers(this);
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -50,14 +68,26 @@ public class Smartcar {
      * @param angle amount of rotation in degrees
      */
     public void rotate(int angle) throws IOException {
-        String toSend = "r";
-        out.write(toSend + angle + "/");
-        out.flush();
+        try {
+            String toSend = "r";
+            out.write(toSend + angle + "/");
+            out.flush();
+        } catch (IOException e) {
+            setChanged();
+            notifyObservers(this);
+            e.printStackTrace();
+        }
     }
+
+    /**
+     * Method to close sockets in the client side and server side
+     * @throws IOException
+     */
     public void close()throws IOException{
         out.write("close/");
         out.flush();
         this.socket.close();
+
     }
 }
 

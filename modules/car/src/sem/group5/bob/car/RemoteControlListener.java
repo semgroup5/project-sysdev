@@ -11,6 +11,7 @@ public class RemoteControlListener implements Runnable{
     private InputStream in;
     int port;
     SmartCarComm sc;
+    Socket socket;
 
     /**
      * Constructor
@@ -27,11 +28,13 @@ public class RemoteControlListener implements Runnable{
      */
     public void listen()
     {
-        Socket socket = null;
+        socket = null;
 
         try{
             ServerSocket listener = new ServerSocket(port);
             socket = listener.accept();
+            socket.setTcpNoDelay(true);
+            socket.setReuseAddress(true);
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -40,6 +43,8 @@ public class RemoteControlListener implements Runnable{
             try {
                 in = socket.getInputStream();
                 String buffer = "";
+
+                if (!socket.isConnected()) closeConnections();
 
                 //if there's any input do the following
                 while (in.available() > 0) {
@@ -56,14 +61,7 @@ public class RemoteControlListener implements Runnable{
                     } else if (first == 'r') {
                         sc.setRotate(Integer.parseInt(buffer.substring(1,buffer.indexOf('/'))));
                     } else if (buffer.substring(0,buffer.indexOf('/')).equals("close")) {
-                        try {
-                            socket.close();
-                            System.out.println("All connections were closed!");
-                            BobCar.startDiscoveryListener();
-                            run();
-                        }catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                        closeConnections();
                     }
                 }
 
@@ -78,5 +76,17 @@ public class RemoteControlListener implements Runnable{
      */
     public void run(){
         listen();
+    }
+
+    public void closeConnections() {
+        try {
+            in.close();
+            socket.close();
+            System.out.println("All connections were closed!");
+            BobCar.startDiscoveryListener();
+            run();
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

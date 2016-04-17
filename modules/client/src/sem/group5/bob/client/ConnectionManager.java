@@ -1,5 +1,7 @@
 package sem.group5.bob.client;
 import java.io.IOException;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.Socket;
 
 /**
@@ -11,14 +13,16 @@ public class ConnectionManager {
     Socket socket;
     Smartcar sm;
 
-    public void init() {
+    public void init(ControllerGUI ctr) {
         try {
             d = new DiscoveryListener();
             d.run();
 
             this.ip = d.getIp();
-            socket();
-            if (!this.ip.equals(null)) sm = new Smartcar(this.socket);
+            if (!this.ip.equals(null)) {
+                socket();
+                sm = new Smartcar(this.socket, ctr);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -41,4 +45,5 @@ public class ConnectionManager {
     }
 
     public DiscoveryListener getDiscoverListener(){ return this.d; }
+
 }

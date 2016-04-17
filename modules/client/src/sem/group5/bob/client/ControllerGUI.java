@@ -1,6 +1,5 @@
 package sem.group5.bob.client;
 
-import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.scene.control.*;
@@ -12,22 +11,21 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.InetAddress;
 import java.net.Socket;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Created by Raphael on 06/03/2016 for project-sysdev.
+ * Created by Raphael on 06/03/2016 for project-sysdev for project-sysdev.
  */
 
-public class ControllerGUI {
+public class ControllerGUI implements Observer{
 
     public MenuBar menuBar;
     public MenuItem close;
@@ -55,8 +53,9 @@ public class ControllerGUI {
     public FileChooser fileChooser;
     public File file;
     public Slider speedControl;
-    boolean isW, isA, isD, isS = false;
+    public ImageView loadImage;
     public ConnectionManager cm;
+    public Socket socket;
     public Smartcar sm;
     BufferedImage img;
 
@@ -64,7 +63,8 @@ public class ControllerGUI {
      * 
      * @throws IOException
      */
-    public void connect() throws IOException, InterruptedException {
+    public void connect() throws IOException {
+        loadImage.setVisible(true);
         if(!isConnected) {
             connect.setStyle("-fx-background-color: linear-gradient(#ff6767, #ff1a1a),        " +
             "radial-gradient(center 50% -40%, radius 200%, #ff4d4d 45%, #ff0000 50%); " +
@@ -74,10 +74,12 @@ public class ControllerGUI {
             connect.setText("Disconnect");
             mConnect.setText("Disconnect");
             cm = new ConnectionManager();
-            cm.init();
+            cm.init(this);
             sm = cm.getSmartCar();
+            socket = cm.socket;
             isConnected = true;
             textFeedback.setText("Connected");
+            loadImage.setVisible(false);
             }
             else{
             connect.setStyle("-fx-background-color: linear-gradient(#f0ff35, #a9ff00),        " +
@@ -92,8 +94,11 @@ public class ControllerGUI {
             cm.socket.close();
             textFeedback.setText("Disconnected.");
             isConnected = false;
+            loadImage.setVisible(false);
             }
         }
+
+
 
     /**
      * Method to handle events like mapping, load and save.
@@ -131,7 +136,7 @@ public class ControllerGUI {
 //                    e.printStackTrace();
 //                }
             }
-            else if (isMapping) {
+            else {
                 map.setStyle("-fx-background-color: linear-gradient(#ffd65b, #e68400),        " +
                         "linear-gradient(#ffef84, #f2ba44),        " +
                         "linear-gradient(#ffea6a, #efaa22),        " +
@@ -221,21 +226,8 @@ public class ControllerGUI {
                             "-fx-font-family: Helvetica; " +
                             "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
                             "-fx-background-radius: 25 25 0 0;");
-                    isW = true;
                     if (!isDriving) {
-                        if (isA) {
-                            sm.setSpeed((int) (speedControl.getValue()));
-                            sm.setAngle(-90);
-
-                        } else if (isD) {
-                            sm.setSpeed((int) (speedControl.getValue()));
-                            sm.setAngle(90);
-
-                        } else {
-                            sm.setSpeed((int) (speedControl.getValue()));
-                            textFeedback.clear();
-
-                        }
+                        sm.setSpeed((int) (speedControl.getValue()));
                         isDriving = true;
                         event.consume();
                     }
@@ -250,20 +242,8 @@ public class ControllerGUI {
                             "-fx-font-family: Helvetica; " +
                             "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
                             "-fx-background-radius: 0 0 25 25;");
-                    isS = true;
                     if (!isDriving) {
-                        if (isA) {
-                            sm.setSpeed((int) -(speedControl.getValue()));
-                            sm.setAngle(-90);
-
-                        } else if (isD) {
-                            sm.setSpeed((int) -(speedControl.getValue()));
-                            sm.setAngle(90);
-
-                        } else {
-                            sm.setSpeed((int) -(speedControl.getValue()));
-
-                        }
+                        sm.setSpeed((int) -(speedControl.getValue()));
                         isDriving = true;
                         event.consume();
                     }
@@ -278,17 +258,11 @@ public class ControllerGUI {
                             "-fx-font-family: Helvetica; " +
                             "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
                             "-fx-background-radius: 25 0 0 25;");
-                    isA = true;
                     if (!isTurn) {
-                        if (isW) {
-                            sm.setSpeed((int) (speedControl.getValue()));
+                        if (isDriving) {
                             sm.setAngle(-90);
 
-                        } else if (isS) {
-                            sm.setSpeed((int) -(speedControl.getValue()));
-                            sm.setAngle(-90);
-
-                        } else {
+                        }else {
                             sm.rotate(-1);
 
                         }
@@ -306,19 +280,12 @@ public class ControllerGUI {
                             "-fx-font-family: Helvetica; " +
                             "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
                             "-fx-background-radius: 0 25 25 0;");
-                    isD = true;
                     if (!isTurn) {
-                        if (isW) {
-                            sm.setSpeed((int) (speedControl.getValue()));
-                            sm.setAngle(90);
-
-                        } else if (isS) {
-                            sm.setSpeed((int) -(speedControl.getValue()));
+                        if (isDriving) {
                             sm.setAngle(90);
 
                         } else {
                             sm.rotate(1);
-
                         }
                         isTurn = true;
                         event.consume();
@@ -365,7 +332,6 @@ public class ControllerGUI {
                             "-fx-font-family: Helvetica; " +
                             "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
                             "-fx-background-radius: 25 25 0 0;");
-                    isW = false;
                     if (isDriving) {
                         sm.setSpeed(0);
                         isDriving = false;
@@ -382,7 +348,6 @@ public class ControllerGUI {
                             "-fx-font-family: Helvetica; " +
                             "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
                             "-fx-background-radius: 0 0 25 25;");
-                    isS = false;
                     if (isDriving) {
                         sm.setSpeed(0);
                         isDriving = false;
@@ -399,13 +364,12 @@ public class ControllerGUI {
                             "-fx-font-family: Helvetica; " +
                             "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
                             "-fx-background-radius: 25 0 0 25;");
-                    isA = false;
                     if (isTurn) {
-                        if (isW) {
-                            sm.setSpeed((int) (speedControl.getValue()));
-                        } else if (isS) {
-                            sm.setSpeed((int) -(speedControl.getValue()));
-                        } else sm.rotate(0);
+                        if (isDriving) {
+                            sm.setAngle(0);
+                        } else {
+                            sm.rotate(0);
+                        }
                         isTurn = false;
                         event.consume();
                     }
@@ -420,13 +384,12 @@ public class ControllerGUI {
                             "-fx-font-family: Helvetica; " +
                             "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
                             "-fx-background-radius: 0 25 25 0;");
-                    isD = false;
                     if (isTurn) {
-                        if (isW) {
-                            sm.setSpeed((int) (speedControl.getValue()));
-                        } else if (isS) {
-                            sm.setSpeed((int) -(speedControl.getValue()));
-                        } else sm.rotate(0);
+                        if (isDriving) {
+                            sm.setAngle(0);
+                        } else {
+                            sm.rotate(0);
+                        }
                         isTurn = false;
                         event.consume();
                     }
@@ -466,56 +429,38 @@ public class ControllerGUI {
                 if (isDriving) {
                     sm.setSpeed(0);
                     isDriving = false;
-                    textFeedback.clear();
-                    textFeedback.setText("up released");
                     event.consume();
                 }
             } else if (event.getSource() == down) {
                 if (isDriving) {
                     sm.setSpeed(0);
                     isDriving = false;
-                    textFeedback.clear();
-                    textFeedback.setText("down released");
                     event.consume();
                 }
             } else if (event.getSource() == left) {
                 if (isTurn) {
-                    if (isDriving) sm.setAngle(0);
-                    else if (!isDriving) sm.rotate(0);
+                    sm.rotate(0);
                     isTurn = false;
-                    textFeedback.clear();
-                    textFeedback.setText("left released");
                     event.consume();
                 }
             } else if (event.getSource() == right) {
                 if (isTurn) {
-                    if (isDriving) sm.setAngle(0);
-                    else if (!isDriving) sm.rotate(0);
+                    sm.rotate(0);
                     isTurn = false;
-                    textFeedback.clear();
-                    textFeedback.setText("right released");
                     event.consume();
                 }
             } else if (event.getSource() == dRight) {
-                if (isTurn) {
-                    if (isDriving) {
-                        sm.setSpeed(0);
-                        sm.setAngle(0);
-                    }
-                    isTurn = false;
-                    textFeedback.clear();
-                    textFeedback.setText("dRight released");
+                if (isDriving) {
+                    sm.setSpeed(0);
+                    sm.setAngle(0);
+                    isDriving = false;
                     event.consume();
                 }
             } else if (event.getSource() == dLeft) {
-                if (isTurn) {
                     if (isDriving) {
-                        sm.setSpeed(0);
-                        sm.setAngle(0);
-                    }
-                    isTurn = false;
-                    textFeedback.clear();
-                    textFeedback.setText("dLeft released");
+                    sm.setSpeed(0);
+                    sm.setAngle(0);
+                    isDriving = false;
                     event.consume();
                 }
             }
@@ -536,56 +481,40 @@ public class ControllerGUI {
                 if (!isDriving) {
                     sm.setSpeed((int) (speedControl.getValue()));
                     isDriving = true;
-                    textFeedback.clear();
-                    textFeedback.setText("up pressed");
                     event.consume();
                 }
             } else if (event.getSource() == down) {
                 if (!isDriving) {
                     sm.setSpeed((int) -(speedControl.getValue()));
                     isDriving = true;
-                    textFeedback.clear();
-                    textFeedback.setText("down pressed");
                     event.consume();
                 }
             } else if (event.getSource() == left) {
                 if (!isTurn) {
-                    if (isDriving) sm.setAngle(-90);
-                    else if (!isDriving) sm.rotate(-1);
+                    sm.rotate(-1);
                     isTurn = true;
-                    textFeedback.clear();
-                    textFeedback.setText("left pressed");
                     event.consume();
                 }
             } else if (event.getSource() == right) {
                 if (!isTurn) {
-                    if (isDriving) sm.setAngle(90);
-                    else if (!isDriving) sm.rotate(1);
+                    sm.rotate(1);
                     isTurn = true;
-                    textFeedback.clear();
-                    textFeedback.setText("right pressed");
                     event.consume();
                 }
             } else if (event.getSource() == dLeft) {
-                if (!isTurn) {
-                    if (isDriving) {
-                        sm.setAngle(-45);
-                        sm.setSpeed((int) speedControl.getValue());
-                    }
-                    isTurn = true;
-                    textFeedback.clear();
-                    textFeedback.setText("dLeft pressed");
+                if (!isDriving) {
+                    sm.setSpeed((int) speedControl.getValue());
+                    sm.setAngle(-90);
+
+                    isDriving = true;
                     event.consume();
                 }
             } else if (event.getSource() == dRight) {
-                if (!isTurn) {
-                    if (isDriving) {
-                        sm.setAngle(45);
-                        sm.setSpeed((int) speedControl.getValue());
-                    }
-                    isTurn = true;
-                    textFeedback.clear();
-                    textFeedback.setText("dRight pressed");
+                if (!isDriving) {
+                    sm.setSpeed((int) speedControl.getValue());
+                    sm.setAngle(90);
+
+                    isDriving = true;
                     event.consume();
                 }
             }
@@ -608,5 +537,15 @@ public class ControllerGUI {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
         }
 
+    }
+
+    public void fireConnection() {
+        connect.fire();
+    }
+
+
+    @Override
+    public void update(Observable o, Object arg) {
+        fireConnection();
     }
 }
