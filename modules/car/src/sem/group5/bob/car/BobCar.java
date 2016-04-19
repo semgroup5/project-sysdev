@@ -25,24 +25,28 @@ public class BobCar {
 
     public static void main(String[] args)
     {
-        System.out.println("Starting IP address broadcast");
-        startDiscoveryListener();
 
         SerialConnect serialC = new SerialConnect();
         serialC.initialize();
         in = serialC.getBufferReader();
         out = serialC.getOutputStream();
+        SmartCarComm scc = new SmartCarComm(in, out);
 
         System.out.println("Starting remote listener");
-        startRemoteListener(in, out);
+        startRemoteListener(scc);
 
-//        System.out.println("Starting video streamer");
-//        try {
-//            streamVideo();
-//        }catch (Exception e) {
-//            e.printStackTrace();
-//            System.out.println("Could not start video streaming");
-//        }
+        System.out.println("Starting video streamer");
+        try {
+            streamVideo();
+        }catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Could not start video streaming");
+        }
+
+        System.out.println("Starting IP address broadcast");
+        startDiscoveryListener();
+
+
     }
 
     /**
@@ -55,15 +59,14 @@ public class BobCar {
 
     /**
      * Method to initiate the port listener that will be waiting for inputs from the client side to forward it then to the arduino.
-     * @param in
-     * @param out
+     *
      */
-    public static void startRemoteListener(BufferedReader in, OutputStream out)
+    public static void startRemoteListener(SmartCarComm scc)
     {
         try{
-            RemoteControlListener rcl = new RemoteControlListener(1234, new SmartCarComm(in, out));
+            RemoteControlListener rcl = new RemoteControlListener(1234, scc);
             Thread t = new Thread(rcl);
-            t.run();
+            t.start();
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -100,7 +103,7 @@ public class BobCar {
 
             MjpegStreamer mjpegStreamer = new MjpegStreamer(serverSocket, depthJpegProvider);
             Thread t = new Thread(mjpegStreamer);
-            t.run();
+            t.start();
         }
         catch(Exception e){
             e.printStackTrace();

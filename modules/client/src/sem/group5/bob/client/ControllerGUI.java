@@ -15,6 +15,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.Socket;
 import java.util.Observable;
 import java.util.Observer;
@@ -76,7 +77,7 @@ public class ControllerGUI implements Observer{
             cm = new ConnectionManager();
             cm.init(this);
             sm = cm.getSmartCar();
-            socket = cm.socket;
+            socket = cm.controlSocket;
             isConnected = true;
             textFeedback.setText("Connected");
             loadImage.setVisible(false);
@@ -91,7 +92,7 @@ public class ControllerGUI implements Observer{
             mConnect.setText("Connect");
             cm.getDiscoverListener().close();
             sm.close();
-            cm.socket.close();
+            cm.controlSocket.close();
             textFeedback.setText("Disconnected.");
             isConnected = false;
             loadImage.setVisible(false);
@@ -120,21 +121,12 @@ public class ControllerGUI implements Observer{
                 textFeedback.setText("Start mapping!");
                 isMapping = true;
 
-//                try {
-//                    Socket s = new Socket(InetAddress.getByName(cm.getIP()), 50001);
-//                    InputStream in = s.getInputStream();
-//                    s.getOutputStream().write("start".getBytes());
-//                    s.getOutputStream().flush();
-//                    MultiPartsParse parse = new MultiPartsParse();
-//
-//                    img = ImageIO.read(in);
-//                    Image image = SwingFXUtils.toFXImage(img, null);
-//                    parse.readImage(in , img);
-//                    kinectView.setImage(image);
-//
-//                }catch (Exception e) {
-//                    e.printStackTrace();
-//                }
+                try {
+                    MultiPartsParse parse = new MultiPartsParse(cm.depthSocket.getInputStream());
+                    VideoStreamHandler vsh = new VideoStreamHandler(kinectView, parse);
+                }catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
             else {
                 map.setStyle("-fx-background-color: linear-gradient(#ffd65b, #e68400),        " +

@@ -10,32 +10,51 @@ import javax.imageio.ImageIO;
 /**
  * Created by Raphael on 09/04/2016 for project-sysdev.
  */
-public class MultiPartsParse extends Observable {
+public class MultiPartsParse extends Observable implements Runnable{
 
-    public void readImage(InputStream depthStream, BufferedImage img) {
-        byte[] boundary = "--BoundaryString".getBytes();
+    InputStream depthStream;
+    BufferedImage img;
 
+    public MultiPartsParse(InputStream depthStream) {
+        this.depthStream = depthStream;
+    }
+
+    public void run() {
+        byte[] boundary = "BoundaryString".getBytes();
         MultipartStream multipartStream = new MultipartStream(depthStream, boundary);
 
-        boolean nextPart;
-        try {
-            nextPart = multipartStream.skipPreamble();
-            while (true) {
-                while (nextPart) {
-                    String header = multipartStream.readHeaders();
-                    ByteArrayOutputStream out = new ByteArrayOutputStream();
-                    multipartStream.readBodyData(out);
-                    InputStream in = new ByteArrayInputStream(out.toByteArray());
-                    img = ImageIO.read(in);
-
-                    nextPart = multipartStream.readBoundary();
-                    setChanged();
-                    notifyObservers(img);
-                }
-            }
-        } catch (IOException e) {
+        try
+        {
+            multipartStream.setBoundary(boundary);
+        }catch (Exception e)
+        {
             e.printStackTrace();
         }
+
+        boolean nextPart =true;
+        try{
+            nextPart=multipartStream.skipPreamble();
+            while(nextPart)
+            {
+                String header = multipartStream.readHeaders();
+
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                multipartStream.readBodyData(out);
+                InputStream in = new ByteArrayInputStream(out.toByteArray());
+
+                img = ImageIO.read(in);
+
+                nextPart = multipartStream.readBoundary();
+                setChanged();
+                notifyObservers(img);
+
+            }
+        }catch(IOException e){
+            e.printStackTrace();
+            System.out.println("caught error receiving depth");
+        }
+
+
     }
 
 }

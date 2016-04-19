@@ -8,9 +8,10 @@ import java.net.Socket;
  * Created by Emanuel on 4/7/2016.
  */
 public class ConnectionManager {
-    String ip;
+    String carIp;
     DiscoveryListener d;
-    Socket socket;
+    Socket controlSocket;
+    Socket depthSocket;
     Smartcar sm;
 
     public void init(ControllerGUI ctr) {
@@ -18,26 +19,30 @@ public class ConnectionManager {
             d = new DiscoveryListener();
             d.run();
 
-            this.ip = d.getIp();
-            if (!this.ip.equals(null)) {
-                socket();
-                sm = new Smartcar(this.socket, ctr);
-            }
+            this.carIp = d.getIp();
+            this.controlSocket = initControlSocket();
+            System.out.println("Socket established");
+
+            this.depthSocket = initDepthSocket();
+            System.out.println("Depth socket established");
+
+            if (!this.carIp.equals(null)) sm = new Smartcar(this.controlSocket, ctr);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void socket() {
-        try {
-            this.socket = new Socket(this.ip, 1234);
-            System.out.println("Socket established");
-        }catch(IOException e){
-            System.out.println(e);
-        }
+    public Socket initControlSocket() throws IOException{
+        return new Socket(this.carIp, 1234);
     }
-    public String getIP(){
-        return this.ip;
+
+    public Socket initDepthSocket() throws IOException{
+        return new Socket(this.carIp, 50001);
+    }
+
+    public String getCarIp(){
+        return this.carIp;
     }
 
     public Smartcar getSmartCar(){
