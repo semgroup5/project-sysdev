@@ -35,6 +35,11 @@ public class BobCar {
         System.out.println("Starting remote listener");
         startRemoteListener(scc);
 
+
+        System.out.println("Starting IP address broadcast");
+        startDiscoveryListener();
+
+
         System.out.println("Starting video streamer");
         try {
             streamVideo();
@@ -42,9 +47,6 @@ public class BobCar {
             e.printStackTrace();
             System.out.println("Could not start video streaming");
         }
-
-        System.out.println("Starting IP address broadcast");
-        startDiscoveryListener();
 
 
     }
