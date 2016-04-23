@@ -27,6 +27,7 @@ public class DiscoveryListener {
                 c.send(sendPacket);
                 System.out.println(getClass().getName() + " Request packet sent to: 255.255.255.255");
             }catch (Exception e){
+
             }
             Enumeration interfaces = NetworkInterface.getNetworkInterfaces();
             while(interfaces.hasMoreElements()){

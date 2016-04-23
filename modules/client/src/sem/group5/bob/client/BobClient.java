@@ -23,11 +23,6 @@ public class BobClient extends Application{
         primaryStage.show();
         primaryStage.setMaximized(true);
         ControllerGUI controller = loader.getController();
-        controller.fireConnection();
-        primaryStage.setOnCloseRequest(event -> {
-            controller.fireConnection();
-            System.exit(0);
-        });
     }
 
     public static void main(String[] args) {

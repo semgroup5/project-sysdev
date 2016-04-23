@@ -1,5 +1,6 @@
 package sem.group5.bob.client;
 
+import javafx.css.Styleable;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.scene.control.*;
@@ -48,8 +49,6 @@ public class ControllerGUI implements Observer{
     public Button load;
     public ImageView kinectView1;
     public boolean isConnected = false;
-    public boolean isDriving = false;
-    public boolean isTurn = false;
     public boolean isMapping = false;
     public FileChooser fileChooser;
     public File file;
@@ -58,36 +57,39 @@ public class ControllerGUI implements Observer{
     public ConnectionManager cm;
     public Socket socket;
     public Smartcar sm;
+    public SmartcarController smartcarController;
     BufferedImage img;
+    public ClientState clientState;
+
+    public ControllerGUI() {
+        clientState = new ClientState(this);
+    }
+
+    public void tryRemovingStyleClass(Styleable object, String className)
+    {
+        int index = object.getStyleClass().indexOf(className);
+        if(index != -1){
+            object.getStyleClass().remove(index);
+        }
+    }
 
     /**
      * 
      * @throws IOException
      */
     public void connect() throws IOException {
-        loadImage.setVisible(true);
-        if(!isConnected) {
-            connect.setStyle("-fx-background-color: linear-gradient(#ff6767, #ff1a1a),        " +
-            "radial-gradient(center 50% -40%, radius 200%, #ff4d4d 45%, #ff0000 50%); " +
-            "-fx-background-insets: 0, 1; " +
-            "-fx-text-fill: #f5f5f5; " +
-            "-fx-background-radius: 25 0 0 0;");
+
+        if(!clientState.isConnected()) {
+            loadImage.setVisible(true);
+            tryRemovingStyleClass(connect, "red");
+            connect.getStyleClass().add("green");
             connect.setText("Disconnect");
             mConnect.setText("Disconnect");
-            cm = new ConnectionManager();
-            cm.init(this);
-            sm = cm.getSmartCar();
-            socket = cm.controlSocket;
-            isConnected = true;
-            textFeedback.setText("Connected");
-            loadImage.setVisible(false);
-            }
-            else{
-            connect.setStyle("-fx-background-color: linear-gradient(#f0ff35, #a9ff00),        " +
-            "radial-gradient(center 50% -40%, radius 200%, #b8ee36 45%, #80c800 50%); " +
-            "-fx-background-insets: 0, 1; " +
-            "-fx-text-fill: #395306; " +
-            "-fx-background-radius: 25 0 0 0;");
+            clientState.connect();
+        }
+        else{
+            tryRemovingStyleClass(connect, "green");
+            connect.getStyleClass().add("red");
             connect.setText("Connect");
             mConnect.setText("Connect");
             cm.getDiscoverListener().close();
@@ -96,8 +98,8 @@ public class ControllerGUI implements Observer{
             textFeedback.setText("Disconnected.");
             isConnected = false;
             loadImage.setVisible(false);
-            }
         }
+    }
 
 
 
@@ -108,36 +110,19 @@ public class ControllerGUI implements Observer{
     public void handle(ActionEvent event) {
         if(event.getSource().equals(map) && isConnected) {
             if (!isMapping) {
-                map.setStyle("-fx-background-color: linear-gradient(#ffd65b, #e68400),        " +
-                        "linear-gradient(#ffef84, #f2ba44),        " +
-                        "linear-gradient(#ffea6a, #efaa22),        " +
-                        "linear-gradient(#ffe657 0%, #8cff1a 50%, #72e600 100%),        " +
-                        "linear-gradient(from 0% 0% to 15% 50%, #a5ff4d, #59b300); " +
-                        "-fx-background-radius: 30; " +
-                        "-fx-background-insets: 0,1,2,3,0; " +
-                        "-fx-text-fill: #654b00; " +
-                        "-fx-font-weight: bold;");
+                map.getStyleClass().add("active");
                 textFeedback.clear();
                 textFeedback.setText("Start mapping!");
                 isMapping = true;
 
                 try {
-                    MultiPartsParse parse = new MultiPartsParse(cm.depthSocket.getInputStream());
-                    VideoStreamHandler vsh = new VideoStreamHandler(kinectView, parse);
+
                 }catch (Exception e) {
                     e.printStackTrace();
                 }
             }
             else {
-                map.setStyle("-fx-background-color: linear-gradient(#ffd65b, #e68400),        " +
-                        "linear-gradient(#ffef84, #f2ba44),        " +
-                        "linear-gradient(#ffea6a, #efaa22),        " +
-                        "linear-gradient(#ffe657 0%, #f8c202 50%, #eea10b 100%),        " +
-                        "linear-gradient(from 0% 0% to 15% 50%, rgba(255,255,255,0.9), rgba(255,255,255,0)); " +
-                        "-fx-background-radius: 30; " +
-                        "-fx-background-insets: 0,1,2,3,0; " +
-                        "-fx-text-fill: #654b00; " +
-                        "-fx-font-weight: bold;");
+                map.getStyleClass().remove("active");
                 textFeedback.clear();
                 textFeedback.setText("Stop mapping!");
                 isMapping = false;
@@ -207,81 +192,23 @@ public class ControllerGUI implements Observer{
             textFeedback.clear();
             textFeedback.setText("SmartCar is disconnected...");
         } else {
+            int currentSpeed = (int)speedControl.getValue();
             switch (event.getCode()) {
                 case W:
-                    up.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%), " +
-                            "linear-gradient(#020b02, #3a3a3a), " +
-                            "linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%), " +
-                            "linear-gradient(#f5f5f5 0%, #a9c4f5 50%, #6495ed 51%, #3676e8 100%); " +
-                            "-fx-background-insets: 0,1,4,5; " +
-                            "-fx-font-weight: bold; " +
-                            "-fx-font-family: Helvetica; " +
-                            "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
-                            "-fx-background-radius: 25 25 0 0;");
-                    if (!isDriving) {
-                        sm.setSpeed((int) (speedControl.getValue()));
-                        isDriving = true;
-                        event.consume();
-                    }
+                    up.getStyleClass().add("pressed");
+                    smartcarController.pressForward(currentSpeed);
                     break;
                 case S:
-                    down.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        " +
-                            "linear-gradient(#020b02, #3a3a3a),        " +
-                            "linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        " +
-                            "linear-gradient(#f5f5f5 0%, #a9c4f5 50%, #6495ed 51%, #3676e8 100%); " +
-                            "-fx-background-insets: 0,1,4,5; " +
-                            "-fx-font-weight: bold; " +
-                            "-fx-font-family: Helvetica; " +
-                            "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
-                            "-fx-background-radius: 0 0 25 25;");
-                    if (!isDriving) {
-                        sm.setSpeed((int) -(speedControl.getValue()));
-                        isDriving = true;
-                        event.consume();
-                    }
+                    down.getStyleClass().add("pressed");
+                    smartcarController.pressBack(currentSpeed);
                     break;
                 case A:
-                    left.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        " +
-                            "linear-gradient(#020b02, #3a3a3a),        " +
-                            "linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        " +
-                            "linear-gradient(#f5f5f5 0%, #a9c4f5 50%, #6495ed 51%, #3676e8 100%); " +
-                            "-fx-background-insets: 0,1,4,5; " +
-                            "-fx-font-weight: bold; " +
-                            "-fx-font-family: Helvetica; " +
-                            "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
-                            "-fx-background-radius: 25 0 0 25;");
-                    if (!isTurn) {
-                        if (isDriving) {
-                            sm.setAngle(-90);
-
-                        }else {
-                            sm.rotate(-1);
-
-                        }
-                        isTurn = true;
-                        event.consume();
-                    }
+                    left.getStyleClass().add("pressed");
+                    smartcarController.pressLeft();
                     break;
                 case D:
-                    right.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        " +
-                            "linear-gradient(#020b02, #3a3a3a),        " +
-                            "linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        " +
-                            "linear-gradient(#f5f5f5 0%, #a9c4f5 50%, #6495ed 51%, #3676e8 100%); " +
-                            "-fx-background-insets: 0,1,4,5; " +
-                            "-fx-font-weight: bold; " +
-                            "-fx-font-family: Helvetica; " +
-                            "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
-                            "-fx-background-radius: 0 25 25 0;");
-                    if (!isTurn) {
-                        if (isDriving) {
-                            sm.setAngle(90);
-
-                        } else {
-                            sm.rotate(1);
-                        }
-                        isTurn = true;
-                        event.consume();
-                    }
+                    right.getStyleClass().add("pressed");
+                    smartcarController.pressRight();
                     break;
                 case R:
                     speedControl.increment();
@@ -310,81 +237,27 @@ public class ControllerGUI implements Observer{
      * @throws IOException
      */
     public void keyListenersReleased(KeyEvent event) throws IOException {
+        event.consume();
         if (!isConnected) {
             textFeedback.clear();
             textFeedback.setText("SmartCar is disconnected...");
         } else {
             switch (event.getCode()) {
                 case W:
-                    up.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        " +
-                            "linear-gradient(#020b02, #3a3a3a),        linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        " +
-                            "linear-gradient(#f5f5f5 0%, #dbdbdb 50%, #cacaca 51%, #d7d7d7 100%); " +
-                            "-fx-background-insets: 0,1,4,5; " +
-                            "-fx-font-weight: bold; " +
-                            "-fx-font-family: Helvetica; " +
-                            "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
-                            "-fx-background-radius: 25 25 0 0;");
-                    if (isDriving) {
-                        sm.setSpeed(0);
-                        isDriving = false;
-                        event.consume();
-                    }
+                    up.getStyleClass().remove("active");
+                    smartcarController.releaseForward();
                     break;
                 case S:
-                    down.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        " +
-                            "linear-gradient(#020b02, #3a3a3a),        " +
-                            "linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        " +
-                            "linear-gradient(#f5f5f5 0%, #dbdbdb 50%, #cacaca 51%, #d7d7d7 100%); " +
-                            "-fx-background-insets: 0,1,4,5; " +
-                            "-fx-font-weight: bold; " +
-                            "-fx-font-family: Helvetica; " +
-                            "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
-                            "-fx-background-radius: 0 0 25 25;");
-                    if (isDriving) {
-                        sm.setSpeed(0);
-                        isDriving = false;
-                        event.consume();
-                    }
+                    down.getStyleClass().remove("active");
+                    smartcarController.releaseBack();
                     break;
                 case A:
-                    left.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        " +
-                            "linear-gradient(#020b02, #3a3a3a),        " +
-                            "linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        " +
-                            "linear-gradient(#f5f5f5 0%, #dbdbdb 50%, #cacaca 51%, #d7d7d7 100%); " +
-                            "-fx-background-insets: 0,1,4,5; " +
-                            "-fx-font-weight: bold; " +
-                            "-fx-font-family: Helvetica; " +
-                            "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
-                            "-fx-background-radius: 25 0 0 25;");
-                    if (isTurn) {
-                        if (isDriving) {
-                            sm.setAngle(0);
-                        } else {
-                            sm.rotate(0);
-                        }
-                        isTurn = false;
-                        event.consume();
-                    }
+                    left.getStyleClass().remove("active");
+                    smartcarController.releaseLeft();
                     break;
                 case D:
-                    right.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        " +
-                            "linear-gradient(#020b02, #3a3a3a),        " +
-                            "linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        " +
-                            "linear-gradient(#f5f5f5 0%, #dbdbdb 50%, #cacaca 51%, #d7d7d7 100%); " +
-                            "-fx-background-insets: 0,1,4,5; " +
-                            "-fx-font-weight: bold; " +
-                            "-fx-font-family: Helvetica; " +
-                            "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
-                            "-fx-background-radius: 0 25 25 0;");
-                    if (isTurn) {
-                        if (isDriving) {
-                            sm.setAngle(0);
-                        } else {
-                            sm.rotate(0);
-                        }
-                        isTurn = false;
-                        event.consume();
-                    }
+                    right.getStyleClass().remove("active");
+                    smartcarController.releaseRight();
                     break;
             }
         }
@@ -418,44 +291,15 @@ public class ControllerGUI implements Observer{
         }
         else {
             if (event.getSource() == up) {
-                if (isDriving) {
-                    sm.setSpeed(0);
-                    isDriving = false;
-                    event.consume();
-                }
+                smartcarController.releaseForward();
             } else if (event.getSource() == down) {
-                if (isDriving) {
-                    sm.setSpeed(0);
-                    isDriving = false;
-                    event.consume();
-                }
+                smartcarController.releaseBack();
             } else if (event.getSource() == left) {
-                if (isTurn) {
-                    sm.rotate(0);
-                    isTurn = false;
-                    event.consume();
-                }
+                smartcarController.releaseLeft();
             } else if (event.getSource() == right) {
-                if (isTurn) {
-                    sm.rotate(0);
-                    isTurn = false;
-                    event.consume();
-                }
-            } else if (event.getSource() == dRight) {
-                if (isDriving) {
-                    sm.setSpeed(0);
-                    sm.setAngle(0);
-                    isDriving = false;
-                    event.consume();
-                }
-            } else if (event.getSource() == dLeft) {
-                    if (isDriving) {
-                    sm.setSpeed(0);
-                    sm.setAngle(0);
-                    isDriving = false;
-                    event.consume();
-                }
-            }
+                smartcarController.releaseRight();
+            } else if (event.getSource() == dRight) {}
+              else if (event.getSource() == dLeft) {}
         }
     }
 
@@ -469,46 +313,15 @@ public class ControllerGUI implements Observer{
             textFeedback.setText("SmartCar is disconnected...");
         }
         else {
+            int currentSpeed = (int)speedControl.getValue();
             if (event.getSource() == up) {
-                if (!isDriving) {
-                    sm.setSpeed((int) (speedControl.getValue()));
-                    isDriving = true;
-                    event.consume();
-                }
+                smartcarController.pressForward(currentSpeed);
             } else if (event.getSource() == down) {
-                if (!isDriving) {
-                    sm.setSpeed((int) -(speedControl.getValue()));
-                    isDriving = true;
-                    event.consume();
-                }
+                smartcarController.pressBack(currentSpeed);
             } else if (event.getSource() == left) {
-                if (!isTurn) {
-                    sm.rotate(-1);
-                    isTurn = true;
-                    event.consume();
-                }
+                smartcarController.pressLeft();
             } else if (event.getSource() == right) {
-                if (!isTurn) {
-                    sm.rotate(1);
-                    isTurn = true;
-                    event.consume();
-                }
-            } else if (event.getSource() == dLeft) {
-                if (!isDriving) {
-                    sm.setSpeed((int) speedControl.getValue());
-                    sm.setAngle(-90);
-
-                    isDriving = true;
-                    event.consume();
-                }
-            } else if (event.getSource() == dRight) {
-                if (!isDriving) {
-                    sm.setSpeed((int) speedControl.getValue());
-                    sm.setAngle(90);
-
-                    isDriving = true;
-                    event.consume();
-                }
+                smartcarController.pressRight();
             }
         }
     }
@@ -535,9 +348,18 @@ public class ControllerGUI implements Observer{
         connect.fire();
     }
 
-
     @Override
     public void update(Observable o, Object arg) {
         fireConnection();
+    }
+
+    public void replaceStatus(String s)
+    {
+        textFeedback.setText(s);
+    }
+
+    public void appendStatus(String s)
+    {
+        textFeedback.appendText(s);
     }
 }

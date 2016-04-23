@@ -16,16 +16,15 @@ public class Smartcar extends Observable{
      * @param socket
      */
 
-    public Smartcar(Socket socket, ControllerGUI ctr) {
+    public Smartcar(Socket socket) {
         try {
-        addObserver(ctr);
-        this.socket = socket;
-        this.socket.setTcpNoDelay(true);
-        this.socket.setReuseAddress(true);
-        this.out = new PrintWriter(socket.getOutputStream());
+            this.socket = socket;
+            this.socket.setTcpNoDelay(true);
+            this.socket.setReuseAddress(true);
+            this.out = new PrintWriter(socket.getOutputStream());
            }catch(IOException e){
             setChanged();
-            notifyObservers(this);
+            notifyObservers();
             e.printStackTrace();
             }
         }
@@ -83,11 +82,24 @@ public class Smartcar extends Observable{
      * Method to close sockets in the client side and server side
      * @throws IOException
      */
-    public void close()throws IOException{
+    public void close() throws IOException{
         out.write("close/");
         out.flush();
         this.socket.close();
+    }
 
+    private void send(String string)
+    {
+        try{
+            out.write(string);
+        } catch(Exception e) {
+
+        }
+    }
+
+    public boolean isConnected()
+    {
+        return socket.isConnected() && !socket.isClosed();
     }
 }
 
