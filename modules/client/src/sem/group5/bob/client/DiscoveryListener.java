@@ -15,10 +15,12 @@ public class DiscoveryListener {
     DatagramSocket c;
     String ip = "";
 
-    public void run() {
+    public void listenIp() {
         try {
             c = new DatagramSocket(1235);
             c.setBroadcast(true);
+            c.setReuseAddress(true);
+
             byte[] sendData = "Discovery_Pi_Request".getBytes();
 
             //Try with 255.255.255.255
@@ -67,12 +69,14 @@ public class DiscoveryListener {
                 if (message.equals("Discovery_Pi_Response")) {
                     this.ip = receivePacket.getAddress().toString().substring(1);
                     System.out.println("Found Pi at carIp: " + receivePacket.getAddress().toString().substring(1));
+                    close();
                     break;
                 }
             }
 
         }catch (IOException ex) {
             Logger.getLogger(DiscoveryListener.class.getName()).log(Level.SEVERE, null, ex);
+            close();
         }
 
     }

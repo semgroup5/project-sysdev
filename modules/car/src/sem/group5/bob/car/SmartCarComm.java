@@ -7,7 +7,7 @@ import java.io.OutputStream;
     /**
     * SmartCarComm handle the received input from the client and forward it to the arduino attached in the smartcar.
     */
-    public class SmartCarComm {
+    class SmartCarComm {
         private BufferedReader input;
         private OutputStream output;
 
@@ -17,7 +17,7 @@ import java.io.OutputStream;
          * @param output OutputStream used for the serialConnect class
          * @throws NoSuchFieldError
          */
-    public SmartCarComm(BufferedReader input, OutputStream output) throws NoSuchFieldError{
+        SmartCarComm(BufferedReader input, OutputStream output) throws NoSuchFieldError{
         this.input = input;
         this.output = output;
     }
@@ -26,7 +26,7 @@ import java.io.OutputStream;
          * WriteData method is responsible for sending the data to the arduino in the smartcar
          * @param data data to be send
          */
-    public synchronized void writeData(String data) {
+    private synchronized void writeData(String data) {
         try {
             System.out.println("Sending : " + data);
             output.write(data.getBytes());
@@ -40,9 +40,9 @@ import java.io.OutputStream;
 
         /**
          * Method to send speed values to the smartcar
-         * @param speed
+         * @param speed integer speed between 1 to 100.
          */
-    public void setSpeed(int speed){
+    void setSpeed(int speed){
         if((speed <= 100) && (speed >= -100)){
             writeData("w" + speed + "/");
         }
@@ -50,9 +50,9 @@ import java.io.OutputStream;
 
         /**
          * Method to send angle values to the smartcar
-         * @param angle
+         * @param angle angle to turn the car.
          */
-    public void setAngle(int angle){
+    void setAngle(int angle){
         if(angle < 360 && angle > -360){
             writeData("a" + angle + "/");
         }
@@ -61,9 +61,9 @@ import java.io.OutputStream;
         /**
          * Method to send command to the smartcar initiate rotate in the spot.
          * If sent 1 it rotates clockwise else if sent -1 it rotates anticlockwise
-         * @param direction
+         * @param direction direction to rotate the car
          */
-    public void setRotate(int direction){
+    void setRotate(int direction){
         if(direction >= -1 || direction <= 1){
             writeData("r" + direction + "/");
         }

@@ -16,10 +16,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.Socket;
 import java.util.Observable;
-import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -27,7 +24,7 @@ import java.util.logging.Logger;
  * Created by Raphael on 06/03/2016 for project-sysdev for project-sysdev.
  */
 
-public class ControllerGUI implements Observer{
+public class ControllerGUI extends Observable {
 
     public MenuBar menuBar;
     public MenuItem close;
@@ -48,29 +45,22 @@ public class ControllerGUI implements Observer{
     public Button save;
     public Button load;
     public ImageView kinectView1;
-    public boolean isConnected = false;
     public boolean isMapping = false;
     public FileChooser fileChooser;
     public File file;
     public Slider speedControl;
     public ImageView loadImage;
-    public ConnectionManager cm;
-    public Socket socket;
-    public Smartcar sm;
-    public SmartcarController smartcarController;
     BufferedImage img;
     public ClientState clientState;
+    ButtonsStyle style;
 
+    /**
+     *
+     */
     public ControllerGUI() {
         clientState = new ClientState(this);
-    }
-
-    public void tryRemovingStyleClass(Styleable object, String className)
-    {
-        int index = object.getStyleClass().indexOf(className);
-        if(index != -1){
-            object.getStyleClass().remove(index);
-        }
+        addObserver(clientState);
+        style = new ButtonsStyle(this);
     }
 
     /**
@@ -81,23 +71,19 @@ public class ControllerGUI implements Observer{
 
         if(!clientState.isConnected()) {
             loadImage.setVisible(true);
-            tryRemovingStyleClass(connect, "red");
-            connect.getStyleClass().add("green");
+            style.styleButton(connect, "active");
             connect.setText("Disconnect");
             mConnect.setText("Disconnect");
-            clientState.connect();
+            setChanged();
+            notifyObservers(this);
         }
         else{
-            tryRemovingStyleClass(connect, "green");
-            connect.getStyleClass().add("red");
+            loadImage.setVisible(true);
+            style.styleButton(connect, "");
             connect.setText("Connect");
             mConnect.setText("Connect");
-            cm.getDiscoverListener().close();
-            sm.close();
-            cm.controlSocket.close();
-            textFeedback.setText("Disconnected.");
-            isConnected = false;
-            loadImage.setVisible(false);
+            setChanged();
+            notifyObservers(this);
         }
     }
 
@@ -105,26 +91,23 @@ public class ControllerGUI implements Observer{
 
     /**
      * Method to handle events like mapping, load and save.
-     * @param event
+     * @param event clicked button event
      */
     public void handle(ActionEvent event) {
-        if(event.getSource().equals(map) && isConnected) {
+        if(event.getSource().equals(map) && clientState.isConnected) {
             if (!isMapping) {
-                map.getStyleClass().add("active");
-                textFeedback.clear();
-                textFeedback.setText("Start mapping!");
+                style.styleButton(map, "active");
                 isMapping = true;
 
                 try {
-
+                    clientState.startMap();
                 }catch (Exception e) {
                     e.printStackTrace();
                 }
             }
             else {
-                map.getStyleClass().remove("active");
-                textFeedback.clear();
-                textFeedback.setText("Stop mapping!");
+                style.styleButton(map, "");
+                replaceStatus("Mapping stopped!");
                 isMapping = false;
             }
         }
@@ -165,9 +148,7 @@ public class ControllerGUI implements Observer{
      * @param event
      */
     public void shadow(Event event) {
-        if(event.getSource().equals(connect))connect.setEffect(new DropShadow());
-        if(event.getSource().equals(save))save.setEffect(new DropShadow());
-        if(event.getSource().equals(load))load.setEffect(new DropShadow());
+        style.shadow(event);
 
     }
 
@@ -176,10 +157,7 @@ public class ControllerGUI implements Observer{
      * @param event
      */
     public void shadowOff(Event event) {
-        if(event.getSource().equals(connect))connect.setEffect(null);
-        if(event.getSource().equals(save))save.setEffect(null);
-        if(event.getSource().equals(load))load.setEffect(null);
-
+        style.shadowOff(event);
     }
 
     /**
@@ -188,35 +166,34 @@ public class ControllerGUI implements Observer{
      * @throws IOException
      */
     public void keyListenersPressed(KeyEvent event) throws IOException {
-        if (!isConnected) {
-            textFeedback.clear();
-            textFeedback.setText("SmartCar is disconnected...");
+        if (!clientState.isConnected) {
+            replaceStatus("SmartCar is disconnected...");
         } else {
             int currentSpeed = (int)speedControl.getValue();
             switch (event.getCode()) {
                 case W:
-                    up.getStyleClass().add("pressed");
-                    smartcarController.pressForward(currentSpeed);
+                    style.styleButton(up, "active");
+                    clientState.getSmartcarController().pressForward(currentSpeed);
                     break;
                 case S:
-                    down.getStyleClass().add("pressed");
-                    smartcarController.pressBack(currentSpeed);
+                    style.styleButton(down, "active");
+                    clientState.getSmartcarController().pressBack(currentSpeed);
                     break;
                 case A:
-                    left.getStyleClass().add("pressed");
-                    smartcarController.pressLeft();
+                    style.styleButton(left, "active");
+                    clientState.getSmartcarController().pressLeft();
                     break;
                 case D:
-                    right.getStyleClass().add("pressed");
-                    smartcarController.pressRight();
+                    style.styleButton(right, "active");
+                    clientState.getSmartcarController().pressRight();
                     break;
                 case R:
                     speedControl.increment();
-                    textFeedback.setText("driving at " + speedControl.getValue() + "%");
+                    replaceStatus("driving at " + speedControl.getValue() + "%");
                     break;
                 case F:
                     speedControl.decrement();
-                    textFeedback.setText("driving at " + speedControl.getValue() + "%");
+                    replaceStatus("driving at " + speedControl.getValue() + "%");
                     break;
                 case Z:
                     map.fire();
@@ -238,26 +215,25 @@ public class ControllerGUI implements Observer{
      */
     public void keyListenersReleased(KeyEvent event) throws IOException {
         event.consume();
-        if (!isConnected) {
-            textFeedback.clear();
-            textFeedback.setText("SmartCar is disconnected...");
+        if (!clientState.isConnected) {
+            replaceStatus("SmartCar is disconnected...");
         } else {
             switch (event.getCode()) {
                 case W:
-                    up.getStyleClass().remove("active");
-                    smartcarController.releaseForward();
+                    style.styleButton(up, "");
+                    clientState.getSmartcarController().releaseForward();
                     break;
                 case S:
-                    down.getStyleClass().remove("active");
-                    smartcarController.releaseBack();
+                    style.styleButton(down, "");
+                    clientState.getSmartcarController().releaseBack();
                     break;
                 case A:
-                    left.getStyleClass().remove("active");
-                    smartcarController.releaseLeft();
+                    style.styleButton(left, "");
+                    clientState.getSmartcarController().releaseLeft();
                     break;
                 case D:
-                    right.getStyleClass().remove("active");
-                    smartcarController.releaseRight();
+                    style.styleButton(right, "");
+                    clientState.getSmartcarController().releaseRight();
                     break;
             }
         }
@@ -268,14 +244,7 @@ public class ControllerGUI implements Observer{
      * @param event
      */
     public void setFocused(Event event) {
-        if(event.getSource().equals(connect))connect.setEffect(new InnerShadow());
-        if(event.getSource().equals(save))save.setEffect(new InnerShadow());
-        if(event.getSource().equals(load))load.setEffect(new InnerShadow());
-        if(event.getSource().equals(up))up.setEffect(new InnerShadow());
-        if(event.getSource().equals(down))down.setEffect(new InnerShadow());
-        if(event.getSource().equals(left))left.setEffect(new InnerShadow());
-        if(event.getSource().equals(right))right.setEffect(new InnerShadow());
-
+        style.setFocused(event);
     }
 
 
@@ -285,19 +254,18 @@ public class ControllerGUI implements Observer{
      * @param event
      */
     public void mouseReleased(MouseEvent event) throws IOException {
-        if (!isConnected) {
-            textFeedback.clear();
-            textFeedback.setText("SmartCar is disconnected...");
+        if (!clientState.isConnected) {
+            replaceStatus("SmartCar is disconnected...");
         }
         else {
             if (event.getSource() == up) {
-                smartcarController.releaseForward();
+                clientState.getSmartcarController().releaseForward();
             } else if (event.getSource() == down) {
-                smartcarController.releaseBack();
+                clientState.getSmartcarController().releaseBack();
             } else if (event.getSource() == left) {
-                smartcarController.releaseLeft();
+                clientState.getSmartcarController().releaseLeft();
             } else if (event.getSource() == right) {
-                smartcarController.releaseRight();
+                clientState.getSmartcarController().releaseRight();
             } else if (event.getSource() == dRight) {}
               else if (event.getSource() == dLeft) {}
         }
@@ -308,20 +276,19 @@ public class ControllerGUI implements Observer{
      * @param event
      */
     public void mousePressed(MouseEvent event) throws IOException {
-        if (!isConnected) {
-            textFeedback.clear();
-            textFeedback.setText("SmartCar is disconnected...");
+        if (!clientState.isConnected) {
+            replaceStatus("SmartCar is disconnected...");
         }
         else {
             int currentSpeed = (int)speedControl.getValue();
             if (event.getSource() == up) {
-                smartcarController.pressForward(currentSpeed);
+                clientState.getSmartcarController().pressForward(currentSpeed);
             } else if (event.getSource() == down) {
-                smartcarController.pressBack(currentSpeed);
+                clientState.getSmartcarController().pressBack(currentSpeed);
             } else if (event.getSource() == left) {
-                smartcarController.pressLeft();
+                clientState.getSmartcarController().pressLeft();
             } else if (event.getSource() == right) {
-                smartcarController.pressRight();
+                clientState.getSmartcarController().pressRight();
             }
         }
     }
@@ -348,13 +315,9 @@ public class ControllerGUI implements Observer{
         connect.fire();
     }
 
-    @Override
-    public void update(Observable o, Object arg) {
-        fireConnection();
-    }
-
     public void replaceStatus(String s)
     {
+        textFeedback.clear();
         textFeedback.setText(s);
     }
 

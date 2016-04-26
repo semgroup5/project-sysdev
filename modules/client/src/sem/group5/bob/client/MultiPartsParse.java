@@ -31,12 +31,12 @@ public class MultiPartsParse extends Observable implements Runnable{
             e.printStackTrace();
         }
 
-        boolean nextPart =true;
+        boolean nextPart;
         try{
             nextPart=multipartStream.skipPreamble();
             while(nextPart)
             {
-                String header = multipartStream.readHeaders();
+                multipartStream.readHeaders();
 
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
                 multipartStream.readBodyData(out);

@@ -13,20 +13,29 @@ public class ClientState implements Observer {
     ConnectionManager connectionManager;
     SmartcarController smartcarController;
     VideoStreamHandler videoStreamHandler;
-    boolean isConnected = false;
+    boolean isConnected;
 
+    /**
+     * Constructor
+     * @param gui
+     */
     public ClientState(ControllerGUI gui) {
         this.gui = gui;
         connectionManager = new ConnectionManager();
+        isConnected = false;
     }
 
+    /**
+     *
+     */
     public void connect()
     {
         connectionManager.addObserver(this);
-        Thread connectionThread = new Thread(new Runnable(){
-            @Override
-            public void run() {
+        Thread connectionThread = new Thread(() -> {
+            try {
                 connectionManager.connect();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         });
         connectionThread.start();
@@ -44,7 +53,7 @@ public class ClientState implements Observer {
     public void startMap(){
         try{
             MultiPartsParse parse = new MultiPartsParse(connectionManager.getDepthSocket().getInputStream());
-            VideoStreamHandler vsh = new VideoStreamHandler(gui.kinectView,  parse);
+            videoStreamHandler = new VideoStreamHandler(gui.kinectView,  parse);
             gui.replaceStatus("Map connection successful.");
         }catch (Exception e){
             gui.replaceStatus("Map connection failed.\r\n" + "Reason: " + e.getMessage());
@@ -56,18 +65,57 @@ public class ClientState implements Observer {
 
     }
 
+    public SmartcarController getSmartcarController() {
+        return smartcarController;
+    }
+
     @Override
     public void update(Observable observable, Object o) {
-        if(o instanceof ConnectionManager)
+        if (o instanceof ControllerGUI)
         {
-            gui.loadImage.setVisible(false);
-            if(!connectionManager.isConnected){
-                gui.replaceStatus("Connected");
-            }else{
-                if(connectionManager.connectionException != null){
-                    gui.replaceStatus("Couldn't connect, reason:" + connectionManager.connectionException.getMessage());
+           if (!isConnected)
+           {
+             connect();
+           }
+           else
+           {
+               try {
+                   smartcar.close();
+                   disconnect();
+               } catch (IOException e) {
+                   gui.replaceStatus("Couldn't connect, reason:" + e.getMessage());
+               }
+           }
+        }
+        else if(o instanceof ConnectionManager)
+        {
+            if (connectionManager.isConnected()) {
+                gui.loadImage.setVisible(false);
+                try {
+                    this.smartcar = connectionManager.getSmartCar();
+                    this.smartcar.addObserver(this);
+                    this.smartcarController = connectionManager.getSmartcarController();
+                    gui.replaceStatus("Connected!");
+                    isConnected = true;
+                } catch (IOException e) {
+                    gui.replaceStatus("Couldn't connect, reason:" + e.getMessage());
                 }
-
+            } else if (!connectionManager.isConnected() && connectionManager.connectionException != null){
+                isConnected = false;
+                gui.style.styleButton(gui.connect, "");
+                gui.replaceStatus("Couldn't connect, reason:" + connectionManager.connectionException.getMessage());
+            } else if (!connectionManager.isConnected()){
+                gui.loadImage.setVisible(false);
+                gui.replaceStatus("Disconnected!");
+                isConnected = false;
+            }
+        }
+        else if (o instanceof Smartcar)
+        {
+            try {
+                connectionManager.reconnect();
+            } catch (IOException e) {
+                gui.replaceStatus("Couldn't connect, reason:" + e.getMessage());
             }
         }
     }

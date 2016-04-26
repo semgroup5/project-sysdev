@@ -17,11 +17,12 @@ public class DiscoveryBroadcaster {
     /**
      * Method to start the broadcasting
      */
-    public void startBroadcast() {
+    public void startIPBroadcast() {
         try{
             //Open a socket to listen to UPD traffic that is aimed at this port
             socket = new DatagramSocket(1235, InetAddress.getByName("0.0.0.0"));
             socket.setBroadcast(true);
+            socket.setReuseAddress(true);
 
             while(true){
                 System.out.println(getClass().getName() + " Ready to receive broadcast packets");

@@ -6,9 +6,10 @@ import java.io.Writer;
 import java.net.Socket;
 import java.util.Observable;
 
-public class Smartcar extends Observable{
+public class Smartcar extends Observable {
     Socket socket;
     Writer out;
+    IOException e;
 
     /**
      * Initialize a new connection to a remote smartcar
@@ -23,9 +24,8 @@ public class Smartcar extends Observable{
             this.socket.setReuseAddress(true);
             this.out = new PrintWriter(socket.getOutputStream());
            }catch(IOException e){
-            setChanged();
-            notifyObservers();
-            e.printStackTrace();
+            notifyConnectionLost();
+            this.e = e;
             }
         }
 
@@ -39,9 +39,8 @@ public class Smartcar extends Observable{
             out.write("s" + speed + "/");
             out.flush();
         } catch (IOException e) {
-            setChanged();
-            notifyObservers(this);
-            e.printStackTrace();
+            notifyConnectionLost();
+            this.e = e;
         }
     }
 
@@ -56,9 +55,8 @@ public class Smartcar extends Observable{
             out.write(toSend + angle + "/");
             out.flush();
         } catch (IOException e) {
-            setChanged();
-            notifyObservers(this);
-            e.printStackTrace();
+            notifyConnectionLost();
+            this.e = e;
         }
     }
 
@@ -72,9 +70,8 @@ public class Smartcar extends Observable{
             out.write(toSend + angle + "/");
             out.flush();
         } catch (IOException e) {
-            setChanged();
-            notifyObservers(this);
-            e.printStackTrace();
+            notifyConnectionLost();
+            this.e = e;
         }
     }
 
@@ -85,16 +82,12 @@ public class Smartcar extends Observable{
     public void close() throws IOException{
         out.write("close/");
         out.flush();
-        this.socket.close();
     }
 
-    private void send(String string)
+    public void notifyConnectionLost()
     {
-        try{
-            out.write(string);
-        } catch(Exception e) {
-
-        }
+       setChanged();
+       notifyObservers(this);
     }
 
     public boolean isConnected()

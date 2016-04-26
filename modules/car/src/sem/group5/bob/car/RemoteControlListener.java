@@ -7,18 +7,19 @@ import java.net.Socket;
 /**
  * Class responsible for establishing connection between client and raspberry pi and use received data to forward it to the arduino
  */
-public class RemoteControlListener implements Runnable{
+
+class RemoteControlListener implements Runnable{
     private InputStream in;
-    int port;
-    SmartCarComm sc;
-    Socket socket;
+    private int port;
+    private SmartCarComm sc;
+    private Socket socket;
 
     /**
      * Constructor
-     * @param port
-     * @param sc
+     * @param port socket port for communication
+     * @param sc smartCarComm to send data to arduino
      */
-    public RemoteControlListener(int port, SmartCarComm sc) {
+    RemoteControlListener(int port, SmartCarComm sc) {
         this.port = port;
         this.sc = sc;
     }
@@ -26,7 +27,7 @@ public class RemoteControlListener implements Runnable{
     /**
      * Method to open up the port and handle received inputs in it
      */
-    public void listen()
+    private void listen()
     {
         socket = null;
 
@@ -78,7 +79,7 @@ public class RemoteControlListener implements Runnable{
         listen();
     }
 
-    public void closeConnections() {
+    private void closeConnections() {
         try {
             in.close();
             socket.close();

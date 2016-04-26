@@ -1,18 +1,15 @@
 package sem.group5.bob.client;
 
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
-import sem.group5.bob.client.DiscoveryListener;
 
 /**
  * Created by Rapha on 30/03/16.
  */
-public class BobClient extends Application{
+public class BobClient extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/client.fxml"));
@@ -23,6 +20,12 @@ public class BobClient extends Application{
         primaryStage.show();
         primaryStage.setMaximized(true);
         ControllerGUI controller = loader.getController();
+        controller.fireConnection();
+        primaryStage.setOnCloseRequest(event -> {
+                       controller.fireConnection();
+                       System.exit(0);
+                 });
+
     }
 
     public static void main(String[] args) {

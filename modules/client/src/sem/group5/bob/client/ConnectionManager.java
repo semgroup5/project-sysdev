@@ -18,36 +18,48 @@ public class ConnectionManager extends Observable{
     boolean isConnected;
     Exception connectionException;
 
-    public void connect(){
+    public void connect() throws IOException {
         try {
             d = new DiscoveryListener();
-            d.run();
+            d.listenIp();
 
             this.carIp = d.getIp();
             this.controlSocket = getControlSocket();
             System.out.println("Socket established");
 
-            this.depthSocket = getDepthSocket();
-            System.out.println("Depth socket established");
+//            this.depthSocket = getDepthSocket();
+//            System.out.println("Depth socket established");
 
             if (!this.carIp.equals(null)) smartcar = new Smartcar(this.controlSocket);
             isConnected = true;
+
+            setChanged();
+            notifyObservers(this);
         } catch (IOException e) {
             connectionException = e;
             isConnected = false;
+            setChanged();
+            notifyObservers(this);
         }
     }
 
     public void disconnect(){
         try{
-            controlSocket.getInputStream().close();
-            controlSocket.getOutputStream().close();
-            controlSocket.close();
+            d.close();
 
-            depthSocket.getInputStream().close();
-            depthSocket.getOutputStream().close();
-            depthSocket.close();
-        }catch(Exception e){}
+            controlSocket.close();
+            System.out.println("Control socket closed!");
+
+//            depthSocket.close();
+//            System.out.println("Depth socket closed!");
+
+            isConnected = false;
+            setChanged();
+            notifyObservers(this);
+            System.out.println("notified");
+        }catch(Exception e){
+            connectionException = e;
+        }
 
     }
 
@@ -69,6 +81,8 @@ public class ConnectionManager extends Observable{
     public Socket getControlSocket() throws IOException{
         if(controlSocket == null){
             controlSocket = new Socket(this.carIp, 1234);
+            controlSocket.setReuseAddress(true);
+            controlSocket.setTcpNoDelay(true);
         }
 
         return controlSocket;
@@ -76,7 +90,9 @@ public class ConnectionManager extends Observable{
 
     public Socket getDepthSocket() throws IOException{
         if(depthSocket == null){
-                depthSocket = new Socket(this.carIp, 50001);
+            depthSocket = new Socket(this.carIp, 50001);
+            depthSocket.setReuseAddress(true);
+            depthSocket.setTcpNoDelay(true);
             }
         return depthSocket;
     }
@@ -94,5 +110,9 @@ public class ConnectionManager extends Observable{
 
     public DiscoveryListener getDiscoverListener(){
         return this.d;
+    }
+
+    public boolean isConnected() {
+        return isConnected;
     }
 }

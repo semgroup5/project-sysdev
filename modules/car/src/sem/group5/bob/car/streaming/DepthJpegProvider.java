@@ -7,15 +7,15 @@ import java.nio.ByteBuffer;
 import java.util.Observable;
 
 public class DepthJpegProvider extends Observable implements JpegProvider {
-    static ByteBuffer latestDepthFrame;
+    private static ByteBuffer latestDepthFrame;
 
    public void receiveDepth(FrameMode frameMode, ByteBuffer byteBuffer, int i) {
         latestDepthFrame = byteBuffer;
     }
 
-    int pixelWidth = 1;
-    int imageSize = 640 * 480 * pixelWidth;
-    byte[] comboFrame = new byte[imageSize];
+    private int pixelWidth = 1;
+    private int imageSize = 640 * 480 * pixelWidth;
+    private byte[] comboFrame = new byte[imageSize];
     public byte[] getLatestJpeg() throws Exception{
         if(latestDepthFrame == null)
             Thread.sleep(1000);
@@ -30,7 +30,7 @@ public class DepthJpegProvider extends Observable implements JpegProvider {
 
         for (int i =0; i < imageSize; i = i + pixelWidth) {
             int pixel = (i / pixelWidth) * 2; // 2 bytes per pixel for both depth and video
-            comboFrame[i] =  (byte)( ( ( dFrame[pixel +1] & 0xFF ) << 6) | ( dFrame[pixel+0] & 0xFF >>> 3)  ); // squish depth
+            comboFrame[i] =  (byte)( ( ( dFrame[pixel +1] & 0xFF ) << 6) | ( dFrame[pixel] & 0xFF >>> 3)  ); // squish depth
         }
 
         System.out.println("Compressing Frame");
