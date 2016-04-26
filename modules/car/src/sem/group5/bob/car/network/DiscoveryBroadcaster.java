@@ -1,5 +1,7 @@
 package sem.group5.bob.car.network;
 
+import sem.group5.bob.car.RemoteControlListener;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -52,8 +54,22 @@ public class DiscoveryBroadcaster {
             }
         }catch(IOException ex){
             Logger.getLogger(DiscoveryBroadcaster.class.getName()).log(Level.SEVERE, null, ex);
-
+            socketKill();
         }
+    }
+
+    /**
+    Method to close socket when encountering error on runtime
+     */
+    public void socketKill(){
+        System.out.print(socket + "closing socket..");
+        try{
+            socket.close();
+            System.out.print("Socket closed");
+        }catch(Exception e) {
+            System.out.print("Could not close socket");
+        }
+        startBroadcast();
     }
 
     private static class DiscoveryHolder{

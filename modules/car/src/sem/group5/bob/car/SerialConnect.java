@@ -21,12 +21,7 @@ public class SerialConnect implements SerialPortEventListener {
     /**
      * The port we're normally going to use.
      */
-    private static final String PORT_NAMES[] = {
-            "/dev/tty.usbserial-A9007UX1", // Mac OS X
-            //"/dev/ttyUSB0", // Linux
-            "/dev/ttyACM0", // Raspberry Pi
-            "COM4", // Windows
-    };
+    private static final String PORT_NAMES[] = {"/dev/ttyACM0"}; // Raspberry Pi};
 
     private BufferedReader input;
     private OutputStream output;
@@ -43,9 +38,6 @@ public class SerialConnect implements SerialPortEventListener {
      * Method to establish the serial connection
      */
     public void initialize(){
-        // the next line is for Raspberry Pi and
-        // gets us into the while loop and was suggested here was suggested http://www.raspberrypi.org/phpBB3/viewtopic.php?f=81&t=32186
-        //System.setProperty("gnu.io.rxtx.SerialPorts", "/dev/ttyACM0");
 
         Properties properties = System.getProperties();
         String currentPorts = properties.getProperty("gnu.io.rxtx.SerialPorts", "/dev/ttyACM0");
@@ -69,9 +61,22 @@ public class SerialConnect implements SerialPortEventListener {
                 }
             }
         }
+        /**
+         * If a Arduino unit is not connected within 3 tries, skip it
+         */
         if (portId == null) {
-            System.out.println("Could not find COM port.");
-            System.exit(1);
+            int retry = 0;
+            System.out.println("Could not find COM port. \nPlease connect USB-cable to the Arduino");
+            try {
+                Thread.sleep(2000);
+                if(retry < 3){
+                    retry++;
+                    initialize();
+                }
+                System.out.print("Skipping USB connection..");
+            } catch(InterruptedException ex) {
+                Thread.currentThread().interrupt();
+            }
             return;
         }
 
@@ -146,6 +151,7 @@ public class SerialConnect implements SerialPortEventListener {
                 System.out.println(inputLine);
             } catch (Exception e) {
                 System.err.println(e.toString());
+                close();
             }
         }
     }
