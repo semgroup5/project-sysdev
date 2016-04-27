@@ -32,6 +32,7 @@ class MultiPartsParse extends Observable implements Runnable{
             nextPart=multipartStream.skipPreamble();
             while(nextPart)
             {
+
                 multipartStream.readHeaders();
 
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -39,6 +40,7 @@ class MultiPartsParse extends Observable implements Runnable{
                 InputStream in = new ByteArrayInputStream(out.toByteArray());
 
                 BufferedImage img = ImageIO.read(in);
+
 
                 nextPart = multipartStream.readBoundary();
                 setChanged();
