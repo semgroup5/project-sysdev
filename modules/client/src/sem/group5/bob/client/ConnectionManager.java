@@ -1,36 +1,35 @@
 package sem.group5.bob.client;
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 
 import java.io.IOException;
 import java.net.Socket;
 import java.util.Observable;
 
-/**
- * Created by Emanuel on 4/7/2016.
- */
-public class ConnectionManager extends Observable{
-    String carIp;
-    DiscoveryListener d;
-    Socket controlSocket;
-    Socket depthSocket;
-    Smartcar smartcar;
-    SmartcarController smartcarController;
-    boolean isConnected;
+class ConnectionManager extends Observable {
+    private String carIp;
+    private Socket controlSocket;
+    private Socket depthSocket;
+    private Smartcar smartcar;
+    private SmartcarController smartcarController;
+    private boolean isConnected;
     Exception connectionException;
 
-    public void connect() throws IOException {
+    /**
+     * Method to connect to bobCar
+     * @throws IOException
+     */
+    void connect() throws IOException {
         try {
-            d = new DiscoveryListener();
+            DiscoveryListener d = new DiscoveryListener();
             d.listenIp();
-
             this.carIp = d.getIp();
+
             this.controlSocket = getControlSocket();
             System.out.println("Socket established");
 
-//            this.depthSocket = getDepthSocket();
-//            System.out.println("Depth socket established");
+            this.depthSocket = getDepthSocket();
+            System.out.println("Depth socket established");
 
-            if (!this.carIp.equals(null)) smartcar = new Smartcar(this.controlSocket);
+            if (!(this.carIp == null)) smartcar = new Smartcar(this.controlSocket);
             isConnected = true;
 
             setChanged();
@@ -43,33 +42,49 @@ public class ConnectionManager extends Observable{
         }
     }
 
-    public void disconnect(){
+    /**
+     * Method to disconnect from bobCar
+     */
+    void disconnect(){
         try{
-            d.close();
+            smartcarController = null;
 
             controlSocket.close();
+            controlSocket = null;
             System.out.println("Control socket closed!");
 
-//            depthSocket.close();
-//            System.out.println("Depth socket closed!");
+            depthSocket.close();
+            depthSocket = null;
+            System.out.println("Depth socket closed!");
 
             isConnected = false;
             setChanged();
             notifyObservers(this);
-            System.out.println("notified");
         }catch(Exception e){
             connectionException = e;
         }
 
     }
 
-    public void reconnect() throws IOException
+    /**
+     * Method to reconnect to bobCar
+     */
+    void reconnect()
     {
-        disconnect();
-        connect();
+        try {
+            disconnect();
+            connect();
+        } catch (IOException e) {
+            connectionException = e;
+        }
     }
 
-    public SmartcarController getSmartcarController() throws IOException
+    /**
+     * Method to get smartcarController
+     * @return smartcarController
+     * @throws IOException
+     */
+    SmartcarController getSmartcarController() throws IOException
     {
         if(smartcarController == null){
             smartcarController = new SmartcarController(this);
@@ -78,17 +93,26 @@ public class ConnectionManager extends Observable{
         return smartcarController;
     }
 
-    public Socket getControlSocket() throws IOException{
+    /**
+     * Method to get controlSocket
+     * @return controlSocket
+     * @throws IOException
+     */
+    private Socket getControlSocket() throws IOException{
         if(controlSocket == null){
             controlSocket = new Socket(this.carIp, 1234);
             controlSocket.setReuseAddress(true);
             controlSocket.setTcpNoDelay(true);
         }
-
         return controlSocket;
     }
 
-    public Socket getDepthSocket() throws IOException{
+    /**
+     * Method to get depthSocket
+     * @return depthSocket
+     * @throws IOException
+     */
+    Socket getDepthSocket() throws IOException{
         if(depthSocket == null){
             depthSocket = new Socket(this.carIp, 50001);
             depthSocket.setReuseAddress(true);
@@ -97,22 +121,23 @@ public class ConnectionManager extends Observable{
         return depthSocket;
     }
 
-    public String getCarIp(){
-        return this.carIp;
-    }
-
-    public Smartcar getSmartCar() throws IOException{
+    /**
+     * Method to get smartcar
+     * @return smartcar
+     * @throws IOException
+     */
+    Smartcar getSmartCar() throws IOException{
         if(smartcar == null || !smartcar.isConnected()) {
             smartcar = new Smartcar(this.getControlSocket());
         }
         return this.smartcar;
     }
 
-    public DiscoveryListener getDiscoverListener(){
-        return this.d;
-    }
-
-    public boolean isConnected() {
+    /**
+     * Method to tell if it is connected to bobCar
+     * @return isConnected
+     */
+    boolean isConnected() {
         return isConnected;
     }
 }

@@ -1,19 +1,24 @@
 package sem.group5.bob.client;
+
 import java.io.IOException;
 
-public class SmartcarController {
-    public Smartcar smartcar;
-    boolean isDriving;
-    boolean forwardPressed;
-    boolean backPressed;
-    boolean leftPressed;
-    boolean rightPressed;
+class SmartcarController {
+    private Smartcar smartcar;
+    private boolean forwardPressed;
+    private boolean backPressed;
+    private boolean leftPressed;
+    private boolean rightPressed;
 
-    public SmartcarController(ConnectionManager connectionManager) throws IOException {
+    /**
+     *
+     * @param connectionManager connectionManager
+     * @throws IOException
+     */
+    SmartcarController(ConnectionManager connectionManager) throws IOException {
         smartcar = connectionManager.getSmartCar();
     }
 
-    public void pressForward(int speed) throws IOException{
+    void pressForward(int speed) throws IOException{
         Thread thread = new Thread(() -> {
             if(!backPressed) {
                 try {
@@ -27,7 +32,7 @@ public class SmartcarController {
         thread.start();
     }
 
-    public void pressBack(int speed) throws IOException {
+    void pressBack(int speed) throws IOException {
         Thread thread = new Thread(() -> {
             if(!forwardPressed) {
                 try {
@@ -41,7 +46,7 @@ public class SmartcarController {
         thread.start();
     }
 
-    public void pressLeft() throws IOException {
+    void pressLeft() throws IOException {
         Thread thread = new Thread(() -> {
             if(!rightPressed) {
                 try {
@@ -59,7 +64,7 @@ public class SmartcarController {
         thread.start();
     }
 
-    public void pressRight() throws IOException{
+    void pressRight() throws IOException{
         Thread thread = new Thread(() -> {
             if(!leftPressed) {
                 try {
@@ -77,7 +82,7 @@ public class SmartcarController {
         thread.start();
     }
 
-    public void releaseForward() throws IOException{
+    void releaseForward() throws IOException{
         Thread thread = new Thread(() -> {
             try {
                 forwardPressed = false;
@@ -89,7 +94,7 @@ public class SmartcarController {
         thread.start();
     }
 
-    public void releaseBack() throws IOException{
+    void releaseBack() throws IOException{
         Thread thread = new Thread(() -> {
             try {
                 backPressed = false;
@@ -101,7 +106,7 @@ public class SmartcarController {
         thread.start();
     }
 
-    public void releaseLeft() throws IOException{
+    void releaseLeft() throws IOException{
         Thread thread = new Thread(() -> {
             try {
                 leftPressed = false;
@@ -118,7 +123,7 @@ public class SmartcarController {
         thread.start();
     }
 
-    public void releaseRight() throws IOException{
+    void releaseRight() throws IOException{
         Thread thread = new Thread(() -> {
             try {
                 rightPressed = false;

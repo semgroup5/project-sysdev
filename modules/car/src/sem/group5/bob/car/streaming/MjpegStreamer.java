@@ -1,24 +1,28 @@
 package sem.group5.bob.car.streaming;
 
+import sem.group5.bob.car.BobCarObserver;
+
+import java.io.IOException;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Observable;
 
-public class MjpegStreamer implements Runnable{
-    String ip;
-    int port;
-    ServerSocket serverSocket;
-    DepthJpegProvider cjp;
+public class MjpegStreamer extends Observable implements Runnable{
+    private ServerSocket serverSocket;
+    private DepthJpegProvider cjp;
+    private Socket socket;
 
-    public MjpegStreamer(ServerSocket s, DepthJpegProvider cjp) {
-        this.serverSocket = s;
+    public MjpegStreamer(Socket s, ServerSocket serverSocket, DepthJpegProvider cjp, BobCarObserver bobCarObserver) {
+        this.serverSocket = serverSocket;
+        this.socket = s;
         this.cjp = cjp;
+        addObserver(bobCarObserver);
     }
 
-    public void stream() throws Exception
+    private void stream() throws Exception
     {
         System.out.println("Streaming");
-        Socket socket = serverSocket.accept();
         OutputStream out = socket.getOutputStream();
         out.write( ( "HTTP/1.0 200 OK\r\n" +
                      "Server: YourServerName\r\n" +
@@ -31,7 +35,7 @@ public class MjpegStreamer implements Runnable{
                      "boundary=BoundaryString\r\n\r\n" ).getBytes() );
 
         byte[] data;
-        while(true) {
+        while (!socket.isClosed()) {
             System.out.println("Sending frame");
             data = cjp.getLatestJpeg();
             out.write(("--BoundaryString\r\n" +
@@ -49,6 +53,21 @@ public class MjpegStreamer implements Runnable{
         }
         catch(Exception e)
         {
+            e.printStackTrace();
+            closeStreamingSocket();
+        }
+    }
+
+    private void closeStreamingSocket()
+    {
+        try {
+            serverSocket.close();
+            socket.shutdownOutput();
+            socket.close();
+            setChanged();
+            notifyObservers(this);
+
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

@@ -1,46 +1,48 @@
 package sem.group5.bob.client;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.Writer;
+import java.io.*;
 import java.net.Socket;
 import java.util.Observable;
 
-public class Smartcar extends Observable {
-    Socket socket;
-    Writer out;
-    IOException e;
+class Smartcar extends Observable{
+    private Socket socket;
+    private Writer out;
+    private InputStream in;
+    private IOException e;
 
     /**
      * Initialize a new connection to a remote smartcar
      *
-     * @param socket
+     * @param socket used for communication
      */
-
-    public Smartcar(Socket socket) {
+    Smartcar(Socket socket) {
         try {
             this.socket = socket;
             this.socket.setTcpNoDelay(true);
             this.socket.setReuseAddress(true);
+            this.socket.setKeepAlive(true);
+            this.socket.setSoTimeout(8*1000);
+            this.in = socket.getInputStream();
             this.out = new PrintWriter(socket.getOutputStream());
-           }catch(IOException e){
+           }catch(InterruptedIOException e){
             notifyConnectionLost();
-            this.e = e;
-            }
+            } catch (IOException e1) {
+            e1.printStackTrace();
         }
+    }
 
     /**
      * Set speed of the remote SmartCar
      *
      * @param speed speed in percentage of max capacity
      */
-    public void setSpeed(int speed) throws IOException{
+    void setSpeed(int speed) throws IOException{
         try {
             out.write("s" + speed + "/");
             out.flush();
-        } catch (IOException e) {
-            notifyConnectionLost();
+        } catch (InterruptedIOException e) {
             this.e = e;
+            notifyConnectionLost();
         }
     }
 
@@ -49,14 +51,14 @@ public class Smartcar extends Observable {
      *
      * @param angle angle in degrees
      */
-    public void setAngle(int angle) throws IOException{
+    void setAngle(int angle) throws IOException{
         try {
             String toSend = "a";
             out.write(toSend + angle + "/");
             out.flush();
-        } catch (IOException e) {
-            notifyConnectionLost();
+        } catch (InterruptedIOException e) {
             this.e = e;
+            notifyConnectionLost();
         }
     }
 
@@ -64,14 +66,14 @@ public class Smartcar extends Observable {
      * Rotate the remote smartcar on the spot
      * @param angle amount of rotation in degrees
      */
-    public void rotate(int angle) throws IOException {
+    void rotate(int angle) throws IOException {
         try {
             String toSend = "r";
             out.write(toSend + angle + "/");
             out.flush();
-        } catch (IOException e) {
-            notifyConnectionLost();
+        } catch (InterruptedIOException e) {
             this.e = e;
+            notifyConnectionLost();
         }
     }
 
@@ -79,21 +81,38 @@ public class Smartcar extends Observable {
      * Method to close sockets in the client side and server side
      * @throws IOException
      */
-    public void close() throws IOException{
+    void close() throws IOException{
         out.write("close/");
         out.flush();
+        out.close();
+        this.socket.close();
     }
 
-    public void notifyConnectionLost()
+    /**
+     * Method to notify observer in case of errors
+     */
+    private void notifyConnectionLost()
     {
        setChanged();
        notifyObservers(this);
     }
 
-    public boolean isConnected()
+    /**
+     *
+     * @return if it is still connect to bobCar
+     */
+    boolean isConnected()
     {
         return socket.isConnected() && !socket.isClosed();
     }
+
+    /**
+     * Method to get the thrown exception
+     */
+    IOException getE() {
+        return e;
+    }
+
 }
 
 

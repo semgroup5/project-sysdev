@@ -1,28 +1,20 @@
 package sem.group5.bob.client;
 
-import javafx.css.Styleable;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.scene.control.*;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
-
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-/**
- * Created by Raphael on 06/03/2016 for project-sysdev for project-sysdev.
- */
 
 public class ControllerGUI extends Observable {
 
@@ -45,13 +37,10 @@ public class ControllerGUI extends Observable {
     public Button save;
     public Button load;
     public ImageView kinectView1;
-    public boolean isMapping = false;
-    public FileChooser fileChooser;
-    public File file;
+    private boolean isMapping = false;
     public Slider speedControl;
     public ImageView loadImage;
-    BufferedImage img;
-    public ClientState clientState;
+    private ClientState clientState;
     ButtonsStyle style;
 
     /**
@@ -94,6 +83,8 @@ public class ControllerGUI extends Observable {
      * @param event clicked button event
      */
     public void handle(ActionEvent event) {
+        FileChooser fileChooser;
+        File file;
         if(event.getSource().equals(map) && clientState.isConnected) {
             if (!isMapping) {
                 style.styleButton(map, "active");
@@ -108,6 +99,8 @@ public class ControllerGUI extends Observable {
             else {
                 style.styleButton(map, "");
                 replaceStatus("Mapping stopped!");
+                clientState.stopMap();
+                kinectView = new ImageView();
                 isMapping = false;
             }
         }
@@ -115,7 +108,7 @@ public class ControllerGUI extends Observable {
             fileChooser = new FileChooser();
             fileChooser.setTitle("Open a map");
             file = fileChooser.showOpenDialog(menuBar.getScene().getWindow());
-            if (!file.equals(null)) {
+            if (!(file == null)) {
                 Image img = new Image(file.toURI().toString());
                 kinectView.setImage(img);
             }
@@ -145,7 +138,7 @@ public class ControllerGUI extends Observable {
 
     /**
      * Method to apply shadow effect to buttons
-     * @param event
+     * @param event see @ButtonStyle
      */
     public void shadow(Event event) {
         style.shadow(event);
@@ -154,7 +147,7 @@ public class ControllerGUI extends Observable {
 
     /**
      * Method to take off shadow effect of the buttons
-     * @param event
+     * @param event see @ButtonStyle
      */
     public void shadowOff(Event event) {
         style.shadowOff(event);
@@ -162,13 +155,16 @@ public class ControllerGUI extends Observable {
 
     /**
      * Method to handle the keylisteners when a key is pressed.
-     * @param event
+     * @param event key pressed event
      * @throws IOException
      */
     public void keyListenersPressed(KeyEvent event) throws IOException {
-        if (!clientState.isConnected) {
+        if (!clientState.isConnected && event.getCode() != KeyCode.V) {
             replaceStatus("SmartCar is disconnected...");
-        } else {
+        }else if (event.getCode() == KeyCode.V) {
+            fireConnection();
+        }
+        else {
             int currentSpeed = (int)speedControl.getValue();
             switch (event.getCode()) {
                 case W:
@@ -210,7 +206,7 @@ public class ControllerGUI extends Observable {
 
     /**
      * Method to handle the keylisteners when a key is released.
-     * @param event
+     * @param event key released event
      * @throws IOException
      */
     public void keyListenersReleased(KeyEvent event) throws IOException {
@@ -241,7 +237,7 @@ public class ControllerGUI extends Observable {
 
     /**
      * Method to set InnerShadow effect to buttons
-     * @param event
+     * @param event see @ButtonStyle
      */
     public void setFocused(Event event) {
         style.setFocused(event);
@@ -251,7 +247,7 @@ public class ControllerGUI extends Observable {
 
     /**
      * Method to handle mouseReleased events on the smartcar control
-     * @param event
+     * @param event mouse released event
      */
     public void mouseReleased(MouseEvent event) throws IOException {
         if (!clientState.isConnected) {
@@ -266,14 +262,13 @@ public class ControllerGUI extends Observable {
                 clientState.getSmartcarController().releaseLeft();
             } else if (event.getSource() == right) {
                 clientState.getSmartcarController().releaseRight();
-            } else if (event.getSource() == dRight) {}
-              else if (event.getSource() == dLeft) {}
+            }
         }
     }
 
     /**
      * Method to handle mousePressed events on the smartcar control.
-     * @param event
+     * @param event mouse pressed event
      */
     public void mousePressed(MouseEvent event) throws IOException {
         if (!clientState.isConnected) {
@@ -295,12 +290,12 @@ public class ControllerGUI extends Observable {
 
     /**
      * Method to save maps in the computer's directory.
-     * @param content
-     * @param file
+     * @param content @
+     * @param file @
      */
     private void SaveFile(String content, File file){
         try {
-            FileWriter fileWriter = null;
+            FileWriter fileWriter;
 
             fileWriter = new FileWriter(file);
             fileWriter.write(content);
@@ -311,18 +306,25 @@ public class ControllerGUI extends Observable {
 
     }
 
-    public void fireConnection() {
+    /**
+     *
+     */
+    void fireConnection() {
         connect.fire();
     }
 
-    public void replaceStatus(String s)
+    /**
+     *
+     * @param s
+     */
+    void replaceStatus(String s)
     {
         textFeedback.clear();
         textFeedback.setText(s);
     }
 
-    public void appendStatus(String s)
-    {
-        textFeedback.appendText(s);
-    }
+//    public void appendStatus(String s)
+//    {
+//        textFeedback.appendText(s);
+//    }
 }

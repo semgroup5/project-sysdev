@@ -7,15 +7,11 @@ import org.apache.commons.fileupload.MultipartStream;
 
 import javax.imageio.ImageIO;
 
-/**
- * Created by Raphael on 09/04/2016 for project-sysdev.
- */
-public class MultiPartsParse extends Observable implements Runnable{
+class MultiPartsParse extends Observable implements Runnable{
 
-    InputStream depthStream;
-    BufferedImage img;
+    private InputStream depthStream;
 
-    public MultiPartsParse(InputStream depthStream) {
+    MultiPartsParse(InputStream depthStream) {
         this.depthStream = depthStream;
     }
 
@@ -42,7 +38,7 @@ public class MultiPartsParse extends Observable implements Runnable{
                 multipartStream.readBodyData(out);
                 InputStream in = new ByteArrayInputStream(out.toByteArray());
 
-                img = ImageIO.read(in);
+                BufferedImage img = ImageIO.read(in);
 
                 nextPart = multipartStream.readBoundary();
                 setChanged();

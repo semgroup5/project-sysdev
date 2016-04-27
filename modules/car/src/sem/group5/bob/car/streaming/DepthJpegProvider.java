@@ -2,7 +2,6 @@ package sem.group5.bob.car.streaming;
 
 import org.libjpegturbo.turbojpeg.*;
 import org.openkinect.freenect.FrameMode;
-
 import java.nio.ByteBuffer;
 import java.util.Observable;
 
@@ -53,5 +52,9 @@ public class DepthJpegProvider extends Observable implements JpegProvider {
             System.err.println("Exception caught, message: " + e.getMessage());
             throw e;
         }
+    }
+
+    public void receiveVideo(FrameMode frameMode, ByteBuffer byteBuffer, int i) {
+
     }
 }

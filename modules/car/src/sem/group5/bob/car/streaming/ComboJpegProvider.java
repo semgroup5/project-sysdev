@@ -3,13 +3,12 @@ package sem.group5.bob.car.streaming;
 import org.libjpegturbo.turbojpeg.TJ;
 import org.libjpegturbo.turbojpeg.TJCompressor;
 import org.openkinect.freenect.FrameMode;
-
 import java.nio.ByteBuffer;
 import java.util.Observable;
 
 public class ComboJpegProvider extends Observable implements JpegProvider {
-    static ByteBuffer latestVideoFrame;
-    static ByteBuffer latestDepthFrame;
+    private static ByteBuffer latestVideoFrame;
+    private static ByteBuffer latestDepthFrame;
 
     public void receiveVideo(FrameMode frameMode, ByteBuffer byteBuffer, int i) {
         latestVideoFrame = byteBuffer;
@@ -18,9 +17,9 @@ public class ComboJpegProvider extends Observable implements JpegProvider {
         latestDepthFrame = byteBuffer;
     }
 
-    int pixelWidth = 1;
-    int imageSize = 640 * 480 * pixelWidth;
-    byte[] comboFrame = new byte[imageSize];
+    private int pixelWidth = 1;
+    private int imageSize = 640 * 480 * pixelWidth;
+    private byte[] comboFrame = new byte[imageSize];
     public byte[] getLatestJpeg() throws Exception{
         if(latestDepthFrame == null)
             Thread.sleep(1000);
@@ -41,7 +40,7 @@ public class ComboJpegProvider extends Observable implements JpegProvider {
 
         for (int i =0; i < imageSize; i = i + pixelWidth) {
             int pixel = (i / pixelWidth) * 2; // 2 bytes per pixel for both depth and video
-            comboFrame[i + 0] =  (byte)( ( ( dFrame[pixel +1] & 0xFF ) << 6) | ( dFrame[pixel+0] & 0xFF >>> 3)  ); // squish depth
+            comboFrame[i] =  (byte)( ( ( dFrame[pixel +1] & 0xFF ) << 6) | ( dFrame[pixel] & 0xFF >>> 3)  ); // squish depth
             comboFrame[i + 1] = vFrame[pixel];
             comboFrame[i + 2] = vFrame[pixel + 1];
         }
