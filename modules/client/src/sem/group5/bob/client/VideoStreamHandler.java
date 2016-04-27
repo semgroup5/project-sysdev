@@ -12,27 +12,10 @@ import java.util.Observer;
 
 class VideoStreamHandler implements Observer{
 
-    private MultiPartsParse provider;
     private ImageView container;
     private Thread t;
-    VideoStreamHandler(ImageView container, MultiPartsParse provider) {
+    VideoStreamHandler(ImageView container) {
         this.container = container;
-        this.provider = provider;
-        provider.addObserver(this);
-
-    }
-    void startStreaming()
-    {
-       t = new Thread(provider);
-       t.start();
-    }
-
-    void stopStreaming()
-    {
-        if (t.isAlive()) {
-            t.stop();
-        }
-
     }
 
     @Override

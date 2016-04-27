@@ -11,6 +11,8 @@ class ClientState implements Observer {
     private SmartcarController smartcarController;
     private MultiPartsParse parse;
     private VideoStreamHandler videoHandler;
+    private ScanLineGenerator scanLineGenerator;
+    Thread parseThread;
     boolean isConnected;
 
     /**
@@ -63,8 +65,12 @@ class ClientState implements Observer {
     void startMap(){
         try{
             parse = new MultiPartsParse(connectionManager.getDepthSocket().getInputStream());
-            videoHandler = new VideoStreamHandler(gui.kinectView, parse);
-            videoHandler.startStreaming();
+            videoHandler = new VideoStreamHandler(gui.kinectView);
+            parse.addObserver(videoHandler);
+            scanLineGenerator = new ScanLineGenerator();
+            parse.addObserver(scanLineGenerator);
+            parseThread = new Thread(parse);
+            parseThread.start();
             gui.replaceStatus("Map connection successful.");
         }catch (Exception e){
             gui.replaceStatus("Map connection failed.\r\n" + "Reason: " + e.getMessage());
@@ -76,10 +82,14 @@ class ClientState implements Observer {
      * Method to stop the depth streaming
      */
     void stopMap(){
-
-        videoHandler.stopStreaming();
-        videoHandler = null;
-        parse = null;
+        try {
+            connectionManager.DepthSocketCloser();
+            parseThread.interrupt();
+            videoHandler = null;
+            parse = null;
+        } catch (IOException e) {
+            System.err.print("Could not close DepthSocket");
+        }
     }
 
     /**
