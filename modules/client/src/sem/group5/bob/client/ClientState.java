@@ -91,6 +91,21 @@ class ClientState implements Observer {
     }
 
     /**
+     * Method that starts the depth streaming
+     */
+    void startStream(){
+        try{
+            parse = new MultiPartsParse(connectionManager.getDepthSocket().getInputStream());
+            videoHandler = new VideoStreamHandler(gui.kinectView, parse);
+            videoHandler.startStreaming();
+            gui.replaceStatus("Stream connection successful.");
+        }catch (Exception e){
+            gui.replaceStatus("Stream connection failed.\r\n" + "Reason: " + e.getMessage());
+        }
+
+    }
+
+    /**
      *  Method to do the necessary updates when notified by the observable objects
      * @param observable observable object
      * @param o observable object
@@ -124,6 +139,8 @@ class ClientState implements Observer {
                     this.smartcarController = connectionManager.getSmartcarController();
                     gui.replaceStatus("Connected!");
                     isConnected = true;
+                    gui.stream();
+                    connectionManager.checkConnectionHeartBeat();
                 } catch (IOException e) {
                     gui.replaceStatus("Couldn't connect, reason:" + e.getMessage());
                 }
