@@ -7,9 +7,7 @@ import java.util.Observer;
 /**
  * Created by Emanuel on 4/27/2016.
  */
-public class ScanLineGenerator extends Observable implements Observer, Runnable {
-    private MultiPartsParse parser;
-
+public class ScanLineGenerator extends Observable implements Observer {
     private static int[] GenerateLine(BufferedImage image){
         int[] distanceArray = new int[640];
         for(int i = 0; i < 640; i++){
@@ -22,12 +20,5 @@ public class ScanLineGenerator extends Observable implements Observer, Runnable 
     public void update(Observable observable, Object o) {
         BufferedImage image = (BufferedImage) o;
         this.notifyObservers(this.GenerateLine(image));
-
-    }
-
-    @Override
-    public void run() {
-
-
     }
 }
