@@ -1,5 +1,7 @@
 package sem.group5.bob.client;
 
+import javafx.scene.image.ImageView;
+
 import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
@@ -60,14 +62,14 @@ class ClientState implements Observer {
     /**
      * Method that starts the depth streaming
      */
-    void startMap(){
+    void startStream(){
         try{
             parse = new MultiPartsParse(connectionManager.getDepthSocket().getInputStream());
             videoHandler = new VideoStreamHandler(gui.kinectView, parse);
             videoHandler.startStreaming();
-            gui.replaceStatus("Map connection successful.");
+            gui.replaceStatus("Stream connection successful.");
         }catch (Exception e){
-            gui.replaceStatus("Map connection failed.\r\n" + "Reason: " + e.getMessage());
+            gui.replaceStatus("Stream connection failed.\r\n" + "Reason: " + e.getMessage());
         }
 
     }
@@ -77,9 +79,6 @@ class ClientState implements Observer {
      */
     void stopMap(){
 
-        videoHandler.stopStreaming();
-        videoHandler = null;
-        parse = null;
     }
 
     /**
@@ -124,6 +123,9 @@ class ClientState implements Observer {
                     this.smartcarController = connectionManager.getSmartcarController();
                     gui.replaceStatus("Connected!");
                     isConnected = true;
+                    gui.stream();
+                    connectionManager.checkConnectionHeartBeat();
+
                 } catch (IOException e) {
                     gui.replaceStatus("Couldn't connect, reason:" + e.getMessage());
                 }

@@ -43,6 +43,7 @@ public class ControllerGUI extends Observable {
     private ClientState clientState;
     ButtonsStyle style;
 
+
     /**
      *
      */
@@ -76,7 +77,17 @@ public class ControllerGUI extends Observable {
         }
     }
 
-
+    /**
+     *
+     */
+    void stream()
+    {
+        try {
+            clientState.startStream();
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Method to handle events like mapping, load and save.
@@ -90,16 +101,10 @@ public class ControllerGUI extends Observable {
                 style.styleButton(map, "active");
                 isMapping = true;
 
-                try {
-                    clientState.startMap();
-                }catch (Exception e) {
-                    e.printStackTrace();
-                }
             }
             else {
                 style.styleButton(map, "");
                 replaceStatus("Mapping stopped!");
-                clientState.stopMap();
                 kinectView = new ImageView();
                 isMapping = false;
             }

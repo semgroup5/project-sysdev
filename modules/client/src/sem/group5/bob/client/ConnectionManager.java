@@ -1,6 +1,8 @@
 package sem.group5.bob.client;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.Socket;
 import java.util.Observable;
 
@@ -24,10 +26,10 @@ class ConnectionManager extends Observable {
             this.carIp = d.getIp();
 
             this.controlSocket = getControlSocket();
-            System.out.println("Socket established");
+            System.out.println("Socket Established");
 
             this.depthSocket = getDepthSocket();
-            System.out.println("Depth socket established");
+            System.out.println("Depth Socket Established");
 
             if (!(this.carIp == null)) smartcar = new Smartcar(this.controlSocket);
             isConnected = true;
@@ -51,11 +53,11 @@ class ConnectionManager extends Observable {
 
             controlSocket.close();
             controlSocket = null;
-            System.out.println("Control socket closed!");
+            System.out.println("Control Socket Closed!");
 
             depthSocket.close();
             depthSocket = null;
-            System.out.println("Depth socket closed!");
+            System.out.println("Depth Socket Closed!");
 
             isConnected = false;
             setChanged();
@@ -139,5 +141,34 @@ class ConnectionManager extends Observable {
      */
     boolean isConnected() {
         return isConnected;
+    }
+
+    /**
+     *
+     */
+    void checkConnectionHeartBeat(){
+        Thread t = new Thread(()->{
+            try {
+                while (!getControlSocket().isClosed())
+                {
+                    InputStream in = getControlSocket().getInputStream();
+                    String buffer = "";
+                    while (in.available() > 0)
+                    {
+                        buffer += (char) in.read();
+                        System.out.println(buffer);
+                        if (!buffer.equals("Active"))
+                        {
+                            reconnect();
+                        }
+                        buffer = "";
+                        System.out.println("Server Still Active!");
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        t.start();
     }
 }

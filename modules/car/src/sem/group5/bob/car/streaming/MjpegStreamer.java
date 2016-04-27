@@ -13,7 +13,7 @@ public class MjpegStreamer extends Observable implements Runnable{
     private DepthJpegProvider cjp;
     private Socket socket;
 
-    public MjpegStreamer(Socket s, ServerSocket serverSocket, DepthJpegProvider cjp, BobCarObserver bobCarObserver) {
+    public MjpegStreamer(Socket s, DepthJpegProvider cjp, BobCarObserver bobCarObserver) {
         this.serverSocket = serverSocket;
         this.socket = s;
         this.cjp = cjp;

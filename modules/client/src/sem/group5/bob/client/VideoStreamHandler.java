@@ -27,13 +27,6 @@ class VideoStreamHandler implements Observer{
        t.start();
     }
 
-    void stopStreaming()
-    {
-        if (t.isAlive()) {
-            t.stop();
-        }
-
-    }
 
     @Override
     public void update(Observable observable, Object o) {

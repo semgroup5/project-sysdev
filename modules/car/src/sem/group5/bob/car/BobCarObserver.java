@@ -12,10 +12,10 @@ import java.util.Observable;
 import java.util.Observer;
 
 public class BobCarObserver implements Observer {
-    private static ServerSocket serverSocket = null;
     private SmartCarComm scc;
     private SerialConnect serialC;
     private Socket socket;
+    private RemoteControlListener rcl;
 
     @Override
     public void update(Observable o, Object arg) {
@@ -42,6 +42,8 @@ public class BobCarObserver implements Observer {
             e.printStackTrace();
             System.out.println("Could Not Start Video Streaming");
         }
+
+
     }
 
     /**
@@ -62,7 +64,7 @@ public class BobCarObserver implements Observer {
     {
         System.out.println("Starting Remote Listener");
         try{
-            RemoteControlListener rcl = new RemoteControlListener(1234, scc, this);
+            rcl = new RemoteControlListener(1234, scc, this);
             Thread t = new Thread(rcl);
             t.start();
         } catch(Exception e) {
@@ -79,7 +81,7 @@ public class BobCarObserver implements Observer {
         int port = 50001;
 
         try {
-            serverSocket = new ServerSocket(port);
+            ServerSocket serverSocket = new ServerSocket(port);
             serverSocket.setReuseAddress(true);
             socket = serverSocket.accept();
             socket.setTcpNoDelay(true);
@@ -94,9 +96,13 @@ public class BobCarObserver implements Observer {
         Thread streamThread = new Thread(() -> {
             System.out.println("Starting video streamer");
             Context context = Freenect.createContext();
+            System.out.println(1);
             Device d = context.openDevice(0);
-            d.setDepthFormat(DepthFormat.D11BIT);
+            System.out.println(2);
+            d.setDepthFormat(DepthFormat.MM);
+            System.out.println(3);
             d.setVideoFormat(VideoFormat.RGB);
+            System.out.println(4);
 
 
             try {
@@ -107,7 +113,7 @@ public class BobCarObserver implements Observer {
                 d.startDepth(depthJpegProvider::receiveDepth);
                 Thread.sleep(1000);
 
-                MjpegStreamer mjpegStreamer = new MjpegStreamer(socket,serverSocket, depthJpegProvider, this);
+                MjpegStreamer mjpegStreamer = new MjpegStreamer(socket, depthJpegProvider, this);
                 Thread t = new Thread(mjpegStreamer);
                 t.start();
             }

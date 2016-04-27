@@ -1,5 +1,6 @@
 package sem.group5.bob.car;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.Writer;
@@ -47,14 +48,14 @@ class RemoteControlListener extends Observable implements Runnable{
             System.out.println("Waiting for the client");
             socket = listener.accept();
 
-            timer = new BobCarSocketTimer(20*1000, this);
+            timer = new BobCarSocketTimer(60*1000, this);
             timer.start();
             timer.reset();
 
 
             socket.setTcpNoDelay(true);
             socket.setReuseAddress(true);
-            socket.setSoTimeout(10*1000);
+            socket.setSoTimeout(50*1000);
             socket.setKeepAlive(true);
             System.out.println("Controls socket established!");
 
@@ -68,13 +69,12 @@ class RemoteControlListener extends Observable implements Runnable{
             try {
                 in = socket.getInputStream();
                 out = new PrintWriter(socket.getOutputStream());
+                sendHeartBeatToClient();
                 String buffer = "";
-                String beat = "Active";
 
                 //if there's any input do the following
                 while (in.available() > 0) {
                         buffer += (char)in.read();
-
                 }
 
                 if(buffer.length() > 0)
@@ -98,6 +98,23 @@ class RemoteControlListener extends Observable implements Runnable{
                 e.printStackTrace();
             }
         }
+    }
+    void sendHeartBeatToClient()
+    {
+        Thread t = new Thread(()->{
+            while (!socket.isClosed())
+            {
+                try {
+                    String beat = "Active";
+                    out.write(beat);
+                    out.flush();
+                    System.out.println("Heart Beat Sent To Client!");
+                }catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        t.start();
     }
 
     /**
