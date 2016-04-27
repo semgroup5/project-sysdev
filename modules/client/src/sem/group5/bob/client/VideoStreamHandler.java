@@ -15,6 +15,7 @@ class VideoStreamHandler implements Observer{
     private MultiPartsParse provider;
     private ImageView container;
     private Thread t;
+
     VideoStreamHandler(ImageView container, MultiPartsParse provider) {
         this.container = container;
         this.provider = provider;
