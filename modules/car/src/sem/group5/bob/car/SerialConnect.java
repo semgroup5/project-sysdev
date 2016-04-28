@@ -1,43 +1,52 @@
 package sem.group5.bob.car;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.util.Enumeration;
 import java.util.Properties;
 
 /**
  * Class responsible for establishing the serial port connection between the raspberry pi and the arduino.
  */
-public class SerialConnect implements SerialPortEventListener {
+class SerialConnect implements SerialPortEventListener {
 
     private SerialPort serialPort;
 
     /**
      * The port we're normally going to use.
      */
-    private static final String PORT_NAMES[] = {"/dev/ttyACM0"}; // Raspberry Pi};
+    private static final String PORT_NAMES[] = {
+            "/dev/tty.usbserial-A9007UX1", // Mac OS X
+            //"/dev/ttyUSB0", // Linux
+            "/dev/ttyACM0", // Raspberry Pi
+            "COM4", // Windows
+    };
 
     private BufferedReader input;
     private OutputStream output;
     /**
      * Milliseconds to block while waiting for port open
      */
-    public static final int TIME_OUT = 2000;
+    private static final int TIME_OUT = 2000;
     /**
      * Default bits per second for COM port.
      */
-    public static final int DATA_RATE = 9600;
+    private static final int DATA_RATE = 9600;
 
     /**
      * Method to establish the serial connection
      */
-    public void initialize(){
+    void initialize(){
+        // the next line is for Raspberry Pi and
+        // gets us into the while loop and was suggested here was suggested http://www.raspberrypi.org/phpBB3/viewtopic.php?f=81&t=32186
+        //System.setProperty("gnu.io.rxtx.SerialPorts", "/dev/ttyACM0");
 
         Properties properties = System.getProperties();
         String currentPorts = properties.getProperty("gnu.io.rxtx.SerialPorts", "/dev/ttyACM0");
@@ -61,22 +70,9 @@ public class SerialConnect implements SerialPortEventListener {
                 }
             }
         }
-        /**
-         * If a Arduino unit is not connected within 3 tries, skip it
-         */
         if (portId == null) {
-            int retry = 0;
-            System.out.println("Could not find COM port. \nPlease connect USB-cable to the Arduino");
-            try {
-                Thread.sleep(2000);
-                if(retry < 3){
-                    retry++;
-                    initialize();
-                }
-                System.out.print("Skipping USB connection..");
-            } catch(InterruptedException ex) {
-                Thread.currentThread().interrupt();
-            }
+            System.out.println("Could not find COM port.");
+            System.exit(1);
             return;
         }
 
@@ -110,7 +106,7 @@ public class SerialConnect implements SerialPortEventListener {
     /**
      * Method to close the serial connection
      */
-    public synchronized void close() {
+    synchronized void close() {
         if (serialPort != null) {
             try {
                 output.close();
@@ -126,23 +122,23 @@ public class SerialConnect implements SerialPortEventListener {
 
     /**
      * Method to return this BufferReader
-     * @return
+     * @return @
      */
-    public BufferedReader getBufferReader() {
+    BufferedReader getBufferReader() {
         return this.input;
     }
 
     /**
      * Method to return this OutputStream
-     * @return
+     * @return @
      */
-    public OutputStream getOutputStream() {
+    OutputStream getOutputStream() {
         return this.output;
     }
 
     /**
      * Method that will be watching over events in the serial connection port
-     * @param oEvent
+     * @param oEvent @
      */
     public synchronized void serialEvent(SerialPortEvent oEvent) {
         if (oEvent.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
@@ -151,7 +147,6 @@ public class SerialConnect implements SerialPortEventListener {
                 System.out.println(inputLine);
             } catch (Exception e) {
                 System.err.println(e.toString());
-                close();
             }
         }
     }

@@ -2,16 +2,17 @@ package sem.group5.bob.car.streaming;
 
 import org.libjpegturbo.turbojpeg.*;
 import org.openkinect.freenect.FrameMode;
-
 import java.nio.ByteBuffer;
 import java.util.Observable;
 
 public class DepthJpegProvider extends Observable implements JpegProvider {
     private static ByteBuffer latestDepthFrame;
+    private static ByteBuffer latestVideoFrame;
 
    public void receiveDepth(FrameMode frameMode, ByteBuffer byteBuffer, int i) {
         latestDepthFrame = byteBuffer;
     }
+   public void receiveVideo(FrameMode frameMode, ByteBuffer byteBuffer, int i) { latestVideoFrame = byteBuffer; }
 
     private int pixelWidth = 1;
     private int imageSize = 640 * 480 * pixelWidth;
@@ -19,6 +20,12 @@ public class DepthJpegProvider extends Observable implements JpegProvider {
     public byte[] getLatestJpeg() throws Exception{
         if(latestDepthFrame == null)
             Thread.sleep(1000);
+
+//        int videoFrameSize = 640*480*2;
+//        byte[] vFrame = new byte[videoFrameSize];
+//        ByteBuffer lvf = latestVideoFrame;
+//        lvf.rewind();
+//        lvf.get(vFrame);
 
         int depthFrameSize = 640*480*2;
         byte[] dFrame = new byte[depthFrameSize];
@@ -31,6 +38,8 @@ public class DepthJpegProvider extends Observable implements JpegProvider {
         for (int i =0; i < imageSize; i = i + pixelWidth) {
             int pixel = (i / pixelWidth) * 2; // 2 bytes per pixel for both depth and video
             comboFrame[i] =  (byte)( ( ( dFrame[pixel +1] & 0xFF ) << 6) | ( dFrame[pixel] & 0xFF >>> 3)  ); // squish depth
+//            comboFrame[i + 1] = vFrame[pixel];
+//            comboFrame[i + 2] = vFrame[pixel + 1];
         }
 
         System.out.println("Compressing Frame");
@@ -51,7 +60,8 @@ public class DepthJpegProvider extends Observable implements JpegProvider {
         }
         catch (Exception e) {
             System.err.println("Exception caught, message: " + e.getMessage());
-            throw e;
+
         }
+        return dFrame;
     }
 }

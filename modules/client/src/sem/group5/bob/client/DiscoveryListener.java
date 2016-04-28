@@ -1,21 +1,23 @@
 package sem.group5.bob.client;
 
-import sem.group5.bob.client.ConnectionManager;
-
 import java.io.IOException;
 import java.net.*;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Created by Emanuel on 4/4/2016.
+ *
  */
-public class DiscoveryListener {
-    DatagramSocket c;
-    String ip = "";
+class DiscoveryListener {
+    private DatagramSocket c;
+    private String ip = "";
 
-    public void listenIp() {
+    /**
+     * Method to listen to the Ip from bobCar
+     */
+    void listenIp() {
         try {
             c = new DatagramSocket(1235);
             c.setBroadcast(true);
@@ -28,7 +30,7 @@ public class DiscoveryListener {
                 DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName("255.255.255.255"), 1235);
                 c.send(sendPacket);
                 System.out.println(getClass().getName() + " Request packet sent to: 255.255.255.255");
-            }catch (Exception e){
+            }catch (Exception ignored){
 
             }
             Enumeration interfaces = NetworkInterface.getNetworkInterfaces();
@@ -47,7 +49,7 @@ public class DiscoveryListener {
                    try{
                        DatagramPacket sendPacket= new DatagramPacket(sendData, sendData.length, broadcast, 1235);
                        c.send(sendPacket);
-                   }catch(Exception e){
+                   }catch(Exception ignored){
                    }
                    System.out.println(getClass().getName() + " Request package sent to: " + broadcast.getHostAddress() + "; Interface: " + networkInterface.getDisplayName());
 
@@ -62,7 +64,7 @@ public class DiscoveryListener {
 
                 //Getting a response
                 System.out.println(getClass().getName() + " Broadcast response from: " + receivePacket.getAddress().getHostAddress());
-                System.out.println(receivePacket.getData());
+                System.out.println(Arrays.toString(receivePacket.getData()));
 
                 //Check if message checks
                 String message = new String(receivePacket.getData()).trim();
@@ -73,7 +75,6 @@ public class DiscoveryListener {
                     break;
                 }
             }
-
         }catch (IOException ex) {
             Logger.getLogger(DiscoveryListener.class.getName()).log(Level.SEVERE, null, ex);
             close();
@@ -81,12 +82,19 @@ public class DiscoveryListener {
 
     }
 
-    public void close() {
+    /**
+     * Method to shut down the discoveryListener
+     */
+    private void close() {
         c.close();
         System.out.println("Discovery listener closed");
     }
 
-    public String getIp() {
+    /**
+     * Method to return the found IP adress
+     * @return ip
+     */
+    String getIp() {
         return this.ip;
     }
 }

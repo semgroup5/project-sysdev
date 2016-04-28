@@ -10,19 +10,30 @@ import java.nio.Buffer;
 import java.util.Observable;
 import java.util.Observer;
 
-/**
- * Created by jpp on 18/04/16.
- */
-public class VideoStreamHandler implements Observer{
+class VideoStreamHandler implements Observer{
 
-    MultiPartsParse provider;
-    ImageView container;
-    public VideoStreamHandler(ImageView container, MultiPartsParse provider) {
+    private MultiPartsParse provider;
+    private ImageView container;
+    private Thread t;
+
+    VideoStreamHandler(ImageView container, MultiPartsParse provider) {
         this.container = container;
         this.provider = provider;
-        Thread t = new Thread(provider);
         provider.addObserver(this);
-        t.start();
+
+    }
+    void startStreaming()
+    {
+       t = new Thread(provider);
+       t.start();
+    }
+
+    void stopStreaming()
+    {
+        if (t.isAlive()) {
+            t.stop();
+        }
+
     }
 
     @Override

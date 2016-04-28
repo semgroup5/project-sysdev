@@ -3,11 +3,12 @@ package sem.group5.bob.car;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Observable;
 
-    /**
+/**
     * SmartCarComm handle the received input from the client and forward it to the arduino attached in the smartcar.
     */
-    class SmartCarComm {
+    class SmartCarComm extends Observable{
         private BufferedReader input;
         private OutputStream output;
 
@@ -15,9 +16,11 @@ import java.io.OutputStream;
          * Constructor
          * @param input Buffer reader used for the serialConnect class
          * @param output OutputStream used for the serialConnect class
+         * @param bobCarObserver @
          * @throws NoSuchFieldError
          */
-        SmartCarComm(BufferedReader input, OutputStream output) throws NoSuchFieldError{
+        SmartCarComm(BufferedReader input, OutputStream output, BobCarObserver bobCarObserver) throws NoSuchFieldError{
+        addObserver(bobCarObserver);
         this.input = input;
         this.output = output;
     }
@@ -30,11 +33,11 @@ import java.io.OutputStream;
         try {
             System.out.println("Sending : " + data);
             output.write(data.getBytes());
-            output.flush();
-            System.out.println("Data sent to arduino");
         } catch (IOException e) {
             System.out.println("could not write to port");
             e.printStackTrace();
+            setChanged();
+            notifyObservers(this);
         }
     }
 
@@ -53,7 +56,7 @@ import java.io.OutputStream;
          * @param angle angle to turn the car.
          */
     void setAngle(int angle){
-        if(angle < 360 && angle > -360){
+        if(angle <= 360 && angle >= -360){
             writeData("a" + angle + "/");
         }
     }

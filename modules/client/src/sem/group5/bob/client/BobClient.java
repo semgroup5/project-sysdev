@@ -6,9 +6,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-/**
- * Created by Rapha on 30/03/16.
- */
 public class BobClient extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
