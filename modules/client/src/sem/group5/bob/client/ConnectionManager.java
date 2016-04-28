@@ -100,7 +100,7 @@ class ConnectionManager extends Observable {
      * @return controlSocket
      * @throws IOException
      */
-    public Socket getControlSocket() throws IOException{
+    private Socket getControlSocket() throws IOException{
         if(controlSocket == null){
             controlSocket = new Socket(this.carIp, 1234);
             controlSocket.setReuseAddress(true);
@@ -114,7 +114,7 @@ class ConnectionManager extends Observable {
      * @return depthSocket
      * @throws IOException
      */
-    public Socket getDepthSocket() throws IOException{
+    Socket getDepthSocket() throws IOException{
         if(depthSocket == null){
             depthSocket = new Socket(this.carIp, 50001);
             depthSocket.setReuseAddress(true);
@@ -123,7 +123,7 @@ class ConnectionManager extends Observable {
         return depthSocket;
     }
 
-    public void DepthSocketCloser() throws IOException{
+    void DepthSocketCloser() throws IOException{
         depthSocket.close();
         depthSocket = null;
     }

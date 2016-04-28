@@ -5,32 +5,28 @@ import sem.group5.bob.car.network.DiscoveryBroadcaster;
 import sem.group5.bob.car.streaming.DepthJpegProvider;
 import sem.group5.bob.car.streaming.MjpegStreamer;
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.OutputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.Observable;
 import java.util.Observer;
 
 public class BobCarObserver implements Observer {
     private SmartCarComm scc;
     private SerialConnect serialC;
-    private ServerSocket serverSocket;
-    private Socket socket;
     private RemoteControlListener rcl;
+    private DepthStreamSocket depthStreamSocket;
 
     @Override
     public void update(Observable o, Object arg) {
         if (arg instanceof RemoteControlListener) {
-            closeSocketDepthStream();
+            depthStreamSocket.closeSocketDepthStream();
             startFuntions();
 
         } else if (arg instanceof SmartCarComm) {
             restartSerialConnection();
 
-        } else if (arg instanceof MjpegStreamer) {
+        } else if (arg instanceof MjpegStreamer || arg instanceof DepthStreamSocket) {
             rcl.closeConnections();
-            closeSocketDepthStream();
+            depthStreamSocket.closeSocketDepthStream();
             startFuntions();
         }
     }
@@ -63,7 +59,7 @@ public class BobCarObserver implements Observer {
      */
     private void startDiscoveryListener() {
         System.out.println("Starting IP Address Broadcast");
-        DiscoveryBroadcaster d = new DiscoveryBroadcaster(this);
+        DiscoveryBroadcaster d = new DiscoveryBroadcaster();
         Thread thread = new Thread(d);
         thread.run();
     }
@@ -76,7 +72,8 @@ public class BobCarObserver implements Observer {
     {
         System.out.println("Starting Remote Listener");
         try{
-            rcl = new RemoteControlListener(1234, scc, this);
+            rcl = new RemoteControlListener(1234, scc);
+            rcl.addObserver(this);
             Thread t = new Thread(rcl);
             t.start();
         } catch(Exception e) {
@@ -90,22 +87,10 @@ public class BobCarObserver implements Observer {
      */
     private void streamVideo()
     {
-        int port = 50001;
-
-        try {
-            serverSocket = new ServerSocket(port);
-            serverSocket.setReuseAddress(true);
-            socket = serverSocket.accept();
-            socket.setTcpNoDelay(true);
-            socket.setReuseAddress(true);
-            System.out.println("Stream socket established");
-        }
-        catch(Exception e) {
-            System.out.println("Couldn't Create Socket");
-            e.printStackTrace();
-        }
-
         Thread streamThread = new Thread(() -> {
+
+            depthStreamSocket = new DepthStreamSocket();
+
             Device d = null;
             try {
                 System.out.println("Starting video streamer");
@@ -127,12 +112,13 @@ public class BobCarObserver implements Observer {
                 }
                 Thread.sleep(1000);
 
-                MjpegStreamer mjpegStreamer = new MjpegStreamer(socket, depthJpegProvider, this);
+                MjpegStreamer mjpegStreamer = new MjpegStreamer(depthStreamSocket.getSocket(), depthJpegProvider, this);
                 Thread t = new Thread(mjpegStreamer);
                 t.start();
             }
             catch(Exception e){
                 System.out.println("Could Not Start Video Stream");
+                rcl.closeConnections();
                 e.printStackTrace();
             }
         });
@@ -148,7 +134,7 @@ public class BobCarObserver implements Observer {
         serialC.initialize();
         BufferedReader in = serialC.getBufferReader();
         OutputStream out = serialC.getOutputStream();
-        scc = new SmartCarComm(in, out, this);
+        scc = new SmartCarComm(in, out);
         scc.addObserver(this);
     }
 
@@ -161,16 +147,4 @@ public class BobCarObserver implements Observer {
         startSerialConnection();
     }
 
-    /**
-     *
-     */
-    private void closeSocketDepthStream() {
-        try {
-            serverSocket.close();
-            socket.shutdownOutput();
-            socket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }
