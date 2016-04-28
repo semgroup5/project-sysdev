@@ -99,16 +99,14 @@ class RemoteControlListener extends Observable implements Runnable{
             }
         }
     }
-    void sendHeartBeatToClient()
+    private void sendHeartBeatToClient()
     {
         Thread t = new Thread(()->{
             while (!socket.isClosed())
             {
                 try {
-                    String beat = "Active";
+                    String beat = "A";
                     out.write(beat);
-                    out.flush();
-                    System.out.println("Heart Beat Sent To Client!");
                 }catch (IOException e) {
                     e.printStackTrace();
                 }

@@ -161,13 +161,11 @@ class ConnectionManager extends Observable {
                     while (in.available() > 0)
                     {
                         buffer += (char) in.read();
-                        System.out.println(buffer);
-                        if (!buffer.equals("Active"))
+                        if (!buffer.equals("A"))
                         {
                             reconnect();
                         }
                         buffer = "";
-                        System.out.println("Server Still Active!");
                     }
                 }
             } catch (IOException e) {

@@ -9,31 +9,30 @@ import java.net.Socket;
 import java.util.Observable;
 
 public class MjpegStreamer extends Observable implements Runnable{
-    private ServerSocket serverSocket;
     private DepthJpegProvider cjp;
     private Socket socket;
 
     public MjpegStreamer(Socket s, DepthJpegProvider cjp, BobCarObserver bobCarObserver) {
-        this.serverSocket = serverSocket;
         this.socket = s;
         this.cjp = cjp;
         addObserver(bobCarObserver);
     }
 
-    private void stream() throws Exception
+    private void stream()
     {
+        try {
         System.out.println("Streaming");
         OutputStream out = socket.getOutputStream();
-        out.write( ( "HTTP/1.0 200 OK\r\n" +
-                     "Server: YourServerName\r\n" +
-                     "Connection: close\r\n" +
-                     "Max-Age: 0\r\n" +
-                     "Expires: 0\r\n" +
-                     "Cache-Control: no-cache, private\r\n" +
-                     "Pragma: no-cache\r\n" +
-                     "Content-Type: multipart/x-motion-jpeg; " +
-                     "boundary=BoundaryString\r\n\r\n" ).getBytes() );
 
+        out.write( ( "HTTP/1.0 200 OK\r\n" +
+                         "Server: YourServerName\r\n" +
+                         "Connection: close\r\n" +
+                         "Max-Age: 0\r\n" +
+                         "Expires: 0\r\n" +
+                         "Cache-Control: no-cache, private\r\n" +
+                         "Pragma: no-cache\r\n" +
+                         "Content-Type: multipart/x-motion-jpeg; " +
+                         "boundary=BoundaryString\r\n\r\n" ).getBytes() );
         byte[] data;
         while (!socket.isClosed()) {
             System.out.println("Sending frame");
@@ -45,6 +44,12 @@ public class MjpegStreamer extends Observable implements Runnable{
             out.write("\r\n\r\n".getBytes());
             out.flush();
         }
+        } catch (Exception e) {
+            e.printStackTrace();
+            setChanged();
+            notifyObservers();
+        }
+
     }
 
     public void run(){
@@ -53,21 +58,6 @@ public class MjpegStreamer extends Observable implements Runnable{
         }
         catch(Exception e)
         {
-            e.printStackTrace();
-            closeStreamingSocket();
-        }
-    }
-
-    private void closeStreamingSocket()
-    {
-        try {
-            serverSocket.close();
-            socket.shutdownOutput();
-            socket.close();
-            setChanged();
-            notifyObservers(this);
-
-        } catch (IOException e) {
             e.printStackTrace();
         }
     }
