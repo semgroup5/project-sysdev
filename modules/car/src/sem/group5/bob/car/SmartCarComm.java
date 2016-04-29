@@ -16,11 +16,9 @@ import java.util.Observable;
          * Constructor
          * @param input Buffer reader used for the serialConnect class
          * @param output OutputStream used for the serialConnect class
-         * @param bobCarObserver @
          * @throws NoSuchFieldError
          */
-        SmartCarComm(BufferedReader input, OutputStream output, BobCarObserver bobCarObserver) throws NoSuchFieldError{
-        addObserver(bobCarObserver);
+        SmartCarComm(BufferedReader input, OutputStream output) throws NoSuchFieldError{
         this.input = input;
         this.output = output;
     }

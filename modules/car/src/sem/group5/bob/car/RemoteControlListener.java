@@ -25,10 +25,8 @@ class RemoteControlListener extends Observable implements Runnable{
      * Constructor
      * @param port socket port for communication
      * @param sc smartCarComm to send data to arduino
-     * @param bobCarObserver @
      */
-    RemoteControlListener(int port, SmartCarComm sc, BobCarObserver bobCarObserver) {
-        addObserver(bobCarObserver);
+    RemoteControlListener(int port, SmartCarComm sc) {
         this.port = port;
         this.sc = sc;
     }
@@ -69,7 +67,6 @@ class RemoteControlListener extends Observable implements Runnable{
             try {
                 in = socket.getInputStream();
                 out = new PrintWriter(socket.getOutputStream());
-                sendHeartBeatToClient();
                 String buffer = "";
 
                 //if there's any input do the following
@@ -93,28 +90,22 @@ class RemoteControlListener extends Observable implements Runnable{
                         closeConnections();
                     }
                 }
+                sendHeartBeatToClient();
 
             }catch(Exception e){
                 e.printStackTrace();
             }
         }
     }
-    void sendHeartBeatToClient()
+
+    private void sendHeartBeatToClient()
     {
-        Thread t = new Thread(()->{
-            while (!socket.isClosed())
-            {
-                try {
-                    String beat = "Active";
-                    out.write(beat);
-                    out.flush();
-                    System.out.println("Heart Beat Sent To Client!");
-                }catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        t.start();
+        try {
+             String beat = "A";
+             out.write(beat);
+        }catch (IOException e) {
+             e.printStackTrace();
+        }
     }
 
     /**

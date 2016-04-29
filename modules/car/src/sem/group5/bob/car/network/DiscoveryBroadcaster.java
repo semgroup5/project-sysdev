@@ -1,20 +1,13 @@
 package sem.group5.bob.car.network;
 
-import sem.group5.bob.car.BobCarObserver;
-
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class DiscoveryBroadcaster extends Observable implements Runnable{
-
-    public DiscoveryBroadcaster(BobCarObserver bobCarObserver) {
-        addObserver(bobCarObserver);
-    }
+public class DiscoveryBroadcaster implements Runnable{
 
     /**
      * Method to start the broadcasting

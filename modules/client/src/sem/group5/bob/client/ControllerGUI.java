@@ -30,8 +30,6 @@ public class ControllerGUI extends Observable {
     public Button down;
     public Button left;
     public Button right;
-    public Button dRight;
-    public Button dLeft;
     public TextArea textFeedback;
     public Button connect;
     public Button save;

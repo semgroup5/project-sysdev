@@ -6,32 +6,42 @@ import sem.group5.bob.car.streaming.DepthJpegProvider;
 import sem.group5.bob.car.streaming.MjpegStreamer;
 import java.io.BufferedReader;
 import java.io.OutputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.Observable;
 import java.util.Observer;
 
 public class BobCarObserver implements Observer {
     private SmartCarComm scc;
     private SerialConnect serialC;
-    private Socket socket;
     private RemoteControlListener rcl;
+    private DepthStreamSocket depthStreamSocket;
 
     @Override
     public void update(Observable o, Object arg) {
         if (arg instanceof RemoteControlListener) {
-            startRemoteListener(scc);
-            startDiscoveryListener();
+            depthStreamSocket.closeSocketDepthStream();
+            startFuntions();
+
         } else if (arg instanceof SmartCarComm) {
             restartSerialConnection();
-        } else if (arg instanceof MjpegStreamer) {
-            streamVideo();
+
+        } else if (arg instanceof MjpegStreamer || arg instanceof DepthStreamSocket) {
+            rcl.closeConnections();
+            depthStreamSocket.closeSocketDepthStream();
+            startFuntions();
         }
     }
 
     void observe() {
         startSerialConnection();
 
+        startFuntions();
+    }
+
+    /**
+     *
+     */
+    private void startFuntions()
+    {
         startDiscoveryListener();
 
         startRemoteListener(scc);
@@ -42,8 +52,6 @@ public class BobCarObserver implements Observer {
             e.printStackTrace();
             System.out.println("Could Not Start Video Streaming");
         }
-
-
     }
 
     /**
@@ -51,7 +59,7 @@ public class BobCarObserver implements Observer {
      */
     private void startDiscoveryListener() {
         System.out.println("Starting IP Address Broadcast");
-        DiscoveryBroadcaster d = new DiscoveryBroadcaster(this);
+        DiscoveryBroadcaster d = new DiscoveryBroadcaster();
         Thread thread = new Thread(d);
         thread.run();
     }
@@ -64,7 +72,8 @@ public class BobCarObserver implements Observer {
     {
         System.out.println("Starting Remote Listener");
         try{
-            rcl = new RemoteControlListener(1234, scc, this);
+            rcl = new RemoteControlListener(1234, scc);
+            rcl.addObserver(this);
             Thread t = new Thread(rcl);
             t.start();
         } catch(Exception e) {
@@ -78,47 +87,38 @@ public class BobCarObserver implements Observer {
      */
     private void streamVideo()
     {
-        int port = 50001;
-
-        try {
-            ServerSocket serverSocket = new ServerSocket(port);
-            serverSocket.setReuseAddress(true);
-            socket = serverSocket.accept();
-            socket.setTcpNoDelay(true);
-            socket.setReuseAddress(true);
-            System.out.println("Stream socket established");
-        }
-        catch(Exception e) {
-            System.out.println("Couldn't Create Socket");
-            e.printStackTrace();
-        }
-
         Thread streamThread = new Thread(() -> {
-            System.out.println("Starting video streamer");
-            Context context = Freenect.createContext();
-            System.out.println(1);
-            Device d = context.openDevice(0);
-            System.out.println(2);
-            d.setDepthFormat(DepthFormat.MM);
-            System.out.println(3);
-            d.setVideoFormat(VideoFormat.RGB);
-            System.out.println(4);
 
+            depthStreamSocket = new DepthStreamSocket();
+
+            Device d = null;
+            try {
+                System.out.println("Starting video streamer");
+                Context context = Freenect.createContext();
+                d = context.openDevice(0);
+                d.setDepthFormat(DepthFormat.MM);
+                d.setVideoFormat(VideoFormat.RGB);
+            }catch (Exception e){
+                rcl.closeConnections();
+            }
 
             try {
                 System.out.println( "Starting Video Stream" );
 
                 DepthJpegProvider depthJpegProvider = new DepthJpegProvider();
                 //d.startVideo(depthJpegProvider::receiveVideo);
-                d.startDepth(depthJpegProvider::receiveDepth);
+                if (d != null) {
+                    d.startDepth(depthJpegProvider::receiveDepth);
+                }
                 Thread.sleep(1000);
 
-                MjpegStreamer mjpegStreamer = new MjpegStreamer(socket, depthJpegProvider, this);
+                MjpegStreamer mjpegStreamer = new MjpegStreamer(depthStreamSocket.getSocket(), depthJpegProvider, this);
                 Thread t = new Thread(mjpegStreamer);
                 t.start();
             }
             catch(Exception e){
                 System.out.println("Could Not Start Video Stream");
+                rcl.closeConnections();
                 e.printStackTrace();
             }
         });
@@ -126,18 +126,25 @@ public class BobCarObserver implements Observer {
 
     }
 
+    /**
+     *
+     */
     private void startSerialConnection(){
         serialC = new SerialConnect();
         serialC.initialize();
         BufferedReader in = serialC.getBufferReader();
         OutputStream out = serialC.getOutputStream();
-        scc = new SmartCarComm(in, out, this);
+        scc = new SmartCarComm(in, out);
         scc.addObserver(this);
     }
 
+    /**
+     *
+     */
     private void restartSerialConnection() {
         serialC.close();
         scc = null;
         startSerialConnection();
     }
+
 }
