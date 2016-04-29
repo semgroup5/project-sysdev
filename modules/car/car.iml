@@ -13,5 +13,8 @@
     <orderEntry type="library" exported="" name="car libs" level="project" />
     <orderEntry type="library" exported="" name="car libs" level="project" />
     <orderEntry type="library" name="shared libs" level="project" />
+    <orderEntry type="library" name="RXTXcomm" level="project" />
+    <orderEntry type="library" name="turbojpeg" level="project" />
+    <orderEntry type="library" name="jna" level="project" />
   </component>
 </module>
