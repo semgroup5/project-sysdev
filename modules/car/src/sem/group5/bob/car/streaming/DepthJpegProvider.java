@@ -2,16 +2,29 @@ package sem.group5.bob.car.streaming;
 
 import org.libjpegturbo.turbojpeg.*;
 import org.openkinect.freenect.FrameMode;
+import sun.misc.Unsafe;
+
+import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
+import java.nio.ShortBuffer;
+import java.util.Arrays;
 import java.util.Observable;
 
 public class DepthJpegProvider extends Observable implements JpegProvider {
     private static ByteBuffer latestDepthFrame;
+    private static boolean processingDepth = false;
     private static ByteBuffer latestVideoFrame;
 
-   public void receiveDepth(FrameMode frameMode, ByteBuffer byteBuffer, int i) {
-        latestDepthFrame = byteBuffer;
+    Unsafe unsafe;
+    public DepthJpegProvider() {
+        try{
+            Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");
+            theUnsafe.setAccessible(true);
+            unsafe = (Unsafe) theUnsafe.get(null);
+        }catch(Exception e){}
     }
+
+    public void receiveDepth(FrameMode frameMode, ByteBuffer byteBuffer, int i) { if (!processingDepth){ latestDepthFrame = byteBuffer;} }
    public void receiveVideo(FrameMode frameMode, ByteBuffer byteBuffer, int i) { latestVideoFrame = byteBuffer; }
 
     private int pixelWidth = 1;
@@ -27,21 +40,21 @@ public class DepthJpegProvider extends Observable implements JpegProvider {
 //        lvf.rewind();
 //        lvf.get(vFrame);
 
-        int depthFrameSize = 640*480*2;
+        int depthFrameSize = (640*480*2);
         byte[] dFrame = new byte[depthFrameSize];
-        ByteBuffer ldf = latestDepthFrame;
+        processingDepth = true;
+        ShortBuffer ldf = latestDepthFrame.asShortBuffer();
         ldf.rewind();
-        ldf.get(dFrame);
+        short[] depths = new short[640*480];
+        ldf.get(depths);
 
         System.out.println("Making Frame");
-
-        for (int i =0; i < imageSize; i = i + pixelWidth) {
-            int pixel = (i / pixelWidth) * 2; // 2 bytes per pixel for both depth and video
-            comboFrame[i] =  (byte)( ( ( dFrame[pixel +1] & 0xFF ) << 6) | ( dFrame[pixel] & 0xFF >>> 3)  ); // squish depth
-//            comboFrame[i + 1] = vFrame[pixel];
-//            comboFrame[i + 2] = vFrame[pixel + 1];
+        for(int i = 0; i < 640*480; i++)
+        {
+            comboFrame[i] =(byte)(depths[i]/16);
         }
 
+        processingDepth = false;
         System.out.println("Compressing Frame");
 
         try {

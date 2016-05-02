@@ -2,6 +2,7 @@ package sem.group5.bob.client;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InterruptedIOException;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.util.Observable;
@@ -167,11 +168,17 @@ class ConnectionManager extends Observable {
                         }
                         buffer = "";
                     }
+                    //Thread.sleep(1000);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
+           // } catch (InterruptedException e){
+                //
             }
         });
         t.start();
     }
+
+
+
 }

@@ -56,6 +56,9 @@ public class ControllerGUI extends Observable {
      * @throws IOException
      */
     public void connect() throws IOException {
+        //tryRemovingStyleClass(connect, "green");
+        connect.getStyleClass().add("red");
+        connect.setText("red");
 
         if(!clientState.isConnected()) {
             loadImage.setVisible(true);
@@ -326,8 +329,8 @@ public class ControllerGUI extends Observable {
         textFeedback.setText(s);
     }
 
-//    public void appendStatus(String s)
-//    {
-//        textFeedback.appendText(s);
-//    }
+    public void appendStatus(String s)
+    {
+        textFeedback.appendText(s);
+    }
 }
