@@ -14,10 +14,10 @@ package sem.group5.bob.car;
 class BobCarSocketTimer extends Thread
 {
     private RemoteControlListener rmt;
-    /** Length of timeout */
+    // Length of timeout
     private int m_length;
 
-    /** Time elapsed */
+    // Time elapsed
     private int m_elapsed;
 
     /**
@@ -35,13 +35,13 @@ class BobCarSocketTimer extends Thread
     }
 
 
-    /** Resets the timer back to zero */
+    // Resets the timer back to zero
     synchronized void reset()
     {
         m_elapsed = 0;
     }
 
-    /** Performs timer specific code */
+    // Performs timer specific code
     public void run()
     {
         // Keep looping

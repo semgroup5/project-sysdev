@@ -8,6 +8,9 @@ import java.io.BufferedReader;
 import java.io.OutputStream;
 import java.util.Observable;
 import java.util.Observer;
+/**
+ * This class is notified when an observed object is changed and updates the object with specific methods.
+ */
 
 public class BobCarObserver implements Observer {
     private SmartCarComm scc;
@@ -15,18 +18,34 @@ public class BobCarObserver implements Observer {
     private RemoteControlListener rcl;
     private DepthStreamSocket depthStreamSocket;
 
+
     @Override
     public void update(Observable o, Object arg) {
+
+        // If an error encountered with the RemoteControlCListener
         if (arg instanceof RemoteControlListener) {
+
+            //close the depth stream socket
             depthStreamSocket.closeSocketDepthStream();
+
+            //restart method for this operation (further explained in )
             startFuntions();
 
+            // If an error is encountered with the connection forwarding the client commands to the arduino
         } else if (arg instanceof SmartCarComm) {
             restartSerialConnection();
 
+            // If an error is encountered with getting and sending jpeg frames
+            // or within the depthstream connection
         } else if (arg instanceof MjpegStreamer || arg instanceof DepthStreamSocket) {
+
+            //close remote control listener connection
             rcl.closeConnections();
+
+            // close depth stream socket.
             depthStreamSocket.closeSocketDepthStream();
+
+            //start connection operation (this function is specified in a method below)
             startFuntions();
         }
     }
@@ -38,7 +57,7 @@ public class BobCarObserver implements Observer {
     }
 
     /**
-     *
+     * The startFunction method used to update the observable and restart the connection
      */
     private void startFuntions()
     {
@@ -66,7 +85,6 @@ public class BobCarObserver implements Observer {
 
     /**
      * Method to initiate the port listener that will be waiting for inputs from the client side to forward it then to the arduino.
-     *
      */
     private void startRemoteListener(SmartCarComm scc)
     {
@@ -87,6 +105,7 @@ public class BobCarObserver implements Observer {
      */
     private void streamVideo()
     {
+
         Thread streamThread = new Thread(() -> {
 
             depthStreamSocket = new DepthStreamSocket();

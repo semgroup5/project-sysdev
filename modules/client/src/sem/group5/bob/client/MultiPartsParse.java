@@ -29,7 +29,7 @@ class MultiPartsParse extends Observable implements Runnable{
 
         boolean nextPart;
         try{
-            nextPart=multipartStream.skipPreamble();
+            nextPart = multipartStream.skipPreamble();
             while(nextPart)
             {
 

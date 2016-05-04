@@ -60,8 +60,9 @@ class ClientState implements Observer {
     }
 
     /**
-     * Method that starts the depth streaming
+     * Method that starts mapping
      */
+    //TODO
     void startMap(){
         try{
             parse = new MultiPartsParse(connectionManager.getDepthSocket().getInputStream());
@@ -81,6 +82,7 @@ class ClientState implements Observer {
     /**
      * Method to stop the depth streaming
      */
+    //TODO
     void stopMap(){
         try {
             connectionManager.DepthSocketCloser();

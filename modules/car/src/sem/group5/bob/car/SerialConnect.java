@@ -45,7 +45,8 @@ class SerialConnect implements SerialPortEventListener {
      */
     void initialize(){
         // the next line is for Raspberry Pi and
-        // gets us into the while loop and was suggested here was suggested http://www.raspberrypi.org/phpBB3/viewtopic.php?f=81&t=32186
+        // gets us into the while loop and was suggested here
+        // http://www.raspberrypi.org/phpBB3/viewtopic.php?f=81&t=32186
         //System.setProperty("gnu.io.rxtx.SerialPorts", "/dev/ttyACM0");
 
         Properties properties = System.getProperties();
@@ -59,7 +60,10 @@ class SerialConnect implements SerialPortEventListener {
         CommPortIdentifier portId = null;
         Enumeration portEnum = CommPortIdentifier.getPortIdentifiers();
 
-        // First, Find an instance of serial port as set in PORT_NAMES.
+        /**
+         * First, Find an instance of serial port as set in PORT_NAMES.
+         */
+         // while loop to look at all the port names
         while (portEnum.hasMoreElements()) {
             CommPortIdentifier currPortId = (CommPortIdentifier) portEnum.nextElement();
 
@@ -70,6 +74,7 @@ class SerialConnect implements SerialPortEventListener {
                 }
             }
         }
+        //TODO: throw exception, if it didn't find the right port
         if (portId == null) {
             System.out.println("Could not find COM port.");
             System.exit(1);
@@ -97,6 +102,8 @@ class SerialConnect implements SerialPortEventListener {
             // add event listeners
             serialPort.addEventListener(this);
             serialPort.notifyOnDataAvailable(true);
+
+            //Catch and logs errors
         } catch (Exception e) {
             System.out.println("Caught exception");
             System.err.println(e.toString());
@@ -107,13 +114,19 @@ class SerialConnect implements SerialPortEventListener {
      * Method to close the serial connection
      */
     synchronized void close() {
+
+        // If the port is open
         if (serialPort != null) {
             try {
+
+                //Close the port connections.
                 output.close();
                 input.close();
                 serialPort.removeEventListener();
                 serialPort.close();
                 System.out.println("Serial Port Closed Successfully");
+
+                //Catch and logs errors
             }catch (Exception e) {
                 e.printStackTrace();
             }
@@ -145,6 +158,8 @@ class SerialConnect implements SerialPortEventListener {
             try {
                 String inputLine = input.readLine();
                 System.out.println(inputLine);
+
+                //Catch and logs errors
             } catch (Exception e) {
                 System.err.println(e.toString());
             }

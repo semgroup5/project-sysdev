@@ -25,15 +25,16 @@ class ConnectionManager extends Observable {
             DiscoveryListener d = new DiscoveryListener();
             d.listenIp();
             this.carIp = d.getIp();
-
+            // Assigns a socket connection
             this.controlSocket = getControlSocket();
             System.out.println("Socket Established");
-
             this.depthSocket = getDepthSocket();
             System.out.println("Depth Socket Established");
 
-            if (!(this.carIp == null)) smartcar = new Smartcar(this.controlSocket);
-            isConnected = true;
+            //If an IP from the car was registered, establish a connection with the IP.
+            if (!(this.carIp == null))
+                smartcar = new Smartcar(this.controlSocket);
+                isConnected = true;
 
             setChanged();
             notifyObservers(this);
