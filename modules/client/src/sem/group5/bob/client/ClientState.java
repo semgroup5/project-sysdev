@@ -33,11 +33,7 @@ class ClientState implements Observer {
     private void connect()
     {
         Thread connectionThread = new Thread(() -> {
-            try {
-                connectionManager.connect();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+           connectionManager.findServerIp();
         });
         connectionThread.start();
     }

@@ -25,7 +25,7 @@ public class DepthJpegProvider extends Observable implements JpegProvider {
     }
 
     public void receiveDepth(FrameMode frameMode, ByteBuffer byteBuffer, int i) { if (!processingDepth){ latestDepthFrame = byteBuffer;} }
-   public void receiveVideo(FrameMode frameMode, ByteBuffer byteBuffer, int i) { latestVideoFrame = byteBuffer; }
+    public void receiveVideo(FrameMode frameMode, ByteBuffer byteBuffer, int i) { latestVideoFrame = byteBuffer; }
 
     private int pixelWidth = 1;
     private int imageSize = 640 * 480 * pixelWidth;

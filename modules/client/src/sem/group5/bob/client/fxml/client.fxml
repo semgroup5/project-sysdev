@@ -7,6 +7,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" onKeyPressed="#keyListenersPressed" onKeyReleased="#keyListenersReleased" prefHeight="689.0" prefWidth="1404.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sem.group5.bob.client.ControllerGUI">
    <center>
        <AnchorPane prefHeight="549.0" prefWidth="1413.0"
@@ -20,9 +21,6 @@
                    <MenuItem fx:id="mSave" mnemonicParsing="false" onAction="#handle" text="Save"/>
                    <MenuItem fx:id="mLoad" mnemonicParsing="false" onAction="#handle" text="Load"/>
                    <MenuItem fx:id="close" mnemonicParsing="false" onAction="#closeApplication" text="Close"/>
-               </Menu>
-               <Menu mnemonicParsing="false" text="Edit">
-                   <MenuItem mnemonicParsing="false" text="Delete"/>
                </Menu>
                <Menu mnemonicParsing="false" text="Help">
                    <MenuItem fx:id="about" mnemonicParsing="false" text="About"/>

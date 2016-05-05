@@ -12,7 +12,7 @@ import java.util.Observer;
  * This class is notified when an observed object is changed and updates the object with specific methods.
  */
 
-public class BobCarObserver implements Observer {
+public class BobCarConnectionManager implements Observer {
     private SmartCarComm scc;
     private SerialConnect serialC;
     private RemoteControlListener rcl;
@@ -50,7 +50,7 @@ public class BobCarObserver implements Observer {
         }
     }
 
-    void observe() {
+    void initialize() {
         startSerialConnection();
 
         startFuntions();
@@ -131,7 +131,8 @@ public class BobCarObserver implements Observer {
                 }
                 Thread.sleep(1000);
 
-                MjpegStreamer mjpegStreamer = new MjpegStreamer(depthStreamSocket.getSocket(), depthJpegProvider, this);
+                MjpegStreamer mjpegStreamer = new MjpegStreamer(depthStreamSocket.getSocket(), depthJpegProvider);
+                mjpegStreamer.addObserver(this);
                 Thread t = new Thread(mjpegStreamer);
                 t.start();
             }

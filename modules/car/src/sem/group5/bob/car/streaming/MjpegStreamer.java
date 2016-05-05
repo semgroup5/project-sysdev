@@ -1,23 +1,34 @@
 package sem.group5.bob.car.streaming;
 
-import sem.group5.bob.car.BobCarObserver;
+import sem.group5.bob.car.BobCarConnectionManager;
 
-import java.io.IOException;
 import java.io.OutputStream;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Observable;
 
+/**
+ * Class responsible for sending video or depth stream to the client.
+ */
 public class MjpegStreamer extends Observable implements Runnable{
     private DepthJpegProvider cjp;
     private Socket socket;
 
-    public MjpegStreamer(Socket s, DepthJpegProvider cjp, BobCarObserver bobCarObserver) {
+    /**
+     *  Constructor
+     * @param s socket used for communication
+     * @param cjp responsible for selecting which frames will be send to the client.
+     */
+    public MjpegStreamer(Socket s, DepthJpegProvider cjp) {
         this.socket = s;
         this.cjp = cjp;
-        addObserver(bobCarObserver);
     }
 
+    /**
+     * Function that sends hte latest frames to client with boundaries so the client will be able to organize them. In case of
+     * any error is found while streaming it will notify the class BobCarConnectionManager.
+     * @see DepthJpegProvider
+     * @see BobCarConnectionManager
+     */
     private void stream()
     {
         try {
@@ -52,13 +63,11 @@ public class MjpegStreamer extends Observable implements Runnable{
 
     }
 
+    /**
+     * Function used by the thread to run the stream.
+     */
     public void run(){
-        try{
+
             this.stream();
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
     }
 }

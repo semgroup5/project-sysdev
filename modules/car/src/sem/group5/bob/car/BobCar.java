@@ -4,7 +4,7 @@ public class BobCar{
 
     public static void main(String[] args)
     {
-        BobCarObserver observer = new BobCarObserver();
-        observer.observe();
+        BobCarConnectionManager manager = new BobCarConnectionManager();
+        manager.initialize();
     }
 }

@@ -2,75 +2,58 @@ package sem.group5.bob.client;
 
 import java.io.IOException;
 import java.net.*;
-import java.util.Arrays;
-import java.util.Enumeration;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
  *
  */
-class DiscoveryListener {
-    private DatagramSocket c;
-    private String ip = "";
+class DiscoveryListener extends Observable{
+    private DatagramSocket socket;
+    private String ip;
+    private boolean isListing;
+
 
     /**
      * Method to listen to the Ip from bobCar
      */
     void listenIp() {
         try {
-            c = new DatagramSocket(1235);
-            c.setBroadcast(true);
-            c.setReuseAddress(true);
+            isListing = true;
+            ip = "";
 
-            byte[] sendData = "Discovery_Pi_Request".getBytes();
+            //Open a socket to listen to UPD traffic that is aimed at this port
+            socket = new DatagramSocket(1235, InetAddress.getByName("0.0.0.0"));
+            socket.setBroadcast(true);
+            socket.setReuseAddress(true);
 
-            //Try with 255.255.255.255
-            try{
-                DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName("255.255.255.255"), 1235);
-                c.send(sendPacket);
-                System.out.println(getClass().getName() + " Request packet sent to: 255.255.255.255");
-            }catch (Exception ignored){
+            while(isListing){
+                System.out.println(getClass().getName() + " Ready to receive broadcast packets");
+                //Receive a packet
+                byte[] recBuf = new byte[32];
+                DatagramPacket packet = new DatagramPacket(recBuf, recBuf.length);
+                System.out.println("Waiting for packets...");
+                socket.receive(packet);
 
-            }
-            Enumeration interfaces = NetworkInterface.getNetworkInterfaces();
-            while(interfaces.hasMoreElements()){
-                NetworkInterface networkInterface = (NetworkInterface) interfaces.nextElement();
+                //Packet received
+                System.out.println(getClass().getName() + "DiscoveryBroadcaster packet received from: " + packet.getAddress().getHostAddress());
+                System.out.println(getClass().getName() + "Packet received; data: " + new String(packet.getData()));
 
-                if (networkInterface.isLoopback() || !networkInterface.isUp()){
-                    continue;
-                }
-               for (InterfaceAddress interfaceAddress : networkInterface.getInterfaceAddresses()){
-                   InetAddress broadcast = interfaceAddress.getBroadcast();
-                   if (broadcast == null){
-                       continue;
-                   }
-                   // Send the broadcast package
-                   try{
-                       DatagramPacket sendPacket= new DatagramPacket(sendData, sendData.length, broadcast, 1235);
-                       c.send(sendPacket);
-                   }catch(Exception ignored){
-                   }
-                   System.out.println(getClass().getName() + " Request package sent to: " + broadcast.getHostAddress() + "; Interface: " + networkInterface.getDisplayName());
+                //See if the packet is the one we need
+                String message = new String(packet.getData());
+                if (message.equals("BobCar_Server_IP")){
+                    this.ip = packet.getAddress().toString().substring(1);
+                    System.out.println("Found Pi at carIp: " + packet.getAddress().toString().substring(1));
 
-               }
-            }
-            System.out.println(getClass().getClass() + " Waiting for a reply");
-            while (true) {
-                //waiting for response
-                byte[] recvBuf = new byte[32];
-                DatagramPacket receivePacket = new DatagramPacket(recvBuf, recvBuf.length);
-                c.receive(receivePacket);
+                    byte[] sendData = "BobCar_Client_Response".getBytes();
 
-                //Getting a response
-                System.out.println(getClass().getName() + " Broadcast response from: " + receivePacket.getAddress().getHostAddress());
-                System.out.println(Arrays.toString(receivePacket.getData()));
+                    //send an answer
+                    DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length ,packet.getAddress(), packet.getPort());
+                    socket.send(sendPacket);
 
-                //Check if message checks
-                String message = new String(receivePacket.getData()).trim();
-                if (message.equals("Discovery_Pi_Response")) {
-                    this.ip = receivePacket.getAddress().toString().substring(1);
-                    System.out.println("Found Pi at carIp: " + receivePacket.getAddress().toString().substring(1));
+                    System.out.println(getClass().getName() + "Sent packet to: " +  sendPacket.getAddress().getHostAddress());
+                    System.out.println("Done listening IP");
                     close();
                     break;
                 }
@@ -86,9 +69,14 @@ class DiscoveryListener {
      * Method to shut down the discoveryListener
      */
     private void close() {
-        c.close();
+        isListing = false;
+        System.out.println("Disconnecting");
+        if (socket.isConnected()) socket.disconnect();
+        System.out.println("Closing Socket");
+        socket.close();
         System.out.println("Discovery listener closed");
     }
+
 
     /**
      * Method to return the found IP adress

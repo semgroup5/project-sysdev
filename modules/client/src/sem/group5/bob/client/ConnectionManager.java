@@ -6,15 +6,29 @@ import java.io.InterruptedIOException;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.util.Observable;
+import java.util.Observer;
 
-class ConnectionManager extends Observable {
+class ConnectionManager extends Observable implements Observer{
     private String carIp;
     private Socket controlSocket;
     private Socket depthSocket;
     private Smartcar smartcar;
     private SmartcarController smartcarController;
     private boolean isConnected;
+    private DiscoveryListener d;
     Exception connectionException;
+
+    ConnectionManager() {
+        d = new DiscoveryListener();
+        addObserver(this);
+    }
+
+    /**
+     *
+     */
+    void findServerIp() {
+        d.listenIp();
+    }
 
     /**
      * Method to connect to bobCar
@@ -22,8 +36,6 @@ class ConnectionManager extends Observable {
      */
     void connect() throws IOException {
         try {
-            DiscoveryListener d = new DiscoveryListener();
-            d.listenIp();
             this.carIp = d.getIp();
             // Assigns a socket connection
             this.controlSocket = getControlSocket();
@@ -53,11 +65,11 @@ class ConnectionManager extends Observable {
         try{
             smartcarController = null;
 
-            controlSocket.close();
+            if (controlSocket != null) controlSocket.close();
             controlSocket = null;
             System.out.println("Control Socket Closed!");
 
-            depthSocket.close();
+            if (depthSocket != null) depthSocket.close();
             depthSocket = null;
             System.out.println("Depth Socket Closed!");
 
@@ -180,6 +192,17 @@ class ConnectionManager extends Observable {
         t.start();
     }
 
-
-
+    @Override
+    public void update(Observable o, Object arg) {
+        if (arg.equals("IP Found")) {
+            try {
+                connect();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        else if (arg.equals("Time Out")) {
+            disconnect();
+        }
+    }
 }

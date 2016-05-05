@@ -59,10 +59,8 @@ void handleInput() { //handle serial input if there is any
     }else{
       car.stop();
     }
-    
-    sendData();
-    
   }
+  sendData();
 }
 
 void rotateOnSpot(int targetDegrees){
