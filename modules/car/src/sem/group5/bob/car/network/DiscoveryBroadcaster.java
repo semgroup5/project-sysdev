@@ -55,7 +55,7 @@ public class DiscoveryBroadcaster implements Runnable{
                 DatagramPacket receivePacket = new DatagramPacket(receiveBuf, receiveBuf.length);
                 if (!socket.isClosed()) socket.receive(receivePacket);
 
-                //Getting a response
+                // Getting a response
                 System.out.println(getClass().getName() + " Broadcast response from: " + receivePacket.getAddress().getHostAddress());
                 System.out.println(Arrays.toString(receivePacket.getData()));
 
