@@ -9,48 +9,39 @@ import java.util.logging.Logger;
 
 public class DiscoveryBroadcaster implements Runnable{
     private DatagramSocket socket;
+    private boolean broadcasting;
 
     /**
      * Broadcasts IP address to the network until it find a specific message, if the message is found it sends its IP address back as a answer.
      */
     private void startIPBroadcast() {
         try{
+            broadcasting = true;
 
             socket = new DatagramSocket(1235);
             socket.setBroadcast(true);
             socket.setReuseAddress(true);
 
-            byte[] sendData = "BobCar_Server_IP".getBytes();
+            Thread broadcastThread = new Thread(()->{
+                try {
+                    while (broadcasting) {
+                        byte[] sendData = "BobCar_Server_IP".getBytes();
 
-            //Try with 255.255.255.255
-            DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName("255.255.255.255"), 1235);
-            socket.send(sendPacket);
-            System.out.println(getClass().getName() + " Request packet sent to: 255.255.255.255");
-
-            Enumeration interfaces = NetworkInterface.getNetworkInterfaces();
-            while(interfaces.hasMoreElements()){
-                NetworkInterface networkInterface = (NetworkInterface) interfaces.nextElement();
-
-                if (networkInterface.isLoopback() || !networkInterface.isUp()){
-                    continue;
-                }
-                for (InterfaceAddress interfaceAddress : networkInterface.getInterfaceAddresses()){
-                    InetAddress broadcast = interfaceAddress.getBroadcast();
-                    if (broadcast == null){
-                        continue;
-                    }
-                    // Send the broadcast package
-                    try{
+                        //Try with 255.255.255.255
+                        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName("255.255.255.255"), 1235);
                         socket.send(sendPacket);
-                    }catch(Exception ignored){
+                        System.out.println(getClass().getName() + " Request packet sent to: 255.255.255.255");
                     }
-                    System.out.println(getClass().getName() + " Request package sent to: " + broadcast.getHostAddress() + "; Interface: " + networkInterface.getDisplayName());
-
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            }
+            });
+            broadcastThread.start();
+
+            //waiting for response
             System.out.println(getClass().getClass() + " Waiting for a reply");
-            while (true) {
-                //waiting for response
+            while (broadcasting) {
+
                 byte[] receiveBuf = new byte[32];
                 DatagramPacket receivePacket = new DatagramPacket(receiveBuf, receiveBuf.length);
                 if (!socket.isClosed()) socket.receive(receivePacket);
@@ -63,7 +54,7 @@ public class DiscoveryBroadcaster implements Runnable{
                 String message = new String(receivePacket.getData()).trim();
                 if (message.equals("BobCar_Client_Response")) {
                     socket.close();
-                    break;
+                    broadcasting = false;
                 }
             }
         }catch(IOException ex){
