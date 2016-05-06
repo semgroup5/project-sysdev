@@ -32,7 +32,6 @@ class MultiPartsParse extends Observable implements Runnable{
             nextPart = multipartStream.skipPreamble();
             while(nextPart)
             {
-
                 multipartStream.readHeaders();
 
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -41,17 +40,14 @@ class MultiPartsParse extends Observable implements Runnable{
 
                 BufferedImage img = ImageIO.read(in);
 
-
                 nextPart = multipartStream.readBoundary();
                 setChanged();
                 notifyObservers(img);
-
             }
         }catch(IOException e){
             e.printStackTrace();
             System.out.println("caught error receiving depth");
         }
-
 
     }
 

@@ -71,8 +71,6 @@ class ClientState implements Observer {
         }catch (Exception e){
             gui.replaceStatus("Map connection failed.\r\n" + "Reason: " + e.getMessage());
         }
-
-
     }
 
     /**

@@ -6,5 +6,6 @@ public class BobCar{
     {
         BobCarConnectionManager manager = new BobCarConnectionManager();
         manager.initialize();
+        pose newPose = new pose();
     }
 }
