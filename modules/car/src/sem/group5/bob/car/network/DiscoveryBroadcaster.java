@@ -13,13 +13,6 @@ public class DiscoveryBroadcaster implements Runnable, Observer {
     private DatagramSocket socket;
     private boolean broadcasting;
 
-    public static void main(String[] args)
-    {
-        DiscoveryBroadcaster d = new DiscoveryBroadcaster();
-        Thread t = new Thread(d);
-        t.start();
-
-    }
 
     /**
      * Method to start the broadcasting
