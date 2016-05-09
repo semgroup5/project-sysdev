@@ -3,6 +3,7 @@ package sem.group5.bob.car;
 import org.openkinect.freenect.*;
 import sem.group5.bob.car.network.DiscoveryBroadcaster;
 import sem.group5.bob.car.streaming.DepthJpegProvider;
+import sem.group5.bob.car.streaming.DepthProvider;
 import sem.group5.bob.car.streaming.MjpegStreamer;
 import java.io.BufferedReader;
 import java.io.OutputStream;
@@ -17,53 +18,46 @@ public class BobCarConnectionManager implements Observer {
     private SerialConnect serialC;
     private RemoteControlListener rcl;
     private DepthStreamSocket depthStreamSocket;
-
+    private DiscoveryBroadcaster d;
+    private  Device device;
 
     @Override
-    public void update(Observable o, Object arg) {
-
-        // If an error encountered with the RemoteControlCListener
-        if (arg instanceof RemoteControlListener) {
-
-            //close the depth stream socket
+    public void update(Observable o, Object arg)
+    {
+        if (arg.equals("Connection Closed"))
+        {
             depthStreamSocket.closeSocketDepthStream();
 
-            //restart method for this operation (further explained in )
-            startFuntions();
-
-            // If an error is encountered with the connection forwarding the client commands to the arduino
-        } else if (arg instanceof SmartCarComm) {
+            restartFunctions();
+        }
+        else if (arg.equals("Serial Port Failed"))
+        {
             restartSerialConnection();
-
-            // If an error is encountered with getting and sending jpeg frames
-            // or within the depthstream connection
-        } else if (arg instanceof MjpegStreamer || arg instanceof DepthStreamSocket) {
-
-            //close remote control listener connection
-            rcl.closeConnections();
-
-            // close depth stream socket.
-            depthStreamSocket.closeSocketDepthStream();
-
-            //start connection operation (this function is specified in a method below)
-            startFuntions();
+        }
+        else if (arg instanceof MjpegStreamer || arg instanceof DepthStreamSocket)
+        {
+            //rcl.closeConnections();
         }
     }
 
     void initialize() {
         startSerialConnection();
 
-        startFuntions();
+        startFunctions();
     }
 
     /**
      * The startFunction method used to update the observable and restart the connection
      */
-    private void startFuntions()
+    private void startFunctions()
     {
+        startRemoteListener(this.scc);
+
+        setDepthStreamSocket();
+
         startDiscoveryListener();
 
-        startRemoteListener(scc);
+        kinectSetting();
 
         try {
             streamVideo();
@@ -73,12 +67,36 @@ public class BobCarConnectionManager implements Observer {
         }
     }
 
+    private void restartFunctions()
+    {
+        startRemoteListener(scc);
+
+        setDepthStreamSocket();
+
+        startDiscoveryListener();
+
+        try {
+            streamVideo();
+        }catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Could Not Start Video Streaming");
+        }
+    }
+
+    private void setDepthStreamSocket() {
+        Thread t = new Thread(()->{
+            depthStreamSocket = new DepthStreamSocket();
+        });
+        t.start();
+    }
+
     /**
      * Method to initiate the broadcasting IP
      */
     private void startDiscoveryListener() {
         System.out.println("Starting IP Address Broadcast");
-        DiscoveryBroadcaster d = new DiscoveryBroadcaster();
+        d = new DiscoveryBroadcaster();
+        rcl.addObserver(d);
         Thread thread = new Thread(d);
         thread.run();
     }
@@ -100,6 +118,22 @@ public class BobCarConnectionManager implements Observer {
 
     }
 
+    private void kinectSetting()
+    {
+            try {
+                System.out.println("Starting video streamer");
+                Context context = Freenect.createContext();
+                System.out.println(1);
+                device = context.openDevice(0);
+                System.out.println(2);
+                device.setDepthFormat(DepthFormat.MM);
+                System.out.println(3);
+                device.setVideoFormat(VideoFormat.RGB);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+    }
+
     /**
      * Method to initiate the video streaming
      */
@@ -108,26 +142,13 @@ public class BobCarConnectionManager implements Observer {
 
         Thread streamThread = new Thread(() -> {
 
-            depthStreamSocket = new DepthStreamSocket();
-
-            Device d = null;
-            try {
-                System.out.println("Starting video streamer");
-                Context context = Freenect.createContext();
-                d = context.openDevice(0);
-                d.setDepthFormat(DepthFormat.MM);
-                d.setVideoFormat(VideoFormat.RGB);
-            }catch (Exception e){
-                rcl.closeConnections();
-            }
-
             try {
                 System.out.println( "Starting Video Stream" );
 
                 DepthJpegProvider depthJpegProvider = new DepthJpegProvider();
                 //d.startVideo(depthJpegProvider::receiveVideo);
-                if (d != null) {
-                    d.startDepth(depthJpegProvider::receiveDepth);
+                if (device != null) {
+                    device.startDepth(depthJpegProvider::receiveDepth);
                 }
                 Thread.sleep(1000);
 
@@ -138,7 +159,6 @@ public class BobCarConnectionManager implements Observer {
             }
             catch(Exception e){
                 System.out.println("Could Not Start Video Stream");
-                rcl.closeConnections();
                 e.printStackTrace();
             }
         });

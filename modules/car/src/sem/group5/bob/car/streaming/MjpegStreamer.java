@@ -57,8 +57,8 @@ public class MjpegStreamer extends Observable implements Runnable{
         }
         } catch (Exception e) {
             e.printStackTrace();
-            setChanged();
-            notifyObservers();
+//            setChanged();
+//            notifyObservers();
         }
 
     }
@@ -66,8 +66,8 @@ public class MjpegStreamer extends Observable implements Runnable{
     /**
      * Function used by the thread to run the stream.
      */
-    public void run(){
-
+    public void run()
+    {
             this.stream();
     }
 }

@@ -15,13 +15,12 @@ public class DepthJpegProvider extends Observable implements JpegProvider {
     private static boolean processingDepth = false;
     private static ByteBuffer latestVideoFrame;
 
-    Unsafe unsafe;
     public DepthJpegProvider() {
         try{
             Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");
             theUnsafe.setAccessible(true);
-            unsafe = (Unsafe) theUnsafe.get(null);
-        }catch(Exception e){}
+            Unsafe unsafe = (Unsafe) theUnsafe.get(null);
+        }catch(Exception ignored){}
     }
 
     public void receiveDepth(FrameMode frameMode, ByteBuffer byteBuffer, int i) { if (!processingDepth){ latestDepthFrame = byteBuffer;} }
@@ -31,8 +30,8 @@ public class DepthJpegProvider extends Observable implements JpegProvider {
     private int imageSize = 640 * 480 * pixelWidth;
     private byte[] comboFrame = new byte[imageSize];
     public byte[] getLatestJpeg() throws Exception{
-        if(latestDepthFrame == null)
-            Thread.sleep(1000);
+        while(latestDepthFrame == null)
+            Thread.sleep(2*1000);
 
 //        int videoFrameSize = 640*480*2;
 //        byte[] vFrame = new byte[videoFrameSize];

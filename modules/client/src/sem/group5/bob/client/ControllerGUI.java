@@ -36,10 +36,11 @@ public class ControllerGUI extends Observable {
     public Button load;
     public ImageView kinectView1;
     private boolean isMapping = false;
+    private boolean connectClicked = false;
     public Slider speedControl;
     public ImageView loadImage;
     private ClientState clientState;
-    ButtonsStyle style;
+    private ButtonsStyle style;
 
 
     /**
@@ -51,27 +52,37 @@ public class ControllerGUI extends Observable {
         style = new ButtonsStyle(this);
     }
 
-    /**
-     * 
-     * @throws IOException
-     */
-    public void connect() throws IOException {
+    public void connect() {
+        if(!clientState.isConnected() && !connectClicked)
+        {
+            connectClicked = true;
+            setState("Connected");
+            setChanged();
+            notifyObservers("Connect");
+        }
+        else if (clientState.isConnected && !connectClicked)
+        {
+            connectClicked = true;
+            setState("Disconnected");
+            setChanged();
+            notifyObservers("Disconnect");
+        }
+    }
 
-        if(!clientState.isConnected()) {
-            loadImage.setVisible(true);
+    void setState(String state) {
+        loadImage.setVisible(true);
+        if(state.equals("Connected"))
+        {
             style.styleButton(connect, "active");
             connect.setText("Disconnect");
             mConnect.setText("Disconnect");
-            setChanged();
-            notifyObservers(this);
         }
-        else{
-            loadImage.setVisible(true);
+        else if (state.equals("Disconnected"))
+        {
             style.styleButton(connect, "");
             connect.setText("Connect");
             mConnect.setText("Connect");
-            setChanged();
-            notifyObservers(this);
+
         }
     }
 
@@ -324,6 +335,11 @@ public class ControllerGUI extends Observable {
     {
         textFeedback.clear();
         textFeedback.setText(s);
+    }
+
+    void setConnectClicked(boolean b)
+    {
+        connectClicked = b;
     }
 
 }

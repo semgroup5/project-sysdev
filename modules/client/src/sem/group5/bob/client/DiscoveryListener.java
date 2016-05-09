@@ -4,13 +4,16 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-class DiscoveryListener {
+class DiscoveryListener
+{
     private DatagramSocket socket;
     private String ip = "";
     private boolean listening;
+
 
 
     void listenIp() {
@@ -40,21 +43,17 @@ class DiscoveryListener {
                     this.ip = packet.getAddress().toString().substring(1);
                     System.out.println("Found BobCar At IP: " + packet.getAddress().toString().substring(1));
                     close();
-                    break;
                 }
-                Thread.sleep(5000);
             }
         }catch (IOException ex) {
             Logger.getLogger(DiscoveryListener.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            close();
         }
-
     }
 
     private void close() {
         listening = false;
-        socket.disconnect();
+        if (socket.isConnected()) socket.disconnect();
         socket.close();
         System.out.println("Discovery listener closed");
     }

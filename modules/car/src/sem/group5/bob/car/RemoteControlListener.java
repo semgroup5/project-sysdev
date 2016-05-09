@@ -52,6 +52,8 @@ class RemoteControlListener extends Observable implements Runnable{
 
             //Accepts and establish connection
             socket = listener.accept();
+            setChanged();
+            notifyObservers("Done Broadcasting");
 
             //Time out on the socket if no commands received, restarts counting after the last command.
             timer = new BobCarSocketTimer(60*1000, this);
@@ -64,11 +66,14 @@ class RemoteControlListener extends Observable implements Runnable{
             //Enable the socket to be reused even if busy.
             socket.setReuseAddress(true);
 
-        //TODO: is this necessary?
-            socket.setSoTimeout(50*1000);
-            socket.setKeepAlive(true);
             System.out.println("Controls socket established!");
             timer.reset();
+
+            in = socket.getInputStream();
+            out = new PrintWriter(socket.getOutputStream());
+
+            // sends a heartbeat to check if the connection is still alive
+            sendHeartBeatToClient();
 
         // Catch and logs errors
         }catch(Exception e){
@@ -77,23 +82,14 @@ class RemoteControlListener extends Observable implements Runnable{
         // While the socket is open
         while (!socket.isClosed()) {
             try {
-                in = socket.getInputStream();
-                out = new PrintWriter(socket.getOutputStream());
                 String buffer = "";
 
-                //if there's any input do the following
                 while (in.available() > 0) {
                         buffer += (char)in.read();
                 }
 
-                //If there's remaining data in the buffer
                 if(buffer.length() > 0)
                 {
-                    /**
-                    * The following code checks the character at the first position in the buffer.
-                    * Every character represents a command to the arduino, 'S' to set speed, 'a' to set angle and
-                    * 'r' for rotation.
-                    **/
                     char first = buffer.charAt(0);
                     if (first == 's') {
                         sc.setSpeed(Integer.parseInt(buffer.substring(1,buffer.indexOf('/'))));
@@ -108,8 +104,6 @@ class RemoteControlListener extends Observable implements Runnable{
                         closeConnections();
                     }
                 }
-                // sends a heartbeat to check if the connection is still alive
-                sendHeartBeatToClient();
 
                 // Catch and logs errors
             }catch(Exception e){
@@ -122,12 +116,19 @@ class RemoteControlListener extends Observable implements Runnable{
      */
     private void sendHeartBeatToClient()
     {
-        try {
-             String beat = "A";
-             out.write(beat);
-        }catch (IOException e) {
-             e.printStackTrace();
-        }
+        Thread thread = new Thread(()->{
+            while (!socket.isClosed()) {
+                try {
+                    String beat = "A";
+                    out.write(beat);
+                    out.flush();
+                    Thread.sleep(10*1000);
+                }catch (IOException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+           thread.start();
     }
 
     /**
@@ -149,7 +150,7 @@ class RemoteControlListener extends Observable implements Runnable{
             setChanged();
 
             // Notify observer class to update the method
-            notifyObservers(this);
+            notifyObservers("Connection Closed");
 
             // Catches and logs errors
         }catch (Exception e) {

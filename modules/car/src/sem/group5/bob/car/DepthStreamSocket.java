@@ -11,6 +11,8 @@ class DepthStreamSocket extends Observable {
 
     DepthStreamSocket() {
         try {
+
+            System.out.println("Opening depth socket");
             int port = 50001;
             //Establish a new connection at port 50001
             serverSocket = new ServerSocket(port);

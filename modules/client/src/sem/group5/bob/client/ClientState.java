@@ -1,5 +1,7 @@
 package sem.group5.bob.client;
 
+import javafx.application.Platform;
+
 import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
@@ -30,10 +32,10 @@ class ClientState implements Observer {
      *  Method that initializes the connectionManager connection
      *  see @ ConnectionManager
      */
-    private void connect()
+    private void startConnection()
     {
-        Thread connectionThread = new Thread(() -> {
-           connectionManager.findServerIp();
+        Thread connectionThread = new Thread(()->{
+            connectionManager.connect();
         });
         connectionThread.start();
     }
@@ -117,54 +119,52 @@ class ClientState implements Observer {
      * @param o observable object
      */
     @Override
-    public void update(Observable observable, Object o) {
-        if (o instanceof ControllerGUI)
+    public void update(Observable observable, Object o)
+    {
+        if (o.equals("Connect") && !isConnected)
         {
-           if (!isConnected)
-           {
-                connect();
-           }
-           else
-           {
-               try {
-                   smartcar.close();
-                   disconnect();
-               } catch (IOException e) {
-                   gui.replaceStatus("Couldn't disconnect, reason:" + e.getMessage());
-               }
-           }
+            startConnection();
         }
-
-        else if(o instanceof ConnectionManager)
+        else if (o.equals("Disconnect") && isConnected)
         {
-            if (connectionManager.isConnected()) {
-                gui.loadImage.setVisible(false);
-                try {
-                    this.smartcar = connectionManager.getSmartCar();
-                    this.smartcar.addObserver(this);
-                    this.smartcarController = connectionManager.getSmartcarController();
-                    gui.replaceStatus("Connected!");
-                    isConnected = true;
-                    gui.stream();
-                    connectionManager.checkConnectionHeartBeat();
-                } catch (IOException e) {
-                    gui.replaceStatus("Couldn't connect, reason:" + e.getMessage());
-                }
-
-            } else if (!connectionManager.isConnected() && connectionManager.connectionException != null){
-                isConnected = false;
-                gui.style.styleButton(gui.connect, "");
-                gui.replaceStatus("Couldn't connect, reason:" + connectionManager.connectionException.getMessage());
-                connectionManager.reconnect();
-
-            } else if (!connectionManager.isConnected()){
-                gui.loadImage.setVisible(false);
-                gui.replaceStatus("Disconnected!");
-                isConnected = false;
+            try {
+                smartcar.close();
+                disconnect();
+            } catch (IOException e) {
+                gui.replaceStatus("Couldn't disconnect, reason:" + e.getMessage());
             }
         }
-
-        else if (o instanceof Smartcar)
+        else if (o.equals("Connected"))
+        {
+            try {
+                this.smartcar = connectionManager.getSmartCar();
+                this.smartcar.addObserver(this);
+                this.smartcarController = connectionManager.getSmartcarController();
+                gui.replaceStatus("Connected!");
+                isConnected = true;
+                Platform.runLater(() -> gui.setState("Connected"));
+                gui.stream();
+                connectionManager.checkConnectionHeartBeat();
+                gui.loadImage.setVisible(false);
+                gui.setConnectClicked(false);
+            } catch (IOException e) {
+                gui.replaceStatus("Couldn't connect, reason:" + e.getMessage());
+            }
+        }
+        else if (o.equals("Disconnected"))
+        {
+            gui.replaceStatus("Disconnected!");
+            isConnected = false;
+            Platform.runLater(() -> gui.setState("Disconnected"));
+            gui.loadImage.setVisible(false);
+            gui.setConnectClicked(false);
+        }
+        else if (o.equals("Fail Connecting"))
+        {
+            gui.replaceStatus("Couldn't connect, reason:" + connectionManager.connectionException.getMessage());
+            connectionManager.reconnect();
+        }
+        else if (o.equals("Socket Failed"))
         {
             gui.replaceStatus("Couldn't send data to BOBCar, reason:" + smartcar.getE().getMessage());
             connectionManager.reconnect();

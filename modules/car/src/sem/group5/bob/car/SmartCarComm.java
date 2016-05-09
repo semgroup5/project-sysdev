@@ -35,7 +35,7 @@ import java.util.Observable;
             System.out.println("could not write to port");
             e.printStackTrace();
             setChanged();
-            notifyObservers(this);
+            notifyObservers("Serial Port Failed");
         }
     }
 

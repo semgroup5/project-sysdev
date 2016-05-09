@@ -2,59 +2,46 @@ package sem.group5.bob.client;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InterruptedIOException;
-import java.io.OutputStream;
 import java.net.Socket;
 import java.util.Observable;
-import java.util.Observer;
 
-class ConnectionManager extends Observable implements Observer{
+class ConnectionManager extends Observable
+{
     private String carIp;
     private Socket controlSocket;
     private Socket depthSocket;
     private Smartcar smartcar;
     private SmartcarController smartcarController;
     private boolean isConnected;
-    private DiscoveryListener d;
     Exception connectionException;
-
-    ConnectionManager() {
-        d = new DiscoveryListener();
-        addObserver(this);
-    }
-
-    /**
-     *
-     */
-    void findServerIp() {
-        d.listenIp();
-    }
 
     /**
      * Method to connect to bobCar
-     * @throws IOException
      */
-    void connect() throws IOException {
+    void connect() {
         try {
+            DiscoveryListener d = new DiscoveryListener();
+            d.listenIp();
             this.carIp = d.getIp();
+
             // Assigns a socket connection
             this.controlSocket = getControlSocket();
             System.out.println("Socket Established");
+
             this.depthSocket = getDepthSocket();
             System.out.println("Depth Socket Established");
 
             //If an IP from the car was registered, establish a connection with the IP.
-            if (!(this.carIp == null))
-                smartcar = new Smartcar(this.controlSocket);
-                isConnected = true;
+            if (!(this.carIp == null)) smartcar = new Smartcar(this.controlSocket);
+            isConnected = true;
 
             setChanged();
-            notifyObservers(this);
+            notifyObservers("Connected");
         } catch (IOException e) {
             connectionException = e;
             isConnected = false;
             setChanged();
-            notifyObservers(this);
+            notifyObservers("Fail Connecting");
         }
     }
 
@@ -75,7 +62,7 @@ class ConnectionManager extends Observable implements Observer{
 
             isConnected = false;
             setChanged();
-            notifyObservers(this);
+            notifyObservers("Disconnected");
         }catch(Exception e){
             connectionException = e;
         }
@@ -87,12 +74,9 @@ class ConnectionManager extends Observable implements Observer{
      */
     void reconnect()
     {
-        try {
-            disconnect();
-            connect();
-        } catch (IOException e) {
-            connectionException = e;
-        }
+       disconnect();
+       connect();
+
     }
 
     /**
@@ -158,7 +142,7 @@ class ConnectionManager extends Observable implements Observer{
      * Method to tell if it is connected to bobCar
      * @return isConnected
      */
-    boolean isConnected() {
+    private boolean isConnected() {
         return isConnected;
     }
 
@@ -168,41 +152,26 @@ class ConnectionManager extends Observable implements Observer{
     void checkConnectionHeartBeat(){
         Thread t = new Thread(()->{
             try {
-                while (!getControlSocket().isClosed())
+                if (!getControlSocket().isClosed())
                 {
                     InputStream in = getControlSocket().getInputStream();
                     String buffer = "";
-                    while (in.available() > 0)
+                    while (isConnected())
                     {
                         buffer += (char) in.read();
                         if (!buffer.equals("A"))
                         {
+                            System.out.println("Socket Marked As Dead");
                             reconnect();
                         }
                         buffer = "";
+                        Thread.sleep(9*1000);
                     }
-                    //Thread.sleep(1000);
                 }
-            } catch (IOException e) {
+            } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
-           // } catch (InterruptedException e){
-                //
             }
         });
         t.start();
-    }
-
-    @Override
-    public void update(Observable o, Object arg) {
-        if (arg.equals("IP Found")) {
-            try {
-                connect();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        else if (arg.equals("Time Out")) {
-            disconnect();
-        }
     }
 }

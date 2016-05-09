@@ -8,6 +8,8 @@ class SmartcarController {
     private boolean backPressed;
     private boolean leftPressed;
     private boolean rightPressed;
+    private boolean driving;
+    private boolean turning;
 
     /**
      *
@@ -16,100 +18,92 @@ class SmartcarController {
      */
     SmartcarController(ConnectionManager connectionManager) throws IOException {
         smartcar = connectionManager.getSmartCar();
+        driving = false;
+        turning = false;
     }
 
     void pressForward(int speed) throws IOException{
-        Thread thread = new Thread(() -> {
-            if(!backPressed) {
+            if(!backPressed && !driving) {
                 try {
                     forwardPressed = true;
+                    driving = true;
                     smartcar.setSpeed(speed);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-        });
-        thread.start();
     }
 
     void pressBack(int speed) throws IOException {
-        Thread thread = new Thread(() -> {
-            if(!forwardPressed) {
+            if(!forwardPressed && !driving) {
                 try {
                     backPressed = true;
+                    driving = true;
                     smartcar.setSpeed(-speed);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-        });
-        thread.start();
     }
 
     void pressLeft() throws IOException {
-        Thread thread = new Thread(() -> {
             if(!rightPressed) {
                 try {
                     leftPressed = true;
-                    if (forwardPressed || backPressed) {
+                    if ((forwardPressed || backPressed) && !turning) {
+                        turning = true;
                         smartcar.setAngle(-90);
-                    }else {
+                    }else if (!turning){
+                        turning = true;
                         smartcar.rotate(-1);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-        });
-        thread.start();
     }
 
     void pressRight() throws IOException{
-        Thread thread = new Thread(() -> {
             if(!leftPressed) {
                 try {
                     rightPressed = true;
-                    if (forwardPressed || backPressed) {
+                    if ((forwardPressed || backPressed) && !turning) {
+                        turning = true;
                         smartcar.setAngle(90);
-                    } else {
+                    } else if (!turning){
+                        turning = true;
                         smartcar.rotate(1);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-        });
-        thread.start();
     }
 
     void releaseForward() throws IOException{
-        Thread thread = new Thread(() -> {
             try {
                 forwardPressed = false;
+                driving = false;
                 smartcar.setSpeed(0);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        });
-        thread.start();
     }
 
     void releaseBack() throws IOException{
-        Thread thread = new Thread(() -> {
             try {
                 backPressed = false;
+                driving = false;
                 smartcar.setSpeed(0);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        });
-        thread.start();
     }
 
     void releaseLeft() throws IOException{
-        Thread thread = new Thread(() -> {
             try {
                 leftPressed = false;
+                turning = false;
 
                 if (forwardPressed || backPressed) {
                     smartcar.setAngle(0);
@@ -119,14 +113,12 @@ class SmartcarController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        });
-        thread.start();
     }
 
     void releaseRight() throws IOException{
-        Thread thread = new Thread(() -> {
             try {
                 rightPressed = false;
+                turning = false;
 
                 if (forwardPressed || backPressed) {
                     smartcar.setAngle(0);
@@ -136,7 +128,5 @@ class SmartcarController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        });
-        thread.start();
     }
 }

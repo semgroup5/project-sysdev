@@ -14,6 +14,7 @@ public class DiscoveryBroadcaster implements Runnable, Observer {
     private boolean broadcasting;
 
 
+
     /**
      * Method to start the broadcasting
      */
@@ -22,7 +23,7 @@ public class DiscoveryBroadcaster implements Runnable, Observer {
             broadcasting = true;
 
             //Open a socket to broadcast to UPD traffic that is aimed at this port
-            socket = new DatagramSocket(1235, InetAddress.getByName("0.0.0.0"));
+            socket = new DatagramSocket(1235);
             socket.setBroadcast(true);
             socket.setReuseAddress(true);
 
@@ -54,10 +55,12 @@ public class DiscoveryBroadcaster implements Runnable, Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        broadcasting = false;
-        System.out.println("Disconnecting IP Broadcaster...");
-        socket.disconnect();
-        socket.close();
-        System.out.println("IP Broadcaster disconnected!");
+        if (arg.equals("Done Broadcasting")) {
+            broadcasting = false;
+            System.out.println("Disconnecting IP Broadcaster...");
+            socket.disconnect();
+            socket.close();
+            System.out.println("IP Broadcaster disconnected!");
+        }
     }
 }

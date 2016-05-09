@@ -17,7 +17,7 @@ class MultiPartsParse extends Observable implements Runnable{
 
     public void run() {
         byte[] boundary = "BoundaryString".getBytes();
-        MultipartStream multipartStream = new MultipartStream(depthStream, boundary);
+        @SuppressWarnings("deprecation") MultipartStream multipartStream = new MultipartStream(depthStream, boundary);
 
         try
         {

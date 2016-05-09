@@ -94,7 +94,7 @@ class Smartcar extends Observable{
     private void notifyConnectionLost()
     {
        setChanged();
-       notifyObservers(this);
+       notifyObservers("Socket Failed");
     }
 
     /**
