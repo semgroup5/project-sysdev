@@ -1,19 +1,15 @@
 package sem.group5.bob.car;
 
-import java.util.Observable;
-import java.util.Observer;
-
 /**
  * Created by GeoffreyC on 2016/5/1.
  * Updated by Geoffrey, Axel and Emanuel at 16-05-06
  */
 
-class Pose extends SerialConnect implements Observer {
+class pose extends SerialConnect implements poseProvider {
 
-    public void Pose() {calculatePose();}
 
     private double X = 0, Y = 0;
-    double distTmp = 0,angle,dist;
+    double dispTmp = 0,angle,disp;
 
     /**
      *
@@ -22,34 +18,34 @@ class Pose extends SerialConnect implements Observer {
     public void breakDown(String locationData){
 
         this.angle = Double.parseDouble(locationData.substring(locationData.indexOf("a") + 1, locationData.indexOf("d")));
-        this.dist = Double.parseDouble(locationData.substring(locationData.indexOf("d") + 1, locationData.indexOf("/")));
+        this.disp = Double.parseDouble(locationData.substring(locationData.indexOf("d") + 1, locationData.indexOf("/")));
     }
 
     /**
      *
      */
     public void calculatePose() {
-        double distOld = 0, x, y;
-        double distTmp = dist - distOld;
+        double dispOld = 0, x, y;
+        double dispTmp = disp - dispOld;
 
         if (Math.abs(angle) >= 360) {
             int turn = (int) angle / 360;
             this.angle = angle - (360 * turn);
         }
         if (angle == 90 || angle == 270) {
-            X += dist;
-            distOld += distTmp;
+            X += disp;
+            dispOld += dispTmp;
         } else if (angle == 0 || angle == 180) {
-            Y += dist;
-            distOld += distTmp;
+            Y += disp;
+            dispOld += dispTmp;
         } else if (angle != 0 && angle != 90) {
 
-            x = dist * Math.cos(rdNum((Math.toRadians(angle)), 5));
-            y = dist * Math.sin(rdNum((Math.toRadians(angle)), 5));
+            x = disp * Math.cos(rdNum((Math.toRadians(angle)), 5));
+            y = disp * Math.sin(rdNum((Math.toRadians(angle)), 5));
 
             this.X += rdNum(x, 3);
             this.Y += rdNum(y, 3);
-            distOld += distTmp;
+            dispOld += dispTmp;
             System.out.println(X + "this is the X");
             System.out.println(Y + "this is the Y");
         }
@@ -72,28 +68,12 @@ class Pose extends SerialConnect implements Observer {
     }
 
     /**
-     *
-     * @param X
-     * @param Y
-     * @param angle
      * @return
      */
-    public String toString(double X, double Y, double angle) {
-        X = this.X;
-        Y = this.Y;
-        angle = this.angle;
-
-        return X + " " + Y + " " + angle;
-
-    }
-
-    @Override
-    public void update(Observable o, Object arg) {
-        String locationData = (String) arg;
-        breakDown(locationData);
+    public String getLatestpose() {
+        calculatePose();
+        String pose;
+        pose = X + " " + Y + " " + angle + " ";
+        return pose;
     }
 }
-
-//read the web
-//http://stackoverflow.com/questions/15996345/java-arduino-read-data-from-the-serial-port
-//https://codeshare.io/TcybC
