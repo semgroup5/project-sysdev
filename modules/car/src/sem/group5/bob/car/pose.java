@@ -5,7 +5,7 @@ package sem.group5.bob.car;
  * Updated by Geoffrey, Axel and Emanuel at 16-05-06
  */
 
-class pose extends SerialConnect implements poseProvider {
+public class Pose extends SerialConnect implements PoseProvider {
 
 
     private double X = 0, Y = 0;
@@ -70,7 +70,7 @@ class pose extends SerialConnect implements poseProvider {
     /**
      * @return
      */
-    public String getLatestpose() {
+    public String getLatestPose() {
         calculatePose();
         String pose;
         pose = X + " " + Y + " " + angle + " ";
