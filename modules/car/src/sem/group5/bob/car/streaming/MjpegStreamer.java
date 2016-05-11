@@ -1,6 +1,7 @@
 package sem.group5.bob.car.streaming;
 
 import sem.group5.bob.car.BobCarConnectionManager;
+import sem.group5.bob.car.Pose;
 
 import java.io.OutputStream;
 import java.net.Socket;
@@ -11,6 +12,7 @@ import java.util.Observable;
  */
 public class MjpegStreamer extends Observable implements Runnable{
     private DepthJpegProvider cjp;
+    private Pose poseProvider;
     private Socket socket;
 
     /**
@@ -18,10 +20,13 @@ public class MjpegStreamer extends Observable implements Runnable{
      * @param s socket used for communication
      * @param cjp responsible for selecting which frames will be send to the client.
      */
-    public MjpegStreamer(Socket s, DepthJpegProvider cjp) {
+    public MjpegStreamer(Socket s, DepthJpegProvider cjp, Pose poseProvider) {
         this.socket = s;
         this.cjp = cjp;
+        this.poseProvider = poseProvider;
     }
+
+
 
     /**
      * Function that sends hte latest frames to client with boundaries so the client will be able to organize them. In case of
@@ -48,9 +53,11 @@ public class MjpegStreamer extends Observable implements Runnable{
         while (!socket.isClosed()) {
             System.out.println("Sending frame");
             data = cjp.getLatestJpeg();
+            //Pose poseProvider =  new Pose();     getlatestpose   needs to be implemented on the pose class
             out.write(("--BoundaryString\r\n" +
                     "Content-type: image/jpeg\r\n" +
-                    "Content-Length: " + data.length + "\r\n\r\n").getBytes());
+                    "Content-Length: " + data.length + "\r\n" +
+                    "X-Robot-Pose: " + poseProvider.getLatestPose() + "\r\n\r\n").getBytes());
             out.write(data);
             out.write("\r\n\r\n".getBytes());
             out.flush();

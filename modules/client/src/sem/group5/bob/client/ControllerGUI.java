@@ -34,7 +34,7 @@ public class ControllerGUI extends Observable {
     public Button connect;
     public Button save;
     public Button load;
-    public ImageView kinectView1;
+    public ImageView scanLineView;
     private boolean isMapping = false;
     private boolean connectClicked = false;
     public Slider speedControl;

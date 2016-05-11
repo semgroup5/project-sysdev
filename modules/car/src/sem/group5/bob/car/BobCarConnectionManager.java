@@ -3,7 +3,7 @@ package sem.group5.bob.car;
 import org.openkinect.freenect.*;
 import sem.group5.bob.car.network.DiscoveryBroadcaster;
 import sem.group5.bob.car.streaming.DepthJpegProvider;
-import sem.group5.bob.car.streaming.DepthProvider;
+
 import sem.group5.bob.car.streaming.MjpegStreamer;
 import java.io.BufferedReader;
 import java.io.OutputStream;
@@ -146,13 +146,14 @@ public class BobCarConnectionManager implements Observer {
                 System.out.println( "Starting Video Stream" );
 
                 DepthJpegProvider depthJpegProvider = new DepthJpegProvider();
+                Pose poseProvider = new Pose();
                 //d.startVideo(depthJpegProvider::receiveVideo);
                 if (device != null) {
                     device.startDepth(depthJpegProvider::receiveDepth);
                 }
                 Thread.sleep(1000);
 
-                MjpegStreamer mjpegStreamer = new MjpegStreamer(depthStreamSocket.getSocket(), depthJpegProvider);
+                MjpegStreamer mjpegStreamer = new MjpegStreamer(depthStreamSocket.getSocket(), depthJpegProvider, poseProvider );
                 mjpegStreamer.addObserver(this);
                 Thread t = new Thread(mjpegStreamer);
                 t.start();

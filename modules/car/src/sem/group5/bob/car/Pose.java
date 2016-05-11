@@ -3,12 +3,16 @@ package sem.group5.bob.car;
 import java.util.Observable;
 import java.util.Observer;
 
-class Pose extends SerialConnect implements Observer {
-
-    public void Pose() {calculatePose();}
+public class Pose {
 
     private double X = 0, Y = 0;
     double distTmp = 0,angle,dist;
+
+    public Pose() {
+        calculatePose();
+    }
+
+
 
     /**
      *
@@ -73,20 +77,15 @@ class Pose extends SerialConnect implements Observer {
      * @param angle
      * @return
      */
-    public String toString(double X, double Y, double angle) {
+    public String getLatestPose(){
         X = this.X;
         Y = this.Y;
         angle = this.angle;
 
         return X + " " + Y + " " + angle;
-
     }
 
-    @Override
-    public void update(Observable o, Object arg) {
-        String locationData = (String) arg;
-        breakDown(locationData);
-    }
+
 }
 
 //read the web
