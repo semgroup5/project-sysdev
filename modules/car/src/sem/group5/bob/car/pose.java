@@ -25,6 +25,8 @@ public class Pose extends SerialConnect implements PoseProvider {
      *
      */
     public void calculatePose() {
+        //TODO we need to get this locationData and put it here.
+        //breakDown(locationData);
         double dispOld = 0, x, y;
         double dispTmp = disp - dispOld;
 
@@ -52,7 +54,7 @@ public class Pose extends SerialConnect implements PoseProvider {
     }
 
     /**
-     * Round up the number to two significant digits.
+     * Round up the number the digits can be selected.
      * @param a
      * @param r
      * @return
@@ -68,7 +70,7 @@ public class Pose extends SerialConnect implements PoseProvider {
     }
 
     /**
-     * @return
+     * @return A string with X, Y and angle will be returned with delimiter of " "(Space)
      */
     public String getLatestPose() {
         calculatePose();
