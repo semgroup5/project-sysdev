@@ -4,6 +4,7 @@ import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
+import java.util.Observable;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -11,11 +12,15 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.Enumeration;
 import java.util.Properties;
+/**
+ * Created by Axel and Emanuel.
+ * Updated by Axel at 16-05-06
+ */
 
 /**
  * Class responsible for establishing the serial port connection between the raspberry pi and the arduino.
  */
-class SerialConnect implements SerialPortEventListener {
+class SerialConnect extends Observable implements SerialPortEventListener {
 
     private SerialPort serialPort;
 
@@ -23,10 +28,7 @@ class SerialConnect implements SerialPortEventListener {
      * The port we're normally going to use.
      */
     private static final String PORT_NAMES[] = {
-            "/dev/tty.usbserial-A9007UX1", // Mac OS X
-            //"/dev/ttyUSB0", // Linux
             "/dev/ttyACM0", // Raspberry Pi
-            "COM4", // Windows
     };
 
     private BufferedReader input;
@@ -44,13 +46,10 @@ class SerialConnect implements SerialPortEventListener {
      * Method to establish the serial connection
      */
     void initialize(){
-        // the next line is for Raspberry Pi and
-        // gets us into the while loop and was suggested here
-        // http://www.raspberrypi.org/phpBB3/viewtopic.php?f=81&t=32186
-        //System.setProperty("gnu.io.rxtx.SerialPorts", "/dev/ttyACM0");
 
         Properties properties = System.getProperties();
         String currentPorts = properties.getProperty("gnu.io.rxtx.SerialPorts", "/dev/ttyACM0");
+
         if (currentPorts.equals("/dev/ttyACM0")) {
             properties.setProperty("gnu.io.rxtx.SerialPorts", "/dev/ttyACM0");
         } else {
@@ -77,7 +76,6 @@ class SerialConnect implements SerialPortEventListener {
         //TODO: throw exception, if it didn't find the right port
         if (portId == null) {
             System.out.println("Could not find COM port.");
-            System.exit(1);
             return;
         }
 
@@ -158,7 +156,8 @@ class SerialConnect implements SerialPortEventListener {
             try {
                 String inputLine = input.readLine();
                 System.out.println(inputLine);
-
+                //Sends the input line to class pose
+                notifyObservers(inputLine);
                 //Catch and logs errors
             } catch (Exception e) {
                 System.err.println(e.toString());
