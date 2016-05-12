@@ -1,13 +1,14 @@
 package sem.group5.bob.car;
 
 import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Created by GeoffreyC on 2016/5/1.
  * Updated by Geoffrey, Axel and Emanuel at 16-05-06
  */
 
-public class Pose extends SerialConnect implements PoseProvider {
+public class Pose extends SerialConnect implements Observer {
 
 
     double dispTmp = 0, angle, disp;
@@ -79,6 +80,7 @@ public class Pose extends SerialConnect implements PoseProvider {
     /**
      * @return A string with X, Y and angle will be returned with the format of "X"+ X + "Y" + Y + "Ang" + angle.
      */
+    //// TODO: 5/12/2016 this is not used by the interface anymore, but it should (then send it to Mjpegstreaner) 
     public String getLatestPose() {
         calculatePose();
         String pose;
