@@ -35,23 +35,27 @@ class BobCarSocketTimer extends Thread
     }
 
 
-    // Resets the timer back to zero
+    /**
+     * Resets the timer back to zero
+     */
     synchronized void reset()
     {
         m_elapsed = 0;
     }
 
-    // Performs timer specific code
+    /**
+     * Performs timer specific code
+     */
     public void run()
     {
         // Keep looping
         for (;;)
         {
-            // Put the timer to sleep
             /* Rate at which timer is checked */
             int m_rate = 100;
             try
             {
+                //Put the timer to sleep
                 Thread.sleep(m_rate);
             }
             catch (InterruptedException ioe)

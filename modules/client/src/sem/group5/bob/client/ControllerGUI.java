@@ -87,7 +87,7 @@ public class ControllerGUI extends Observable {
     }
 
     /**
-     *
+     * Method to start streaming on the client side
      */
     void stream()
     {
@@ -304,8 +304,8 @@ public class ControllerGUI extends Observable {
 
     /**
      * Method to save maps in the computer's directory.
-     * @param content @
-     * @param file @
+     * @param content the data to be saved
+     * @param file the file in which the content will be saved
      */
     private void SaveFile(String content, File file){
         try {
@@ -336,8 +336,8 @@ public class ControllerGUI extends Observable {
         textFeedback.clear();
         textFeedback.setText(s);
     }
-
     void setConnectClicked(boolean b)
+
     {
         connectClicked = b;
     }

@@ -21,6 +21,12 @@ public class BobCarConnectionManager implements Observer {
     private DiscoveryBroadcaster d;
     private  Device device;
 
+    /**
+     * The update() method updates an observed object.
+     * This is called by the notifyObservers() from Observable
+     * @param o observable object
+     * @param arg the argument passed to the notifyObservers method
+     */
     @Override
     public void update(Observable o, Object arg)
     {
@@ -40,6 +46,9 @@ public class BobCarConnectionManager implements Observer {
         }
     }
 
+    /**
+     *
+     */
     void initialize() {
         startSerialConnection();
 
@@ -47,7 +56,7 @@ public class BobCarConnectionManager implements Observer {
     }
 
     /**
-     * The startFunction method used to update the observable and restart the connection
+     * The startFunction() method is called in initialize() method when the observable object is updated.
      */
     private void startFunctions()
     {
@@ -67,6 +76,9 @@ public class BobCarConnectionManager implements Observer {
         }
     }
 
+    /**
+     * restart functions if an error was encountered in the startFucntions() method.
+     */
     private void restartFunctions()
     {
         startRemoteListener(scc);
@@ -91,7 +103,7 @@ public class BobCarConnectionManager implements Observer {
     }
 
     /**
-     * Method to initiate the broadcasting IP
+     * Method to initiate broadcasting BobCar's IP
      */
     private void startDiscoveryListener() {
         System.out.println("Starting IP Address Broadcast");
@@ -103,6 +115,7 @@ public class BobCarConnectionManager implements Observer {
 
     /**
      * Method to initiate the port listener that will be waiting for inputs from the client side to forward it then to the arduino.
+     * @param scc //TODO BobCar IP?
      */
     private void startRemoteListener(SmartCarComm scc)
     {
@@ -118,6 +131,10 @@ public class BobCarConnectionManager implements Observer {
 
     }
 
+    /**
+     * Sets the settings to the Kinect.
+     * See @freenect-1.0.jar lib.
+     */
     private void kinectSetting()
     {
             try {
@@ -135,7 +152,7 @@ public class BobCarConnectionManager implements Observer {
     }
 
     /**
-     * Method to initiate the video streaming
+     * Threaded method to start the video streaming
      */
     private void streamVideo()
     {
@@ -168,7 +185,7 @@ public class BobCarConnectionManager implements Observer {
     }
 
     /**
-     *
+     * Initiates serial connection
      */
     private void startSerialConnection(){
         serialC = new SerialConnect();
@@ -180,7 +197,8 @@ public class BobCarConnectionManager implements Observer {
     }
 
     /**
-     *
+     * Restart serial connection if the first attempt fails,
+     * closes the connection then calls startSerialConnection() method.
      */
     private void restartSerialConnection() {
         serialC.close();

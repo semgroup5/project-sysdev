@@ -62,7 +62,6 @@ class SerialConnect extends Observable implements SerialPortEventListener {
         /**
          * First, Find an instance of serial port as set in PORT_NAMES.
          */
-         // while loop to look at all the port names
         while (portEnum.hasMoreElements()) {
             CommPortIdentifier currPortId = (CommPortIdentifier) portEnum.nextElement();
 
@@ -81,14 +80,11 @@ class SerialConnect extends Observable implements SerialPortEventListener {
 
         try {
             System.out.println("Opening port.");
-            // open serial port, and use class name for the appName.
             serialPort = (SerialPort) portId.open(this.getClass().getName(), TIME_OUT);
             System.out.println("Setting parameter");
-            // set port parameters
             serialPort.setSerialPortParams(DATA_RATE, SerialPort.DATABITS_8,
                     SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
             System.out.println("Opening streams");
-            // open the streams
             input = new BufferedReader(new InputStreamReader(
                     serialPort.getInputStream()));
             output = serialPort.getOutputStream();
@@ -97,7 +93,6 @@ class SerialConnect extends Observable implements SerialPortEventListener {
             output.write(ch);
 
             System.out.println("Adding event listeners");
-            // add event listeners
             serialPort.addEventListener(this);
             serialPort.notifyOnDataAvailable(true);
 
@@ -132,8 +127,8 @@ class SerialConnect extends Observable implements SerialPortEventListener {
     }
 
     /**
-     * Method to return this BufferReader
-     * @return @
+     * Method to get BufferReader
+     * @return input
      */
     BufferedReader getBufferReader() {
         return this.input;
@@ -141,7 +136,7 @@ class SerialConnect extends Observable implements SerialPortEventListener {
 
     /**
      * Method to return this OutputStream
-     * @return @
+     * @return output
      */
     OutputStream getOutputStream() {
         return this.output;

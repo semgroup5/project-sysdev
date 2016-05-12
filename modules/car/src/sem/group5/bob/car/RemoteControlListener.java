@@ -9,7 +9,7 @@ import java.net.Socket;
 import java.util.Observable;
 
 /**
- * Class responsible for establishing connection between
+ * Class responsible for establishing connection between the
  * client and raspberry pi and use received data to forward it to
  * the arduino
  */
@@ -113,6 +113,7 @@ class RemoteControlListener extends Observable implements Runnable{
     }
     /**
      * A "heartbeat" method to check whether network connection is alive.
+     * The method sends an out string "A" every x seconds, the string is then read and conformed by the client.
      */
     private void sendHeartBeatToClient()
     {
@@ -139,7 +140,7 @@ class RemoteControlListener extends Observable implements Runnable{
     }
 
     /**
-     * Method to close the network connections.
+     * Method to close the network connections and notifies an observer.
      */
     void closeConnections() {
         try {
@@ -149,7 +150,7 @@ class RemoteControlListener extends Observable implements Runnable{
             System.out.println("All connections were closed!");
             setChanged();
 
-            // Notify observer class to update the method
+            // Notify observer class
             notifyObservers("Connection Closed");
 
             // Catches and logs errors

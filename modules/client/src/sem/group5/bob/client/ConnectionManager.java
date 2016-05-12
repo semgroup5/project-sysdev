@@ -24,7 +24,7 @@ class ConnectionManager extends Observable
             d.listenIp();
             this.carIp = d.getIp();
 
-            // Assigns a socket connection
+            // socket constructor
             this.controlSocket = getControlSocket();
             System.out.println("Socket Established");
 
@@ -47,6 +47,8 @@ class ConnectionManager extends Observable
 
     /**
      * Method to disconnect from bobCar
+     * @see ClientState
+     *
      */
     void disconnect(){
         try{
@@ -70,7 +72,7 @@ class ConnectionManager extends Observable
     }
 
     /**
-     * Method to reconnect to bobCar
+     * Method to reconnect to bobCar, calls disconnect() then reconnect().
      */
     void reconnect()
     {
@@ -140,14 +142,14 @@ class ConnectionManager extends Observable
 
     /**
      * Method to tell if it is connected to bobCar
-     * @return isConnected
+     * @return true if connected
      */
     private boolean isConnected() {
         return isConnected;
     }
 
     /**
-     *
+     * "HeartBeat" method, checks the status of the connection by reading a string from the buffer sent from the car
      */
     void checkConnectionHeartBeat(){
         Thread t = new Thread(()->{
