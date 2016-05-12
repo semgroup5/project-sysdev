@@ -5,8 +5,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Observable;
 
-/**
-    * SmartCarComm handle the received input from the client and forward it to the arduino attached in the smartcar.
+    /**
+    * SmartCarComm handles the received input from the client and forward it to the arduino attached to the smartcar.
     */
     class SmartCarComm extends Observable{
         private BufferedReader input;
@@ -25,7 +25,7 @@ import java.util.Observable;
 
         /**
          * WriteData method is responsible for sending the data to the arduino in the smartcar
-         * @param data data to be send
+         * @param data data to be sent
          */
     private synchronized void writeData(String data) {
         try {

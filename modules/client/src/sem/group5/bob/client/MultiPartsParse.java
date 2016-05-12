@@ -11,10 +11,20 @@ class MultiPartsParse extends Observable implements Runnable{
 
     private InputStream depthStream;
 
+
+
+    /**
+     * Constructor
+      * @param depthStream the video stream captured by the kinect.
+     */
     MultiPartsParse(InputStream depthStream) {
         this.depthStream = depthStream;
     }
 
+    /**
+     * Class that receive the JPEGs sent by the car as a multipart MJPEG stream
+     * and notify any observers once an image has been received.
+      */
     public void run() {
         byte[] boundary = "BoundaryString".getBytes();
         @SuppressWarnings("deprecation") MultipartStream multipartStream = new MultipartStream(depthStream, boundary);

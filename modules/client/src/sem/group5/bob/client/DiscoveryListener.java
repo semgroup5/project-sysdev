@@ -7,6 +7,10 @@ import java.net.InetAddress;
 import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+/**
+ **The DiscoveryListener responsible for finding and storing BobCar server IP.
+ */
+
 
 class DiscoveryListener
 {
@@ -15,7 +19,10 @@ class DiscoveryListener
     private boolean listening;
 
 
-
+    /**
+     * listenIP() method will scan and filter incoming connections based on the pockets received,
+     * once BobCar pocket is received its IP will be accepted and stored to establish a connection.
+     */
     void listenIp() {
         try {
 
@@ -51,12 +58,20 @@ class DiscoveryListener
         }
     }
 
+    /**
+     * Method to close the discovery listener
+     */
     private void close() {
         listening = false;
         if (socket.isConnected()) socket.disconnect();
         socket.close();
         System.out.println("Discovery listener closed");
     }
+
+    /**
+     * Method to get BobCar IP
+     * @return this IP
+     */
 
     String getIp() {
         return this.ip;

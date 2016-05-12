@@ -10,14 +10,26 @@ import java.nio.Buffer;
 import java.util.Observable;
 import java.util.Observer;
 
+/**
+ * Class responsible to return a video stream to the caller
+ */
 class VideoStreamHandler implements Observer{
 
     private MultiPartsParse provider;
     private ImageView container;
     private Thread t;
 
+    /**
+     *
+      * @param container the image view in the gui
+     * @param provider
+     */
     VideoStreamHandler(ImageView container, MultiPartsParse provider) {
+
+        //constructs a new container
         this.container = container;
+
+        // Constructs a provider and adds an observer to it
         this.provider = provider;
         provider.addObserver(this);
 
@@ -36,7 +48,13 @@ class VideoStreamHandler implements Observer{
 
     }
 
-    @Override
+/**
+ * The update() method updates an observed object.
+ * This is called by the notifyObservers() from Observable
+ * @param observable observable object
+ * @param o the argument passed to the notifyObservers method
+ */
+@Override
     public void update(Observable observable, Object o) {
         BufferedImage image = (BufferedImage) o;
         Image fxImage = SwingFXUtils.toFXImage(image, null);
