@@ -1,5 +1,6 @@
 package sem.group5.bob.car;
 
+import com.sun.rmi.rmid.ExecPermission;
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
@@ -23,6 +24,7 @@ import java.util.Properties;
 class SerialConnect extends Observable implements SerialPortEventListener {
 
     private SerialPort serialPort;
+    int retryArduinoConnect = 0;
 
     /**
      * The port we're normally going to use.
@@ -72,10 +74,16 @@ class SerialConnect extends Observable implements SerialPortEventListener {
                 }
             }
         }
-        //TODO: throw exception, if it didn't find the right port
         if (portId == null) {
-            System.out.println("Could not find COM port.");
-            return;
+            try{
+                if(retryArduinoConnect < 3) {
+                    System.out.println("Retrying connection to Arduino..");
+                    initialize();
+                    retryArduinoConnect++;
+                }
+            }catch(Exception e){
+                System.out.println("Could not find COM port.");
+            }
         }
 
         try {
