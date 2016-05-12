@@ -10,8 +10,24 @@ import java.util.Observable;
 public class Pose extends SerialConnect implements PoseProvider {
 
 
-    private double X = 0, Y = 0;
     double dispTmp = 0,angle,disp;
+    private double X = 0, Y = 0;
+
+    /**
+     * Round up the number the digits can be selected.
+     * @param a
+     * @param r
+     * @return
+     */
+    public static double rdNum(Double a, int r) {
+        if (r < 0) throw new IllegalArgumentException();
+
+        long factor = (long) Math.pow(10, r);
+        a = a * factor;
+        long tmp = Math.round(a);
+        return (double) tmp / factor;
+
+    }
 
     /**
      *
@@ -54,33 +70,17 @@ public class Pose extends SerialConnect implements PoseProvider {
         }
     }
 
-    /**
-     * Round up the number the digits can be selected.
-     * @param a
-     * @param r
-     * @return
-     */
-    public static double rdNum(Double a, int r) {
-        if (r < 0) throw new IllegalArgumentException();
-
-        long factor = (long) Math.pow(10, r);
-        a = a * factor;
-        long tmp = Math.round(a);
-        return (double) tmp / factor;
-
-    }
-
     public void update(Observable o, Object arg) {
         String locationData = (String) arg;
         breakDown(locationData);
     }
     /**
-     * @return A string with X, Y and angle will be returned with delimiter of " "(Space)
+     * @return A string with X, Y and angle will be returned with the format of "X"+ X + "Y" + Y + "Ang" + angle.
      */
     public String getLatestPose() {
         calculatePose();
         String pose;
-        pose = X + " " + Y + " " + angle + " ";
+        pose = "X" + X + "Y" + Y + "Ang" + angle;
         return pose;
     }
 }
