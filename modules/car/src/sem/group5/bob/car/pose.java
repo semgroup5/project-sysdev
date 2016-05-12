@@ -10,11 +10,12 @@ import java.util.Observable;
 public class Pose extends SerialConnect implements PoseProvider {
 
 
-    double dispTmp = 0,angle,disp;
+    double dispTmp = 0, angle, disp;
     private double X = 0, Y = 0;
 
     /**
      * Round up the number the digits can be selected.
+     *
      * @param a
      * @param r
      * @return
@@ -74,6 +75,7 @@ public class Pose extends SerialConnect implements PoseProvider {
         String locationData = (String) arg;
         breakDown(locationData);
     }
+
     /**
      * @return A string with X, Y and angle will be returned with the format of "X"+ X + "Y" + Y + "Ang" + angle.
      */
