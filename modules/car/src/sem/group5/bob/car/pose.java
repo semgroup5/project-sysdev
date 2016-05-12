@@ -41,7 +41,7 @@ public class Pose extends SerialConnect implements PoseProvider {
         } else if (angle == 0 || angle == 180) {
             Y += disp;
             dispOld += dispTmp;
-        } else if (angle != 0 && angle != 90) {
+        } else if (angle != 0 || angle != 90 || angle != 180 || angle !=270) {
 
             x = disp * Math.cos(rdNum((Math.toRadians(angle)), 5));
             y = disp * Math.sin(rdNum((Math.toRadians(angle)), 5));
