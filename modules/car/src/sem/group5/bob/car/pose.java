@@ -1,5 +1,7 @@
 package sem.group5.bob.car;
 
+import java.util.Observable;
+
 /**
  * Created by GeoffreyC on 2016/5/1.
  * Updated by Geoffrey, Axel and Emanuel at 16-05-06
@@ -25,8 +27,7 @@ public class Pose extends SerialConnect implements PoseProvider {
      *
      */
     public void calculatePose() {
-        //TODO we need to get this locationData and put it here.
-        //breakDown(locationData);
+
         double dispOld = 0, x, y;
         double dispTmp = disp - dispOld;
 
@@ -69,6 +70,10 @@ public class Pose extends SerialConnect implements PoseProvider {
 
     }
 
+    public void update(Observable o, Object arg) {
+        String locationData = (String) arg;
+        breakDown(locationData);
+    }
     /**
      * @return A string with X, Y and angle will be returned with delimiter of " "(Space)
      */
