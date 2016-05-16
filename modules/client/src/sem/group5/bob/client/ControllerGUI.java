@@ -8,6 +8,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import java.io.File;
 import java.io.FileWriter;
@@ -47,7 +48,7 @@ public class ControllerGUI extends Observable {
     public ImageView loadImage;
     private ClientState clientState;
     private ButtonsStyle style;
-
+    private Text infoText;
 
     /**
      * Constructor constructs a object clientState and adds an observer to it.

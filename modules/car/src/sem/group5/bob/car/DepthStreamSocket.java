@@ -6,6 +6,7 @@ import java.net.Socket;
 import java.util.Observable;
 /**
  * This class implements client sockets that allows data read from the Kinect to be communicated to the PC side.
+ * @see java.util.Observable
  */
 
 class DepthStreamSocket extends Observable {
@@ -29,7 +30,7 @@ class DepthStreamSocket extends Observable {
             this.socket = serverSocket.accept();
 
             // Sets true to turn off Nagle's algorithm to improve packet latency
-            //todo delete this and see
+            //todo set to false and see if the latency change is notable compared to depth packet stability
             this.socket.setTcpNoDelay(true);
             this.socket.setReuseAddress(true);
             System.out.println("Stream socket established");
@@ -62,7 +63,7 @@ class DepthStreamSocket extends Observable {
     }
 
     /**
-     *
+     * Method to return the value of the depth socket
      * @return socket
      */
     Socket getSocket() {

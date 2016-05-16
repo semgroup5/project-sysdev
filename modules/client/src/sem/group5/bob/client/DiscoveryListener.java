@@ -7,11 +7,11 @@ import java.net.InetAddress;
 import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 /**
  * The DiscoveryListener will scan for devices attempting connection with the client,
  * it will detect BobCar IP and handle it with a set of methods.
  */
-
 
 class DiscoveryListener
 {

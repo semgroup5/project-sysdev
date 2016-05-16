@@ -23,6 +23,7 @@ class BobCarSocketTimer extends Thread
     /**
      * Creates a timer of a specified length
      * @param	length	Length of time before timeout occurs
+     * @see RemoteControlListener#RemoteControlListener(int, SmartCarComm)
      */
     BobCarSocketTimer(int length, RemoteControlListener rmt)
     {
