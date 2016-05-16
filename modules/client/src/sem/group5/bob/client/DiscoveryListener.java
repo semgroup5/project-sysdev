@@ -22,7 +22,7 @@ class DiscoveryListener
 
     /**
      * listenIP() method will scan and filter incoming connections based on the pockets received,
-     * once BobCar pocket is received its IP will be accepted and stored to establish a connection.
+     * once BobCar pocket is received its IP will be accepted and stored to establish a connection..
      */
     void listenIp() {
         try {
