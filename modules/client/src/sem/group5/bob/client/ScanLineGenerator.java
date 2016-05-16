@@ -6,7 +6,7 @@ import java.util.Observer;
 
 
 /**
- * TODO//Addheaders to all the classes.
+ * Class responsible for generating data to be used on mapping.
  */
 class ScanLineGenerator extends Observable implements Observer {
     /**

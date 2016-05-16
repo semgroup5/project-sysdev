@@ -7,6 +7,11 @@ import org.apache.commons.fileupload.MultipartStream;
 
 import javax.imageio.ImageIO;
 
+/**
+ * Class that will take the video stream from the kinect as a multipart MJPEG stream.
+ * @see java.util.Observable
+ * @see java.lang.Runnable
+ */
 class MultiPartsParse extends Observable implements Runnable{
 
     private InputStream depthStream;
