@@ -1,40 +1,64 @@
 package sem.group5.bob.client;
 
 
-import java.io.File;
+
 import java.io.IOException;
-import java.util.logging.*;
+import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 
 /**
  * Created by chyj1 on 2016-5-12.
  */
 
 public class LogToFile {
-    public static void main(String[] args) {
+    String time;
+    String fileName;
+    String fileLocation;
+    PrintWriter writer;
 
-        Logger logger = Logger.getLogger("BobCarLog");
-        FileHandler fh;
+    public static void main(String arg[]) throws IOException {
 
-        try {
-
-            File createDir1 = new File(System.getenv("APPDATA") + "\\BobCar");
-            createDir1.mkdir();
-            fh = new FileHandler(System.getenv("APPDATA") + "\\BobCar" + "\\BobCarLog.txt");
-            logger.addHandler(fh);
-            logger.setUseParentHandlers(false);
-            LogFormatter formatter = new LogFormatter();
-            ConsoleHandler consoleHandler = new ConsoleHandler();
-            consoleHandler.setFormatter(formatter);
-            logger.addHandler(consoleHandler);
-            fh.setFormatter(formatter);
-            logger.info("BobCarLog");
-
-        } catch (SecurityException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        LogToFile log = new LogToFile();
+        log.LogToFile();
+        for (int i = 0; i < 5; i++) {
+            System.out.println(i);
+            log.writer("hahahha");
         }
-        logger.info("BobCar");
+        log.close();
     }
 
+    public void LogToFile() {
+        try {
+            fileLocation = fileName();
+            writer = new PrintWriter(fileLocation, "UTF-8");
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+    }
+
+    public void writer(String string) {
+        try {
+
+            writer.println(string);
+
+        } catch (Exception e) {
+
+        }
+    }
+
+    public void close() {
+        writer.close();
+    }
+
+    public String fileName() {
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("HH：mm：ss@yyyy-MM-dd");
+        time = sdf.format(cal.getTime());
+        fileName = "BobCarLog" + time + ".txt";
+        fileLocation = System.getenv("APPDATA") + "\\BobCar" + "\\" + fileName;
+        return fileLocation;
+    }
 }
