@@ -16,6 +16,12 @@ import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * A controller class for the GUI FXML file, named client.fxml.
+ * @see java.util.Observable
+ */
+
+
 public class ControllerGUI extends Observable {
 
     public MenuBar menuBar;
@@ -44,7 +50,8 @@ public class ControllerGUI extends Observable {
 
 
     /**
-     *
+     * Constructor constructs a object clientState and adds an observer to it.
+     * @see ClientState
      */
     public ControllerGUI() {
         clientState = new ClientState(this);
@@ -52,6 +59,9 @@ public class ControllerGUI extends Observable {
         style = new ButtonsStyle(this);
     }
 
+    /**
+     * Connect button handler
+     */
     public void connect() {
         if(!clientState.isConnected() && !connectClicked)
         {
@@ -69,6 +79,11 @@ public class ControllerGUI extends Observable {
         }
     }
 
+    /**
+     * Method update the GUI depending on the string value.
+     * @param state A string that represents the state of the Text annotation.
+
+     */
     void setState(String state) {
         loadImage.setVisible(true);
         if(state.equals("Connected"))
@@ -152,7 +167,8 @@ public class ControllerGUI extends Observable {
 
     /**
      * Method to apply shadow effect to buttons
-     * @param event see @ButtonStyle
+     * @param event
+     * @see ButtonsStyle
      */
     public void shadow(Event event) {
         style.shadow(event);
@@ -251,7 +267,8 @@ public class ControllerGUI extends Observable {
 
     /**
      * Method to set InnerShadow effect to buttons
-     * @param event see @ButtonStyle
+     * @param event ButtonStyle
+     * @see ButtonsStyle
      */
     public void setFocused(Event event) {
         style.setFocused(event);
@@ -321,21 +338,27 @@ public class ControllerGUI extends Observable {
     }
 
     /**
-     *
+     *TODO
      */
     void fireConnection() {
         connect.fire();
     }
 
     /**
-     *
+     * Method that will clear the state of the gui.
      * @param s String to be written in the text field
+     * @see ControllerGUI#setState(String)
      */
     void replaceStatus(String s)
     {
         textFeedback.clear();
         textFeedback.setText(s);
     }
+
+    /**
+     *TODO
+     * @param b
+     */
     void setConnectClicked(boolean b)
 
     {

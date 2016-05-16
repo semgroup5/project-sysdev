@@ -8,7 +8,8 @@ import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 /**
- **The DiscoveryListener responsible for finding and storing BobCar server IP.
+ * The DiscoveryListener will scan for devices attempting connection with the client,
+ * it will detect BobCar IP and handle it with a set of methods.
  */
 
 
@@ -59,7 +60,8 @@ class DiscoveryListener
     }
 
     /**
-     * Method to close the discovery listener
+     * Method to close the IP listener
+     * @see DiscoveryListener#listenIp()
      */
     private void close() {
         listening = false;

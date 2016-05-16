@@ -5,6 +5,10 @@ import java.io.InputStream;
 import java.net.Socket;
 import java.util.Observable;
 
+/**
+ * Class responsible for the connections between the client and BobCar
+ * @see java.util.Observable
+ */
 class ConnectionManager extends Observable
 {
     private String carIp;
@@ -48,7 +52,6 @@ class ConnectionManager extends Observable
     /**
      * Method to disconnect from bobCar
      * @see ClientState
-     *
      */
     void disconnect(){
         try{
@@ -72,7 +75,9 @@ class ConnectionManager extends Observable
     }
 
     /**
-     * Method to reconnect to bobCar, calls disconnect() then reconnect().
+     * Method to reconnect to bobCar.
+     * @see ConnectionManager#connect()
+     * @see ConnectionManager#disconnect()
      */
     void reconnect()
     {

@@ -5,13 +5,25 @@ import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.InnerShadow;
 
+/**
+ * Adds graphical styling to the GUI.
+ */
 class ButtonsStyle {
     private ControllerGUI gui;
 
+    /**
+     * Constructor
+     * @param gui User GUI
+     */
     ButtonsStyle(ControllerGUI gui) {
         this.gui = gui;
     }
 
+    /**
+     * Method to adds graphical changes to the GUI.
+     * @param button The button on GUI
+     * @param action Action event from this button
+     */
     void styleButton(Button button, String action) {
 
         if (button.equals(gui.map)) {
@@ -142,7 +154,6 @@ class ButtonsStyle {
 
     /**
      * Method to set InnerShadow effect to buttons
-     *
      * @param event which button has been clicked
      */
     void setFocused(Event event) {
@@ -158,7 +169,6 @@ class ButtonsStyle {
 
     /**
      * Method to apply shadow effect to buttons
-     *
      * @param event which button the mouse have hovered over
      */
     void shadow(Event event) {
@@ -170,7 +180,6 @@ class ButtonsStyle {
 
     /**
      * Method to take off shadow effect of the buttons
-     *
      * @param event which button the mouse have hovered off
      */
     void shadowOff(Event event) {
