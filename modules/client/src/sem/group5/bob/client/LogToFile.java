@@ -22,7 +22,7 @@ public class LogToFile {
 
     public static void main(String arg[]) throws IOException {
         LogToFile log = new LogToFile();
-        log.crtDirl();
+        log.crtDirc();
 
         for (int i = 0; i < 5; i++) {
             int j = i+1;
@@ -55,19 +55,20 @@ public class LogToFile {
 
     }
 
-    public void crtDirl() {
+    public void crtDirc() {
         if (OS.startsWith("WINDOWS")) {
-            File createDir1 = new File(System.getenv("HOMEDRIVE") + System.getenv("HOMEPATH")
+            File createDirc = new File(System.getenv("HOMEDRIVE") + System.getenv("HOMEPATH")
                     + File.separator +"BobCar");
-            createDir1.mkdirs();
+            createDirc.mkdirs();
         } else if (OS.startsWith("LINUX")) {
-            File createDir1 = new File("/home/BobCar");
-            createDir1.mkdirs();
+            File createDirc = new File("/home/BobCar");
+            createDirc.mkdirs();
         } else if (OS.startsWith("MAC")) {
-            File createDir1 = new File(System.getProperty("user.home")+File.separator+"Documents" +File.separator+"BobCar");
-            createDir1.mkdirs();
+            File createDirc = new File(System.getProperty("user.home")+File.separator+"Documents"
+                    +File.separator+"BobCar");
+            createDirc.mkdirs();
         } else {
-            System.out.println("Sorry, your operating system is different");
+            System.err.println("Sorry, We can't recognize your Operating System!");
         }
     }
 
@@ -76,7 +77,7 @@ public class LogToFile {
         SimpleDateFormat sdf = new SimpleDateFormat("HH：mm：ss@yyyy-MM-dd");
         String time = sdf.format(cal.getTime());
         String fileName = "BobCarLog" + time + ".txt";
-        this.fileLocation = "~/Documents/BobCar/"+ fileName;
+
         if(OS.startsWith("WINDOWS")) {
             this.fileLocation = System.getenv("HOMEDRIVE") + System.getenv("HOMEPATH")
                     + File.separator +"BobCar" + File.separator + fileName;
