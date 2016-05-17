@@ -1,15 +1,18 @@
 package sem.group5.bob.car;
 
-/**
- * Created by GeoffreyC on 2016/5/1.
- * Updated by Geoffrey, Axel and Emanuel at 16-05-06
- */
+import java.util.Observable;
+import java.util.Observer;
 
-public class Pose extends SerialConnect implements PoseProvider {
-
+public class Pose {
 
     private double X = 0, Y = 0;
-    double dispTmp = 0,angle,disp;
+    double distTmp = 0,angle,dist;
+
+    public Pose() {
+        calculatePose();
+    }
+
+
 
     /**
      *
@@ -18,43 +21,41 @@ public class Pose extends SerialConnect implements PoseProvider {
     public void breakDown(String locationData){
 
         this.angle = Double.parseDouble(locationData.substring(locationData.indexOf("a") + 1, locationData.indexOf("d")));
-        this.disp = Double.parseDouble(locationData.substring(locationData.indexOf("d") + 1, locationData.indexOf("/")));
+        this.dist = Double.parseDouble(locationData.substring(locationData.indexOf("d") + 1, locationData.indexOf("/")));
     }
 
     /**
      *
      */
     public void calculatePose() {
-        //TODO we need to get this locationData and put it here.
-        //breakDown(locationData);
-        double dispOld = 0, x, y;
-        double dispTmp = disp - dispOld;
+        double distOld = 0, x, y;
+        double distTmp = dist - distOld;
 
         if (Math.abs(angle) >= 360) {
             int turn = (int) angle / 360;
             this.angle = angle - (360 * turn);
         }
         if (angle == 90 || angle == 270) {
-            X += disp;
-            dispOld += dispTmp;
+            X += dist;
+            distOld += distTmp;
         } else if (angle == 0 || angle == 180) {
-            Y += disp;
-            dispOld += dispTmp;
+            Y += dist;
+            distOld += distTmp;
         } else if (angle != 0 && angle != 90) {
 
-            x = disp * Math.cos(rdNum((Math.toRadians(angle)), 5));
-            y = disp * Math.sin(rdNum((Math.toRadians(angle)), 5));
+            x = dist * Math.cos(rdNum((Math.toRadians(angle)), 5));
+            y = dist * Math.sin(rdNum((Math.toRadians(angle)), 5));
 
             this.X += rdNum(x, 3);
             this.Y += rdNum(y, 3);
-            dispOld += dispTmp;
+            distOld += distTmp;
             System.out.println(X + "this is the X");
             System.out.println(Y + "this is the Y");
         }
     }
 
     /**
-     * Round up the number the digits can be selected.
+     * Round up the number to two significant digits.
      * @param a
      * @param r
      * @return
@@ -70,12 +71,23 @@ public class Pose extends SerialConnect implements PoseProvider {
     }
 
     /**
-     * @return A string with X, Y and angle will be returned with delimiter of " "(Space)
+     *
+     * @param X
+     * @param Y
+     * @param angle
+     * @return
      */
-    public String getLatestPose() {
-        calculatePose();
-        String pose;
-        pose = X + " " + Y + " " + angle + " ";
-        return pose;
+    public String getLatestPose(){
+        X = this.X;
+        Y = this.Y;
+        angle = this.angle;
+
+        return X + " " + Y + " " + angle;
     }
+
+
 }
+
+//read the web
+//http://stackoverflow.com/questions/15996345/java-arduino-read-data-from-the-serial-port
+//https://codeshare.io/TcybC
