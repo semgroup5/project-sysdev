@@ -51,16 +51,16 @@ public class Pose extends SerialConnect implements Observer {
             this.angle = angle % 360;
         }
         if (angle == 90) {
-            X += disp;
-            dispOld += dispTmp;
-        } else if (angle == 270) {
-            X += disp;
-            dispOld += dispTmp;
-        } else if (angle == 0) {
             Y += disp;
             dispOld += dispTmp;
-        } else if (angle == 180) {
+        } else if (angle == 270) {
             Y -= disp;
+            dispOld += dispTmp;
+        } else if (angle == 0) {
+            X += disp;
+            dispOld += dispTmp;
+        } else if (angle == 180) {
+            X -= disp;
             dispOld += dispTmp;
         } else {
 
