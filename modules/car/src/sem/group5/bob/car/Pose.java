@@ -28,11 +28,11 @@ public class Pose extends SerialConnect implements Observer {
         a = a * factor;
         long tmp = Math.round(a);
         return (double) tmp / factor;
-
     }
 
     /**
-     * @param locationData
+     * Breaks down the raw data from the arduino to values
+     * @param locationData String that holds the raw data
      */
     public void breakDown(String locationData) {
         this.angle = Double.parseDouble(locationData.substring(locationData.indexOf("a") + 1, locationData.indexOf("d")));
