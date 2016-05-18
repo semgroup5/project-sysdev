@@ -85,6 +85,7 @@ public class Pose extends SerialConnect implements Observer {
      */
     public String getLatestPose() {
         calculatePose();
+        System.out.print("This is the data sent from getLatestPose: " + "X" + X + "Y" + Y + "Ang" + angle);
         return "X" + X + "Y" + Y + "Ang" + angle;
     }
 }
