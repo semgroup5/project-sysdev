@@ -56,7 +56,6 @@ public class LogToFile implements Observer {
         catch (Exception e){
             e.printStackTrace();
         }
-
     }
 
     public void crtDirc() {
@@ -65,7 +64,7 @@ public class LogToFile implements Observer {
                     + File.separator +"BobCar");
             createDirc.mkdirs();
         } else if (OS.startsWith("LINUX")) {
-            File createDirc = new File("/home/BobCar");
+            File createDirc = new File(System.getenv("user.home")+ File.separator +"BobCar");
             createDirc.mkdirs();
         } else if (OS.startsWith("MAC")) {
             File createDirc = new File(System.getProperty("user.home")+File.separator+"Documents"
@@ -87,7 +86,8 @@ public class LogToFile implements Observer {
                     + File.separator +"BobCar" + File.separator + fileName;
         }
         else if(OS.startsWith("LINUX")){
-            this.fileLocation = "/home/BobCar/"+ fileName;
+            this.fileLocation = System.getenv("user.home")
+                    + File.separator +"BobCar"+ File.separator+ fileName;
         }
         else if(OS.startsWith("MAC")){
             this.fileLocation = System.getProperty("user.home")+File.separator+"Documents"
