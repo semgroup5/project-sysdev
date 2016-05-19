@@ -125,6 +125,7 @@ public class ControllerGUI extends Observable {
             if (!isMapping) {
                 style.styleButton(map, "active");
                 isMapping = true;
+                clientState.startMap();
 
             }
             else {
@@ -132,6 +133,7 @@ public class ControllerGUI extends Observable {
                 replaceStatus("Mapping stopped!");
                 kinectView = new ImageView();
                 isMapping = false;
+                clientState.stopMap();
             }
         }
         else if (event.getSource().equals(load) || event.getSource().equals(mLoad)) {

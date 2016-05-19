@@ -15,6 +15,7 @@ import javax.imageio.ImageIO;
 class MultiPartsParse extends Observable implements Runnable{
 
     private InputStream depthStream;
+    LogToFile CarmenLog;
 
 
 
@@ -24,6 +25,11 @@ class MultiPartsParse extends Observable implements Runnable{
      */
     MultiPartsParse(InputStream depthStream) {
         this.depthStream = depthStream;
+    }
+
+    public void setLog(LogToFile CarmenLog){
+
+        this.CarmenLog = CarmenLog;
     }
 
     /**
@@ -51,6 +57,10 @@ class MultiPartsParse extends Observable implements Runnable{
                 String pose = headers.substring(headers.lastIndexOf("X-Robot-Pose: ")+1);
                 // test print, delete on final release
                 System.out.println("Pose= " + pose+"end of pose");
+                if(!(CarmenLog == null)){
+                    CarmenLog.addToList(pose);
+                }
+
 
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
                 multipartStream.readBodyData(out);
