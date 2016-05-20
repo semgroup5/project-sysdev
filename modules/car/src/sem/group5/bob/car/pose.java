@@ -3,6 +3,9 @@ package sem.group5.bob.car;
 import java.util.Observable;
 import java.util.Observer;
 
+/**
+ *
+ */
 public class Pose extends SerialConnect implements Observer {
 
 
