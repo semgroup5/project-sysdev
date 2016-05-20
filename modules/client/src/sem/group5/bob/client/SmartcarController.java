@@ -10,6 +10,9 @@ class SmartcarController {
     private boolean rightPressed;
     private boolean driving;
     private boolean turning;
+    private boolean kinectUp;
+    private boolean kinectDown;
+    private double tilt;
 
     /**
      *
@@ -20,113 +23,130 @@ class SmartcarController {
         smartcar = connectionManager.getSmartCar();
         driving = false;
         turning = false;
+        tilt = 0;
     }
 
     void pressForward(int speed) throws IOException{
-            if(!backPressed && !driving) {
-                try {
-                    forwardPressed = true;
-                    driving = true;
-                    smartcar.setSpeed(speed);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        if(!backPressed && !driving) {
+            try {
+                forwardPressed = true;
+                driving = true;
+                smartcar.setSpeed(speed);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+        }
     }
 
     void pressBack(int speed) throws IOException {
-            if(!forwardPressed && !driving) {
-                try {
-                    backPressed = true;
-                    driving = true;
-                    smartcar.setSpeed(-speed);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        if(!forwardPressed && !driving) {
+            try {
+                backPressed = true;
+                driving = true;
+                smartcar.setSpeed(-speed);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+        }
     }
 
     void pressLeft() throws IOException {
-            if(!rightPressed) {
-                try {
-                    leftPressed = true;
-                    if ((forwardPressed || backPressed) && !turning) {
-                        turning = true;
-                        smartcar.setAngle(-90);
-                    }else if (!turning){
-                        turning = true;
-                        smartcar.rotate(-1);
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
+        if(!rightPressed) {
+            try {
+                leftPressed = true;
+                if ((forwardPressed || backPressed) && !turning) {
+                    turning = true;
+                    smartcar.setAngle(-90);
+                }else if (!turning){
+                    turning = true;
+                    smartcar.rotate(-1);
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+        }
     }
 
     void pressRight() throws IOException{
-            if(!leftPressed) {
-                try {
-                    rightPressed = true;
-                    if ((forwardPressed || backPressed) && !turning) {
-                        turning = true;
-                        smartcar.setAngle(90);
-                    } else if (!turning){
-                        turning = true;
-                        smartcar.rotate(1);
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
+        if(!leftPressed) {
+            try {
+                rightPressed = true;
+                if ((forwardPressed || backPressed) && !turning) {
+                    turning = true;
+                    smartcar.setAngle(90);
+                } else if (!turning){
+                    turning = true;
+                    smartcar.rotate(1);
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+        }
     }
 
     void releaseForward() throws IOException{
-            try {
-                forwardPressed = false;
-                driving = false;
-                smartcar.setSpeed(0);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        try {
+            forwardPressed = false;
+            driving = false;
+            smartcar.setSpeed(0);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     void releaseBack() throws IOException{
-            try {
-                backPressed = false;
-                driving = false;
-                smartcar.setSpeed(0);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        try {
+            backPressed = false;
+            driving = false;
+            smartcar.setSpeed(0);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     void releaseLeft() throws IOException{
-            try {
-                leftPressed = false;
-                turning = false;
+        try {
+            leftPressed = false;
+            turning = false;
 
-                if (forwardPressed || backPressed) {
-                    smartcar.setAngle(0);
-                } else {
-                    smartcar.rotate(0);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
+            if (forwardPressed || backPressed) {
+                smartcar.setAngle(0);
+            } else {
+                smartcar.rotate(0);
             }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     void releaseRight() throws IOException{
-            try {
-                rightPressed = false;
-                turning = false;
+        try {
+            rightPressed = false;
+            turning = false;
 
-                if (forwardPressed || backPressed) {
-                    smartcar.setAngle(0);
-                } else {
-                    smartcar.rotate(0);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
+            if (forwardPressed || backPressed) {
+                smartcar.setAngle(0);
+            } else {
+                smartcar.rotate(0);
             }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    void pressTiltKinectUp() throws IOException {
+        if (!kinectUp) {
+            smartcar.tiltkinect(30);
+            kinectDown = false;
+            kinectUp = true;
+        }
+    }
+
+    void pressTiltKinectDown() throws IOException {
+        if (!kinectDown) {
+            smartcar.tiltkinect(-30);
+            kinectUp = false;
+            kinectDown = true;
+        }
     }
 }

@@ -8,6 +8,16 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="lib1" level="project" />
+    <orderEntry type="library" name="shared libs" level="project" />
+    <orderEntry type="library" name="turbojpeg" level="project" />
+    <orderEntry type="library" name="RXTXcomm" level="project" />
+    <orderEntry type="library" exported="" name="jna-3.1.0" level="project" />
+    <orderEntry type="library" exported="" name="car libs" level="project" />
+    <orderEntry type="library" exported="" name="car libs" level="project" />
+    <orderEntry type="library" exported="" name="shared libs" level="project" />
+    <orderEntry type="library" exported="" name="RXTXcomm" level="project" />
+    <orderEntry type="library" exported="" name="turbojpeg" level="project" />
+    <orderEntry type="library" exported="" name="jna" level="project" />
+    <orderEntry type="library" name="freenect-1.0" level="project" />
   </component>
 </module>

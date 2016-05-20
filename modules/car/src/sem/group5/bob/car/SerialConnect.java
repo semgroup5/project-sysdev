@@ -1,22 +1,16 @@
 package sem.group5.bob.car;
 
-import com.sun.rmi.rmid.ExecPermission;
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
-import java.util.Observable;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.Enumeration;
+import java.util.Observable;
 import java.util.Properties;
-/**
- * Created by Axel and Emanuel.
- * Updated by Axel at 16-05-06
- */
 
 /**
  * Class responsible for establishing the serial port connection between the raspberry pi and the arduino.
@@ -24,7 +18,7 @@ import java.util.Properties;
 class SerialConnect extends Observable implements SerialPortEventListener {
 
     private SerialPort serialPort;
-    int retryArduinoConnect = 0;
+    private int retryArduinoConnect = 0;
 
     /**
      * The port we're normally going to use.
@@ -89,6 +83,7 @@ class SerialConnect extends Observable implements SerialPortEventListener {
 
         try {
             System.out.println("Opening port.");
+            assert portId != null;
             serialPort = (SerialPort) portId.open(this.getClass().getName(), TIME_OUT);
             System.out.println("Setting parameter");
             serialPort.setSerialPortParams(DATA_RATE, SerialPort.DATABITS_8,
@@ -159,7 +154,8 @@ class SerialConnect extends Observable implements SerialPortEventListener {
         if (oEvent.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
             try {
                 String inputLine = input.readLine();
-                System.out.println(inputLine + " - This is data from arduino passing to Pose class");
+                System.out.println(inputLine);
+                setChanged();
                 //Sends the input line to class Pose
                 notifyObservers(inputLine);
                 //Catch and logs errors

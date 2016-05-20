@@ -1,7 +1,8 @@
 package sem.group5.bob.client;
 
-import javafx.application.Platform;
-
+import sem.group5.bob.client.streamReceiver.MultiPartsParse;
+import sem.group5.bob.client.streamReceiver.ScanLineGenerator;
+import sem.group5.bob.client.streamReceiver.VideoStreamHandler;
 import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
@@ -11,13 +12,12 @@ import java.util.Observer;
  * Class that will track and update the state of the client depending on the arguments passed.
  * @see java.util.Observer
  */
-class ClientState implements Observer {
+class ClientState implements Observer
+{
     private ControllerGUI gui;
     private Smartcar smartcar;
     private ConnectionManager connectionManager;
     private SmartcarController smartcarController;
-    private MultiPartsParse parse;
-    private VideoStreamHandler videoHandler;
     private ScanLineGenerator scanLineGenerator;
     Thread parseThread;
     boolean isConnected;
@@ -26,7 +26,8 @@ class ClientState implements Observer {
      * Constructor
      * @param gui Client GUI
      */
-    ClientState(ControllerGUI gui) {
+    ClientState(ControllerGUI gui)
+    {
         this.gui = gui;
         connectionManager = new ConnectionManager();
         connectionManager.addObserver(this);
@@ -68,26 +69,42 @@ class ClientState implements Observer {
      * @see VideoStreamHandler
      * @see ScanLineGenerator
      */
-    void startMap(){
-        try{
-            LogToFile CarmenLog = new LogToFile();
-            parse.setLog(CarmenLog);
-            scanLineGenerator.setLog(CarmenLog);
-        }catch (Exception e){
-            gui.replaceStatus("Map connection failed.\r\n" + "Reason: " + e.getMessage());
+    void startMap()
+    {
+//        try{
+//            LogToFile CarmenLog = new LogToFile();
+//            parse.setLog(CarmenLog);
+//            scanLineGenerator.setLog(CarmenLog);
+//        }catch (Exception e){
+//            gui.replaceStatus("Map connection failed.\r\n" + "Reason: " + e.getMessage());
+//        }
+
+        try
+        {
+            MultiPartsParse parseD = new MultiPartsParse(connectionManager.getDepthSocket().getInputStream());
+            VideoStreamHandler videoHandlerD = new VideoStreamHandler(gui.kinectView, parseD);
+            videoHandlerD.startStreaming();
+            gui.replaceStatus("Stream connection successful.");
+        }catch (Exception e)
+        {
+            gui.replaceStatus("Stream connection failed.\r\n" + "Reason: " + e.getMessage());
         }
     }
 
     /**
      * Method to stop mapping from the client side
      */
-    void stopMap(){
-        try {
-            connectionManager.DepthSocketCloser();
-            parseThread.interrupt();
-            videoHandler = null;
-            parse = null;
-        } catch (IOException e) {
+    void stopMap()
+    {
+        // TODO: 20/05/2016
+        try
+        {
+            connectionManager.DepthSocketClose();
+//            parseThread.interrupt();
+//            videoHandler = null;
+//            parse = null;
+        } catch (IOException e)
+        {
             System.err.print("Could not close DepthSocket");
         }
     }
@@ -104,17 +121,17 @@ class ClientState implements Observer {
      * Method that starts the depth streaming
      */
 
-    void startStream(){
-        try{
-            parse = new MultiPartsParse(connectionManager.getDepthSocket().getInputStream());
-            videoHandler = new VideoStreamHandler(gui.kinectView, parse);
-            scanLineGenerator = new ScanLineGenerator();
-            parse.addObserver(scanLineGenerator);
-            parseThread = new Thread(parse);
-            parseThread.start();
+    void startStream()
+    {
+        try
+        {
+            MultiPartsParse parse = new MultiPartsParse(connectionManager.getVideoSocket().getInputStream());
+            parse.addObserver(this);
+            VideoStreamHandler videoHandler = new VideoStreamHandler(gui.kinectView1, parse);
             videoHandler.startStreaming();
             gui.replaceStatus("Stream connection successful.");
-        }catch (Exception e){
+        }catch (Exception e)
+        {
             gui.replaceStatus("Stream connection failed.\r\n" + "Reason: " + e.getMessage());
         }
 
@@ -143,18 +160,19 @@ class ClientState implements Observer {
         }
         else if (o.equals("Connected"))
         {
-            try {
+            try
+            {
                 this.smartcar = connectionManager.getSmartCar();
                 this.smartcar.addObserver(this);
                 this.smartcarController = connectionManager.getSmartcarController();
                 gui.replaceStatus("Connected!");
                 isConnected = true;
-                Platform.runLater(() -> gui.setState("Connected"));
                 gui.stream();
                 connectionManager.checkConnectionHeartBeat();
                 gui.loadImage.setVisible(false);
                 gui.setConnectClicked(false);
-            } catch (IOException e) {
+            } catch (IOException e)
+            {
                 gui.replaceStatus("Couldn't connect, reason:" + e.getMessage());
             }
         }
@@ -162,7 +180,6 @@ class ClientState implements Observer {
         {
             gui.replaceStatus("Disconnected!");
             isConnected = false;
-            Platform.runLater(() -> gui.setState("Disconnected"));
             gui.loadImage.setVisible(false);
             gui.setConnectClicked(false);
         }
@@ -174,6 +191,10 @@ class ClientState implements Observer {
         else if (o.equals("Socket Failed"))
         {
             gui.replaceStatus("Couldn't send data to BOBCar, reason:" + smartcar.getE().getMessage());
+            connectionManager.reconnect();
+        }
+        else if (o.equals("Error Receiving Stream"))
+        {
             connectionManager.reconnect();
         }
     }

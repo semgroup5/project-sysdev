@@ -2,25 +2,30 @@ package sem.group5.bob.car;
 
 import org.openkinect.freenect.*;
 import sem.group5.bob.car.network.DiscoveryBroadcaster;
-import sem.group5.bob.car.streaming.DepthJpegProvider;
+import sem.group5.bob.car.streaming.*;
 
-import sem.group5.bob.car.streaming.MjpegStreamer;
-import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Observable;
 import java.util.Observer;
+
 /**
  * This class is notified when an observed object is changed and updates the object with specific methods.
  * @see java.util.Observer
  */
-
-public class BobCarConnectionManager implements Observer {
+public class BobCarConnectionManager extends Observable implements Observer {
     private SmartCarComm scc;
     private SerialConnect serialC;
     private RemoteControlListener rcl;
-    private DepthStreamSocket depthStreamSocket;
-    private DiscoveryBroadcaster d;
-    private  Device device;
+    private DepthVideoStreamSocket depthSocket;
+    private DepthVideoStreamSocket videoSocket;
+    static  Device device;
+    private Context context;
+    private DepthStreamer depthStreamer;
+    private VideoStreamer videoStreamer;
+    private Thread depthThread;
+    private Thread videoThread;
+
 
     /**
      * The update() method updates an observed object.
@@ -35,17 +40,52 @@ public class BobCarConnectionManager implements Observer {
     {
         if (arg.equals("Connection Closed"))
         {
-            depthStreamSocket.closeSocketDepthStream();
+            try {
+                videoStreamer.setStreaming(false);
+                depthStreamer.setStreaming(false);
+                if (depthThread.isAlive())depthThread.interrupt();
+                if (videoThread.isAlive())videoThread.interrupt();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
-            restartFunctions();
+            depthSocket.closeSocketStream();
+            videoSocket.closeSocketStream();
+
+            System.out.println("Shutting Down Device");
+            if (context != null) {
+                if (device != null){
+                    device.stopDepth();
+                    device.stopVideo();
+                    device.close();
+                }
+                context.shutdown();
+            }
+
+            startFunctions();
         }
         else if (arg.equals("Serial Port Failed"))
         {
             restartSerialConnection();
         }
-        else if (arg instanceof MjpegStreamer || arg instanceof DepthStreamSocket)
+        else if (arg.equals("Error Streaming"))
         {
-            //rcl.closeConnections();
+            rcl.closeConnections();
+        }
+        else if (arg.equals("Kinect Failed"))
+        {
+            System.out.println("Shutting Down Device");
+            if (context != null) {
+                if (device != null){
+                    device.close();
+                }
+                context.shutdown();
+            }
+            rcl.closeConnections();
+        }
+        else if (arg.equals("Kinect Ready"))
+        {
+            streamVideo();
         }
     }
 
@@ -55,6 +95,8 @@ public class BobCarConnectionManager implements Observer {
      * @see BobCarConnectionManager#startSerialConnection()
      */
     void initialize() {
+        addObserver(this);
+
         startSerialConnection();
 
         startFunctions();
@@ -73,16 +115,12 @@ public class BobCarConnectionManager implements Observer {
 
         setDepthStreamSocket();
 
+        setVideoStreamSocket();
+
         startDiscoveryListener();
 
         kinectSetting();
 
-        try {
-            streamVideo();
-        }catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Could Not Start Video Streaming");
-        }
     }
 
     /**
@@ -95,24 +133,32 @@ public class BobCarConnectionManager implements Observer {
 
         setDepthStreamSocket();
 
+        setVideoStreamSocket();
+
         startDiscoveryListener();
 
-        try {
-            streamVideo();
-        }catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Could Not Start Video Streaming");
-        }
+        kinectSetting();
+
     }
 
     /**
-     * Constructor
      * Start a Depth Stream Socket
-     * @see DepthStreamSocket#DepthStreamSocket()
-      */
+     * @see DepthVideoStreamSocket
+     */
     private void setDepthStreamSocket() {
         Thread t = new Thread(()->{
-            depthStreamSocket = new DepthStreamSocket();
+            depthSocket = new DepthVideoStreamSocket(50001);
+        });
+        t.start();
+    }
+
+    /**
+     * Start a Video Stream Socket
+     * @see DepthVideoStreamSocket
+     */
+    private void setVideoStreamSocket() {
+        Thread t = new Thread(()->{
+            videoSocket = new DepthVideoStreamSocket(50002);
         });
         t.start();
     }
@@ -124,7 +170,7 @@ public class BobCarConnectionManager implements Observer {
      */
     private void startDiscoveryListener() {
         System.out.println("Starting IP Address Broadcast");
-        d = new DiscoveryBroadcaster();
+        DiscoveryBroadcaster d = new DiscoveryBroadcaster();
         rcl.addObserver(d);
         Thread thread = new Thread(d);
         thread.run();
@@ -156,71 +202,76 @@ public class BobCarConnectionManager implements Observer {
      */
     private void kinectSetting()
     {
-            try {
-                System.out.println("Starting video streamer");
-                Context context = Freenect.createContext();
-                System.out.println(1);
+        try {
+            System.out.println("Setting Up Kinect");
+            context = Freenect.createContext();
+            System.out.println("Opening Device");
+            if (context.numDevices() > 0){
                 device = context.openDevice(0);
-                System.out.println(2);
-                device.setDepthFormat(DepthFormat.MM);
-                System.out.println(3);
-                device.setVideoFormat(VideoFormat.RGB);
-            }catch (Exception e){
-                e.printStackTrace();
             }
+            System.out.println("Setting Depth Format");
+            device.setDepthFormat(DepthFormat.MM, Resolution.MEDIUM);
+            System.out.println("Setting Video Format");
+            device.setVideoFormat(VideoFormat.IR_10BIT, Resolution.MEDIUM);
+            setChanged();
+            notifyObservers("Kinect Ready");
+
+        }catch (Exception e){
+            e.printStackTrace();
+            setChanged();
+            notifyObservers("Kinect Failed");
+        }
     }
 
     /**
      * Threaded method to start the video streaming.
      * Catch and logs errors
-     * @see MjpegStreamer
+     * @see DepthStreamer
      */
     private void streamVideo()
     {
+        try {
+            System.out.println( "Starting Video Stream" );
 
-        Thread streamThread = new Thread(() -> {
+            DepthJpegProvider depthJpegProvider = new DepthJpegProvider();
+            VideoProvider videoProvider = new VideoProvider();
+            Pose poseProvider = new Pose();
 
-            try {
-                System.out.println( "Starting Video Stream" );
-
-                DepthJpegProvider depthJpegProvider = new DepthJpegProvider();
-                Pose poseProvider = new Pose();
-                //d.startVideo(depthJpegProvider::receiveVideo);
-                if (device != null) {
-                    device.startDepth(depthJpegProvider::receiveDepth);
-                }
-                Thread.sleep(1000);
-
-                MjpegStreamer mjpegStreamer = new MjpegStreamer(depthStreamSocket.getSocket(), depthJpegProvider, poseProvider );
-                mjpegStreamer.addObserver(this);
-                Thread t = new Thread(mjpegStreamer);
-                t.start();
+            if (device != null) {
+                device.startDepth(depthJpegProvider::receiveDepth);
+                device.startVideo(videoProvider::receiveVideo);
             }
-            catch(Exception e){
-                System.out.println("Could Not Start Video Stream");
-                e.printStackTrace();
-            }
-        });
-        streamThread.start();
 
+            depthStreamer = new DepthStreamer(depthSocket.getSocket(), depthJpegProvider, poseProvider );
+            depthStreamer.addObserver(this);
+            videoStreamer = new VideoStreamer(videoSocket.getSocket(), videoProvider);
+            videoStreamer.addObserver(this);
+            depthThread = new Thread(depthStreamer);
+            depthThread.start();
+            videoThread = new Thread(videoStreamer);
+            videoThread.start();
+        }
+        catch(Exception e){
+            System.out.println("Could Not Start Stream");
+            e.printStackTrace();
+        }
     }
 
     /**
      * Initiates serial connection with the arduino
-     * @see SerialConnect#
+     * @see SerialConnect
      */
     private void startSerialConnection(){
         serialC = new SerialConnect();
         serialC.initialize();
-        BufferedReader in = serialC.getBufferReader();
         OutputStream out = serialC.getOutputStream();
-        scc = new SmartCarComm(in, out);
+        scc = new SmartCarComm(out);
         scc.addObserver(this);
     }
 
     /**
      * Restart serial connection if the first attempt fails.
-     * @see BobCarConnectionManager#startSerialConnection()
+     * @see SerialConnect
      */
     private void restartSerialConnection() {
         serialC.close();

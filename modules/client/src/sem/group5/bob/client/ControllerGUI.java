@@ -10,6 +10,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import sem.group5.bob.client.componentStyle.ButtonsStyle;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -42,6 +43,7 @@ public class ControllerGUI extends Observable {
     public Button save;
     public Button load;
     public ImageView scanLineView;
+    public ImageView kinectView1;
     private boolean isMapping = false;
     private boolean connectClicked = false;
     public Slider speedControl;
@@ -85,7 +87,7 @@ public class ControllerGUI extends Observable {
      * @param state A string that represents the state of the Text annotation.
 
      */
-    void setState(String state) {
+    private void setState(String state) {
         loadImage.setVisible(true);
         if(state.equals("Connected"))
         {
@@ -126,12 +128,11 @@ public class ControllerGUI extends Observable {
                 style.styleButton(map, "active");
                 isMapping = true;
                 clientState.startMap();
-
+                replaceStatus("Mapping Started!");
             }
             else {
                 style.styleButton(map, "");
                 replaceStatus("Mapping stopped!");
-                kinectView = new ImageView();
                 isMapping = false;
                 clientState.stopMap();
             }
@@ -170,7 +171,7 @@ public class ControllerGUI extends Observable {
 
     /**
      * Method to apply shadow effect to buttons
-     * @param event
+     * @param event event to cause shadow
      * @see ButtonsStyle
      */
     public void shadow(Event event) {
@@ -215,6 +216,12 @@ public class ControllerGUI extends Observable {
                 case D:
                     style.styleButton(right, "active");
                     clientState.getSmartcarController().pressRight();
+                    break;
+                case Q:
+                    clientState.getSmartcarController().pressTiltKinectUp();
+                    break;
+                case E:
+                    clientState.getSmartcarController().pressTiltKinectDown();
                     break;
                 case R:
                     speedControl.increment();
@@ -358,9 +365,8 @@ public class ControllerGUI extends Observable {
         textFeedback.setText(s);
     }
 
-    /**
-     *TODO
-     * @param b
+    /**TODO
+     * @param b boolean flag
      */
     void setConnectClicked(boolean b)
 

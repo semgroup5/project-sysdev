@@ -2,13 +2,10 @@ package sem.group5.bob.client;
 
 import java.io.IOException;
 
-/**
- * Created by Emanuel on 5/16/2016.
- */
 public class ExecutableLauncher {
 
 
-    public void OSDiscoverer() throws IOException{
+    private void OSDiscoverer() throws IOException{
         String OS = System.getProperty("os.name").toLowerCase();
         if (OS.contains("win")) {
             System.out.println("os is windows");
