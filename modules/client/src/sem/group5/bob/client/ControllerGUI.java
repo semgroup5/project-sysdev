@@ -271,6 +271,12 @@ public class ControllerGUI extends Observable {
                     style.styleButton(right, "");
                     clientState.getSmartcarController().releaseRight();
                     break;
+                case Q:
+                    clientState.getSmartcarController().tiltKinectReleased();
+                    break;
+                case E:
+                    clientState.getSmartcarController().tiltKinectReleased();
+                    break;
             }
         }
     }

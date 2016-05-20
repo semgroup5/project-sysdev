@@ -20,7 +20,7 @@ public class ScanLineGenerator extends Observable implements Observer {
      */
     private static int[] generateLine(BufferedImage image){
         int[] distanceArray = new int[640];
-        for(int i = 0; i < 640; i++){
+        for(int i = 1; i < 641; i++){
             distanceArray[i]=image.getRGB(240, i);
         }
         return distanceArray;
