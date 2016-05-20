@@ -28,15 +28,13 @@ public class Pose extends SerialConnect implements Observer {
         a = a * factor;
         long tmp = Math.round(a);
         return (double) tmp / factor;
-
     }
 
     /**
-     *
-     * @param locationData
+     * Breaks down the raw data from the arduino to values
+     * @param locationData String that holds the raw data
      */
-    public void breakDown(String locationData){
-
+    public void breakDown(String locationData) {
         this.angle = Double.parseDouble(locationData.substring(locationData.indexOf("a") + 1, locationData.indexOf("d")));
         this.disp = Double.parseDouble(locationData.substring(locationData.indexOf("d") + 1, locationData.indexOf("/")));
     }
@@ -50,19 +48,24 @@ public class Pose extends SerialConnect implements Observer {
         double dispTmp = disp - dispOld;
 
         if (Math.abs(angle) >= 360) {
-            int turn = (int) angle / 360;
-            this.angle = angle - (360 * turn);
+            this.angle = angle % 360;
         }
-        if (angle == 90 || angle == 270) {
-            X += disp;
-            dispOld += dispTmp;
-        } else if (angle == 0 || angle == 180) {
+        if (angle == 90) {
             Y += disp;
             dispOld += dispTmp;
-        } else if (angle != 0 || angle != 90 || angle != 180 || angle != 270) {
+        } else if (angle == 270) {
+            Y -= disp;
+            dispOld += dispTmp;
+        } else if (angle == 0) {
+            X += disp;
+            dispOld += dispTmp;
+        } else if (angle == 180) {
+            X -= disp;
+            dispOld += dispTmp;
+        } else {
 
-            x = disp * Math.cos(rdNum((Math.toRadians(angle)), 5));
-            y = disp * Math.sin(rdNum((Math.toRadians(angle)), 5));
+            x = dispTmp * Math.cos(rdNum((Math.toRadians(angle)), 5));
+            y = dispTmp * Math.sin(rdNum((Math.toRadians(angle)), 5));
 
             this.X += rdNum(x, 3);
             this.Y += rdNum(y, 3);
@@ -80,11 +83,9 @@ public class Pose extends SerialConnect implements Observer {
     /**
      * @return A string with X, Y and angle will be returned with the format of "X"+ X + "Y" + Y + "Ang" + angle.
      */
-    //// TODO: 5/12/2016 this is not used by the interface anymore, but it should (then send it to Mjpegstreaner) 
     public String getLatestPose() {
         calculatePose();
-        String pose;
-        pose = "X" + X + "Y" + Y + "Ang" + angle;
-        return pose;
+        System.out.print("This is the data sent from getLatestPose: " + "X" + X + "Y" + Y + "Ang" + angle);
+        return "X" + X + "Y" + Y + "Ang" + angle;
     }
 }

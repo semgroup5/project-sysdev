@@ -70,13 +70,9 @@ class ClientState implements Observer {
      */
     void startMap(){
         try{
-            parse = new MultiPartsParse(connectionManager.getDepthSocket().getInputStream());
-            videoHandler = new VideoStreamHandler(gui.kinectView, parse);
-            scanLineGenerator = new ScanLineGenerator();
-            parse.addObserver(scanLineGenerator);
-            parseThread = new Thread(parse);
-            parseThread.start();
-            gui.replaceStatus("Map connection successful.");
+            LogToFile CarmenLog = new LogToFile();
+            parse.setLog(CarmenLog);
+            scanLineGenerator.setLog(CarmenLog);
         }catch (Exception e){
             gui.replaceStatus("Map connection failed.\r\n" + "Reason: " + e.getMessage());
         }
@@ -112,6 +108,10 @@ class ClientState implements Observer {
         try{
             parse = new MultiPartsParse(connectionManager.getDepthSocket().getInputStream());
             videoHandler = new VideoStreamHandler(gui.kinectView, parse);
+            scanLineGenerator = new ScanLineGenerator();
+            parse.addObserver(scanLineGenerator);
+            parseThread = new Thread(parse);
+            parseThread.start();
             videoHandler.startStreaming();
             gui.replaceStatus("Stream connection successful.");
         }catch (Exception e){

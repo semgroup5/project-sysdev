@@ -1,6 +1,9 @@
 package sem.group5.bob.client.streamReceiver;
 
+import sun.rmi.runtime.Log;
+
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -9,6 +12,7 @@ import java.util.Observer;
  * Class responsible for generating data to be used on mapping.
  */
 class ScanLineGenerator extends Observable implements Observer {
+    LogToFile log;
     /**
      * Method that will mimic a laser rangefinder data by passing a line of pixels captured from an image .
      * @param image frame captured.
@@ -21,6 +25,12 @@ class ScanLineGenerator extends Observable implements Observer {
         }
         return distanceArray;
     }
+    private void scanLineToLog(int[] array){
+        log.addToList(Arrays.toString(array));
+    }
+    public void setLog(LogToFile log) {
+        this.log = log;
+    }
 
     /**
      * The update() method updates an observed object.
@@ -31,6 +41,10 @@ class ScanLineGenerator extends Observable implements Observer {
     public void update(Observable observable, Object o) {
         BufferedImage image = (BufferedImage) o;
         setChanged();
-        notifyObservers(generateLine(image));
+        int [] pixelLine = generateLine(image);
+        notifyObservers(pixelLine);
+        scanLineToLog(pixelLine);
     }
+
+
 }

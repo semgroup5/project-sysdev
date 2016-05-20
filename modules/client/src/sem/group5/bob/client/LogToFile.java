@@ -8,17 +8,21 @@ import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Created by GeoffreyC on 2016-5-12.
  */
 
-public class LogToFile {
+public class LogToFile implements Observer {
 
     private String fileLocation;
     private String OS = System.getProperty("os.name", "").toUpperCase();
 
     ArrayList<String> logData = new ArrayList<String>() ;
+
+    public void LogToFile(){};
 
     public static void main(String arg[]) throws IOException {
         LogToFile log = new LogToFile();
@@ -52,7 +56,6 @@ public class LogToFile {
         catch (Exception e){
             e.printStackTrace();
         }
-
     }
 
     public void crtDirc() {
@@ -61,7 +64,7 @@ public class LogToFile {
                     + File.separator +"BobCar");
             createDirc.mkdirs();
         } else if (OS.startsWith("LINUX")) {
-            File createDirc = new File("/home/BobCar");
+            File createDirc = new File(System.getenv("user.home")+ File.separator +"BobCar");
             createDirc.mkdirs();
         } else if (OS.startsWith("MAC")) {
             File createDirc = new File(System.getProperty("user.home")+File.separator+"Documents"
@@ -83,11 +86,18 @@ public class LogToFile {
                     + File.separator +"BobCar" + File.separator + fileName;
         }
         else if(OS.startsWith("LINUX")){
-            this.fileLocation = "/home/BobCar/"+ fileName;
+            this.fileLocation = System.getenv("user.home")
+                    + File.separator +"BobCar"+ File.separator+ fileName;
         }
         else if(OS.startsWith("MAC")){
             this.fileLocation = System.getProperty("user.home")+File.separator+"Documents"
                     + File.separator +"BobCar"+ File.separator+ fileName;
         }
+    }
+
+    @Override
+    public void update(Observable obs, Object o) {
+        String pixels = (String) o;
+        addToList(pixels);
     }
 }

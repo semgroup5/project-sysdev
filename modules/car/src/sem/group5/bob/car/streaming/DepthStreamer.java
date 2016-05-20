@@ -55,6 +55,7 @@ public class DepthStreamer extends Observable implements Runnable{
                     "Content-type: image/jpeg\r\n" +
                     "Content-Length: " + data.length + "\r\n" +
                     "X-Robot-Pose: " + PoseProvider.getLatestPose() + "\r\n\r\n").getBytes());
+            System.out.print("Here the data is fetched in streamer" + PoseProvider.getLatestPose());
             out.write(data);
             out.write("\r\n\r\n".getBytes());
             out.flush();
