@@ -1,12 +1,16 @@
-package sem.group5.bob.client;
+package sem.group5.bob.client.network;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+/**
+ * The DiscoveryListener will scan for devices attempting connection with the client,
+ * it will detect BobCar IP and handle it with a set of methods.
+ */
 
 class DiscoveryListener
 {
@@ -15,7 +19,10 @@ class DiscoveryListener
     private boolean listening;
 
 
-
+    /**
+     * listenIP() method will scan and filter incoming connections based on the pockets received,
+     * once BobCar pocket is received its IP will be accepted and stored to establish a connection..
+     */
     void listenIp() {
         try {
 
@@ -51,12 +58,21 @@ class DiscoveryListener
         }
     }
 
+    /**
+     * Method to close the IP listener
+     * @see DiscoveryListener#listenIp()
+     */
     private void close() {
         listening = false;
         if (socket.isConnected()) socket.disconnect();
         socket.close();
         System.out.println("Discovery listener closed");
     }
+
+    /**
+     * Method to get BobCar IP
+     * @return this IP
+     */
 
     String getIp() {
         return this.ip;

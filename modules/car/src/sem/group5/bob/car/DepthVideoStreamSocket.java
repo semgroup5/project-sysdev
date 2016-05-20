@@ -4,12 +4,19 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Observable;
+/**
+ * This class implements client sockets that allows data read from the Kinect to be communicated to the PC side.
+ * @see java.util.Observable
+ */
 
-class DepthStreamSocket extends Observable {
+class DepthVideoStreamSocket extends Observable {
     private Socket socket;
     private ServerSocket serverSocket;
 
-    DepthStreamSocket() {
+    /**
+     * A method that establishes a socket connection with a preset port and arguments.
+     */
+    DepthVideoStreamSocket() {
         try {
 
             System.out.println("Opening depth socket");
@@ -20,18 +27,15 @@ class DepthStreamSocket extends Observable {
             //enables to reuse a socket even if it was busy
             serverSocket.setReuseAddress(true);
 
-            // Listen to a connection to be made with the socket and accepts it
             this.socket = serverSocket.accept();
 
             // Sets true to turn off Nagle's algorithm to improve packet latency
+            //todo set to false and see if the latency change is notable compared to depth packet stability
             this.socket.setTcpNoDelay(true);
             this.socket.setReuseAddress(true);
             System.out.println("Stream socket established");
         }
-        /**
-         * Logs errors in case of connection failure
-         * and send it to a reconnect method in BobCarObserver Class
-         */
+
         catch(Exception e) {
             System.out.println("Couldn't Create Socket");
             e.printStackTrace();
@@ -41,11 +45,11 @@ class DepthStreamSocket extends Observable {
     }
 
     /**
-     * Method to close the created socket
+     * Method to close the created depth stream socket
      */
     void closeSocketDepthStream() {
         try {
-            //Closes the server
+
             serverSocket.close();
 
             // Send the remaining data and terminate the outgoing connection
@@ -58,6 +62,10 @@ class DepthStreamSocket extends Observable {
         }
     }
 
+    /**
+     * Method to return the value of the depth socket
+     * @return socket
+     */
     Socket getSocket() {
         return this.socket;
     }

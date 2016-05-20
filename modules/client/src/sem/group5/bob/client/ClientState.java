@@ -6,6 +6,11 @@ import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 
+
+/**
+ * Class that will track and update the state of the client depending on the arguments passed.
+ * @see java.util.Observer
+ */
 class ClientState implements Observer {
     private ControllerGUI gui;
     private Smartcar smartcar;
@@ -42,7 +47,7 @@ class ClientState implements Observer {
 
     /**
      *  Method to return if the client is connected to the BobCar
-     * @return if the client is connect
+     * @return true if the client is connected
      */
     boolean isConnected(){
         return isConnected;
@@ -58,9 +63,11 @@ class ClientState implements Observer {
     }
 
     /**
-     * Method that starts mapping
+     * Method that starts mapping and change the state of the client to reflect the changes.
+     * @see MultiPartsParse
+     * @see VideoStreamHandler
+     * @see ScanLineGenerator
      */
-    //TODO
     void startMap(){
         try{
             parse = new MultiPartsParse(connectionManager.getDepthSocket().getInputStream());
@@ -76,9 +83,8 @@ class ClientState implements Observer {
     }
 
     /**
-     * Method to stop the depth streaming
+     * Method to stop mapping from the client side
      */
-    //TODO
     void stopMap(){
         try {
             connectionManager.DepthSocketCloser();
@@ -101,6 +107,7 @@ class ClientState implements Observer {
     /**
      * Method that starts the depth streaming
      */
+
     void startStream(){
         try{
             parse = new MultiPartsParse(connectionManager.getDepthSocket().getInputStream());

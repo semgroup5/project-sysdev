@@ -7,7 +7,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- * Main class for the client interface
+ * Main class for the client interface, loads client.fxml.
+ * @see javafx.application.Application
 */
 
 public class BobClient extends Application {
@@ -29,6 +30,10 @@ public class BobClient extends Application {
 
     }
 
+    /**
+     * Main function
+     * @param args
+     */
     public static void main(String[] args) {
         launch(args);
     }

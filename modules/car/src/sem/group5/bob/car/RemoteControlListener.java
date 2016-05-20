@@ -9,9 +9,9 @@ import java.net.Socket;
 import java.util.Observable;
 
 /**
- * Class responsible for establishing connection between
- * client and raspberry pi and use received data to forward it to
- * the arduino
+ * Class responsible for establishing a connection and handling input between a remote control (PC Client) and BobCar.
+ * @see java.util.Observable
+ * @see java.lang.Runnable
  */
 
 class RemoteControlListener extends Observable implements Runnable{
@@ -34,7 +34,14 @@ class RemoteControlListener extends Observable implements Runnable{
     }
 
     /**
-     * Method to open up the port and handle received inputs in it
+     * Method to open up the port and handle received inputs in it.
+     * Adds a timer to the socket.
+     *
+     * read received input from the remote control as char and adds arguments.
+     * 's' set speed, 'a' set Angle, 'r' rotate, '/' close connection.
+     * @see SmartCarComm#setAngle(int)
+     * @see SmartCarComm#setSpeed(int)
+     * @see SmartCarComm#setRotate(int)
      */
     private void listen()
     {
@@ -113,6 +120,7 @@ class RemoteControlListener extends Observable implements Runnable{
     }
     /**
      * A "heartbeat" method to check whether network connection is alive.
+     * The method sends an out string "A" every x seconds, the string is then read and conformed by the client.
      */
     private void sendHeartBeatToClient()
     {
@@ -139,7 +147,7 @@ class RemoteControlListener extends Observable implements Runnable{
     }
 
     /**
-     * Method to close the network connections.
+     * Method to close the network connections and notifies an observer, notifies observer.
      */
     void closeConnections() {
         try {
@@ -149,7 +157,7 @@ class RemoteControlListener extends Observable implements Runnable{
             System.out.println("All connections were closed!");
             setChanged();
 
-            // Notify observer class to update the method
+            // Notify observer class
             notifyObservers("Connection Closed");
 
             // Catches and logs errors

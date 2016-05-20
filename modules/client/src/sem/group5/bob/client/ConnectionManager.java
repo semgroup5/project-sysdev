@@ -5,6 +5,10 @@ import java.io.InputStream;
 import java.net.Socket;
 import java.util.Observable;
 
+/**
+ * Class responsible for the connections between the client and BobCar
+ * @see java.util.Observable
+ */
 class ConnectionManager extends Observable
 {
     private String carIp;
@@ -24,7 +28,7 @@ class ConnectionManager extends Observable
             d.listenIp();
             this.carIp = d.getIp();
 
-            // Assigns a socket connection
+            // socket constructor
             this.controlSocket = getControlSocket();
             System.out.println("Socket Established");
 
@@ -47,6 +51,7 @@ class ConnectionManager extends Observable
 
     /**
      * Method to disconnect from bobCar
+     * @see ClientState
      */
     void disconnect(){
         try{
@@ -70,7 +75,9 @@ class ConnectionManager extends Observable
     }
 
     /**
-     * Method to reconnect to bobCar
+     * Method to reconnect to bobCar.
+     * @see ConnectionManager#connect()
+     * @see ConnectionManager#disconnect()
      */
     void reconnect()
     {
@@ -140,14 +147,14 @@ class ConnectionManager extends Observable
 
     /**
      * Method to tell if it is connected to bobCar
-     * @return isConnected
+     * @return true if connected
      */
     private boolean isConnected() {
         return isConnected;
     }
 
     /**
-     *
+     * "HeartBeat" method, checks the status of the connection by reading a string from the buffer sent from the car
      */
     void checkConnectionHeartBeat(){
         Thread t = new Thread(()->{

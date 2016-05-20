@@ -1,5 +1,6 @@
 package sem.group5.bob.car;
 
+import com.sun.rmi.rmid.ExecPermission;
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
@@ -23,6 +24,7 @@ import java.util.Properties;
 class SerialConnect extends Observable implements SerialPortEventListener {
 
     private SerialPort serialPort;
+    int retryArduinoConnect = 0;
 
     /**
      * The port we're normally going to use.
@@ -43,7 +45,8 @@ class SerialConnect extends Observable implements SerialPortEventListener {
     private static final int DATA_RATE = 9600;
 
     /**
-     * Method to establish the serial connection
+     * Method to establish the serial connection.
+     * Support for Windows, MAC and Linux.
      */
     void initialize(){
 
@@ -62,7 +65,6 @@ class SerialConnect extends Observable implements SerialPortEventListener {
         /**
          * First, Find an instance of serial port as set in PORT_NAMES.
          */
-         // while loop to look at all the port names
         while (portEnum.hasMoreElements()) {
             CommPortIdentifier currPortId = (CommPortIdentifier) portEnum.nextElement();
 
@@ -73,22 +75,25 @@ class SerialConnect extends Observable implements SerialPortEventListener {
                 }
             }
         }
-        //TODO: throw exception, if it didn't find the right port
         if (portId == null) {
-            System.out.println("Could not find COM port.");
-            return;
+            try{
+                if(retryArduinoConnect < 3) {
+                    System.out.println("Retrying connection to Arduino..");
+                    initialize();
+                    retryArduinoConnect++;
+                }
+            }catch(Exception e){
+                System.out.println("Could not find COM port.");
+            }
         }
 
         try {
             System.out.println("Opening port.");
-            // open serial port, and use class name for the appName.
             serialPort = (SerialPort) portId.open(this.getClass().getName(), TIME_OUT);
             System.out.println("Setting parameter");
-            // set port parameters
             serialPort.setSerialPortParams(DATA_RATE, SerialPort.DATABITS_8,
                     SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
             System.out.println("Opening streams");
-            // open the streams
             input = new BufferedReader(new InputStreamReader(
                     serialPort.getInputStream()));
             output = serialPort.getOutputStream();
@@ -97,7 +102,6 @@ class SerialConnect extends Observable implements SerialPortEventListener {
             output.write(ch);
 
             System.out.println("Adding event listeners");
-            // add event listeners
             serialPort.addEventListener(this);
             serialPort.notifyOnDataAvailable(true);
 
@@ -132,8 +136,8 @@ class SerialConnect extends Observable implements SerialPortEventListener {
     }
 
     /**
-     * Method to return this BufferReader
-     * @return @
+     * Method to get BufferReader
+     * @return input
      */
     BufferedReader getBufferReader() {
         return this.input;
@@ -141,7 +145,7 @@ class SerialConnect extends Observable implements SerialPortEventListener {
 
     /**
      * Method to return this OutputStream
-     * @return @
+     * @return output
      */
     OutputStream getOutputStream() {
         return this.output;
@@ -149,7 +153,7 @@ class SerialConnect extends Observable implements SerialPortEventListener {
 
     /**
      * Method that will be watching over events in the serial connection port
-     * @param oEvent @
+     * @param oEvent Object event
      */
     public synchronized void serialEvent(SerialPortEvent oEvent) {
         if (oEvent.getEventType() == SerialPortEvent.DATA_AVAILABLE) {

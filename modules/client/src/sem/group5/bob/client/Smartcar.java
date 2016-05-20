@@ -4,6 +4,10 @@ import java.io.*;
 import java.net.Socket;
 import java.util.Observable;
 
+/**
+ * Class that will establish the remote connection with BobCar and send the controls input from the controller.
+ * @see java.util.Observable
+ */
 class Smartcar extends Observable{
     private Socket socket;
     private Writer out;
@@ -12,8 +16,7 @@ class Smartcar extends Observable{
 
     /**
      * Initialize a new connection to a remote smartcar
-     *
-     * @param socket used for communication
+     * @param socket the socket used for connection
      */
     Smartcar(Socket socket) {
         try {
@@ -33,22 +36,23 @@ class Smartcar extends Observable{
 
     /**
      * Set speed of the remote SmartCar
-     *
      * @param speed speed in percentage of max capacity
      */
     void setSpeed(int speed) throws IOException{
         try {
             out.write("s" + speed + "/");
             out.flush();
+            //Catch connection error
         } catch (InterruptedIOException e) {
             this.e = e;
+
+            //Notify the observer the connection is interrupted
             notifyConnectionLost();
         }
     }
 
     /**
      * Set angle at which to turn the remote SmartCar
-     *
      * @param angle angle in degrees
      */
     void setAngle(int angle) throws IOException{
@@ -56,8 +60,11 @@ class Smartcar extends Observable{
             String toSend = "a";
             out.write(toSend + angle + "/");
             out.flush();
+
         } catch (InterruptedIOException e) {
             this.e = e;
+
+            //Send error to the observer (connection is interrupted)
             notifyConnectionLost();
         }
     }
@@ -78,7 +85,7 @@ class Smartcar extends Observable{
     }
 
     /**
-     * Method to close sockets in the client side and server side
+     * Method to close sockets in the client controller.
      * @throws IOException
      */
     void close() throws IOException{
@@ -89,7 +96,7 @@ class Smartcar extends Observable{
     }
 
     /**
-     * Method to notify observer in case of errors
+     * Method to notify observer in case of connection error
      */
     private void notifyConnectionLost()
     {
@@ -98,8 +105,8 @@ class Smartcar extends Observable{
     }
 
     /**
-     *
-     * @return if it is still connect to bobCar
+     * boolean checks if the socket is connected.
+     * @return true if it is still connected to bobCar and the socket is open.
      */
     boolean isConnected()
     {
@@ -107,7 +114,8 @@ class Smartcar extends Observable{
     }
 
     /**
-     * Method to get the thrown exception
+     * Method to get the IoException error
+     * @return  This error
      */
     IOException getE() {
         return e;

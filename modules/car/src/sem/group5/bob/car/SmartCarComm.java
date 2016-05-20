@@ -5,8 +5,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Observable;
 
-/**
-    * SmartCarComm handle the received input from the client and forward it to the arduino attached in the smartcar.
+    /**
+    * SmartCarComm handles the received input from the client and forward it to the arduino attached to the smartcar.
+     * @see java.util.Observable
     */
     class SmartCarComm extends Observable{
         private BufferedReader input;
@@ -25,7 +26,7 @@ import java.util.Observable;
 
         /**
          * WriteData method is responsible for sending the data to the arduino in the smartcar
-         * @param data data to be send
+         * @param data data to be sent
          */
     private synchronized void writeData(String data) {
         try {
@@ -42,6 +43,7 @@ import java.util.Observable;
         /**
          * Method to send speed values to the smartcar
          * @param speed integer speed between 1 to 100.
+         * @see SmartCarComm#writeData(String)
          */
     void setSpeed(int speed){
         if((speed <= 100) && (speed >= -100)){
@@ -52,6 +54,7 @@ import java.util.Observable;
         /**
          * Method to send angle values to the smartcar
          * @param angle angle to turn the car.
+         * @see SmartCarComm#writeData(String)
          */
     void setAngle(int angle){
         if(angle <= 360 && angle >= -360){
@@ -63,6 +66,7 @@ import java.util.Observable;
          * Method to send command to the smartcar initiate rotate in the spot.
          * If sent 1 it rotates clockwise else if sent -1 it rotates anticlockwise
          * @param direction direction to rotate the car
+         * @see SmartCarComm#writeData(String)
          */
     void setRotate(int direction){
         if(direction >= -1 || direction <= 1){

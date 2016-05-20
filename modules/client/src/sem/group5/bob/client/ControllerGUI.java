@@ -8,6 +8,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import java.io.File;
 import java.io.FileWriter;
@@ -15,6 +16,12 @@ import java.io.IOException;
 import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+/**
+ * A controller class for the GUI FXML file, named client.fxml.
+ * @see java.util.Observable
+ */
+
 
 public class ControllerGUI extends Observable {
 
@@ -41,10 +48,11 @@ public class ControllerGUI extends Observable {
     public ImageView loadImage;
     private ClientState clientState;
     private ButtonsStyle style;
-
+    private Text infoText;
 
     /**
-     *
+     * Constructor constructs a object clientState and adds an observer to it.
+     * @see ClientState
      */
     public ControllerGUI() {
         clientState = new ClientState(this);
@@ -52,6 +60,9 @@ public class ControllerGUI extends Observable {
         style = new ButtonsStyle(this);
     }
 
+    /**
+     * Connect button handler
+     */
     public void connect() {
         if(!clientState.isConnected() && !connectClicked)
         {
@@ -69,6 +80,11 @@ public class ControllerGUI extends Observable {
         }
     }
 
+    /**
+     * Method update the GUI depending on the string value.
+     * @param state A string that represents the state of the Text annotation.
+
+     */
     void setState(String state) {
         loadImage.setVisible(true);
         if(state.equals("Connected"))
@@ -87,7 +103,7 @@ public class ControllerGUI extends Observable {
     }
 
     /**
-     *
+     * Method to start streaming on the client side
      */
     void stream()
     {
@@ -152,7 +168,8 @@ public class ControllerGUI extends Observable {
 
     /**
      * Method to apply shadow effect to buttons
-     * @param event see @ButtonStyle
+     * @param event
+     * @see ButtonsStyle
      */
     public void shadow(Event event) {
         style.shadow(event);
@@ -251,7 +268,8 @@ public class ControllerGUI extends Observable {
 
     /**
      * Method to set InnerShadow effect to buttons
-     * @param event see @ButtonStyle
+     * @param event ButtonStyle
+     * @see ButtonsStyle
      */
     public void setFocused(Event event) {
         style.setFocused(event);
@@ -304,8 +322,8 @@ public class ControllerGUI extends Observable {
 
     /**
      * Method to save maps in the computer's directory.
-     * @param content @
-     * @param file @
+     * @param content the data to be saved
+     * @param file the file in which the content will be saved
      */
     private void SaveFile(String content, File file){
         try {
@@ -321,15 +339,16 @@ public class ControllerGUI extends Observable {
     }
 
     /**
-     *
+     *TODO
      */
     void fireConnection() {
         connect.fire();
     }
 
     /**
-     *
+     * Method that will clear the state of the gui.
      * @param s String to be written in the text field
+     * @see ControllerGUI#setState(String)
      */
     void replaceStatus(String s)
     {
@@ -337,7 +356,12 @@ public class ControllerGUI extends Observable {
         textFeedback.setText(s);
     }
 
+    /**
+     *TODO
+     * @param b
+     */
     void setConnectClicked(boolean b)
+
     {
         connectClicked = b;
     }

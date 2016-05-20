@@ -3,59 +3,20 @@ package sem.group5.bob.car;
 import java.util.Observable;
 import java.util.Observer;
 
-public class Pose {
+/**
+ * Created by GeoffreyC on 2016/5/1.
+ * Updated by Geoffrey, Axel and Emanuel at 16-05-06
+ */
 
+public class Pose extends SerialConnect implements Observer {
+
+
+    double dispTmp = 0, angle, disp;
     private double X = 0, Y = 0;
-    double distTmp = 0,angle,dist;
-
-    public Pose() {
-        calculatePose();
-    }
-
-
 
     /**
+     * Round up the number the digits can be selected.
      *
-     * @param locationData
-     */
-    public void breakDown(String locationData){
-
-        this.angle = Double.parseDouble(locationData.substring(locationData.indexOf("a") + 1, locationData.indexOf("d")));
-        this.dist = Double.parseDouble(locationData.substring(locationData.indexOf("d") + 1, locationData.indexOf("/")));
-    }
-
-    /**
-     *
-     */
-    public void calculatePose() {
-        double distOld = 0, x, y;
-        double distTmp = dist - distOld;
-
-        if (Math.abs(angle) >= 360) {
-            int turn = (int) angle / 360;
-            this.angle = angle - (360 * turn);
-        }
-        if (angle == 90 || angle == 270) {
-            X += dist;
-            distOld += distTmp;
-        } else if (angle == 0 || angle == 180) {
-            Y += dist;
-            distOld += distTmp;
-        } else if (angle != 0 && angle != 90) {
-
-            x = dist * Math.cos(rdNum((Math.toRadians(angle)), 5));
-            y = dist * Math.sin(rdNum((Math.toRadians(angle)), 5));
-
-            this.X += rdNum(x, 3);
-            this.Y += rdNum(y, 3);
-            distOld += distTmp;
-            System.out.println(X + "this is the X");
-            System.out.println(Y + "this is the Y");
-        }
-    }
-
-    /**
-     * Round up the number to two significant digits.
      * @param a
      * @param r
      * @return
@@ -72,22 +33,58 @@ public class Pose {
 
     /**
      *
-     * @param X
-     * @param Y
-     * @param angle
-     * @return
+     * @param locationData
      */
-    public String getLatestPose(){
-        X = this.X;
-        Y = this.Y;
-        angle = this.angle;
+    public void breakDown(String locationData){
 
-        return X + " " + Y + " " + angle;
+        this.angle = Double.parseDouble(locationData.substring(locationData.indexOf("a") + 1, locationData.indexOf("d")));
+        this.disp = Double.parseDouble(locationData.substring(locationData.indexOf("d") + 1, locationData.indexOf("/")));
     }
 
+    /**
+     *
+     */
+    public void calculatePose() {
 
+        double dispOld = 0, x, y;
+        double dispTmp = disp - dispOld;
+
+        if (Math.abs(angle) >= 360) {
+            int turn = (int) angle / 360;
+            this.angle = angle - (360 * turn);
+        }
+        if (angle == 90 || angle == 270) {
+            X += disp;
+            dispOld += dispTmp;
+        } else if (angle == 0 || angle == 180) {
+            Y += disp;
+            dispOld += dispTmp;
+        } else if (angle != 0 || angle != 90 || angle != 180 || angle != 270) {
+
+            x = disp * Math.cos(rdNum((Math.toRadians(angle)), 5));
+            y = disp * Math.sin(rdNum((Math.toRadians(angle)), 5));
+
+            this.X += rdNum(x, 3);
+            this.Y += rdNum(y, 3);
+            dispOld += dispTmp;
+            System.out.println(X + "this is the X");
+            System.out.println(Y + "this is the Y");
+        }
+    }
+
+    public void update(Observable o, Object arg) {
+        String locationData = (String) arg;
+        breakDown(locationData);
+    }
+
+    /**
+     * @return A string with X, Y and angle will be returned with the format of "X"+ X + "Y" + Y + "Ang" + angle.
+     */
+    //// TODO: 5/12/2016 this is not used by the interface anymore, but it should (then send it to Mjpegstreaner) 
+    public String getLatestPose() {
+        calculatePose();
+        String pose;
+        pose = "X" + X + "Y" + Y + "Ang" + angle;
+        return pose;
+    }
 }
-
-//read the web
-//http://stackoverflow.com/questions/15996345/java-arduino-read-data-from-the-serial-port
-//https://codeshare.io/TcybC

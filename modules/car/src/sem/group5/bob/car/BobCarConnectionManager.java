@@ -11,6 +11,7 @@ import java.util.Observable;
 import java.util.Observer;
 /**
  * This class is notified when an observed object is changed and updates the object with specific methods.
+ * @see java.util.Observer
  */
 
 public class BobCarConnectionManager implements Observer {
@@ -21,6 +22,14 @@ public class BobCarConnectionManager implements Observer {
     private DiscoveryBroadcaster d;
     private  Device device;
 
+    /**
+     * The update() method updates an observed object.
+     * This is called by the notifyObservers() from Observable
+     * @param o observable object
+     * @param arg the argument
+     * @see BobCarConnectionManager#restartFunctions()
+     * @see BobCarConnectionManager#restartSerialConnection()
+     */
     @Override
     public void update(Observable o, Object arg)
     {
@@ -40,6 +49,11 @@ public class BobCarConnectionManager implements Observer {
         }
     }
 
+    /**
+     * initialize() is called after update() is called on an observed object.
+     * @see BobCarConnectionManager#startFunctions()
+     * @see BobCarConnectionManager#startSerialConnection()
+     */
     void initialize() {
         startSerialConnection();
 
@@ -47,7 +61,11 @@ public class BobCarConnectionManager implements Observer {
     }
 
     /**
-     * The startFunction method used to update the observable and restart the connection
+     * The startFunction() method initialize a set of methods, its called in initialize() method when the observable object is updated.
+     * @see BobCarConnectionManager#startRemoteListener(SmartCarComm)
+     * @see BobCarConnectionManager#setDepthStreamSocket()
+     * @see BobCarConnectionManager#startDiscoveryListener()
+     * @see BobCarConnectionManager#kinectSetting()
      */
     private void startFunctions()
     {
@@ -67,6 +85,10 @@ public class BobCarConnectionManager implements Observer {
         }
     }
 
+    /**
+     * restart functions if an error was encountered in
+     * @see BobCarConnectionManager#startFunctions()
+     */
     private void restartFunctions()
     {
         startRemoteListener(scc);
@@ -83,6 +105,11 @@ public class BobCarConnectionManager implements Observer {
         }
     }
 
+    /**
+     * Constructor
+     * Start a Depth Stream Socket
+     * @see DepthStreamSocket#DepthStreamSocket()
+      */
     private void setDepthStreamSocket() {
         Thread t = new Thread(()->{
             depthStreamSocket = new DepthStreamSocket();
@@ -91,7 +118,9 @@ public class BobCarConnectionManager implements Observer {
     }
 
     /**
-     * Method to initiate the broadcasting IP
+     * Method to initiate broadcasting BobCar's IP and adds an observer.
+     * @see DiscoveryBroadcaster
+     * @see java.util.Observer
      */
     private void startDiscoveryListener() {
         System.out.println("Starting IP Address Broadcast");
@@ -103,6 +132,9 @@ public class BobCarConnectionManager implements Observer {
 
     /**
      * Method to initiate the port listener that will be waiting for inputs from the client side to forward it then to the arduino.
+     * @param scc smartCarComm
+     * @see SmartCarComm
+     * @see RemoteControlListener#RemoteControlListener(int, SmartCarComm)
      */
     private void startRemoteListener(SmartCarComm scc)
     {
@@ -118,6 +150,10 @@ public class BobCarConnectionManager implements Observer {
 
     }
 
+    /**
+     * Sets the settings to the Kinect.
+     * @see org.openkinect.freenect
+     */
     private void kinectSetting()
     {
             try {
@@ -135,7 +171,9 @@ public class BobCarConnectionManager implements Observer {
     }
 
     /**
-     * Method to initiate the video streaming
+     * Threaded method to start the video streaming.
+     * Catch and logs errors
+     * @see MjpegStreamer
      */
     private void streamVideo()
     {
@@ -168,7 +206,8 @@ public class BobCarConnectionManager implements Observer {
     }
 
     /**
-     *
+     * Initiates serial connection with the arduino
+     * @see SerialConnect#
      */
     private void startSerialConnection(){
         serialC = new SerialConnect();
@@ -180,7 +219,8 @@ public class BobCarConnectionManager implements Observer {
     }
 
     /**
-     *
+     * Restart serial connection if the first attempt fails.
+     * @see BobCarConnectionManager#startSerialConnection()
      */
     private void restartSerialConnection() {
         serialC.close();

@@ -9,7 +9,7 @@ import java.util.Observable;
 /**
  * Class responsible for sending video or depth stream to the client.
  */
-public class MjpegStreamer extends Observable implements Runnable{
+public class DepthStreamer extends Observable implements Runnable{
     private DepthJpegProvider cjp;
     private Pose PoseProvider;
     private Socket socket;
@@ -19,7 +19,7 @@ public class MjpegStreamer extends Observable implements Runnable{
      * @param s socket used for communication
      * @param cjp responsible for selecting which frames will be send to the client.
      */
-    public MjpegStreamer(Socket s, DepthJpegProvider cjp, Pose PoseProvider) {
+    public DepthStreamer(Socket s, DepthJpegProvider cjp, Pose PoseProvider) {
         this.socket = s;
         this.cjp = cjp;
         this.PoseProvider = PoseProvider;
