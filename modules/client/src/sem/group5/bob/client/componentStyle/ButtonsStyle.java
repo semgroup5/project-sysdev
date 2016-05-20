@@ -9,14 +9,15 @@ import sem.group5.bob.client.ControllerGUI;
 /**
  * Adds graphical styling to the GUI.
  */
-class ButtonsStyle {
+public class ButtonsStyle
+{
     private ControllerGUI gui;
 
     /**
      * Constructor
      * @param gui User GUI
      */
-    ButtonsStyle(ControllerGUI gui) {
+    public ButtonsStyle(ControllerGUI gui) {
         this.gui = gui;
     }
 
@@ -25,7 +26,7 @@ class ButtonsStyle {
      * @param button The button on GUI
      * @param action Action event from this button
      */
-    void styleButton(Button button, String action) {
+    public void styleButton(Button button, String action) {
 
         if (button.equals(gui.map)) {
             if (action.equals("active")) {
@@ -157,7 +158,7 @@ class ButtonsStyle {
      * Method to set InnerShadow effect to buttons
      * @param event which button has been clicked
      */
-    void setFocused(Event event) {
+    public void setFocused(Event event) {
         if (event.getSource().equals(gui.connect)) gui.connect.setEffect(new InnerShadow());
         if (event.getSource().equals(gui.save)) gui.save.setEffect(new InnerShadow());
         if (event.getSource().equals(gui.load)) gui.load.setEffect(new InnerShadow());
@@ -172,7 +173,7 @@ class ButtonsStyle {
      * Method to apply shadow effect to buttons
      * @param event which button the mouse have hovered over
      */
-    void shadow(Event event) {
+    public void shadow(Event event) {
         if (event.getSource().equals(gui.connect)) gui.connect.setEffect(new DropShadow());
         if (event.getSource().equals(gui.save)) gui.save.setEffect(new DropShadow());
         if (event.getSource().equals(gui.load)) gui.load.setEffect(new DropShadow());
@@ -183,7 +184,7 @@ class ButtonsStyle {
      * Method to take off shadow effect of the buttons
      * @param event which button the mouse have hovered off
      */
-    void shadowOff(Event event) {
+    public void shadowOff(Event event) {
         if (event.getSource().equals(gui.connect)) gui.connect.setEffect(null);
         if (event.getSource().equals(gui.save)) gui.save.setEffect(null);
         if (event.getSource().equals(gui.load)) gui.load.setEffect(null);

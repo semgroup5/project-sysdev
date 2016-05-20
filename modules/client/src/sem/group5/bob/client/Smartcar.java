@@ -11,7 +11,6 @@ import java.util.Observable;
 class Smartcar extends Observable{
     private Socket socket;
     private Writer out;
-    private InputStream in;
     private IOException e;
 
     /**
@@ -25,12 +24,24 @@ class Smartcar extends Observable{
             this.socket.setReuseAddress(true);
             this.socket.setKeepAlive(true);
             this.socket.setSoTimeout(8*1000);
-            this.in = socket.getInputStream();
             this.out = new PrintWriter(socket.getOutputStream());
-           }catch(InterruptedIOException e){
+        }catch(InterruptedIOException e){
             notifyConnectionLost();
-            } catch (IOException e1) {
+        } catch (IOException e1) {
             e1.printStackTrace();
+        }
+    }
+
+    void tiltkinect(double angle) throws IOException {
+        try {
+            out.write("k" + angle + "/");
+            out.flush();
+            //Catch connection error
+        } catch (InterruptedIOException e) {
+            this.e = e;
+
+            //Notify the observer the connection is interrupted
+            notifyConnectionLost();
         }
     }
 
@@ -100,8 +111,8 @@ class Smartcar extends Observable{
      */
     private void notifyConnectionLost()
     {
-       setChanged();
-       notifyObservers("Socket Failed");
+        setChanged();
+        notifyObservers("Socket Failed");
     }
 
     /**

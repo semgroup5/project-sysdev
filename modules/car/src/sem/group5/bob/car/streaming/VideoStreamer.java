@@ -1,7 +1,6 @@
 package sem.group5.bob.car.streaming;
 
 import sem.group5.bob.car.BobCarConnectionManager;
-import sem.group5.bob.car.Pose;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -11,9 +10,8 @@ import java.util.Observable;
 /**
  * Class responsible for sending video or depth stream to the client.
  */
-public class DepthStreamer extends Observable implements Runnable{
-    private DepthJpegProvider cjp;
-    private Pose PoseProvider;
+public class VideoStreamer extends Observable implements Runnable{
+    private VideoProvider videoProvider;
     private Socket socket;
     private boolean streaming;
     private OutputStream out;
@@ -21,12 +19,11 @@ public class DepthStreamer extends Observable implements Runnable{
     /**
      *  Constructor
      * @param s socket used for communication
-     * @param cjp responsible for selecting which frames will be send to the client.
+     * @param videoProvider responsible for selecting which frames will be send to the client.
      */
-    public DepthStreamer(Socket s, DepthJpegProvider cjp, Pose PoseProvider) {
+    public VideoStreamer(Socket s, VideoProvider videoProvider) {
         this.socket = s;
-        this.cjp = cjp;
-        this.PoseProvider = PoseProvider;
+        this.videoProvider = videoProvider;
         this.streaming = true;
     }
 
@@ -38,8 +35,7 @@ public class DepthStreamer extends Observable implements Runnable{
      */
     private void stream()
     {
-        try
-        {
+        try {
             System.out.println("Streaming");
             out = socket.getOutputStream();
 
@@ -53,15 +49,12 @@ public class DepthStreamer extends Observable implements Runnable{
                     "Content-Type: multipart/x-motion-jpeg; " +
                     "boundary=BoundaryString\r\n\r\n" ).getBytes() );
             byte[] data;
-            while (streaming)
-            {
+            while (streaming) {
                 System.out.println("Sending frame");
-                data = cjp.getLatestJpeg();
-                //Pose poseProvider =  new Pose();     getlatestpose   needs to be implemented on the pose class
+                data = videoProvider.getLatestJpeg();
                 out.write(("--BoundaryString\r\n" +
                         "Content-type: image/jpeg\r\n" +
-                        "Content-Length: " + data.length + "\r\n" +
-                        "X-Robot-Pose: " + PoseProvider.getLatestPose() + "\r\n\r\n").getBytes());
+                        "Content-Length: " + data.length + "\r\n\r\n").getBytes());
                 out.write(data);
                 out.write("\r\n\r\n".getBytes());
                 out.flush();

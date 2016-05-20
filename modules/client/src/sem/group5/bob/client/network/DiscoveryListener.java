@@ -12,7 +12,7 @@ import java.util.logging.Logger;
  * it will detect BobCar IP and handle it with a set of methods.
  */
 
-class DiscoveryListener
+public class DiscoveryListener
 {
     private DatagramSocket socket;
     private String ip = "";
@@ -23,7 +23,7 @@ class DiscoveryListener
      * listenIP() method will scan and filter incoming connections based on the pockets received,
      * once BobCar pocket is received its IP will be accepted and stored to establish a connection..
      */
-    void listenIp() {
+    public void listenIp() {
         try {
 
             listening = true;
@@ -74,7 +74,7 @@ class DiscoveryListener
      * @return this IP
      */
 
-    String getIp() {
+    public String getIp() {
         return this.ip;
     }
 }
