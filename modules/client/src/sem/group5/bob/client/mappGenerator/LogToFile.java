@@ -10,7 +10,6 @@ public class LogToFile implements Observer{
 
     private String fileLocation;
     private String OS = System.getProperty("os.name", "").toUpperCase();
-    private double x, y, theta;
     private ArrayList<String> logData = new ArrayList<>() ;
     private PrintWriter writer;
     private int[] scanLineArray;
@@ -32,7 +31,6 @@ public class LogToFile implements Observer{
 //    }
 
     public void logOdometryFormatter(double x, double y, double theta){
-
         try{
             writer.println(x + y + theta);
             writer.flush();
@@ -52,7 +50,6 @@ public class LogToFile implements Observer{
         catch (Exception e){
             e.printStackTrace();
         }
-
     }
 
     public void addToList(String string){
@@ -91,8 +88,8 @@ public class LogToFile implements Observer{
      * todo
      * @param OS todo
      */
-    private void crtFile(String OS)
-    {
+    private void crtFile(String OS) {
+        crtDirc();
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("HH：mm：ss@yyyy-MM-dd");
         String time = sdf.format(cal.getTime());
