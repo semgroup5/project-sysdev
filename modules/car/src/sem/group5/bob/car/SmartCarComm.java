@@ -8,7 +8,8 @@ import java.util.Observable;
  * SmartCarComm handles the received input from the client and forward it to the arduino attached to the smartcar.
  * @see java.util.Observable
  */
-class SmartCarComm extends Observable{
+class SmartCarComm extends Observable
+{
     private OutputStream output;
 
     /**
@@ -16,7 +17,8 @@ class SmartCarComm extends Observable{
      * @param output OutputStream used for the serialConnect class
      * @throws NoSuchFieldError
      */
-    SmartCarComm(OutputStream output) throws NoSuchFieldError{
+    SmartCarComm(OutputStream output) throws NoSuchFieldError
+    {
         this.output = output;
     }
 
@@ -24,13 +26,14 @@ class SmartCarComm extends Observable{
      * WriteData method is responsible for sending the data to the arduino in the smartcar
      * @param data data to be sent
      */
-    private synchronized void writeData(String data) {
-        try {
+    private synchronized void writeData(String data)
+    {
+        try
+        {
             System.out.println("Sending : " + data);
             output.write(data.getBytes());
         } catch (IOException e) {
             System.out.println("could not write to port");
-            e.printStackTrace();
             setChanged();
             notifyObservers("Serial Port Failed");
         }
@@ -41,8 +44,10 @@ class SmartCarComm extends Observable{
      * @param speed integer speed between 1 to 100.
      * @see SmartCarComm#writeData(String)
      */
-    void setSpeed(int speed){
-        if((speed <= 100) && (speed >= -100)){
+    void setSpeed(int speed)
+    {
+        if((speed <= 100) && (speed >= -100))
+        {
             writeData("w" + speed + "/");
         }
     }
@@ -52,8 +57,10 @@ class SmartCarComm extends Observable{
      * @param angle angle to turn the car.
      * @see SmartCarComm#writeData(String)
      */
-    void setAngle(int angle){
-        if(angle <= 360 && angle >= -360){
+    void setAngle(int angle)
+    {
+        if(angle <= 360 && angle >= -360)
+        {
             writeData("a" + angle + "/");
         }
     }
@@ -64,14 +71,17 @@ class SmartCarComm extends Observable{
      * @param direction direction to rotate the car
      * @see SmartCarComm#writeData(String)
      */
-    void setRotate(int direction){
-        if(direction >= -1 || direction <= 1){
+    void setRotate(int direction)
+    {
+        if(direction >= -1 || direction <= 1)
+        {
             writeData("r" + direction + "/");
         }
     }
 
     // TODO: 20/05/2016
-    void resetArduino(){
+    void resetArduino()
+    {
 
     }
 

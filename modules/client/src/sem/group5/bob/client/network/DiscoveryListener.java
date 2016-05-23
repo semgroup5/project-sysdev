@@ -23,8 +23,10 @@ public class DiscoveryListener
      * listenIP() method will scan and filter incoming connections based on the pockets received,
      * once BobCar pocket is received its IP will be accepted and stored to establish a connection..
      */
-    public void listenIp() {
-        try {
+    public void listenIp()
+    {
+        try
+        {
 
             listening = true;
 
@@ -32,7 +34,8 @@ public class DiscoveryListener
             socket.setBroadcast(true);
             socket.setReuseAddress(true);
 
-            while(listening) {
+            while(listening)
+            {
                 System.out.println(getClass().getName() + " Ready to receive broadcast packets");
 
                 //Receive a packet
@@ -46,13 +49,15 @@ public class DiscoveryListener
 
                 //See if the packet is the one we need
                 String message = new String(packet.getData()).trim();
-                if (message.equals("BobCar_Server")) {
+                if (message.equals("BobCar_Server"))
+                {
                     this.ip = packet.getAddress().toString().substring(1);
                     System.out.println("Found BobCar At IP: " + packet.getAddress().toString().substring(1));
                     close();
                 }
             }
-        }catch (IOException ex) {
+        }catch (IOException ex)
+        {
             Logger.getLogger(DiscoveryListener.class.getName()).log(Level.SEVERE, null, ex);
             close();
         }
@@ -62,7 +67,8 @@ public class DiscoveryListener
      * Method to close the IP listener
      * @see DiscoveryListener#listenIp()
      */
-    private void close() {
+    private void close()
+    {
         listening = false;
         if (socket.isConnected()) socket.disconnect();
         socket.close();
@@ -74,7 +80,8 @@ public class DiscoveryListener
      * @return this IP
      */
 
-    public String getIp() {
+    public String getIp()
+    {
         return this.ip;
     }
 }

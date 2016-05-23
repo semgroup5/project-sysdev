@@ -18,8 +18,10 @@ public class DiscoveryBroadcaster implements Runnable, Observer {
     /**
      * Method to start the broadcasting
      */
-    private void startIPBroadcast() {
-        try{
+    private void startIPBroadcast()
+    {
+        try
+        {
             broadcasting = true;
 
             //Open a socket to broadcast to UPD traffic that is aimed at this port
@@ -27,7 +29,8 @@ public class DiscoveryBroadcaster implements Runnable, Observer {
             socket.setBroadcast(true);
             socket.setReuseAddress(true);
 
-            while(broadcasting){
+            while(broadcasting)
+            {
                 System.out.println(getClass().getName() + " Broadcasting packets to the network");
 
                 //send a packet to the network
@@ -37,10 +40,12 @@ public class DiscoveryBroadcaster implements Runnable, Observer {
                 Thread.sleep(2000);
 
             }
-        }catch(IOException ex){
+        }catch(IOException ex)
+        {
             Logger.getLogger(DiscoveryBroadcaster.class.getName()).log(Level.SEVERE, null, ex);
 
-        } catch (InterruptedException e) {
+        } catch (InterruptedException e)
+        {
             e.printStackTrace();
         }
     }
@@ -49,13 +54,16 @@ public class DiscoveryBroadcaster implements Runnable, Observer {
      * Used by the thread to run the function listen.
      */
     @Override
-    public void run() {
+    public void run()
+    {
         startIPBroadcast();
     }
 
     @Override
-    public void update(Observable o, Object arg) {
-        if (arg.equals("Done Broadcasting")) {
+    public void update(Observable o, Object arg)
+    {
+        if (arg.equals("Done Broadcasting"))
+        {
             broadcasting = false;
             System.out.println("Disconnecting IP Broadcaster...");
             socket.disconnect();

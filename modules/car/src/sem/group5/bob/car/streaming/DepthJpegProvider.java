@@ -1,27 +1,59 @@
 package sem.group5.bob.car.streaming;
 
-import org.libjpegturbo.turbojpeg.*;
+import org.libjpegturbo.turbojpeg.TJ;
+import org.libjpegturbo.turbojpeg.TJCompressor;
 import org.openkinect.freenect.FrameMode;
 import sun.misc.Unsafe;
-
 import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
 import java.nio.ShortBuffer;
-import java.util.Arrays;
 import java.util.Observable;
 
-public class DepthJpegProvider extends Observable implements JpegProvider {
+/**
+ * todo
+ */
+public class DepthJpegProvider extends Observable implements JpegProvider
+{
     private static ByteBuffer latestDepthFrame;
     private static boolean processingDepth = false;
     private int pixelWidth = 1;
     private int imageSize = 640 * 480 * pixelWidth;
     private byte[] comboFrame = new byte[imageSize];
 
-    public void receiveDepth(FrameMode frameMode, ByteBuffer byteBuffer, int i) { if (!processingDepth){ latestDepthFrame = byteBuffer;} }
+    /**
+     * todo
+     */
+    public DepthJpegProvider()
+    {
+        try
+        {
+            Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");
+            theUnsafe.setAccessible(true);
+        }catch(Exception ignored){}
+    }
 
-    public byte[] getLatestJpeg() throws Exception{
+    /**
+     * todo
+     * @param frameMode frame
+     * @param byteBuffer byte
+     * @param i int
+     */
+    public void receiveDepth(FrameMode frameMode, ByteBuffer byteBuffer, int i)
+    {
+        if (!processingDepth){ latestDepthFrame = byteBuffer;}
+    }
+
+    /**
+     * todo
+     * @return frame
+     * @throws Exception
+     */
+    public byte[] getLatestJpeg() throws Exception
+    {
         while(latestDepthFrame == null)
+        {
             Thread.sleep(2*1000);
+        }
 
         int depthFrameSize = (640*480*2);
         byte[] dFrame = new byte[depthFrameSize];
@@ -40,7 +72,8 @@ public class DepthJpegProvider extends Observable implements JpegProvider {
         processingDepth = false;
         System.out.println("Compressing Frame");
 
-        try {
+        try
+        {
             TJCompressor tjc = new TJCompressor();
 
             tjc.setJPEGQuality(20);
@@ -54,10 +87,7 @@ public class DepthJpegProvider extends Observable implements JpegProvider {
             System.out.println("Sending Frame");
             return compressedTruncated;
         }
-        catch (Exception e) {
-            System.err.println("Exception caught, message: " + e.getMessage());
-
-        }
+        catch (Exception ignore) {}
         return dFrame;
     }
 }

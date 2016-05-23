@@ -1,5 +1,9 @@
 package sem.group5.bob.client;
 
+import javafx.application.Platform;
+import sem.group5.bob.client.bobSmartCar.Smartcar;
+import sem.group5.bob.client.bobSmartCar.SmartcarController;
+import sem.group5.bob.client.mappGenerator.LogToFile;
 import sem.group5.bob.client.streamReceiver.MultiPartsParse;
 import sem.group5.bob.client.streamReceiver.ScanLineGenerator;
 import sem.group5.bob.client.streamReceiver.VideoStreamHandler;
@@ -19,7 +23,7 @@ class ClientState implements Observer
     private ConnectionManager connectionManager;
     private SmartcarController smartcarController;
     private ScanLineGenerator scanLineGenerator;
-    Thread parseThread;
+    private VideoStreamHandler videoHandlerDepth;
     boolean isConnected;
 
     /**
@@ -50,7 +54,8 @@ class ClientState implements Observer
      *  Method to return if the client is connected to the BobCar
      * @return true if the client is connected
      */
-    boolean isConnected(){
+    boolean isConnected()
+    {
         return isConnected;
     }
 
@@ -73,15 +78,13 @@ class ClientState implements Observer
     {
         try
         {
-            MultiPartsParse parseD = new MultiPartsParse(connectionManager.getDepthSocket().getInputStream());
+            MultiPartsParse parseDepth = new MultiPartsParse(connectionManager.getDepthSocket().getInputStream());
             scanLineGenerator = new ScanLineGenerator();
-            parseD.addObserver(scanLineGenerator);
-            parseThread = new Thread(parseD);
-            parseThread.start();
-            VideoStreamHandler videoHandlerD = new VideoStreamHandler(gui.kinectView, parseD);
-            videoHandlerD.startStreaming();
+            parseDepth.addObserver(scanLineGenerator);
+            videoHandlerDepth = new VideoStreamHandler(gui.kinectViewDepth, parseDepth);
+            videoHandlerDepth.startStreaming();
             LogToFile CarmenLog = new LogToFile();
-            parseD.setLog(CarmenLog);
+            parseDepth.setLog(CarmenLog);
             scanLineGenerator.setLog(CarmenLog);
             gui.replaceStatus("Stream connection successful.");
         }catch (Exception e)
@@ -98,10 +101,8 @@ class ClientState implements Observer
         // TODO: 20/05/2016
         try
         {
+            videoHandlerDepth.stopStreaming();
             connectionManager.DepthSocketClose();
-//            parseThread.interrupt();
-//            videoHandler = null;
-//            parse = null;
         } catch (IOException e)
         {
             System.err.print("Could not close DepthSocket");
@@ -112,7 +113,8 @@ class ClientState implements Observer
      * Method to return the smartCarController
      * @return this SmartCarController
      */
-    SmartcarController getSmartcarController() {
+    SmartcarController getSmartcarController()
+    {
         return smartcarController;
     }
 
@@ -124,10 +126,10 @@ class ClientState implements Observer
     {
         try
         {
-            MultiPartsParse parse = new MultiPartsParse(connectionManager.getVideoSocket().getInputStream());
-            parse.addObserver(this);
-            VideoStreamHandler videoHandler = new VideoStreamHandler(gui.kinectView1, parse);
-            videoHandler.startStreaming();
+            MultiPartsParse parseVideo = new MultiPartsParse(connectionManager.getVideoSocket().getInputStream());
+            parseVideo.addObserver(this);
+            VideoStreamHandler videoHandlerVideo = new VideoStreamHandler(gui.kinectViewVideo, parseVideo);
+            videoHandlerVideo.startStreaming();
             gui.replaceStatus("Stream connection successful.");
         }catch (Exception e)
         {
@@ -150,10 +152,12 @@ class ClientState implements Observer
         }
         else if (o.equals("Disconnect") && isConnected)
         {
-            try {
+            try
+            {
                 smartcar.close();
                 disconnect();
-            } catch (IOException e) {
+            } catch (IOException e)
+            {
                 gui.replaceStatus("Couldn't disconnect, reason:" + e.getMessage());
             }
         }
@@ -168,6 +172,7 @@ class ClientState implements Observer
                 isConnected = true;
                 gui.stream();
                 connectionManager.checkConnectionHeartBeat();
+                Platform.runLater(()-> gui.setState("Connected"));
                 gui.loadImage.setVisible(false);
                 gui.setConnectClicked(false);
             } catch (IOException e)
@@ -179,6 +184,7 @@ class ClientState implements Observer
         {
             gui.replaceStatus("Disconnected!");
             isConnected = false;
+            Platform.runLater(()-> gui.setState("Disconnected"));
             gui.loadImage.setVisible(false);
             gui.setConnectClicked(false);
         }
