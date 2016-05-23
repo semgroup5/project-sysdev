@@ -1,11 +1,15 @@
 package sem.group5.bob.client.streamReceiver;
 
-import java.awt.image.BufferedImage;
-import java.io.*;
-import java.util.Observable;
 import org.apache.commons.fileupload.MultipartStream;
+import sem.group5.bob.client.ControllerGUI;
 import sem.group5.bob.client.mappGenerator.LogToFile;
 import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Observable;
 
 /**
  * Class that will take the video stream from the kinect as a multipart MJPEG stream.
@@ -18,6 +22,8 @@ public class MultiPartsParse extends Observable implements Runnable
     private LogToFile CarmenLog;
     boolean nextPart;
     double x, y, theta;
+    public String pose;
+    ControllerGUI gui;
 
     /**
      * Constructor
@@ -90,6 +96,11 @@ public class MultiPartsParse extends Observable implements Runnable
         }
 
     }
+public String getPose(){
+    return this.pose;
+}
+
+
 
 }
 
