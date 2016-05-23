@@ -1,6 +1,8 @@
 package sem.group5.bob.client.streamReceiver;
 
 import sem.group5.bob.client.LogToFile;
+
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.Observable;
@@ -20,8 +22,8 @@ public class ScanLineGenerator extends Observable implements Observer {
      */
     private static int[] generateLine(BufferedImage image){
         int[] distanceArray = new int[640];
-        for(int i = 1; i < 641; i++){
-            distanceArray[i]=image.getRGB(240, i);
+        for(int i = 0; i < 640; i++){
+            distanceArray[i]=(new Color(image.getRGB(i+1, 240)).getRed())*16;
         }
         return distanceArray;
     }
