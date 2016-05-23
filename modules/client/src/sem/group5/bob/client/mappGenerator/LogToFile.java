@@ -73,13 +73,17 @@ public class LogToFile implements Observer
 
     }
 
-    /**
-     * todo
-     */
-    private void crtDirc()
+    public void logOdometryMessage(double x, double y, double theta)
     {
-        if (OS.startsWith("WINDOWS"))
-        {
+        String result = "ODOMETRY";
+        result += " " + x;
+        result += " " + y;
+        result += " " + theta;
+        this.addToList(result);
+    }
+
+    private void crtDirc() {
+        if (OS.startsWith("WINDOWS")) {
             File createDirc = new File(System.getenv("HOMEDRIVE") + System.getenv("HOMEPATH")
                     + File.separator +"BobCar");
             createDirc.mkdirs();
