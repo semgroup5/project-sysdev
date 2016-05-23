@@ -9,6 +9,9 @@ import java.util.Calendar;
 import java.util.Observable;
 import java.util.Observer;
 
+/**
+ *
+ */
 public class LogToFile implements Observer
 {
 
@@ -30,17 +33,27 @@ public class LogToFile implements Observer
         log.logWriter();
     }
 
+    /**
+     * todo
+     * @param string todo
+     */
     public void addToList(String string)
     {
         this.logData.add(string);
     }
 
+    /**
+     * todo
+     */
     public void resetList()
     {
         this.logData.clear();
     }
 
 
+    /**
+     * todo
+     */
     private void logWriter()
     {
         crtFile(OS);
@@ -51,7 +64,7 @@ public class LogToFile implements Observer
             {
                 writer.println(aLogData);
             }
-            writer.flush();
+            writer.close();
         }
         catch (Exception e)
         {
@@ -60,6 +73,9 @@ public class LogToFile implements Observer
 
     }
 
+    /**
+     * todo
+     */
     private void crtDirc()
     {
         if (OS.startsWith("WINDOWS"))
@@ -82,6 +98,10 @@ public class LogToFile implements Observer
         }
     }
 
+    /**
+     * todo
+     * @param OS todo
+     */
     private void crtFile(String OS)
     {
         Calendar cal = Calendar.getInstance();
@@ -105,6 +125,11 @@ public class LogToFile implements Observer
         }
     }
 
+    /**
+     * todo
+     * @param obs todo
+     * @param o todo
+     */
     @Override
     public void update(Observable obs, Object o)
     {

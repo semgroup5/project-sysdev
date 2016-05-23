@@ -2,9 +2,16 @@ package sem.group5.bob.client.mappGenerator;
 
 import java.io.IOException;
 
+/**
+ * todo
+ */
 public class ExecutableLauncher {
 
 
+    /**
+     * todo
+     * @throws IOException
+     */
     private void OSDiscoverer() throws IOException
     {
         String OS = System.getProperty("os.name").toLowerCase();
@@ -24,6 +31,12 @@ public class ExecutableLauncher {
         }
 
     }
+
+    /**
+     * todo
+     * @param args todo
+     * @throws IOException
+     */
     public static void main(String[] args) throws IOException
     {
         ExecutableLauncher ex = new ExecutableLauncher();

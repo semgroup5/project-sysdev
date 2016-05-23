@@ -1,14 +1,11 @@
 package sem.group5.bob.client.streamReceiver;
 
-import sem.group5.bob.client.LogToFile;
-
-import java.awt.*;
 import sem.group5.bob.client.mappGenerator.LogToFile;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.Observable;
 import java.util.Observer;
-
 
 /**
  * Class responsible for generating data to be used on mapping.
