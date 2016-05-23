@@ -4,10 +4,8 @@ import java.util.Observable;
 import java.util.Observer;
 
 /**
- * Created by GeoffreyC on 2016/5/1.
- * Updated by Geoffrey, Axel and Emanuel at 16-05-06
+ * todo
  */
-
 public class Pose extends SerialConnect implements Observer {
 
 
@@ -17,11 +15,11 @@ public class Pose extends SerialConnect implements Observer {
     /**
      * Round up the number the digits can be selected.
      *
-     * @param a
-     * @param r
-     * @return
+     * @param a todo
+     * @param r todo
+     * @return todo
      */
-    public static double rdNum(Double a, int r) {
+    private static double rdNum(Double a, int r) {
         if (r < 0) throw new IllegalArgumentException();
 
         long factor = (long) Math.pow(10, r);
@@ -34,15 +32,15 @@ public class Pose extends SerialConnect implements Observer {
      * Breaks down the raw data from the arduino to values
      * @param locationData String that holds the raw data
      */
-    public void breakDown(String locationData) {
+    private void breakDown(String locationData) {
         this.angle = Double.parseDouble(locationData.substring(locationData.indexOf("a") + 1, locationData.indexOf("d")));
         this.disp = Double.parseDouble(locationData.substring(locationData.indexOf("d") + 1, locationData.indexOf("/")));
     }
 
     /**
-     *
+     *todo
      */
-    public void calculatePose() {
+    private void calculatePose() {
 
         double dispOld = 0, x, y;
         double dispTmp = disp - dispOld;
@@ -53,15 +51,19 @@ public class Pose extends SerialConnect implements Observer {
         if (angle == 90) {
             Y += disp;
             dispOld += dispTmp;
+            System.out.println(Y + "this is the Y");
         } else if (angle == 270) {
             Y -= disp;
             dispOld += dispTmp;
+            System.out.println(Y + "this is the Y");
         } else if (angle == 0) {
             X += disp;
             dispOld += dispTmp;
+            System.out.println(X + "this is the X");
         } else if (angle == 180) {
             X -= disp;
             dispOld += dispTmp;
+            System.out.println(X + "this is the X");
         } else {
 
             x = dispTmp * Math.cos(rdNum((Math.toRadians(angle)), 5));
@@ -75,6 +77,11 @@ public class Pose extends SerialConnect implements Observer {
         }
     }
 
+    /**
+     * todo
+     * @param o todo
+     * @param arg todo
+     */
     public void update(Observable o, Object arg) {
         String locationData = (String) arg;
         breakDown(locationData);

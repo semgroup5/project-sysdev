@@ -16,6 +16,7 @@ class BobCarSocketTimer extends Thread
     private RemoteControlListener rmt;
     // Length of timeout
     private int m_length;
+    private boolean countingDown;
 
     // Time elapsed
     private int m_elapsed;
@@ -33,6 +34,7 @@ class BobCarSocketTimer extends Thread
 
         // Set time elapsed
         m_elapsed = 0;
+        countingDown = true;
     }
 
 
@@ -50,7 +52,7 @@ class BobCarSocketTimer extends Thread
     public void run()
     {
         // Keep looping
-        for (;;)
+        while (countingDown)
         {
             /* Rate at which timer is checked */
             int m_rate = 100;
@@ -59,10 +61,7 @@ class BobCarSocketTimer extends Thread
                 //Put the timer to sleep
                 Thread.sleep(m_rate);
             }
-            catch (InterruptedException ioe)
-            {
-                continue;
-            }
+            catch (InterruptedException ignore) { }
 
             // Use 'synchronized' to prevent conflicts
             synchronized ( this )
@@ -87,5 +86,10 @@ class BobCarSocketTimer extends Thread
     {
         System.err.println ("Network timeout occurred.... restarting connection");
         rmt.closeConnections();
+    }
+
+    public void setCountingDown(boolean b)
+    {
+        countingDown = b;
     }
 }

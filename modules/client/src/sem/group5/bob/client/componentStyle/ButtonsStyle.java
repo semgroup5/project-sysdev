@@ -17,7 +17,8 @@ public class ButtonsStyle
      * Constructor
      * @param gui User GUI
      */
-    public ButtonsStyle(ControllerGUI gui) {
+    public ButtonsStyle(ControllerGUI gui)
+    {
         this.gui = gui;
     }
 
@@ -26,10 +27,13 @@ public class ButtonsStyle
      * @param button The button on GUI
      * @param action Action event from this button
      */
-    public void styleButton(Button button, String action) {
+    public void styleButton(Button button, String action)
+    {
 
-        if (button.equals(gui.map)) {
-            if (action.equals("active")) {
+        if (button.equals(gui.map))
+        {
+            if (action.equals("active"))
+            {
                 button.setStyle("-fx-background-color: linear-gradient(#ffd65b, #e68400),        " +
                         "linear-gradient(#ffef84, #f2ba44),        " +
                         "linear-gradient(#ffea6a, #efaa22),        " +
@@ -39,7 +43,8 @@ public class ButtonsStyle
                         "-fx-background-insets: 0,1,2,3,0; " +
                         "-fx-text-fill: #654b00; " +
                         "-fx-font-weight: bold;");
-            } else {
+            } else
+            {
                 button.setStyle("-fx-background-color: linear-gradient(#ffd65b, #e68400),        " +
                         "linear-gradient(#ffef84, #f2ba44),        " +
                         "linear-gradient(#ffea6a, #efaa22),        " +
@@ -50,8 +55,10 @@ public class ButtonsStyle
                         "-fx-text-fill: #654b00; " +
                         "-fx-font-weight: bold;");
             }
-        } else if (button.equals(gui.up)) {
-            if (action.equals("active")) {
+        } else if (button.equals(gui.up))
+        {
+            if (action.equals("active"))
+            {
                 button.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%), " +
                         "linear-gradient(#020b02, #3a3a3a), " +
                         "linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%), " +
@@ -61,7 +68,8 @@ public class ButtonsStyle
                         "-fx-font-family: Helvetica; " +
                         "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
                         "-fx-background-radius: 25 25 0 0;");
-            } else {
+            } else
+            {
                 button.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        " +
                         "linear-gradient(#020b02, #3a3a3a),        linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        " +
                         "linear-gradient(#f5f5f5 0%, #dbdbdb 50%, #cacaca 51%, #d7d7d7 100%); " +
@@ -71,8 +79,10 @@ public class ButtonsStyle
                         "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
                         "-fx-background-radius: 25 25 0 0;");
             }
-        } else if (button.equals(gui.down)) {
-            if (action.equals("active")) {
+        } else if (button.equals(gui.down))
+        {
+            if (action.equals("active"))
+            {
                 button.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        " +
                         "linear-gradient(#020b02, #3a3a3a),        " +
                         "linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        " +
@@ -82,7 +92,8 @@ public class ButtonsStyle
                         "-fx-font-family: Helvetica; " +
                         "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
                         "-fx-background-radius: 0 0 25 25;");
-            } else {
+            } else
+            {
                 button.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        " +
                         "linear-gradient(#020b02, #3a3a3a),        " +
                         "linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        " +
@@ -93,8 +104,10 @@ public class ButtonsStyle
                         "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
                         "-fx-background-radius: 0 0 25 25;");
             }
-        } else if (button.equals(gui.left)) {
-            if (action.equals("active")) {
+        } else if (button.equals(gui.left))
+        {
+            if (action.equals("active"))
+            {
                 button.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        " +
                         "linear-gradient(#020b02, #3a3a3a),        " +
                         "linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        " +
@@ -104,7 +117,8 @@ public class ButtonsStyle
                         "-fx-font-family: Helvetica; " +
                         "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
                         "-fx-background-radius: 25 0 0 25;");
-            } else {
+            } else
+            {
                 button.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        " +
                         "linear-gradient(#020b02, #3a3a3a),        " +
                         "linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        " +
@@ -115,8 +129,10 @@ public class ButtonsStyle
                         "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
                         "-fx-background-radius: 25 0 0 25;");
             }
-        } else if (button.equals(gui.right)) {
-            if (action.equals("active")) {
+        } else if (button.equals(gui.right))
+        {
+            if (action.equals("active"))
+            {
                 button.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        " +
                         "linear-gradient(#020b02, #3a3a3a),        " +
                         "linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        " +
@@ -126,7 +142,8 @@ public class ButtonsStyle
                         "-fx-font-family: Helvetica; " +
                         "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
                         "-fx-background-radius: 0 25 25 0;");
-            } else {
+            } else
+            {
                 button.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),        " +
                         "linear-gradient(#020b02, #3a3a3a),        " +
                         "linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),        " +
@@ -137,14 +154,17 @@ public class ButtonsStyle
                         "-fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1); " +
                         "-fx-background-radius: 0 25 25 0;");
             }
-        } else if (button.equals(gui.connect)) {
-            if (action.equals("active")) {
+        } else if (button.equals(gui.connect))
+        {
+            if (action.equals("active"))
+            {
                 button.setStyle("-fx-background-color: linear-gradient(#ff6767, #ff1a1a),        " +
                         "radial-gradient(center 50% -40%, radius 200%, #ff4d4d 45%, #ff0000 50%); " +
                         "-fx-background-insets: 0, 1; " +
                         "-fx-text-fill: #f5f5f5; " +
                         "-fx-background-radius: 25 0 0 0;");
-            } else {
+            } else
+            {
                 button.setStyle("-fx-background-color: linear-gradient(#f0ff35, #a9ff00),        " +
                         "radial-gradient(center 50% -40%, radius 200%, #b8ee36 45%, #80c800 50%); " +
                         "-fx-background-insets: 0, 1; " +
@@ -158,7 +178,8 @@ public class ButtonsStyle
      * Method to set InnerShadow effect to buttons
      * @param event which button has been clicked
      */
-    public void setFocused(Event event) {
+    public void setFocused(Event event)
+    {
         if (event.getSource().equals(gui.connect)) gui.connect.setEffect(new InnerShadow());
         if (event.getSource().equals(gui.save)) gui.save.setEffect(new InnerShadow());
         if (event.getSource().equals(gui.load)) gui.load.setEffect(new InnerShadow());
@@ -173,7 +194,8 @@ public class ButtonsStyle
      * Method to apply shadow effect to buttons
      * @param event which button the mouse have hovered over
      */
-    public void shadow(Event event) {
+    public void shadow(Event event)
+    {
         if (event.getSource().equals(gui.connect)) gui.connect.setEffect(new DropShadow());
         if (event.getSource().equals(gui.save)) gui.save.setEffect(new DropShadow());
         if (event.getSource().equals(gui.load)) gui.load.setEffect(new DropShadow());
@@ -184,7 +206,8 @@ public class ButtonsStyle
      * Method to take off shadow effect of the buttons
      * @param event which button the mouse have hovered off
      */
-    public void shadowOff(Event event) {
+    public void shadowOff(Event event)
+    {
         if (event.getSource().equals(gui.connect)) gui.connect.setEffect(null);
         if (event.getSource().equals(gui.save)) gui.save.setEffect(null);
         if (event.getSource().equals(gui.load)) gui.load.setEffect(null);

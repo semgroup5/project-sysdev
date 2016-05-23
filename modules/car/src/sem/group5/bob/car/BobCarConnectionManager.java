@@ -3,7 +3,6 @@ package sem.group5.bob.car;
 import org.openkinect.freenect.*;
 import sem.group5.bob.car.network.DiscoveryBroadcaster;
 import sem.group5.bob.car.streaming.*;
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Observable;
@@ -13,7 +12,8 @@ import java.util.Observer;
  * This class is notified when an observed object is changed and updates the object with specific methods.
  * @see java.util.Observer
  */
-public class BobCarConnectionManager extends Observable implements Observer {
+public class BobCarConnectionManager extends Observable implements Observer
+{
     private SmartCarComm scc;
     private SerialConnect serialC;
     private RemoteControlListener rcl;
@@ -32,7 +32,7 @@ public class BobCarConnectionManager extends Observable implements Observer {
      * This is called by the notifyObservers() from Observable
      * @param o observable object
      * @param arg the argument
-     * @see BobCarConnectionManager#restartFunctions()
+     * @see BobCarConnectionManager
      * @see BobCarConnectionManager#restartSerialConnection()
      */
     @Override
@@ -40,28 +40,43 @@ public class BobCarConnectionManager extends Observable implements Observer {
     {
         if (arg.equals("Connection Closed"))
         {
-            try {
+            try
+            {
                 videoStreamer.setStreaming(false);
                 depthStreamer.setStreaming(false);
                 if (depthThread.isAlive())depthThread.interrupt();
                 if (videoThread.isAlive())videoThread.interrupt();
-            } catch (IOException e) {
+            } catch (IOException e)
+            {
                 e.printStackTrace();
             }
 
+            System.out.println("Closing Stream");
             depthSocket.closeSocketStream();
             videoSocket.closeSocketStream();
 
-            System.out.println("Shutting Down Device");
-            if (context != null) {
-                if (device != null){
-                    device.stopDepth();
-                    device.stopVideo();
-                    device.close();
+            try
+            {
+                System.out.println("Shutting Down Device");
+                if (context != null)
+                {
+                    if (device != null)
+                    {
+                        device.setLed(LedStatus.BLINK_GREEN);
+                        device.setTiltAngle(0);
+                        System.out.println(1);
+                        device.stopDepth();
+                        System.out.println(2);
+                        device.stopVideo();
+                        System.out.println(3);
+                        device.close();
+                    }
+                    System.out.println(4);
+                    context.shutdown();
                 }
-                context.shutdown();
-            }
+            } catch (Exception ignore) {}
 
+            System.out.println(5);
             startFunctions();
         }
         else if (arg.equals("Serial Port Failed"))
@@ -72,19 +87,9 @@ public class BobCarConnectionManager extends Observable implements Observer {
         {
             rcl.closeConnections();
         }
-        else if (arg.equals("Kinect Failed"))
-        {
-            System.out.println("Shutting Down Device");
-            if (context != null) {
-                if (device != null){
-                    device.close();
-                }
-                context.shutdown();
-            }
-            rcl.closeConnections();
-        }
         else if (arg.equals("Kinect Ready"))
         {
+            device.setLed(LedStatus.BLINK_RED_YELLOW);
             streamVideo();
         }
     }
@@ -94,7 +99,8 @@ public class BobCarConnectionManager extends Observable implements Observer {
      * @see BobCarConnectionManager#startFunctions()
      * @see BobCarConnectionManager#startSerialConnection()
      */
-    void initialize() {
+    void initialize()
+    {
         addObserver(this);
 
         startSerialConnection();
@@ -124,28 +130,11 @@ public class BobCarConnectionManager extends Observable implements Observer {
     }
 
     /**
-     * restart functions if an error was encountered in
-     * @see BobCarConnectionManager#startFunctions()
-     */
-    private void restartFunctions()
-    {
-        startRemoteListener(scc);
-
-        setDepthStreamSocket();
-
-        setVideoStreamSocket();
-
-        startDiscoveryListener();
-
-        kinectSetting();
-
-    }
-
-    /**
      * Start a Depth Stream Socket
      * @see DepthVideoStreamSocket
      */
-    private void setDepthStreamSocket() {
+    private void setDepthStreamSocket()
+    {
         Thread t = new Thread(()->{
             depthSocket = new DepthVideoStreamSocket(50001);
         });
@@ -156,7 +145,8 @@ public class BobCarConnectionManager extends Observable implements Observer {
      * Start a Video Stream Socket
      * @see DepthVideoStreamSocket
      */
-    private void setVideoStreamSocket() {
+    private void setVideoStreamSocket()
+    {
         Thread t = new Thread(()->{
             videoSocket = new DepthVideoStreamSocket(50002);
         });
@@ -168,7 +158,8 @@ public class BobCarConnectionManager extends Observable implements Observer {
      * @see DiscoveryBroadcaster
      * @see java.util.Observer
      */
-    private void startDiscoveryListener() {
+    private void startDiscoveryListener()
+    {
         System.out.println("Starting IP Address Broadcast");
         DiscoveryBroadcaster d = new DiscoveryBroadcaster();
         rcl.addObserver(d);
@@ -185,12 +176,14 @@ public class BobCarConnectionManager extends Observable implements Observer {
     private void startRemoteListener(SmartCarComm scc)
     {
         System.out.println("Starting Remote Listener");
-        try{
+        try
+        {
             rcl = new RemoteControlListener(1234, scc);
             rcl.addObserver(this);
             Thread t = new Thread(rcl);
             t.start();
-        } catch(Exception e) {
+        } catch(Exception e)
+        {
             e.printStackTrace();
         }
 
@@ -202,24 +195,41 @@ public class BobCarConnectionManager extends Observable implements Observer {
      */
     private void kinectSetting()
     {
-        try {
-            System.out.println("Setting Up Kinect");
-            context = Freenect.createContext();
-            System.out.println("Opening Device");
-            if (context.numDevices() > 0){
+        device = null;
+        while (device == null)
+        {
+            try
+            {
+                System.out.println("Setting Up Kinect");
+                rcl.timer.reset();
+                context = Freenect.createContext();
+                System.out.println("Opening Device");
+                rcl.timer.reset();
                 device = context.openDevice(0);
-            }
-            System.out.println("Setting Depth Format");
-            device.setDepthFormat(DepthFormat.MM, Resolution.MEDIUM);
-            System.out.println("Setting Video Format");
-            device.setVideoFormat(VideoFormat.IR_10BIT, Resolution.MEDIUM);
-            setChanged();
-            notifyObservers("Kinect Ready");
+                System.out.println("Setting Depth Format");
+                rcl.timer.reset();
+                device.setDepthFormat(DepthFormat.MM, Resolution.MEDIUM);
+                System.out.println("Setting Video Format");
+                rcl.timer.reset();
+                device.setVideoFormat(VideoFormat.IR_10BIT, Resolution.MEDIUM);
+                setChanged();
+                notifyObservers("Kinect Ready");
 
-        }catch (Exception e){
-            e.printStackTrace();
-            setChanged();
-            notifyObservers("Kinect Failed");
+            }catch (Exception e)
+            {
+                try
+                {
+                    System.out.println("Kinect Resetting");
+                    System.out.println("Shutting Down Device");
+                    if (context != null) {
+                        if (device != null){
+                            device.close();
+                        }
+                        context.shutdown();
+                    }
+                    Thread.sleep(1000);
+                } catch (InterruptedException ignored) {}
+            }
         }
     }
 
@@ -230,19 +240,21 @@ public class BobCarConnectionManager extends Observable implements Observer {
      */
     private void streamVideo()
     {
-        try {
+        try
+        {
             System.out.println( "Starting Video Stream" );
 
             DepthJpegProvider depthJpegProvider = new DepthJpegProvider();
             VideoProvider videoProvider = new VideoProvider();
-            Pose poseProvider = new Pose();
+            PoseManager poseManagerProvider = new PoseManager();
 
-            if (device != null) {
+            if (device != null)
+            {
                 device.startDepth(depthJpegProvider::receiveDepth);
                 device.startVideo(videoProvider::receiveVideo);
             }
 
-            depthStreamer = new DepthStreamer(depthSocket.getSocket(), depthJpegProvider, poseProvider );
+            depthStreamer = new DepthStreamer(depthSocket.getSocket(), depthJpegProvider, poseManagerProvider);
             depthStreamer.addObserver(this);
             videoStreamer = new VideoStreamer(videoSocket.getSocket(), videoProvider);
             videoStreamer.addObserver(this);
@@ -251,9 +263,9 @@ public class BobCarConnectionManager extends Observable implements Observer {
             videoThread = new Thread(videoStreamer);
             videoThread.start();
         }
-        catch(Exception e){
+        catch(Exception e)
+        {
             System.out.println("Could Not Start Stream");
-            e.printStackTrace();
         }
     }
 
@@ -261,7 +273,8 @@ public class BobCarConnectionManager extends Observable implements Observer {
      * Initiates serial connection with the arduino
      * @see SerialConnect
      */
-    private void startSerialConnection(){
+    private void startSerialConnection()
+    {
         serialC = new SerialConnect();
         serialC.initialize();
         OutputStream out = serialC.getOutputStream();
@@ -273,7 +286,8 @@ public class BobCarConnectionManager extends Observable implements Observer {
      * Restart serial connection if the first attempt fails.
      * @see SerialConnect
      */
-    private void restartSerialConnection() {
+    private void restartSerialConnection()
+    {
         serialC.close();
         scc = null;
         startSerialConnection();

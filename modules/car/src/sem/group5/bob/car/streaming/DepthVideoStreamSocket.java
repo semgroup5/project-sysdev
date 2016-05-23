@@ -4,20 +4,24 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Observable;
+
 /**
  * This class implements client sockets that allows data read from the Kinect to be communicated to the PC side.
  * @see java.util.Observable
  */
 
-public class DepthVideoStreamSocket extends Observable {
+public class DepthVideoStreamSocket extends Observable
+{
     private Socket socket;
     private ServerSocket serverSocket;
 
     /**
      * A method that establishes a socket connection with a preset port and arguments.
      */
-    public DepthVideoStreamSocket(int port) {
-        try {
+    public DepthVideoStreamSocket(int port)
+    {
+        try
+        {
 
             System.out.println("Opening Stream socket");
 
@@ -35,9 +39,9 @@ public class DepthVideoStreamSocket extends Observable {
             System.out.println("Stream socket established");
         }
 
-        catch(Exception e) {
+        catch(Exception e)
+        {
             System.out.println("Couldn't Create Socket");
-            e.printStackTrace();
             setChanged();
             notifyObservers(this);
         }
@@ -46,16 +50,18 @@ public class DepthVideoStreamSocket extends Observable {
     /**
      * Method to close the created depth stream socket
      */
-    public void closeSocketStream() {
-        try {
-            socket.shutdownOutput();
+    public void closeSocketStream()
+    {
+        try
+        {
             serverSocket.close();
             socket.close();
             System.out.println("Stream Socket Closed");
 
             // Catch and log any errors
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException e)
+        {
+            System.out.println("Caught Exception");
         }
     }
 
@@ -63,7 +69,8 @@ public class DepthVideoStreamSocket extends Observable {
      * Method to return the value of the depth socket
      * @return socket
      */
-    public Socket getSocket() {
+    public Socket getSocket()
+    {
         return this.socket;
     }
 }

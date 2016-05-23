@@ -1,7 +1,6 @@
 package sem.group5.bob.car;
 
 import org.openkinect.freenect.TiltStatus;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -9,7 +8,6 @@ import java.io.Writer;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Observable;
-import java.util.Observer;
 
 /**
  * Class responsible for establishing a connection and handling input between a remote control (PC Client) and BobCar.
@@ -17,14 +15,15 @@ import java.util.Observer;
  * @see java.lang.Runnable
  */
 
-class RemoteControlListener extends Observable implements Runnable{
+class RemoteControlListener extends Observable implements Runnable
+{
     private InputStream in;
     private Writer out;
     private int port;
     private SmartCarComm sc;
     private Socket socket;
     private ServerSocket listener;
-    private BobCarSocketTimer timer;
+    public BobCarSocketTimer timer;
     private boolean socketOpen;
     private Thread threadHeartbeat;
 
@@ -33,7 +32,8 @@ class RemoteControlListener extends Observable implements Runnable{
      * @param port socket port for communication
      * @param sc smartCarComm to send data to arduino
      */
-    RemoteControlListener(int port, SmartCarComm sc) {
+    RemoteControlListener(int port, SmartCarComm sc)
+    {
         this.port = port;
         this.sc = sc;
     }
@@ -54,7 +54,8 @@ class RemoteControlListener extends Observable implements Runnable{
         listener = null;
 
         System.out.println("Establishing control sockets");
-        try{
+        try
+        {
             //Creates a server socket at this port
             listener = new ServerSocket(port);
 
@@ -87,39 +88,50 @@ class RemoteControlListener extends Observable implements Runnable{
 
             // sends a heartbeat to check if the connection is still alive
             sendHeartBeatToClient();
-
+            timer.reset();
             // Catch and logs errors
-        }catch(Exception e){
+        }catch(Exception e)
+        {
             e.printStackTrace();
         }
         // While the socket is open
-        while (socketOpen) {
-            try {
+        while (socketOpen)
+        {
+            try
+            {
                 String buffer = "";
 
-                while (in.available() > 0) {
+                while (in.available() > 0)
+                {
                     buffer += (char)in.read();
                 }
 
                 if(buffer.length() > 0)
                 {
                     char first = buffer.charAt(0);
-                    if (first == 's') {
+                    if (first == 's')
+                    {
                         sc.setSpeed(Integer.parseInt(buffer.substring(1,buffer.indexOf('/'))));
                         timer.reset();
-                    } else if (first == 'a') {
+                    } else if (first == 'a')
+                    {
                         sc.setAngle(Integer.parseInt(buffer.substring(1,buffer.indexOf('/'))));
                         timer.reset();
-                    } else if (first == 'r') {
+                    } else if (first == 'r')
+                    {
                         sc.setRotate(Integer.parseInt(buffer.substring(1,buffer.indexOf('/'))));
                         timer.reset();
-                    } else if (buffer.substring(0,buffer.indexOf('/')).equals("close")) {
+                    } else if (buffer.substring(0,buffer.indexOf('/')).equals("close"))
+                    {
                         closeConnections();
-                    } else if (first == 'k') {
+                    } else if (first == 'k')
+                    {
                         System.out.println("Tilting Kinect");
-                        if (BobCarConnectionManager.device != null) {
+                        if (BobCarConnectionManager.device != null)
+                        {
                             BobCarConnectionManager.device.refreshTiltState();
-                            if (BobCarConnectionManager.device.getTiltStatus() != TiltStatus.MOVING){
+                            if (BobCarConnectionManager.device.getTiltStatus() != TiltStatus.MOVING)
+                            {
                                 BobCarConnectionManager.device.setTiltAngle(Double.parseDouble(buffer.substring(1,buffer.indexOf('/'))));
                             }
                         }
@@ -128,8 +140,9 @@ class RemoteControlListener extends Observable implements Runnable{
                 }
 
                 // Catch and logs errors
-            }catch(Exception e){
-                e.printStackTrace();
+            }catch(Exception e)
+            {
+                System.out.println("Caught Exception");
             }
         }
     }
@@ -140,14 +153,17 @@ class RemoteControlListener extends Observable implements Runnable{
     private void sendHeartBeatToClient()
     {
         threadHeartbeat = new Thread(()->{
-            while (socketOpen) {
-                try {
+            while (socketOpen)
+            {
+                try
+                {
                     String beat = "A";
                     out.write(beat);
                     out.flush();
                     Thread.sleep(10*1000);
-                }catch (IOException | InterruptedException e) {
-                    e.printStackTrace();
+                }catch (IOException | InterruptedException e)
+                {
+                    break;
                 }
             }
         });
@@ -157,17 +173,21 @@ class RemoteControlListener extends Observable implements Runnable{
     /**
      * Method used by the thread to run this application simultaneously
      */
-    public void run(){
+    public void run()
+    {
         listen();
     }
 
     /**
      * Method to close the network connections and notifies an observer, notifies observer.
      */
-    void closeConnections() {
-        try {
+    void closeConnections()
+    {
+        try
+        {
             socketOpen = false;
             if (threadHeartbeat.isAlive())threadHeartbeat.interrupt();
+            timer.setCountingDown(false);
             if (timer.isAlive())timer.interrupt();
             listener.close();
             in.close();
@@ -177,7 +197,8 @@ class RemoteControlListener extends Observable implements Runnable{
             notifyObservers("Connection Closed");
 
             // Catches and logs errors
-        }catch (Exception e) {
+        }catch (Exception e)
+        {
             System.out.println();
             e.printStackTrace();
         }
