@@ -76,7 +76,7 @@ public class PoseManager extends SerialConnect implements Observer
         }
     }
 
-    /**
+    /** p
      * todo
      * @param o todo
      * @param arg todo
