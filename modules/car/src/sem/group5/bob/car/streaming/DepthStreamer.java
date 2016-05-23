@@ -1,7 +1,8 @@
 package sem.group5.bob.car.streaming;
 
 import sem.group5.bob.car.BobCarConnectionManager;
-import sem.group5.bob.car.PoseManager;
+import sem.group5.bob.car.Pose;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
@@ -13,7 +14,7 @@ import java.util.Observable;
 public class DepthStreamer extends Observable implements Runnable
 {
     private DepthJpegProvider cjp;
-    private PoseManager poseManagerProvider;
+    private Pose poseManagerProvider;
     private Socket socket;
     private boolean streaming;
     private OutputStream out;
@@ -23,7 +24,7 @@ public class DepthStreamer extends Observable implements Runnable
      * @param s socket used for communication
      * @param cjp responsible for selecting which frames will be send to the client.
      */
-    public DepthStreamer(Socket s, DepthJpegProvider cjp, PoseManager poseManagerProvider)
+    public DepthStreamer(Socket s, DepthJpegProvider cjp, Pose poseManagerProvider)
     {
         this.socket = s;
         this.cjp = cjp;
@@ -59,7 +60,7 @@ public class DepthStreamer extends Observable implements Runnable
                 System.out.println("Sending frame depth");
                 if (Thread.interrupted()) throw new InterruptedException();
                 data = cjp.getLatestJpeg();
-                //PoseManager poseProvider =  new PoseManager();     getlatestpose   needs to be implemented on the pose class
+                //Pose poseProvider =  new Pose();     getlatestpose   needs to be implemented on the pose class
                 out.write(("--BoundaryString\r\n" +
                         "Content-type: image/jpeg\r\n" +
                         "Content-Length: " + data.length + "\r\n" +

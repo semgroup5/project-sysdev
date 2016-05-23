@@ -246,7 +246,7 @@ public class BobCarConnectionManager extends Observable implements Observer
 
             DepthJpegProvider depthJpegProvider = new DepthJpegProvider();
             VideoProvider videoProvider = new VideoProvider();
-            PoseManager poseManagerProvider = new PoseManager();
+            Pose poseManagerProvider = new Pose();
 
             if (device != null)
             {
