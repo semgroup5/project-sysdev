@@ -82,6 +82,7 @@ public class LogToFile implements Observer
         this.addToList(result);
     }
 
+
     private void crtDirc() {
         if (OS.startsWith("WINDOWS")) {
             File createDirc = new File(System.getenv("HOMEDRIVE") + System.getenv("HOMEPATH")
