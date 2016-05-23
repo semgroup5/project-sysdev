@@ -1,10 +1,9 @@
-package sem.group5.bob.client;
+package sem.group5.bob.client.network;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -13,7 +12,7 @@ import java.util.logging.Logger;
  * it will detect BobCar IP and handle it with a set of methods.
  */
 
-class DiscoveryListener
+public class DiscoveryListener
 {
     private DatagramSocket socket;
     private String ip = "";
@@ -24,7 +23,7 @@ class DiscoveryListener
      * listenIP() method will scan and filter incoming connections based on the pockets received,
      * once BobCar pocket is received its IP will be accepted and stored to establish a connection..
      */
-    void listenIp() {
+    public void listenIp() {
         try {
 
             listening = true;
@@ -75,7 +74,7 @@ class DiscoveryListener
      * @return this IP
      */
 
-    String getIp() {
+    public String getIp() {
         return this.ip;
     }
 }

@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 /**
  * Main class for the client interface, loads client.fxml.
  * @see javafx.application.Application
-*/
+ */
 
 public class BobClient extends Application {
     @Override
@@ -21,18 +21,20 @@ public class BobClient extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
         primaryStage.setMaximized(true);
+        primaryStage.setMinHeight(800);
+        primaryStage.setMinWidth(1404);
         ControllerGUI controller = loader.getController();
         controller.fireConnection();
         primaryStage.setOnCloseRequest(event -> {
-                       controller.fireConnection();
-                       System.exit(0);
-                 });
+            controller.fireConnection();
+            System.exit(0);
+        });
 
     }
 
     /**
      * Main function
-     * @param args
+     * @param args main args
      */
     public static void main(String[] args) {
         launch(args);

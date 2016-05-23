@@ -1,4 +1,4 @@
-package sem.group5.bob.car;
+package sem.group5.bob.car.streaming;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -9,19 +9,19 @@ import java.util.Observable;
  * @see java.util.Observable
  */
 
-class DepthStreamSocket extends Observable {
+public class DepthVideoStreamSocket extends Observable {
     private Socket socket;
     private ServerSocket serverSocket;
 
     /**
      * A method that establishes a socket connection with a preset port and arguments.
      */
-    DepthStreamSocket() {
+    public DepthVideoStreamSocket(int port) {
         try {
 
-            System.out.println("Opening depth socket");
-            int port = 50001;
-            //Establish a new connection at port 50001
+            System.out.println("Opening Stream socket");
+
+            //Establish a new connection at port
             serverSocket = new ServerSocket(port);
 
             //enables to reuse a socket even if it was busy
@@ -30,7 +30,6 @@ class DepthStreamSocket extends Observable {
             this.socket = serverSocket.accept();
 
             // Sets true to turn off Nagle's algorithm to improve packet latency
-            //todo set to false and see if the latency change is notable compared to depth packet stability
             this.socket.setTcpNoDelay(true);
             this.socket.setReuseAddress(true);
             System.out.println("Stream socket established");
@@ -47,14 +46,12 @@ class DepthStreamSocket extends Observable {
     /**
      * Method to close the created depth stream socket
      */
-    void closeSocketDepthStream() {
+    public void closeSocketStream() {
         try {
-
-            serverSocket.close();
-
-            // Send the remaining data and terminate the outgoing connection
             socket.shutdownOutput();
+            serverSocket.close();
             socket.close();
+            System.out.println("Stream Socket Closed");
 
             // Catch and log any errors
         } catch (IOException e) {
@@ -66,7 +63,7 @@ class DepthStreamSocket extends Observable {
      * Method to return the value of the depth socket
      * @return socket
      */
-    Socket getSocket() {
+    public Socket getSocket() {
         return this.socket;
     }
 }

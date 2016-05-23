@@ -1,5 +1,7 @@
 package sem.group5.bob.client;
 
+import sem.group5.bob.client.network.DiscoveryListener;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
@@ -14,6 +16,7 @@ class ConnectionManager extends Observable
     private String carIp;
     private Socket controlSocket;
     private Socket depthSocket;
+    private Socket videoSocket;
     private Smartcar smartcar;
     private SmartcarController smartcarController;
     private boolean isConnected;
@@ -34,6 +37,9 @@ class ConnectionManager extends Observable
 
             this.depthSocket = getDepthSocket();
             System.out.println("Depth Socket Established");
+
+            this.videoSocket = getVideoSocket();
+            System.out.println("Video Socket Established");
 
             //If an IP from the car was registered, establish a connection with the IP.
             if (!(this.carIp == null)) smartcar = new Smartcar(this.controlSocket);
@@ -61,8 +67,14 @@ class ConnectionManager extends Observable
             controlSocket = null;
             System.out.println("Control Socket Closed!");
 
+            depthSocket.shutdownInput();
             if (depthSocket != null) depthSocket.close();
             depthSocket = null;
+            System.out.println("Depth Socket Closed!");
+
+            videoSocket.shutdownInput();
+            if (videoSocket != null) videoSocket.close();
+            videoSocket = null;
             System.out.println("Depth Socket Closed!");
 
             isConnected = false;
@@ -81,8 +93,8 @@ class ConnectionManager extends Observable
      */
     void reconnect()
     {
-       disconnect();
-       connect();
+        disconnect();
+        connect();
 
     }
 
@@ -124,11 +136,25 @@ class ConnectionManager extends Observable
             depthSocket = new Socket(this.carIp, 50001);
             depthSocket.setReuseAddress(true);
             depthSocket.setTcpNoDelay(true);
-            }
+        }
         return depthSocket;
     }
 
-    void DepthSocketCloser() throws IOException{
+    /**
+     * Method to get depthSocket
+     * @return depthSocket
+     * @throws IOException
+     */
+    Socket getVideoSocket() throws IOException{
+        if(videoSocket == null){
+            videoSocket = new Socket(this.carIp, 50002);
+            videoSocket.setReuseAddress(true);
+            videoSocket.setTcpNoDelay(true);
+        }
+        return videoSocket;
+    }
+
+    void DepthSocketClose() throws IOException{
         depthSocket.close();
         depthSocket = null;
     }

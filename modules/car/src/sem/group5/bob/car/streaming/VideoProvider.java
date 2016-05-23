@@ -10,23 +10,31 @@ import java.nio.ShortBuffer;
 import java.util.Arrays;
 import java.util.Observable;
 
-public class DepthJpegProvider extends Observable implements JpegProvider {
-    private static ByteBuffer latestDepthFrame;
+public class VideoProvider extends Observable implements JpegProvider {
     private static boolean processingDepth = false;
+    private static ByteBuffer latestVideoFrame;
     private int pixelWidth = 1;
     private int imageSize = 640 * 480 * pixelWidth;
     private byte[] comboFrame = new byte[imageSize];
 
-    public void receiveDepth(FrameMode frameMode, ByteBuffer byteBuffer, int i) { if (!processingDepth){ latestDepthFrame = byteBuffer;} }
+    public VideoProvider() {
+        try{
+            Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");
+            theUnsafe.setAccessible(true);
+            Unsafe unsafe = (Unsafe) theUnsafe.get(null);
+        }catch(Exception ignored){}
+    }
+
+    public void receiveVideo(FrameMode frameMode, ByteBuffer byteBuffer, int i) { if (!processingDepth){ latestVideoFrame = byteBuffer;} }
 
     public byte[] getLatestJpeg() throws Exception{
-        while(latestDepthFrame == null)
+        while(latestVideoFrame == null)
             Thread.sleep(2*1000);
 
         int depthFrameSize = (640*480*2);
         byte[] dFrame = new byte[depthFrameSize];
         processingDepth = true;
-        ShortBuffer ldf = latestDepthFrame.asShortBuffer();
+        ShortBuffer ldf = latestVideoFrame.asShortBuffer();
         ldf.rewind();
         short[] depths = new short[640*480];
         ldf.get(depths);
@@ -38,12 +46,12 @@ public class DepthJpegProvider extends Observable implements JpegProvider {
         }
 
         processingDepth = false;
-        System.out.println("Compressing Frame");
 
+        System.out.println("Compressing Frame");
         try {
             TJCompressor tjc = new TJCompressor();
 
-            tjc.setJPEGQuality(20);
+            tjc.setJPEGQuality(100);
             tjc.setSubsamp(TJ.SAMP_GRAY);
             tjc.setSourceImage(comboFrame, 640, (640*pixelWidth), 480, TJ.PF_GRAY);
 
@@ -58,6 +66,6 @@ public class DepthJpegProvider extends Observable implements JpegProvider {
             System.err.println("Exception caught, message: " + e.getMessage());
 
         }
-        return dFrame;
+        return comboFrame;
     }
 }
