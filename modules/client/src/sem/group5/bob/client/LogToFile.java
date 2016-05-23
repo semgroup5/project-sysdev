@@ -38,7 +38,7 @@ public class LogToFile implements Observer{
 
     private void logWriter() {
         crtFile(OS);
-        try{
+        try {
             PrintWriter writer = new PrintWriter(fileLocation, "UTF-8");
             for (String aLogData : logData) {
                 writer.println(aLogData);
@@ -49,6 +49,15 @@ public class LogToFile implements Observer{
             e.printStackTrace();
         }
 
+    }
+
+    public void logOdometryMessage(double x, double y, double theta)
+    {
+        String result = "ODOMETRY";
+        result += " " + x;
+        result += " " + y;
+        result += " " + theta;
+        this.addToList(result);
     }
 
     private void crtDirc() {
