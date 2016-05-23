@@ -17,14 +17,6 @@ public class DepthJpegProvider extends Observable implements JpegProvider {
     private int imageSize = 640 * 480 * pixelWidth;
     private byte[] comboFrame = new byte[imageSize];
 
-    public DepthJpegProvider() {
-        try{
-            Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");
-            theUnsafe.setAccessible(true);
-            Unsafe unsafe = (Unsafe) theUnsafe.get(null);
-        }catch(Exception ignored){}
-    }
-
     public void receiveDepth(FrameMode frameMode, ByteBuffer byteBuffer, int i) { if (!processingDepth){ latestDepthFrame = byteBuffer;} }
 
     public byte[] getLatestJpeg() throws Exception{

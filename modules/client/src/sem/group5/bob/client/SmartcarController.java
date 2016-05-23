@@ -10,8 +10,7 @@ class SmartcarController {
     private boolean rightPressed;
     private boolean driving;
     private boolean turning;
-    private boolean kinectUp;
-    private boolean kinectDown;
+    private boolean kinectTilting;
     private double tilt;
 
     /**
@@ -135,18 +134,29 @@ class SmartcarController {
     }
 
     void pressTiltKinectUp() throws IOException {
-        if (!kinectUp) {
-            smartcar.tiltkinect(30);
-            kinectDown = false;
-            kinectUp = true;
+        if (!kinectTilting)
+        {
+            if (!(tilt >= 30)) {
+                tilt += 15;
+                smartcar.tiltkinect(tilt);
+                kinectTilting = true;
+            }
         }
     }
 
     void pressTiltKinectDown() throws IOException {
-        if (!kinectDown) {
-            smartcar.tiltkinect(-30);
-            kinectUp = false;
-            kinectDown = true;
+        if (!kinectTilting)
+        {
+            if (!(tilt <= 0)) {
+                tilt -= 15;
+                smartcar.tiltkinect(tilt);
+                kinectTilting = true;
+            }
         }
+    }
+
+    void tiltKinectReleased()
+    {
+        kinectTilting = false;
     }
 }

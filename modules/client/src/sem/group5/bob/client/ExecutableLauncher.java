@@ -14,7 +14,7 @@ public class ExecutableLauncher {
             System.out.println("os is mac");
             String cmd = "open -a Safari http://tinyurl.com/6fhuqvk";
             Process p = Runtime.getRuntime().exec(cmd);
-        }else if(OS.contains("unix")){
+        }else if(OS.contains("linux")){
             System.out.println("os is linux");
             Runtime.getRuntime().exec(new String[] {"google-chrome", "http://tinyurl.com/6fhuqvk/"});
         }
