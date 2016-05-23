@@ -1,87 +1,71 @@
-package sem.group5.bob.client.mappGenerator;
+package sem.group5.bob.client;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.*;
 
-/**
- *
- */
-public class LogToFile implements Observer
-{
+public class LogToFile implements Observer{
 
     private String fileLocation;
     private String OS = System.getProperty("os.name", "").toUpperCase();
-
+    private double x, y, theta;
     private ArrayList<String> logData = new ArrayList<>() ;
+    private PrintWriter writer;
+    private int[] scanLineArray;
 
-    public static void main(String arg[]) throws IOException
-    {
-        LogToFile log = new LogToFile();
-        log.crtDirc();
-
-        for (int i = 0; i < 5; i++)
-        {
-            int j = i+1;
-            log.addToList("This is the "+j+"time(s) it writes to the log now...");
-        }
-        log.logWriter();
-    }
-
-    /**
-     * todo
-     * @param string todo
-     */
-    public void addToList(String string)
-    {
-        this.logData.add(string);
-    }
-
-    /**
-     * todo
-     */
-    public void resetList()
-    {
-        this.logData.clear();
-    }
-
-
-    /**
-     * todo
-     */
-    private void logWriter()
-    {
+    public LogToFile() throws IOException{
         crtFile(OS);
-        try
-        {
-            PrintWriter writer = new PrintWriter(fileLocation, "UTF-8");
-            for (String aLogData : logData)
-            {
-                writer.println(aLogData);
-            }
-            writer.close();
+       writer = new PrintWriter(fileLocation, "UTF-8");
+
+    }
+//    public static void main(String arg[]) throws IOException {
+//        LogToFile log = new LogToFile();
+//        log.crtDirc();
+//
+//        for (int i = 0; i < 5; i++) {
+//            int j = i+1;
+//            log.addToList("This is the "+j+"time(s) it writes to the log now...");
+//        }
+//        log.logWriter();
+//    }
+
+    public void logOdometryFormatter(double x, double y, double theta){
+
+        try{
+            writer.println(x + y + theta);
+            writer.flush();
         }
         catch (Exception e)
         {
             e.printStackTrace();
         }
+    }
+
+    public void logDepthData(int [] array){
+        this.scanLineArray = array;
+        try{
+            writer.println(/*add depth data here*/);
+            writer.flush();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
 
     }
 
-    public void logOdometryMessage(double x, double y, double theta)
-    {
-        String result = "ODOMETRY";
-        result += " " + x;
-        result += " " + y;
-        result += " " + theta;
-        this.addToList(result);
+    public void addToList(String string){
+        this.logData.add(string);
     }
 
+    public void resetList(){
+        this.logData.clear();
+    }
+
+    private void logWriter() {
+
+    }
 
     private void crtDirc() {
         if (OS.startsWith("WINDOWS")) {

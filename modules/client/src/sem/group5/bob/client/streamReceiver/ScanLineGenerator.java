@@ -1,6 +1,7 @@
 package sem.group5.bob.client.streamReceiver;
 
-import sem.group5.bob.client.mappGenerator.LogToFile;
+import sem.group5.bob.client.LogToFile;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
@@ -19,23 +20,16 @@ public class ScanLineGenerator extends Observable implements Observer
      * @param image frame captured.
      * @return distanceArray
      */
-    private static int[] generateLine(BufferedImage image)
-    {
+    private static int[] generateLine(BufferedImage image){
         int[] distanceArray = new int[640];
-        for(int i = 0; i < 640; i++)
-        {
+        for(int i = 0; i < 640; i++){
             distanceArray[i]=(new Color(image.getRGB(i, 240)).getRed())*16;
         }
         return distanceArray;
     }
 
-    /**
-     * todo
-     * @param array array
-     */
-    private void scanLineToLog(int[] array)
-    {
-        log.addToList(Arrays.toString(array));
+    private void scanLineToLog(int[] array){
+        log.logDepthData(array);
     }
 
     /**

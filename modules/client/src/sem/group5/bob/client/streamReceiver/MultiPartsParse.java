@@ -4,7 +4,9 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.Observable;
 import org.apache.commons.fileupload.MultipartStream;
-import sem.group5.bob.client.mappGenerator.LogToFile;
+import sem.group5.bob.client.LogToFile;
+
+
 
 import javax.imageio.ImageIO;
 
@@ -18,6 +20,7 @@ public class MultiPartsParse extends Observable implements Runnable
     private InputStream depthStream;
     private LogToFile CarmenLog;
     boolean nextPart;
+    double x, y, theta;
 
     /**
      * Constructor
@@ -41,8 +44,7 @@ public class MultiPartsParse extends Observable implements Runnable
      * Class that receive the JPEGs sent by the car as a multipart MJPEG stream
      * and notify any observers once an image has been received.
      */
-    public void run()
-    {
+    public void run() {
         byte[] boundary = "BoundaryString".getBytes();
         @SuppressWarnings("deprecation") MultipartStream multipartStream = new MultipartStream(depthStream, boundary);
 
@@ -54,17 +56,20 @@ public class MultiPartsParse extends Observable implements Runnable
             e.printStackTrace();
         }
 
-        try
-        {
+        try{
             nextPart = multipartStream.skipPreamble();
             while(nextPart)
             {
                 String headers = multipartStream.readHeaders();
                 String pose = headers.substring(headers.lastIndexOf("X-Robot-Pose: ")+1);
 
-                if(!(CarmenLog == null))
-                {
-                    CarmenLog.addToList(pose);
+                if(!(CarmenLog == null)){
+                    this.x = Double.parseDouble(pose.substring(pose.indexOf('X', pose.indexOf('Y')))) ;
+                    pose = pose.substring(pose.indexOf('Y' +1));
+                    this.y= Double.parseDouble(pose.substring(0, pose.indexOf('A')));
+                    pose = pose.substring(pose.indexOf('g'+1));
+                    this.theta = Double.parseDouble(pose);
+                    CarmenLog.logOdometryFormatter(x, y, theta);
                 }
 
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -80,8 +85,7 @@ public class MultiPartsParse extends Observable implements Runnable
                     notifyObservers(img);
                 } catch (IOException ignore) {}
             }
-        }catch(Exception e)
-        {
+        }catch(Exception e){
             e.printStackTrace();
             System.out.println("Caught Error Receiving Stream");
 //            setChanged();
