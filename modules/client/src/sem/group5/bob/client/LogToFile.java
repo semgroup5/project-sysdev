@@ -22,7 +22,7 @@ public class LogToFile implements Observer{
 
         for (int i = 0; i < 5; i++) {
             int j = i+1;
-            log.addToList("This is the "+j+"time(s) it writes now...");
+            log.addToList("This is the "+j+"time(s) it writes to the file now...");
         }
         log.logWriter();
     }
