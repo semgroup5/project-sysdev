@@ -15,8 +15,8 @@ import java.util.Properties;
 /**
  * Class responsible for establishing the serial port connection between the raspberry pi and the arduino.
  */
-class SerialConnect extends Observable implements SerialPortEventListener {
-
+class SerialConnect extends Observable implements SerialPortEventListener
+{
     private SerialPort serialPort;
     private int retryArduinoConnect = 0;
 
@@ -42,14 +42,16 @@ class SerialConnect extends Observable implements SerialPortEventListener {
      * Method to establish the serial connection.
      * Support for Windows, MAC and Linux.
      */
-    void initialize(){
-
+    void initialize()
+    {
         Properties properties = System.getProperties();
         String currentPorts = properties.getProperty("gnu.io.rxtx.SerialPorts", "/dev/ttyACM0");
 
-        if (currentPorts.equals("/dev/ttyACM0")) {
+        if (currentPorts.equals("/dev/ttyACM0"))
+        {
             properties.setProperty("gnu.io.rxtx.SerialPorts", "/dev/ttyACM0");
-        } else {
+        } else
+        {
             properties.setProperty("gnu.io.rxtx.SerialPorts", currentPorts + File.pathSeparator + "/dev/ttyACM0");
         }
 
@@ -59,29 +61,37 @@ class SerialConnect extends Observable implements SerialPortEventListener {
         /**
          * First, Find an instance of serial port as set in PORT_NAMES.
          */
-        while (portEnum.hasMoreElements()) {
+        while (portEnum.hasMoreElements())
+        {
             CommPortIdentifier currPortId = (CommPortIdentifier) portEnum.nextElement();
 
-            for (String portName : PORT_NAMES) {
-                if (currPortId.getName().equals(portName)) {
+            for (String portName : PORT_NAMES)
+            {
+                if (currPortId.getName().equals(portName))
+                {
                     portId = currPortId;
                     break;
                 }
             }
         }
-        if (portId == null) {
-            try{
-                if(retryArduinoConnect < 3) {
+        if (portId == null)
+        {
+            try
+            {
+                if(retryArduinoConnect < 3)
+                {
                     System.out.println("Retrying connection to Arduino..");
                     initialize();
                     retryArduinoConnect++;
                 }
-            }catch(Exception e){
+            }catch(Exception e)
+            {
                 System.out.println("Could not find COM port.");
             }
         }
 
-        try {
+        try
+        {
             System.out.println("Opening port.");
             assert portId != null;
             serialPort = (SerialPort) portId.open(this.getClass().getName(), TIME_OUT);
@@ -101,7 +111,8 @@ class SerialConnect extends Observable implements SerialPortEventListener {
             serialPort.notifyOnDataAvailable(true);
 
             //Catch and logs errors
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             System.out.println("Caught exception");
             System.err.println(e.toString());
         }
@@ -110,12 +121,13 @@ class SerialConnect extends Observable implements SerialPortEventListener {
     /**
      * Method to close the serial connection
      */
-    synchronized void close() {
-
+    synchronized void close()
+    {
         // If the port is open
-        if (serialPort != null) {
-            try {
-
+        if (serialPort != null)
+        {
+            try
+            {
                 //Close the port connections.
                 output.close();
                 input.close();
@@ -124,7 +136,8 @@ class SerialConnect extends Observable implements SerialPortEventListener {
                 System.out.println("Serial Port Closed Successfully");
 
                 //Catch and logs errors
-            }catch (Exception e) {
+            }catch (Exception e)
+            {
                 e.printStackTrace();
             }
         }
@@ -134,7 +147,8 @@ class SerialConnect extends Observable implements SerialPortEventListener {
      * Method to get BufferReader
      * @return input
      */
-    BufferedReader getBufferReader() {
+    BufferedReader getBufferReader()
+    {
         return this.input;
     }
 
@@ -142,7 +156,8 @@ class SerialConnect extends Observable implements SerialPortEventListener {
      * Method to return this OutputStream
      * @return output
      */
-    OutputStream getOutputStream() {
+    OutputStream getOutputStream()
+    {
         return this.output;
     }
 
@@ -150,16 +165,20 @@ class SerialConnect extends Observable implements SerialPortEventListener {
      * Method that will be watching over events in the serial connection port
      * @param oEvent Object event
      */
-    public synchronized void serialEvent(SerialPortEvent oEvent) {
-        if (oEvent.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
-            try {
+    public synchronized void serialEvent(SerialPortEvent oEvent)
+    {
+        if (oEvent.getEventType() == SerialPortEvent.DATA_AVAILABLE)
+        {
+            try
+            {
                 String inputLine = input.readLine();
                 System.out.println(inputLine);
                 setChanged();
                 //Sends the input line to class Pose
                 notifyObservers(inputLine);
                 //Catch and logs errors
-            } catch (Exception e) {
+            } catch (Exception e)
+            {
                 System.err.println(e.toString());
             }
         }

@@ -1,5 +1,7 @@
 package sem.group5.bob.client;
 
+import sem.group5.bob.client.bobSmartCar.Smartcar;
+import sem.group5.bob.client.bobSmartCar.SmartcarController;
 import sem.group5.bob.client.network.DiscoveryListener;
 
 import java.io.IOException;
@@ -11,7 +13,7 @@ import java.util.Observable;
  * Class responsible for the connections between the client and BobCar
  * @see java.util.Observable
  */
-class ConnectionManager extends Observable
+public class ConnectionManager extends Observable
 {
     private String carIp;
     private Socket controlSocket;
@@ -25,8 +27,10 @@ class ConnectionManager extends Observable
     /**
      * Method to connect to bobCar
      */
-    void connect() {
-        try {
+    void connect()
+    {
+        try
+        {
             DiscoveryListener d = new DiscoveryListener();
             d.listenIp();
             this.carIp = d.getIp();
@@ -47,7 +51,8 @@ class ConnectionManager extends Observable
 
             setChanged();
             notifyObservers("Connected");
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             connectionException = e;
             isConnected = false;
             setChanged();
@@ -59,8 +64,10 @@ class ConnectionManager extends Observable
      * Method to disconnect from bobCar
      * @see ClientState
      */
-    void disconnect(){
-        try{
+    void disconnect()
+    {
+        try
+        {
             smartcarController = null;
 
             if (controlSocket != null) controlSocket.close();
@@ -80,7 +87,8 @@ class ConnectionManager extends Observable
             isConnected = false;
             setChanged();
             notifyObservers("Disconnected");
-        }catch(Exception e){
+        }catch(Exception e)
+        {
             connectionException = e;
         }
 
@@ -95,7 +103,6 @@ class ConnectionManager extends Observable
     {
         disconnect();
         connect();
-
     }
 
     /**
@@ -105,7 +112,8 @@ class ConnectionManager extends Observable
      */
     SmartcarController getSmartcarController() throws IOException
     {
-        if(smartcarController == null){
+        if(smartcarController == null)
+        {
             smartcarController = new SmartcarController(this);
         }
 
@@ -117,8 +125,10 @@ class ConnectionManager extends Observable
      * @return controlSocket
      * @throws IOException
      */
-    private Socket getControlSocket() throws IOException{
-        if(controlSocket == null){
+    private Socket getControlSocket() throws IOException
+    {
+        if(controlSocket == null)
+        {
             controlSocket = new Socket(this.carIp, 1234);
             controlSocket.setReuseAddress(true);
             controlSocket.setTcpNoDelay(true);
@@ -131,8 +141,10 @@ class ConnectionManager extends Observable
      * @return depthSocket
      * @throws IOException
      */
-    Socket getDepthSocket() throws IOException{
-        if(depthSocket == null){
+    Socket getDepthSocket() throws IOException
+    {
+        if(depthSocket == null)
+        {
             depthSocket = new Socket(this.carIp, 50001);
             depthSocket.setReuseAddress(true);
             depthSocket.setTcpNoDelay(true);
@@ -145,8 +157,10 @@ class ConnectionManager extends Observable
      * @return depthSocket
      * @throws IOException
      */
-    Socket getVideoSocket() throws IOException{
-        if(videoSocket == null){
+    Socket getVideoSocket() throws IOException
+    {
+        if(videoSocket == null)
+        {
             videoSocket = new Socket(this.carIp, 50002);
             videoSocket.setReuseAddress(true);
             videoSocket.setTcpNoDelay(true);
@@ -154,7 +168,8 @@ class ConnectionManager extends Observable
         return videoSocket;
     }
 
-    void DepthSocketClose() throws IOException{
+    void DepthSocketClose() throws IOException
+    {
         depthSocket.close();
         depthSocket = null;
     }
@@ -164,8 +179,10 @@ class ConnectionManager extends Observable
      * @return smartcar
      * @throws IOException
      */
-    Smartcar getSmartCar() throws IOException{
-        if(smartcar == null || !smartcar.isConnected()) {
+    public Smartcar getSmartCar() throws IOException
+    {
+        if(smartcar == null || !smartcar.isConnected())
+        {
             smartcar = new Smartcar(this.getControlSocket());
         }
         return this.smartcar;
@@ -175,16 +192,19 @@ class ConnectionManager extends Observable
      * Method to tell if it is connected to bobCar
      * @return true if connected
      */
-    private boolean isConnected() {
+    private boolean isConnected()
+    {
         return isConnected;
     }
 
     /**
      * "HeartBeat" method, checks the status of the connection by reading a string from the buffer sent from the car
      */
-    void checkConnectionHeartBeat(){
+    void checkConnectionHeartBeat()
+    {
         Thread t = new Thread(()->{
-            try {
+            try
+            {
                 if (!getControlSocket().isClosed())
                 {
                     InputStream in = getControlSocket().getInputStream();
@@ -201,9 +221,7 @@ class ConnectionManager extends Observable
                         Thread.sleep(9*1000);
                     }
                 }
-            } catch (IOException | InterruptedException e) {
-                e.printStackTrace();
-            }
+            } catch (IOException | InterruptedException ignore) {}
         });
         t.start();
     }

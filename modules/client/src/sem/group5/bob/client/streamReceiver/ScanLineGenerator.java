@@ -1,6 +1,6 @@
 package sem.group5.bob.client.streamReceiver;
 
-import sem.group5.bob.client.LogToFile;
+import sem.group5.bob.client.mappGenerator.LogToFile;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.Observable;
@@ -10,7 +10,8 @@ import java.util.Observer;
 /**
  * Class responsible for generating data to be used on mapping.
  */
-public class ScanLineGenerator extends Observable implements Observer {
+public class ScanLineGenerator extends Observable implements Observer
+{
     private LogToFile log;
 
     /**
@@ -18,19 +19,31 @@ public class ScanLineGenerator extends Observable implements Observer {
      * @param image frame captured.
      * @return distanceArray
      */
-    private static int[] generateLine(BufferedImage image){
+    private static int[] generateLine(BufferedImage image)
+    {
         int[] distanceArray = new int[640];
-        for(int i = 1; i < 641; i++){
+        for(int i = 1; i < 641; i++)
+        {
             distanceArray[i]=image.getRGB(240, i);
         }
         return distanceArray;
     }
 
-    private void scanLineToLog(int[] array){
+    /**
+     * todo
+     * @param array array
+     */
+    private void scanLineToLog(int[] array)
+    {
         log.addToList(Arrays.toString(array));
     }
 
-    public void setLog(LogToFile log) {
+    /**
+     * todo
+     * @param log log
+     */
+    public void setLog(LogToFile log)
+    {
         this.log = log;
     }
 
@@ -41,7 +54,8 @@ public class ScanLineGenerator extends Observable implements Observer {
      * @param observable observable object
      * @param o the argument passed to the notifyObservers method
      */@Override
-    public void update(Observable observable, Object o) {
+    public void update(Observable observable, Object o)
+    {
         BufferedImage image = (BufferedImage) o;
         setChanged();
         int [] pixelLine = generateLine(image);

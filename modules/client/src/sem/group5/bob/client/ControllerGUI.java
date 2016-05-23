@@ -24,7 +24,8 @@ import java.util.logging.Logger;
  */
 
 
-public class ControllerGUI extends Observable {
+public class ControllerGUI extends Observable
+{
 
     public MenuBar menuBar;
     public MenuItem close;
@@ -32,7 +33,7 @@ public class ControllerGUI extends Observable {
     public MenuItem mSave;
     public MenuItem mLoad;
     public MenuItem about;
-    public ImageView kinectView;
+    public ImageView kinectViewDepth;
     public Button map;
     public Button up;
     public Button down;
@@ -43,7 +44,7 @@ public class ControllerGUI extends Observable {
     public Button save;
     public Button load;
     public ImageView scanLineView;
-    public ImageView kinectView1;
+    public ImageView kinectViewVideo;
     private boolean isMapping = false;
     private boolean connectClicked = false;
     public Slider speedControl;
@@ -56,7 +57,8 @@ public class ControllerGUI extends Observable {
      * Constructor constructs a object clientState and adds an observer to it.
      * @see ClientState
      */
-    public ControllerGUI() {
+    public ControllerGUI()
+    {
         clientState = new ClientState(this);
         addObserver(clientState);
         style = new ButtonsStyle(this);
@@ -65,7 +67,9 @@ public class ControllerGUI extends Observable {
     /**
      * Connect button handler
      */
-    public void connect() {
+    public void connect()
+    {
+        loadImage.setVisible(true);
         if(!clientState.isConnected() && !connectClicked)
         {
             connectClicked = true;
@@ -87,8 +91,8 @@ public class ControllerGUI extends Observable {
      * @param state A string that represents the state of the Text annotation.
 
      */
-    private void setState(String state) {
-        loadImage.setVisible(true);
+    void setState(String state)
+    {
         if(state.equals("Connected"))
         {
             style.styleButton(connect, "active");
@@ -109,9 +113,11 @@ public class ControllerGUI extends Observable {
      */
     void stream()
     {
-        try {
+        try
+        {
             clientState.startStream();
-        }catch (Exception e) {
+        }catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
@@ -120,33 +126,40 @@ public class ControllerGUI extends Observable {
      * Method to handle events like mapping, load and save.
      * @param event clicked button event
      */
-    public void handle(ActionEvent event) {
+    public void handle(ActionEvent event)
+    {
         FileChooser fileChooser;
         File file;
-        if(event.getSource().equals(map) && clientState.isConnected) {
-            if (!isMapping) {
+        if(event.getSource().equals(map) && clientState.isConnected)
+        {
+            if (!isMapping)
+            {
                 style.styleButton(map, "active");
                 isMapping = true;
                 clientState.startMap();
                 replaceStatus("Mapping Started!");
             }
-            else {
+            else
+            {
                 style.styleButton(map, "");
                 replaceStatus("Mapping stopped!");
                 isMapping = false;
                 clientState.stopMap();
             }
         }
-        else if (event.getSource().equals(load) || event.getSource().equals(mLoad)) {
+        else if (event.getSource().equals(load) || event.getSource().equals(mLoad))
+        {
             fileChooser = new FileChooser();
             fileChooser.setTitle("Open a map");
             file = fileChooser.showOpenDialog(menuBar.getScene().getWindow());
-            if (!(file == null)) {
+            if (!(file == null))
+            {
                 Image img = new Image(file.toURI().toString());
-                kinectView.setImage(img);
+                kinectViewDepth.setImage(img);
             }
         }
-        else if (event.getSource().equals(save) || event.getSource().equals(mSave)) {
+        else if (event.getSource().equals(save) || event.getSource().equals(mSave))
+        {
             fileChooser = new FileChooser();
 
             //Set extension filter
@@ -165,7 +178,8 @@ public class ControllerGUI extends Observable {
     /**
      * Method to shutdown the GUI
      */
-    public void closeApplication() {
+    public void closeApplication()
+    {
         menuBar.getScene().getWindow().hide();
     }
 
@@ -174,7 +188,8 @@ public class ControllerGUI extends Observable {
      * @param event event to cause shadow
      * @see ButtonsStyle
      */
-    public void shadow(Event event) {
+    public void shadow(Event event)
+    {
         style.shadow(event);
 
     }
@@ -183,7 +198,8 @@ public class ControllerGUI extends Observable {
      * Method to take off shadow effect of the buttons
      * @param event see @ButtonStyle
      */
-    public void shadowOff(Event event) {
+    public void shadowOff(Event event)
+    {
         style.shadowOff(event);
     }
 
@@ -192,15 +208,20 @@ public class ControllerGUI extends Observable {
      * @param event key pressed event
      * @throws IOException
      */
-    public void keyListenersPressed(KeyEvent event) throws IOException {
-        if (!clientState.isConnected && event.getCode() != KeyCode.V) {
+    public void keyListenersPressed(KeyEvent event) throws IOException
+    {
+        if (!clientState.isConnected && event.getCode() != KeyCode.V)
+        {
             replaceStatus("SmartCar is disconnected...");
-        }else if (event.getCode() == KeyCode.V) {
+        }else if (event.getCode() == KeyCode.V)
+        {
             fireConnection();
         }
-        else {
+        else
+        {
             int currentSpeed = (int)speedControl.getValue();
-            switch (event.getCode()) {
+            switch (event.getCode())
+            {
                 case W:
                     style.styleButton(up, "active");
                     clientState.getSmartcarController().pressForward(currentSpeed);
@@ -249,12 +270,16 @@ public class ControllerGUI extends Observable {
      * @param event key released event
      * @throws IOException
      */
-    public void keyListenersReleased(KeyEvent event) throws IOException {
+    public void keyListenersReleased(KeyEvent event) throws IOException
+    {
         event.consume();
-        if (!clientState.isConnected) {
+        if (!clientState.isConnected)
+        {
             replaceStatus("SmartCar is disconnected...");
-        } else {
-            switch (event.getCode()) {
+        } else
+        {
+            switch (event.getCode())
+            {
                 case W:
                     style.styleButton(up, "");
                     clientState.getSmartcarController().releaseForward();
@@ -286,7 +311,8 @@ public class ControllerGUI extends Observable {
      * @param event ButtonStyle
      * @see ButtonsStyle
      */
-    public void setFocused(Event event) {
+    public void setFocused(Event event)
+    {
         style.setFocused(event);
     }
 
@@ -296,18 +322,25 @@ public class ControllerGUI extends Observable {
      * Method to handle mouseReleased events on the smartcar control
      * @param event mouse released event
      */
-    public void mouseReleased(MouseEvent event) throws IOException {
-        if (!clientState.isConnected) {
+    public void mouseReleased(MouseEvent event) throws IOException
+    {
+        if (!clientState.isConnected)
+        {
             replaceStatus("SmartCar is disconnected...");
         }
-        else {
-            if (event.getSource() == up) {
+        else
+        {
+            if (event.getSource() == up)
+            {
                 clientState.getSmartcarController().releaseForward();
-            } else if (event.getSource() == down) {
+            } else if (event.getSource() == down)
+            {
                 clientState.getSmartcarController().releaseBack();
-            } else if (event.getSource() == left) {
+            } else if (event.getSource() == left)
+            {
                 clientState.getSmartcarController().releaseLeft();
-            } else if (event.getSource() == right) {
+            } else if (event.getSource() == right)
+            {
                 clientState.getSmartcarController().releaseRight();
             }
         }
@@ -317,19 +350,26 @@ public class ControllerGUI extends Observable {
      * Method to handle mousePressed events on the smartcar control.
      * @param event mouse pressed event
      */
-    public void mousePressed(MouseEvent event) throws IOException {
-        if (!clientState.isConnected) {
+    public void mousePressed(MouseEvent event) throws IOException
+    {
+        if (!clientState.isConnected)
+        {
             replaceStatus("SmartCar is disconnected...");
         }
-        else {
+        else
+        {
             int currentSpeed = (int)speedControl.getValue();
-            if (event.getSource() == up) {
+            if (event.getSource() == up)
+            {
                 clientState.getSmartcarController().pressForward(currentSpeed);
-            } else if (event.getSource() == down) {
+            } else if (event.getSource() == down)
+            {
                 clientState.getSmartcarController().pressBack(currentSpeed);
-            } else if (event.getSource() == left) {
+            } else if (event.getSource() == left)
+            {
                 clientState.getSmartcarController().pressLeft();
-            } else if (event.getSource() == right) {
+            } else if (event.getSource() == right)
+            {
                 clientState.getSmartcarController().pressRight();
             }
         }
@@ -340,23 +380,26 @@ public class ControllerGUI extends Observable {
      * @param content the data to be saved
      * @param file the file in which the content will be saved
      */
-    private void SaveFile(String content, File file){
-        try {
+    private void SaveFile(String content, File file)
+    {
+        try
+        {
             FileWriter fileWriter;
 
             fileWriter = new FileWriter(file);
             fileWriter.write(content);
             fileWriter.close();
-        } catch (IOException ex) {
+        } catch (IOException ex)
+        {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
         }
-
     }
 
     /**
      *TODO
      */
-    void fireConnection() {
+    void fireConnection()
+    {
         connect.fire();
     }
 
@@ -375,9 +418,7 @@ public class ControllerGUI extends Observable {
      * @param b boolean flag
      */
     void setConnectClicked(boolean b)
-
     {
         connectClicked = b;
     }
-
 }

@@ -1,8 +1,11 @@
-package sem.group5.bob.client;
+package sem.group5.bob.client.bobSmartCar;
+
+import sem.group5.bob.client.ConnectionManager;
 
 import java.io.IOException;
 
-class SmartcarController {
+public class SmartcarController
+{
     private Smartcar smartcar;
     private boolean forwardPressed;
     private boolean backPressed;
@@ -18,125 +21,163 @@ class SmartcarController {
      * @param connectionManager connectionManager
      * @throws IOException
      */
-    SmartcarController(ConnectionManager connectionManager) throws IOException {
+    public SmartcarController(ConnectionManager connectionManager) throws IOException
+    {
         smartcar = connectionManager.getSmartCar();
         driving = false;
         turning = false;
         tilt = 0;
     }
 
-    void pressForward(int speed) throws IOException{
-        if(!backPressed && !driving) {
-            try {
+    public void pressForward(int speed) throws IOException
+    {
+        if(!backPressed && !driving)
+        {
+            try
+            {
                 forwardPressed = true;
                 driving = true;
                 smartcar.setSpeed(speed);
-            } catch (IOException e) {
+            } catch (IOException e)
+            {
                 e.printStackTrace();
             }
         }
     }
 
-    void pressBack(int speed) throws IOException {
-        if(!forwardPressed && !driving) {
-            try {
+    public void pressBack(int speed) throws IOException
+    {
+        if(!forwardPressed && !driving)
+        {
+            try
+            {
                 backPressed = true;
                 driving = true;
                 smartcar.setSpeed(-speed);
-            } catch (IOException e) {
+            } catch (IOException e)
+            {
                 e.printStackTrace();
             }
         }
     }
 
-    void pressLeft() throws IOException {
-        if(!rightPressed) {
-            try {
+    public void pressLeft() throws IOException
+    {
+        if(!rightPressed)
+        {
+            try
+            {
                 leftPressed = true;
-                if ((forwardPressed || backPressed) && !turning) {
+                if ((forwardPressed || backPressed) && !turning)
+                {
                     turning = true;
                     smartcar.setAngle(-90);
-                }else if (!turning){
+                }else if (!turning)
+                {
                     turning = true;
                     smartcar.rotate(-1);
                 }
-            } catch (IOException e) {
+            } catch (IOException e)
+            {
                 e.printStackTrace();
             }
         }
     }
 
-    void pressRight() throws IOException{
-        if(!leftPressed) {
-            try {
+    public void pressRight() throws IOException
+    {
+        if(!leftPressed)
+        {
+            try
+            {
                 rightPressed = true;
-                if ((forwardPressed || backPressed) && !turning) {
+                if ((forwardPressed || backPressed) && !turning)
+                {
                     turning = true;
                     smartcar.setAngle(90);
-                } else if (!turning){
+                } else if (!turning)
+                {
                     turning = true;
                     smartcar.rotate(1);
                 }
-            } catch (IOException e) {
+            } catch (IOException e)
+            {
                 e.printStackTrace();
             }
         }
     }
 
-    void releaseForward() throws IOException{
-        try {
+    public void releaseForward() throws IOException
+    {
+        try
+        {
             forwardPressed = false;
             driving = false;
             smartcar.setSpeed(0);
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             e.printStackTrace();
         }
     }
 
-    void releaseBack() throws IOException{
-        try {
+    public void releaseBack() throws IOException
+    {
+        try
+        {
             backPressed = false;
             driving = false;
             smartcar.setSpeed(0);
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             e.printStackTrace();
         }
     }
 
-    void releaseLeft() throws IOException{
-        try {
+    public void releaseLeft() throws IOException
+    {
+        try
+        {
             leftPressed = false;
             turning = false;
 
-            if (forwardPressed || backPressed) {
+            if (forwardPressed || backPressed)
+            {
                 smartcar.setAngle(0);
             } else {
                 smartcar.rotate(0);
             }
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             e.printStackTrace();
         }
     }
 
-    void releaseRight() throws IOException{
-        try {
+    public void releaseRight() throws IOException
+    {
+        try
+        {
             rightPressed = false;
             turning = false;
 
-            if (forwardPressed || backPressed) {
+            if (forwardPressed || backPressed)
+            {
                 smartcar.setAngle(0);
-            } else {
+            } else
+            {
                 smartcar.rotate(0);
             }
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             e.printStackTrace();
         }
     }
 
-    void pressTiltKinectUp() throws IOException {
+    public void pressTiltKinectUp() throws IOException
+    {
         if (!kinectTilting)
         {
-            if (!(tilt >= 30)) {
+            if (!(tilt >= 30))
+            {
                 tilt += 15;
                 smartcar.tiltkinect(tilt);
                 kinectTilting = true;
@@ -144,10 +185,12 @@ class SmartcarController {
         }
     }
 
-    void pressTiltKinectDown() throws IOException {
+    public void pressTiltKinectDown() throws IOException
+    {
         if (!kinectTilting)
         {
-            if (!(tilt <= 0)) {
+            if (!(tilt <= 0))
+            {
                 tilt -= 15;
                 smartcar.tiltkinect(tilt);
                 kinectTilting = true;
@@ -155,7 +198,7 @@ class SmartcarController {
         }
     }
 
-    void tiltKinectReleased()
+    public void tiltKinectReleased()
     {
         kinectTilting = false;
     }
