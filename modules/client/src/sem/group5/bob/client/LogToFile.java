@@ -43,7 +43,7 @@ public class LogToFile implements Observer{
             for (String aLogData : logData) {
                 writer.println(aLogData);
             }
-            writer.close();
+            writer.flush();
         }
         catch (Exception e){
             e.printStackTrace();
