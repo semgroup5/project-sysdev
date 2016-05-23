@@ -68,8 +68,8 @@ public class Pose extends SerialConnect implements Observer {
             this.X += rdNum(x, 3);
             this.Y += rdNum(y, 3);
             dispOld += dispTmp;
-            System.out.println(X + "this is the X");
-            System.out.println(Y + "this is the Y");
+            System.out.println(X + " this is the X ");
+            System.out.println(Y + " this is the Y ");
         }
     }
 
@@ -88,7 +88,7 @@ public class Pose extends SerialConnect implements Observer {
      */
     public String getLatestPose() {
         calculatePose();
-        System.out.print("This is the data sent from getLatestPose: " + "X" + X + "Y" + Y + "Ang" + angle);
+        System.out.print(" This is the data sent from getLatestPose: " + " X" + X + " Y" + Y + " Ang" + angle);
         return "X" + X + "Y" + Y + "Ang" + angle;
     }
 }

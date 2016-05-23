@@ -24,7 +24,7 @@ public class ScanLineGenerator extends Observable implements Observer
         int[] distanceArray = new int[640];
         for(int i = 0; i < 640; i++)
         {
-            distanceArray[i]=(new Color(image.getRGB(i+1, 240)).getRed())*16;
+            distanceArray[i]=(new Color(image.getRGB(i, 240)).getRed())*16;
         }
         return distanceArray;
     }
