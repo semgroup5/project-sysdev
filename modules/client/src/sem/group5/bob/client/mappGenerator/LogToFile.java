@@ -89,7 +89,7 @@ public class LogToFile implements Observer
             createDirc.mkdirs();
         } else if (OS.startsWith("LINUX"))
         {
-            File createDirc = new File("/home/BobCar");
+            File createDirc = new File(System.getProperty("user.home")+File.separator+ "BobCar");
             createDirc.mkdirs();
         } else if (OS.startsWith("MAC"))
         {
@@ -120,7 +120,8 @@ public class LogToFile implements Observer
         }
         else if(OS.startsWith("LINUX"))
         {
-            this.fileLocation = "/home/BobCar/"+ fileName;
+            this.fileLocation = System.getProperty("user.home")+File.separator+
+                    "BobCar"+ File.separator+ fileName;
         }
         else if(OS.startsWith("MAC"))
         {
