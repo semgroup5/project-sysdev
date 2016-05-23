@@ -51,15 +51,19 @@ public class Pose extends SerialConnect implements Observer {
         if (angle == 90) {
             Y += disp;
             dispOld += dispTmp;
+            System.out.println(Y + "this is the Y");
         } else if (angle == 270) {
             Y -= disp;
             dispOld += dispTmp;
+            System.out.println(Y + "this is the Y");
         } else if (angle == 0) {
             X += disp;
             dispOld += dispTmp;
+            System.out.println(X + "this is the X");
         } else if (angle == 180) {
             X -= disp;
             dispOld += dispTmp;
+            System.out.println(X + "this is the X");
         } else {
 
             x = dispTmp * Math.cos(rdNum((Math.toRadians(angle)), 5));

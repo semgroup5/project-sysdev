@@ -11,6 +11,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import sem.group5.bob.client.componentStyle.ButtonsStyle;
+import sem.group5.bob.client.streamReceiver.MultiPartsParse;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -51,7 +53,7 @@ public class ControllerGUI extends Observable
     public ImageView loadImage;
     private ClientState clientState;
     private ButtonsStyle style;
-    private Text infoText;
+    private TextField poseInfo;
 
     /**
      * Constructor constructs a object clientState and adds an observer to it.
@@ -375,6 +377,13 @@ public class ControllerGUI extends Observable
         }
     }
 
+    /*
+   / public void showInfo(){
+
+        MultiPartsParse pose = new MultiPartsParse();
+        String pose1 = pose.getPose
+    }
+*/
     /**
      * Method to save maps in the computer's directory.
      * @param content the data to be saved
