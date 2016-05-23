@@ -51,7 +51,7 @@ public class LogToFile implements Observer
             {
                 writer.println(aLogData);
             }
-            writer.close();
+            writer.flush();
         }
         catch (Exception e)
         {
