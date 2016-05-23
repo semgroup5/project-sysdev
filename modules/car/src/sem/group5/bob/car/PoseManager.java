@@ -8,7 +8,7 @@ import java.util.Observer;
  * Updated by Geoffrey, Axel and Emanuel at 16-05-06
  */
 
-public class Pose extends SerialConnect implements Observer {
+public class PoseManager extends SerialConnect implements Observer {
 
 
     double dispTmp = 0, angle, disp;
