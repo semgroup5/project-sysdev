@@ -42,10 +42,14 @@ public class ScanLineGenerator extends Observable implements Observer {
      * @param o the argument passed to the notifyObservers method
      */@Override
     public void update(Observable observable, Object o) {
-        BufferedImage image = (BufferedImage) o;
-        setChanged();
-        int [] pixelLine = generateLine(image);
-        notifyObservers(pixelLine);
-        scanLineToLog(pixelLine);
+        if(o instanceof BufferedImage ) {
+            BufferedImage image = (BufferedImage) o;
+            setChanged();
+            int[] pixelLine = generateLine(image);
+            notifyObservers(pixelLine);
+            scanLineToLog(pixelLine);
+        } else {
+            System.out.println("Did not receive a valid image at Scan line");
+        }
     }
 }
