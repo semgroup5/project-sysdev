@@ -4,10 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.Observable;
 import org.apache.commons.fileupload.MultipartStream;
-import sem.group5.bob.client.LogToFile;
-
-
-
+import sem.group5.bob.client.mappGenerator.LogToFile;
 import javax.imageio.ImageIO;
 
 /**
