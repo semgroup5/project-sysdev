@@ -3,7 +3,6 @@ package sem.group5.bob.client.streamReceiver;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import sem.group5.bob.client.streamReceiver.MultiPartsParse;
 
 import java.awt.image.BufferedImage;
 import java.util.Observable;
@@ -33,6 +32,9 @@ public class VideoStreamHandler implements Observer
         provider.addObserver(this);
 
     }
+
+
+
     public void startStreaming()
     {
         thread = new Thread(provider);

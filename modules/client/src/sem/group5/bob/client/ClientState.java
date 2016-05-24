@@ -6,6 +6,7 @@ import sem.group5.bob.client.bobSmartCar.SmartcarController;
 import sem.group5.bob.client.mappGenerator.LogToFile;
 import sem.group5.bob.client.streamReceiver.MultiPartsParse;
 import sem.group5.bob.client.streamReceiver.ScanLineGenerator;
+import sem.group5.bob.client.streamReceiver.TextPoseHandler;
 import sem.group5.bob.client.streamReceiver.VideoStreamHandler;
 import java.io.IOException;
 import java.util.Observable;
@@ -25,6 +26,7 @@ class ClientState implements Observer
     private ScanLineGenerator scanLineGenerator;
     private VideoStreamHandler videoHandlerDepth;
     boolean isConnected;
+    private TextPoseHandler poseHandler;
 
     /**
      * Constructor
@@ -83,6 +85,7 @@ class ClientState implements Observer
             parseDepth.addObserver(scanLineGenerator);
             videoHandlerDepth = new VideoStreamHandler(gui.kinectViewDepth, parseDepth);
             videoHandlerDepth.startStreaming();
+            poseHandler = new TextPoseHandler(gui.poseInfo, parseDepth);
             LogToFile CarmenLog = new LogToFile();
             parseDepth.setLog(CarmenLog);
             scanLineGenerator.setLog(CarmenLog);
@@ -92,6 +95,7 @@ class ClientState implements Observer
             gui.replaceStatus("Stream connection failed.\r\n" + "Reason: " + e.getMessage());
         }
     }
+
 
     /**
      * Method to stop mapping from the client side

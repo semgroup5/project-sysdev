@@ -46,7 +46,19 @@
                        <DropShadow color="#252424" offsetX="3.0" radius="25.55" spread="0.51" width="83.2" />
                    </effect>
                    <center>
-                       <ImageView fx:id="kinectViewDepth" fitHeight="480.0" fitWidth="640.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;" BorderPane.alignment="CENTER" />
+                  <StackPane>
+                     <children>
+                             <ImageView fx:id="kinectViewDepth" fitHeight="480.0" fitWidth="640.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;" BorderPane.alignment="CENTER" />
+                        <TextField fx:id="poseInfo" editable="false" opacity="0.13">
+                           <StackPane.margin>
+                              <Insets top="430.0" />
+                           </StackPane.margin>
+                           <font>
+                              <Font name="Bookman Old Style" size="15.0" />
+                           </font>
+                        </TextField>
+                     </children>
+                  </StackPane>
                    </center>
                </BorderPane>
            </children>
