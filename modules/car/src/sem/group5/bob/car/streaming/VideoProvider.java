@@ -71,6 +71,12 @@ public class VideoProvider extends Observable implements JpegProvider
 
         processingDepth = false;
 
+        int pixel = 0;
+        for (int i = 0; i < 600; i++){
+            pixel = (int )latestVideoFrame.get(i);
+            System.out.println("pixel =" + pixel);
+        }
+
         System.out.println("Compressing Frame");
         try
         {

@@ -83,6 +83,10 @@ public class MultiPartsParse extends Observable implements Runnable
                 try
                 {
                     img = ImageIO.read(in);
+                    int x = 480;
+                    for (int i = 0; i >= x; i++){
+                        if (!(i >x))img.setRGB(i, i, 22);
+                    }
                     nextPart = multipartStream.readBoundary();
                     setChanged();
                     notifyObservers(img);

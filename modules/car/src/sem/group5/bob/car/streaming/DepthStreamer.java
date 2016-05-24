@@ -2,7 +2,6 @@ package sem.group5.bob.car.streaming;
 
 import sem.group5.bob.car.BobCarConnectionManager;
 import sem.group5.bob.car.PoseManager;
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
