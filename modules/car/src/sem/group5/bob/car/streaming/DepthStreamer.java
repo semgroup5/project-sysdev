@@ -1,7 +1,7 @@
 package sem.group5.bob.car.streaming;
 
 import sem.group5.bob.car.BobCarConnectionManager;
-import sem.group5.bob.car.Pose;
+import sem.group5.bob.car.PoseManager;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -14,7 +14,7 @@ import java.util.Observable;
 public class DepthStreamer extends Observable implements Runnable
 {
     private DepthJpegProvider cjp;
-    private Pose poseManagerProvider;
+    private PoseManager PoseManagerManagerProvider;
     private Socket socket;
     private boolean streaming;
     private OutputStream out;
@@ -24,11 +24,11 @@ public class DepthStreamer extends Observable implements Runnable
      * @param s socket used for communication
      * @param cjp responsible for selecting which frames will be send to the client.
      */
-    public DepthStreamer(Socket s, DepthJpegProvider cjp, Pose poseManagerProvider)
+    public DepthStreamer(Socket s, DepthJpegProvider cjp, PoseManager PoseManagerManagerProvider)
     {
         this.socket = s;
         this.cjp = cjp;
-        this.poseManagerProvider = poseManagerProvider;
+        this.PoseManagerManagerProvider = PoseManagerManagerProvider;
         this.streaming = true;
     }
 
@@ -60,11 +60,11 @@ public class DepthStreamer extends Observable implements Runnable
                 System.out.println("Sending frame depth");
                 if (Thread.interrupted()) throw new InterruptedException();
                 data = cjp.getLatestJpeg();
-                //Pose poseProvider =  new Pose();     getlatestpose   needs to be implemented on the pose class
+                //PoseManager poseProvider =  new PoseManager();     getlatestpose   needs to be implemented on the pose class
                 out.write(("--BoundaryString\r\n" +
                         "Content-type: image/jpeg\r\n" +
                         "Content-Length: " + data.length + "\r\n" +
-                        "X-Robot-Pose: " + poseManagerProvider.getLatestPose() + "\r\n\r\n").getBytes());
+                        "X-Robot-PoseManager: " + PoseManagerManagerProvider.getLatestPose() + "\r\n\r\n").getBytes());
                 out.write(data);
                 if (Thread.interrupted()) throw new InterruptedException();
                 out.write("\r\n\r\n".getBytes());

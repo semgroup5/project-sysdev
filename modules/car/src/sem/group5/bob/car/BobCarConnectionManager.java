@@ -246,7 +246,7 @@ public class BobCarConnectionManager extends Observable implements Observer
 
             DepthJpegProvider depthJpegProvider = new DepthJpegProvider();
             VideoProvider videoProvider = new VideoProvider();
-            Pose poseManagerProvider = new Pose();
+            PoseManager PoseManagerManagerProvider = new PoseManager();
 
             if (device != null)
             {
@@ -254,7 +254,7 @@ public class BobCarConnectionManager extends Observable implements Observer
                 device.startVideo(videoProvider::receiveVideo);
             }
 
-            depthStreamer = new DepthStreamer(depthSocket.getSocket(), depthJpegProvider, poseManagerProvider);
+            depthStreamer = new DepthStreamer(depthSocket.getSocket(), depthJpegProvider, PoseManagerManagerProvider);
             depthStreamer.addObserver(this);
             videoStreamer = new VideoStreamer(videoSocket.getSocket(), videoProvider);
             videoStreamer.addObserver(this);
