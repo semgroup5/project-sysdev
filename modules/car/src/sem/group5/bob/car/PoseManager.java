@@ -6,8 +6,7 @@ import java.util.Observer;
 /**
  * todo
  */
-public class PoseManager extends SerialConnect implements Observer
-{
+public class PoseManager extends SerialConnect implements Observer {
     double dispTmp = 0, angle, disp;
     private double X = 0, Y = 0;
 
@@ -16,7 +15,7 @@ public class PoseManager extends SerialConnect implements Observer
      *
      * @param a todo
      * @param r todo
-     * @return  todo
+     * @return todo
      */
     private static double rdNum(Double a, int r) {
         if (r < 0) throw new IllegalArgumentException();
@@ -29,15 +28,17 @@ public class PoseManager extends SerialConnect implements Observer
 
     /**
      * Breaks down the raw data from the arduino to values
+     *
      * @param locationData String that holds the raw data
      */
-    private void breakDown(String locationData) {
-        this.angle = Double.parseDouble(locationData.substring(locationData.indexOf("a") + 1, locationData.indexOf("d")));
-        this.disp = Double.parseDouble(locationData.substring(locationData.indexOf("d") + 1, locationData.indexOf("/")));
+    public void breakDown(String locationData) {
+        this.angle = Double.parseDouble(locationData.substring(locationData.indexOf("d") + 1, locationData.indexOf("a")));
+        this.disp = Double.parseDouble(locationData.substring(locationData.indexOf("a") + 1, locationData.indexOf("/")));
+        calculatePose();
     }
 
     /**
-     *todo
+     * todo
      */
     private void calculatePose() {
 
@@ -76,21 +77,23 @@ public class PoseManager extends SerialConnect implements Observer
         }
     }
 
-    /** p
+    /**
+     * p
      * todo
-     * @param o todo
+     *
+     * @param o   todo
      * @param arg todo
      */
     public void update(Observable o, Object arg) {
         String locationData = (String) arg;
         breakDown(locationData);
+        System.out.println(locationData);
     }
 
     /**
      * @return A string with X, Y and angle will be returned with the format of "X"+ X + "Y" + Y + "Ang" + angle.
      */
     public String getLatestPose() {
-        calculatePose();
         System.out.print("This is the data sent from getLatestPose: " + "X" + X + "Y" + Y + "Ang" + angle);
         return "X" + X + "Y" + Y + "Ang" + angle;
     }

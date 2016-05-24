@@ -65,6 +65,7 @@ public class DepthStreamer extends Observable implements Runnable
                         "Content-Length: " + data.length + "\r\n" +
                         "X-Robot-PoseManager: " + PoseManagerManagerProvider.getLatestPose() + "\r\n\r\n").getBytes());
                 out.write(data);
+                System.out.print(poseManagerProvider.getLatestPose());
                 if (Thread.interrupted()) throw new InterruptedException();
                 out.write("\r\n\r\n".getBytes());
                 out.flush();

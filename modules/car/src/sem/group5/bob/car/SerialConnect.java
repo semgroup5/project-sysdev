@@ -4,10 +4,8 @@ import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+
+import java.io.*;
 import java.util.Enumeration;
 import java.util.Observable;
 import java.util.Properties;
@@ -81,8 +79,8 @@ class SerialConnect extends Observable implements SerialPortEventListener
                 if(retryArduinoConnect < 3)
                 {
                     System.out.println("Retrying connection to Arduino..");
-                    initialize();
                     retryArduinoConnect++;
+                    initialize();
                 }
             }catch(Exception e)
             {
@@ -165,17 +163,18 @@ class SerialConnect extends Observable implements SerialPortEventListener
      * Method that will be watching over events in the serial connection port
      * @param oEvent Object event
      */
+
     public synchronized void serialEvent(SerialPortEvent oEvent)
     {
         if (oEvent.getEventType() == SerialPortEvent.DATA_AVAILABLE)
         {
             try
             {
-                String inputLine = input.readLine();
-                System.out.println(inputLine);
+                PoseManager pose = new PoseManager();
+                this.addObserver(pose);
                 setChanged();
                 //Sends the input line to class PoseManager
-                notifyObservers(inputLine);
+                notifyObservers(input.readLine());
                 //Catch and logs errors
             } catch (Exception e)
             {
