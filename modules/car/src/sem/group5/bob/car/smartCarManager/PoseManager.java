@@ -11,7 +11,7 @@ import java.util.Observer;
 public class PoseManager extends SerialConnect implements Observer {
     private double angle;
     private double disp;
-    private double dispOld = 0;
+    private double dispOld = 0 , angOld =0;
     private double X = 0, Y = 0;
 
     /**
@@ -45,41 +45,44 @@ public class PoseManager extends SerialConnect implements Observer {
      * todo
      */
     private void calculatePose() {
-
+        double angTmp;
         double x;
         double y;
         double dispTmp = disp - dispOld;
-
+        angTmp = angle-this.angOld;
         if (Math.abs(angle) >= 360) {
             this.angle = angle % 360;
         }
-        if (angle == 90) {
-            Y += disp;
-            dispOld += dispTmp;
-            System.out.println(Y + "this is the Y");
-        } else if (angle == 270) {
-            Y -= disp;
-            dispOld += dispTmp;
-            System.out.println(Y + "this is the Y");
-        } else if (angle == 0) {
-            X += disp;
-            dispOld += dispTmp;
-            System.out.println(X + "this is the X");
-        } else if (angle == 180) {
-            X -= disp;
-            dispOld += dispTmp;
-            System.out.println(X + "this is the X");
-        } else {
+        if(angTmp !=0 || dispTmp !=0) {
+            if (angle == 90) {
+                X += disp;
+                dispOld += dispTmp;
+                System.out.println("this is the Y" + Y);
+            } else if (angle == 270) {
+                X -= disp;
+                dispOld += dispTmp;
+                System.out.println("this is the Y" + Y);
+            } else if (angle == 0) {
+                Y += disp;
+                dispOld += dispTmp;
+                System.out.println("this is the X" + X);
+            } else if (angle == 180) {
+                Y -= disp;
+                dispOld += dispTmp;
+                System.out.println("this is the X" + X);
+            } else if(angle != 90 && angle != 180 && angle != 270 && angle != 0) {
 
-            x = dispTmp * Math.cos(rdNum((Math.toRadians(angle)), 5));
-            y = dispTmp * Math.sin(rdNum((Math.toRadians(angle)), 5));
+                y = dispTmp * Math.cos(rdNum((Math.toRadians(angle)), 5));
+                x = dispTmp * Math.sin(rdNum((Math.toRadians(angle)), 5));
 
-            this.X += rdNum(x, 3);
-            this.Y += rdNum(y, 3);
-            dispOld += dispTmp;
-            System.out.println(X + "this is the X");
-            System.out.println(Y + "this is the Y");
+                this.X += rdNum(x, 0);
+                this.Y += rdNum(y, 0);
+                dispOld += dispTmp;
+                System.out.println(X + "this is the X");
+                System.out.println(Y + "this is the Y");
+            }
         }
+
     }
 
     /**
