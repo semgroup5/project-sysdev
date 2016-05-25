@@ -13,7 +13,7 @@ import java.util.Observable;
 public class DepthStreamer extends Observable implements Runnable
 {
     private DepthJpegProvider cjp;
-    private PoseManager PoseManagerManagerProvider;
+    private PoseManager poseManagerManagerProvider;
     private Socket socket;
     private boolean streaming;
     private OutputStream out;
@@ -27,7 +27,7 @@ public class DepthStreamer extends Observable implements Runnable
     {
         this.socket = s;
         this.cjp = cjp;
-        this.PoseManagerManagerProvider = PoseManagerManagerProvider;
+        this.poseManagerManagerProvider = PoseManagerManagerProvider;
         this.streaming = true;
     }
 
@@ -63,9 +63,9 @@ public class DepthStreamer extends Observable implements Runnable
                 out.write(("--BoundaryString\r\n" +
                         "Content-type: image/jpeg\r\n" +
                         "Content-Length: " + data.length + "\r\n" +
-                        "X-Robot-PoseManager: " + PoseManagerManagerProvider.getLatestPose() + "\r\n\r\n").getBytes());
+                        "X-Robot-Pose: " + poseManagerManagerProvider.getLatestPose() + "\r\n\r\n").getBytes());
                 out.write(data);
-                System.out.print(poseManagerProvider.getLatestPose());
+                System.out.print(poseManagerManagerProvider.getLatestPose());
                 if (Thread.interrupted()) throw new InterruptedException();
                 out.write("\r\n\r\n".getBytes());
                 out.flush();
@@ -88,6 +88,11 @@ public class DepthStreamer extends Observable implements Runnable
         this.stream();
     }
 
+    /**
+     * todo
+     * @param b b
+     * @throws IOException
+     */
     public void setStreaming(boolean b) throws IOException
     {
         this.streaming = b;
