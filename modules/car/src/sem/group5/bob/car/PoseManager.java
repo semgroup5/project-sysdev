@@ -7,7 +7,8 @@ import java.util.Observer;
  * todo
  */
 public class PoseManager extends SerialConnect implements Observer {
-    double dispTmp = 0, angle, disp;
+    private double angle;
+    private double disp;
     private double X = 0, Y = 0;
 
     /**
@@ -31,7 +32,7 @@ public class PoseManager extends SerialConnect implements Observer {
      *
      * @param locationData String that holds the raw data
      */
-    public void breakDown(String locationData) {
+    private void breakDown(String locationData) {
         this.angle = Double.parseDouble(locationData.substring(locationData.indexOf("d") + 1, locationData.indexOf("a")));
         this.disp = Double.parseDouble(locationData.substring(locationData.indexOf("a") + 1, locationData.indexOf("/")));
         calculatePose();
@@ -50,19 +51,15 @@ public class PoseManager extends SerialConnect implements Observer {
         }
         if (angle == 90) {
             Y += disp;
-            dispOld += dispTmp;
             System.out.println(Y + "this is the Y");
         } else if (angle == 270) {
             Y -= disp;
-            dispOld += dispTmp;
             System.out.println(Y + "this is the Y");
         } else if (angle == 0) {
             X += disp;
-            dispOld += dispTmp;
             System.out.println(X + "this is the X");
         } else if (angle == 180) {
             X -= disp;
-            dispOld += dispTmp;
             System.out.println(X + "this is the X");
         } else {
 
@@ -71,7 +68,6 @@ public class PoseManager extends SerialConnect implements Observer {
 
             this.X += rdNum(x, 3);
             this.Y += rdNum(y, 3);
-            dispOld += dispTmp;
             System.out.println(X + "this is the X");
             System.out.println(Y + "this is the Y");
         }
