@@ -32,20 +32,36 @@ public class FileLogger implements Observer{
 
         // (old) # FLASER num_readings [range_readings] x y theta odom_x odom_y odom_theta
 
-        int num_readings        = telemetry.getScanLine().getDistanceCount();
-        int[] range_readings    = telemetry.getScanLine().distances;
-        double x                = telemetry.pose.getX();
-        double y                = telemetry.pose.getY();
-        double theta            = telemetry.pose.getTheta();
-        double odom_x           = telemetry.pose.getX();
-        double odom_y           = telemetry.pose.getY();
-        double odom_theta       = telemetry.pose.getTheta();
+//        # ROBOTLASER1 laser_type start_angle field_of_view angular_resolution
+//        #   maximum_range accuracy remission_mode
+//        #   num_readings [range_readings] laser_pose_x laser_pose_y laser_pose_theta
+//        #   robot_pose_x robot_pose_y robot_pose_theta
+//        #   laser_tv laser_rv forward_safety_dist side_safty_dist
 
-        result = "FLASER " + num_readings + " ";
+
+        int laser_type              = 99;
+        double start_angle          = telemetry.getPose().getTheta() - 27.5;
+        double field_of_view        = 55;
+        double angular_resolution   = 0.0859375;
+        int maximum_range           = 4096;
+        int accuracy                = 50;
+        int remission_mode          = 1;
+        int num_readings            = telemetry.getScanLine().getDistanceCount();
+        int[] range_readings        = telemetry.getScanLine().distances;
+        double laser_x              = telemetry.pose.getX();
+        double laser_y              = telemetry.pose.getY();
+        double laser_theta          = telemetry.pose.getTheta();
+        double odom_x               = telemetry.pose.getX();
+        double odom_y               = telemetry.pose.getY();
+        double odom_theta           = telemetry.pose.getTheta();
+
+        result = "ROBOTLASER1 " + laser_type + " " + start_angle + " " + field_of_view + " " + angular_resolution + " ";
+        result += maximum_range + " " + accuracy + " " + remission_mode + " " + num_readings +" ";
+
         for(int range_reading : range_readings) {
             result += range_reading + " ";
         }
-        result += x + " " + y + " " + theta + " " + odom_x + " " + odom_y + " " + odom_theta;
+        result += laser_x + " " + laser_y + " " + laser_theta + " " + odom_x + " " + odom_y + " " + odom_theta;
 
         try{
             writer.println(result);

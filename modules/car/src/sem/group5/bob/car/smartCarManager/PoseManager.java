@@ -79,8 +79,8 @@ public class PoseManager implements Observer {
                 y = dispTmp * Math.cos(rdNum((Math.toRadians(angle)), 5));
                 x = dispTmp * Math.sin(rdNum((Math.toRadians(angle)), 5));
 
-                this.X += rdNum(x, 0);
-                this.Y += rdNum(y, 0);
+                this.X += rdNum(x, 2);
+                this.Y += rdNum(y, 2);
                 dispOld += dispTmp;
                 System.out.println(X + "this is the X");
                 System.out.println(Y + "this is the Y");
