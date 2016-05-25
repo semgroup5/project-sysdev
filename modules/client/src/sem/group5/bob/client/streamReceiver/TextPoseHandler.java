@@ -12,8 +12,7 @@ import java.util.Observer;
 
 
 public class TextPoseHandler implements Observer {
-    public MultiPartsParse provider;
-
+    private MultiPartsParse provider;
     private TextField poseInfo;
     public String pose;
 

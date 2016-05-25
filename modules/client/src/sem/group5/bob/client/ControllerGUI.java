@@ -9,6 +9,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
+import sem.group5.bob.client.clientManager.ClientState;
 import sem.group5.bob.client.componentStyle.ButtonsStyle;
 
 import java.io.File;
@@ -96,7 +97,7 @@ public class ControllerGUI extends Observable
      * @param state A string that represents the state of the Text annotation.
 
      */
-    void setState(String state)
+    public void setState(String state)
     {
         if(state.equals("Connected"))
         {
@@ -116,7 +117,7 @@ public class ControllerGUI extends Observable
     /**
      * Method to start streaming on the client side
      */
-    void stream()
+    public void stream()
     {
         try
         {
@@ -414,7 +415,7 @@ public class ControllerGUI extends Observable
      * @param s String to be written in the text field
      * @see ControllerGUI#setState(String)
      */
-    void replaceStatus(String s)
+    public void replaceStatus(String s)
     {
         textFeedback.clear();
         textFeedback.setText(s);
@@ -423,7 +424,7 @@ public class ControllerGUI extends Observable
     /**TODO
      * @param b boolean flag
      */
-    void setConnectClicked(boolean b)
+    public void setConnectClicked(boolean b)
     {
         connectClicked = b;
     }

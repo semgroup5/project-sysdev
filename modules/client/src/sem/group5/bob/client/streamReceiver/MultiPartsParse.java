@@ -22,7 +22,7 @@ public class MultiPartsParse extends Observable implements Runnable
     private LogToFile CarmenLog;
     boolean nextPart;
     double x, y, theta;
-    public String pose;
+    private String pose;
     ControllerGUI gui;
 
     /**
@@ -64,7 +64,7 @@ public class MultiPartsParse extends Observable implements Runnable
             while(nextPart)
             {
                 String headers = multipartStream.readHeaders();
-                String pose = headers.substring(headers.lastIndexOf("X-Robot-Pose: ")+1);
+                this.pose = headers.substring(headers.lastIndexOf("X-Robot-Pose: ")+1);
 
                 if(!(CarmenLog == null)){
                     this.x = Double.parseDouble(pose.substring(pose.indexOf('X', pose.indexOf('Y')))) ;
@@ -100,7 +100,7 @@ public class MultiPartsParse extends Observable implements Runnable
         }
 
     }
-public String getPose(){
+String getPose(){
     return this.pose;
 }
 
