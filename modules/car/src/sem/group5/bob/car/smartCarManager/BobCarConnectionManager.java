@@ -252,6 +252,7 @@ public class BobCarConnectionManager extends Observable implements Observer
             DepthJpegProvider depthJpegProvider = new DepthJpegProvider();
             VideoProvider videoProvider = new VideoProvider();
             poseManager = new PoseManager();
+            serialC.setPose(poseManager);
 
             if (device != null)
             {
@@ -280,7 +281,7 @@ public class BobCarConnectionManager extends Observable implements Observer
      */
     private void startSerialConnection()
     {
-        serialC = new SerialConnect(poseManager);
+        serialC = new SerialConnect();
         serialC.initialize();
         OutputStream out = serialC.getOutputStream();
         scc = new SmartCarComm(out);
