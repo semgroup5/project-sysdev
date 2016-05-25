@@ -45,7 +45,8 @@ public class PoseManager extends SerialConnect implements Observer {
      */
     private void calculatePose() {
 
-        double x, y;
+        double x;
+        double y;
         double dispTmp = disp - dispOld;
 
         if (Math.abs(angle) >= 360) {
