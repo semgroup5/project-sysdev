@@ -30,7 +30,7 @@ public class PoseManager extends SerialConnect implements Observer {
      *
      * @param locationData String that holds the raw data
      */
-    public void breakDown(String locationData) {
+    private void breakDown(String locationData) {
         this.angle = Double.parseDouble(locationData.substring(locationData.indexOf("d") + 1, locationData.indexOf("a")));
         this.disp = Double.parseDouble(locationData.substring(locationData.indexOf("a") + 1, locationData.indexOf("/")));
         calculatePose();

@@ -13,8 +13,6 @@ public class DiscoveryBroadcaster implements Runnable, Observer {
     private DatagramSocket socket;
     private boolean broadcasting;
 
-
-
     /**
      * Method to start the broadcasting
      */
