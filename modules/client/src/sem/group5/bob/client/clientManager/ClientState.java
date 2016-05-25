@@ -24,10 +24,8 @@ public class ClientState implements Observer
     private Smartcar smartcar;
     private ConnectionManager connectionManager;
     private SmartcarController smartcarController;
-    private ScanLineGenerator scanLineGenerator;
     private VideoStreamHandler videoHandlerDepth;
     public boolean isConnected;
-    private TextPoseHandler poseHandler;
 
     /**
      * Constructor
@@ -82,11 +80,11 @@ public class ClientState implements Observer
         try
         {
             MultiPartsParse parseDepth = new MultiPartsParse(connectionManager.getDepthSocket().getInputStream());
-            scanLineGenerator = new ScanLineGenerator();
+            ScanLineGenerator scanLineGenerator = new ScanLineGenerator();
             parseDepth.addObserver(scanLineGenerator);
             videoHandlerDepth = new VideoStreamHandler(gui.kinectViewDepth, parseDepth);
             videoHandlerDepth.startStreaming();
-            poseHandler = new TextPoseHandler(gui.poseInfo, parseDepth);
+            new TextPoseHandler(gui.poseInfo, parseDepth);
             LogToFile CarmenLog = new LogToFile();
             parseDepth.setLog(CarmenLog);
             scanLineGenerator.setLog(CarmenLog);

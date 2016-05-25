@@ -1,7 +1,6 @@
 package sem.group5.bob.client.streamReceiver;
 
 import org.apache.commons.fileupload.MultipartStream;
-import sem.group5.bob.client.ControllerGUI;
 import sem.group5.bob.client.mappGenerator.LogToFile;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -21,9 +20,7 @@ public class MultiPartsParse extends Observable implements Runnable
     private InputStream depthStream;
     private LogToFile CarmenLog;
     boolean nextPart;
-    double x, y, theta;
     private String pose;
-    ControllerGUI gui;
 
     /**
      * Constructor
@@ -67,11 +64,11 @@ public class MultiPartsParse extends Observable implements Runnable
                 this.pose = headers.substring(headers.lastIndexOf("X-Robot-Pose: ")+1);
 
                 if(!(CarmenLog == null)){
-                    this.x = Double.parseDouble(pose.substring(pose.indexOf('X', pose.indexOf('Y')))) ;
+                    double x = Double.parseDouble(pose.substring(pose.indexOf('X', pose.indexOf('Y'))));
                     pose = pose.substring(pose.indexOf('Y' +1));
-                    this.y= Double.parseDouble(pose.substring(0, pose.indexOf('A')));
+                    double y = Double.parseDouble(pose.substring(0, pose.indexOf('A')));
                     pose = pose.substring(pose.indexOf('g'+1));
-                    this.theta = Double.parseDouble(pose);
+                    double theta = Double.parseDouble(pose);
                     CarmenLog.logOdometryFormatter(x, y, theta);
                 }
 
@@ -83,10 +80,6 @@ public class MultiPartsParse extends Observable implements Runnable
                 try
                 {
                     img = ImageIO.read(in);
-                    int x = 480;
-                    for (int i = 0; i >= x; i++){
-                        if (!(i >x))img.setRGB(i, i, 22);
-                    }
                     nextPart = multipartStream.readBoundary();
                     setChanged();
                     notifyObservers(img);
@@ -103,8 +96,5 @@ public class MultiPartsParse extends Observable implements Runnable
 String getPose(){
     return this.pose;
 }
-
-
-
 }
 

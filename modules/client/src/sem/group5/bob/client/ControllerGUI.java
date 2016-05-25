@@ -44,7 +44,6 @@ public class ControllerGUI extends Observable
     public Button connect;
     public Button save;
     public Button load;
-    public ImageView scanLineView;
     public ImageView kinectViewVideo;
     private boolean isMapping = false;
     private boolean connectClicked = false;
@@ -63,11 +62,6 @@ public class ControllerGUI extends Observable
         clientState = new ClientState(this);
         addObserver(clientState);
         style = new ButtonsStyle(this);
-    }
-
-    public void showPoseInfo() {
-
-
     }
 
     /**
