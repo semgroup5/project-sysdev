@@ -6,30 +6,30 @@ import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class LogToFile implements Observer{
 
+public class LogToFile implements Observer{
     private String fileLocation;
     private String OS = System.getProperty("os.name", "").toUpperCase();
     private ArrayList<String> logData = new ArrayList<>() ;
     private PrintWriter writer;
     private int[] scanLineArray;
+    private  File createDirc;
 
+    /**
+     * The following function create a PringWriter and calls upon crtFile
+     * @throws IOException
+     */
     public LogToFile() throws IOException{
-        crtFile(OS);
+        crtFile();
        writer = new PrintWriter(fileLocation, "UTF-8");
-
     }
-//    public static void main(String arg[]) throws IOException {
-//        LogToFile log = new LogToFile();
-//        log.crtDirc();
-//
-//        for (int i = 0; i < 5; i++) {
-//            int j = i+1;
-//            log.addToList("This is the "+j+"time(s) it writes to the log now...");
-//        }
-//        log.logWriter();
-//    }
 
+    /**
+     * The following function write the odometry data into the file
+     * @param x It's a double passed from PoseManager, the X coordinate of the car
+     * @param y It's a double passed from PoseManager, the Y coordinate of the car
+     * @param theta It's a double passed from PoseManager, the angle of the car
+     **/
     public void logOdometryFormatter(double x, double y, double theta){
         try{
             writer.println(x + y + theta);
@@ -41,6 +41,10 @@ public class LogToFile implements Observer{
         }
     }
 
+    /**
+     * The following function write the DepthData into the file
+     * @param array the array that will be assigned as the scanLineArray which is containing the array of Red Pixels
+     */
     public void logDepthData(int [] array){
         this.scanLineArray = array;
         try{
@@ -51,31 +55,36 @@ public class LogToFile implements Observer{
             e.printStackTrace();
         }
     }
-
+    /**
+     * Add the string into logData
+     * @param string The string that need to be stored in the logData
+     */
     public void addToList(String string){
         this.logData.add(string);
     }
 
+    /**
+     * The following function reset the ArrayList logData
+     */
     public void resetList(){
         this.logData.clear();
     }
 
-    private void logWriter() {
-
-    }
-
+    /**
+     * The following function creates a folder named "BobCar" according to the OS the program is currently running on
+     */
     private void crtDirc() {
         if (OS.startsWith("WINDOWS")) {
-            File createDirc = new File(System.getenv("HOMEDRIVE") + System.getenv("HOMEPATH")
+            this.createDirc = new File(System.getenv("HOMEDRIVE") + System.getenv("HOMEPATH")
                     + File.separator +"BobCar");
             createDirc.mkdirs();
         } else if (OS.startsWith("LINUX"))
         {
-            File createDirc = new File(System.getProperty("user.home")+File.separator+ "BobCar");
+            this.createDirc = new File(System.getProperty("user.home")+File.separator+ "BobCar");
             createDirc.mkdirs();
         } else if (OS.startsWith("MAC"))
         {
-            File createDirc = new File(System.getProperty("user.home")+File.separator+"Documents"
+            this.createDirc = new File(System.getProperty("user.home")+File.separator+"Documents"
                     +File.separator+"BobCar");
             createDirc.mkdirs();
         } else
@@ -85,10 +94,12 @@ public class LogToFile implements Observer{
     }
 
     /**
-     * todo
-     * @param OS todo
+     * The following functions creates a txt file according to the operating system
+     * at location stored in this.createDirc
+     * with the name formatted as:
+     * "HH：mm：ss@yyyy-MM-dd" Hours : mins : secs @(ar)Year-Month-date
      */
-    private void crtFile(String OS) {
+    private void crtFile() {
         crtDirc();
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("HH：mm：ss@yyyy-MM-dd");
@@ -97,18 +108,15 @@ public class LogToFile implements Observer{
 
         if(OS.startsWith("WINDOWS"))
         {
-            this.fileLocation = System.getenv("HOMEDRIVE") + System.getenv("HOMEPATH")
-                    + File.separator +"BobCar" + File.separator + fileName;
+            this.fileLocation = this.createDirc + File.separator + fileName;
         }
         else if(OS.startsWith("LINUX"))
         {
-            this.fileLocation = System.getProperty("user.home")+File.separator+
-                    "BobCar"+ File.separator+ fileName;
+            this.fileLocation =  this.createDirc + File.separator+ fileName;
         }
         else if(OS.startsWith("MAC"))
         {
-            this.fileLocation = System.getProperty("user.home")+File.separator+"Documents"
-                    + File.separator +"BobCar"+ File.separator+ fileName;
+            this.fileLocation =  this.createDirc + File.separator+ fileName;
         }
     }
 
