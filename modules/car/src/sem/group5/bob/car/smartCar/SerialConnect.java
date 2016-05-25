@@ -36,7 +36,7 @@ public class SerialConnect extends Observable implements SerialPortEventListener
     //Default bits per second for COM port.
     private static final int DATA_RATE = 9600;
 
-    public SerialConnect(PoseManager poseManager) {
+    public void setPose(PoseManager poseManager) {
         this.poseManager = poseManager;
     }
 
@@ -153,6 +153,7 @@ public class SerialConnect extends Observable implements SerialPortEventListener
     {
         return this.output;
     }
+
 
     /**
      * Method that will be watching over events in the serial connection port

@@ -9,11 +9,12 @@ import java.util.Observer;
  * This class will read a set distance and angle values provided by the car's sensors and will
  * implement some mathematical calculations on it and will to return the current position of the car.
  */
-public class PoseManager extends SerialConnect implements Observer {
+public class PoseManager implements Observer {
     private double angle;
     private double disp;
     private double dispOld = 0 , angOld =0;
     private double X = 0, Y = 0;
+
 
     /**
      * Round up the number the digits can be selected.
@@ -22,6 +23,7 @@ public class PoseManager extends SerialConnect implements Observer {
      * @param r todo
      * @return todo
      */
+
     private static double rdNum(Double a, int r) {
         if (r < 0) throw new IllegalArgumentException();
 
