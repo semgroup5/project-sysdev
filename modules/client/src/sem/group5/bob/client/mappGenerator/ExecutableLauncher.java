@@ -3,13 +3,13 @@ package sem.group5.bob.client.mappGenerator;
 import java.io.IOException;
 
 /**
- * todo
+ * Class that will launches a command line program on the desktop and passes it and argument
  */
 public class ExecutableLauncher {
 
 
     /**
-     * todo
+     * Method will launches a desktop app depends on the operating system.
      * @throws IOException
      */
     private void OSDiscoverer() throws IOException
@@ -33,7 +33,7 @@ public class ExecutableLauncher {
     }
 
     /**
-     * todo
+     * Main function.
      * @param args todo
      * @throws IOException
      */

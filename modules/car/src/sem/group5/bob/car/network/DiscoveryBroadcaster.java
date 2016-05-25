@@ -9,6 +9,11 @@ import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ *This class will discover the server on the network and connect with it.
+ * @see java.lang.Runnable
+ * @see java.util.Observer
+ */
 public class DiscoveryBroadcaster implements Runnable, Observer {
     private DatagramSocket socket;
     private boolean broadcasting;

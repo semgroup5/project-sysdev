@@ -6,7 +6,8 @@ import java.util.Observable;
 import java.util.Observer;
 
 /**
- * todo
+ * This class will read a set distance and angle values provided by the car's sensors and will
+ * implement some mathematical calculations on it and will to return the current position of the car.
  */
 public class PoseManager extends SerialConnect implements Observer {
     private double angle;
@@ -16,7 +17,6 @@ public class PoseManager extends SerialConnect implements Observer {
 
     /**
      * Round up the number the digits can be selected.
-     *
      * @param a todo
      * @param r todo
      * @return todo
@@ -32,7 +32,6 @@ public class PoseManager extends SerialConnect implements Observer {
 
     /**
      * Breaks down the raw data from the arduino to values
-     *
      * @param locationData String that holds the raw data
      */
     private void breakDown(String locationData) {
@@ -42,7 +41,8 @@ public class PoseManager extends SerialConnect implements Observer {
     }
 
     /**
-     * todo
+     * Method that will calculate the position of the car and adds different arguments for 4 special cases depending on
+     * the angle of the car(angle Zero, 90, 180, 270) to avoid getting a zero value on an axes traveled by the car.
      */
     private void calculatePose() {
         double angTmp;
@@ -86,8 +86,6 @@ public class PoseManager extends SerialConnect implements Observer {
     }
 
     /**
-     * p
-     * todo
      *
      * @param o   todo v
      * @param arg todo

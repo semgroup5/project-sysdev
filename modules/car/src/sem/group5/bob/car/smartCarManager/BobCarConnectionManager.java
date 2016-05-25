@@ -14,6 +14,7 @@ import java.util.Observer;
 /**
  * This class is notified when an observed object is changed and updates the object with specific methods.
  * @see java.util.Observer
+ * @see java.util.Observable
  */
 public class BobCarConnectionManager extends Observable implements Observer
 {
@@ -112,7 +113,7 @@ public class BobCarConnectionManager extends Observable implements Observer
     }
 
     /**
-     * The startFunction() method initialize a set of methods, its called in initialize() method when the observable object is updated.
+     * The startFunction() method initialize a set of methods, its called in initialize() when the observable object is updated.
      * @see BobCarConnectionManager#startRemoteListener(SmartCarComm)
      * @see BobCarConnectionManager#setDepthStreamSocket()
      * @see BobCarConnectionManager#startDiscoveryListener()

@@ -6,14 +6,15 @@ import java.util.Observer;
 
 /**
  * Class responsible on passing  the position reading on to the client.
+ * @see java.util.Observer
  */
 public class TextPoseHandler implements Observer {
     private TextField poseInfo;
 
     /**
-     * todo
-     * @param poseInfo p
-     * @param provider p
+     *
+     * @param poseInfo String with Position information
+     * @param provider
      */
     public TextPoseHandler(TextField poseInfo, MultiPartsParse provider) {
         this.poseInfo = poseInfo;
@@ -21,9 +22,9 @@ public class TextPoseHandler implements Observer {
     }
 
     /**
-     * todo
-     * @param o o
-     * @param arg arg
+     * Updtate the TextField in the GUI with the latest position info
+     * @param o
+     * @param arg
      */
     @Override
     public void update(Observable o, Object arg) {

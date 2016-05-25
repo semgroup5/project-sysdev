@@ -6,13 +6,29 @@ import org.openkinect.freenect.FrameMode;
 import java.nio.ByteBuffer;
 import java.util.Observable;
 
+/**
+ * Class will get the latest video and depth frames.
+ */
 public class ComboJpegProvider extends Observable implements JpegProvider {
     private static ByteBuffer latestVideoFrame;
     private static ByteBuffer latestDepthFrame;
 
+    /**
+     * Receives video frames
+     * @param frameMode
+     * @param byteBuffer
+     * @param i
+     */
     public void receiveVideo(FrameMode frameMode, ByteBuffer byteBuffer, int i) {
         latestVideoFrame = byteBuffer;
     }
+
+    /**
+     * Receives depth frames
+     * @param frameMode
+     * @param byteBuffer
+     * @param i
+     */
     public void receiveDepth(FrameMode frameMode, ByteBuffer byteBuffer, int i) {
         latestDepthFrame = byteBuffer;
     }
@@ -20,6 +36,12 @@ public class ComboJpegProvider extends Observable implements JpegProvider {
     private int pixelWidth = 1;
     private int imageSize = 640 * 480 * pixelWidth;
     private byte[] comboFrame = new byte[imageSize];
+
+    /**
+     * Method will build, compress, and send the latest depth and video streams from the Kinect.
+     * @return
+     * @throws Exception
+     */
     public byte[] getLatestJpeg() throws Exception{
         if(latestDepthFrame == null)
             Thread.sleep(1000);
