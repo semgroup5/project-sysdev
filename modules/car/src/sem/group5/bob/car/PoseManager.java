@@ -7,11 +7,15 @@ import java.util.Observer;
  * todo
  */
 public class PoseManager extends SerialConnect implements Observer {
-    double dispTmp = 0, angle, disp,dispOld = 0;
-    private double X = 0, Y = 0;
+    double dispTmp = 0;
+    double angle;
+    double disp;
+    double dispOld = 0;
+    double X = 0, Y = 0;
 
     /**
-     * Round up the number the digits can be selected
+     * Round up the number the digits can be selected.
+     *
      * @param a todo
      * @param r todo
      * @return todo
@@ -41,11 +45,12 @@ public class PoseManager extends SerialConnect implements Observer {
      */
     private void calculatePose() {
 
-        double  x, y;
+        double x;
+        double y;
         double dispTmp = disp - dispOld;
 
         if (Math.abs(angle) >= 360) {
-            angle = angle % 360;
+            this.angle = angle % 360;
         }
         if (angle == 90) {
             Y += disp;
