@@ -55,7 +55,7 @@ public class PoseManager implements Observer {
         double dispTmp = disp - dispOld;
         angTmp = angle-this.angOld;
         if (Math.abs(angle) >= 360) {
-            this.angle = angle % 360;
+            angle = angle % 360;
         }
         if(angTmp !=0 || dispTmp !=0) {
             if (angle == 90) {
@@ -93,7 +93,7 @@ public class PoseManager implements Observer {
      * p
      * todo
      *
-     * @param o   todo v
+     * @param o   todo
      * @param arg todo
      */
     public void update(Observable o, Object arg) {

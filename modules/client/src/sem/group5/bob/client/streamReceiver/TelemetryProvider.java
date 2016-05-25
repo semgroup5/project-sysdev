@@ -1,16 +1,19 @@
 package sem.group5.bob.client.streamReceiver;
 
+import sem.group5.bob.client.Pose;
+import sem.group5.bob.client.ScanLine;
+import sem.group5.bob.client.Telemetry;
 import sem.group5.bob.client.mappGenerator.FileLogger;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Observable;
 import java.util.Observer;
 
 /**
- * Class responsible for generating data to be used on mapping.
+ * Created by jpp on 25/05/16.
  */
-public class ScanLineGenerator extends Observable implements Observer
-{
+public class TelemetryProvider extends Observable implements Observer{
     private FileLogger log;
 
     /**
@@ -24,10 +27,6 @@ public class ScanLineGenerator extends Observable implements Observer
             distanceArray[i]=(new Color(image.getRGB(i, 240)).getRed())*16;
         }
         return distanceArray;
-    }
-
-    private void scanLineToLog(int[] array){
-       // log.logDepthData(array);
     }
 
     /**
@@ -47,14 +46,15 @@ public class ScanLineGenerator extends Observable implements Observer
      * @param o the argument passed to the notifyObservers method
      */@Override
     public void update(Observable observable, Object o) {
-        if(o instanceof BufferedImage ) {
-            BufferedImage image = (BufferedImage) o;
-            setChanged();
-            int[] pixelLine = generateLine(image);
-            notifyObservers(pixelLine);
-            scanLineToLog(pixelLine);
-        } else {
-            System.out.println("Did not receive a valid image at Scan line");
-        }
+        MultiPartsParse mpp = (MultiPartsParse) observable;
+
+        if(!(o instanceof BufferedImage)){ return; }
+
+        Pose p = new Pose(mpp.getPose());
+        ScanLine scl = new ScanLine(generateLine((BufferedImage) o));
+        Telemetry t = new Telemetry(p, scl);
+
+        setChanged();
+        notifyObservers(t);
     }
 }

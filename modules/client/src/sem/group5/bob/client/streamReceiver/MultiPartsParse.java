@@ -1,7 +1,7 @@
 package sem.group5.bob.client.streamReceiver;
 
 import org.apache.commons.fileupload.MultipartStream;
-import sem.group5.bob.client.mappGenerator.LogToFile;
+import sem.group5.bob.client.mappGenerator.FileLogger;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -18,7 +18,7 @@ import java.util.Observable;
 public class MultiPartsParse extends Observable implements Runnable
 {
     private InputStream depthStream;
-    private LogToFile CarmenLog;
+    private FileLogger CarmenLog;
     boolean nextPart;
     private String pose;
 
@@ -35,7 +35,7 @@ public class MultiPartsParse extends Observable implements Runnable
      * todo
      * @param CarmenLog log
      */
-    public void setLog(LogToFile CarmenLog)
+    public void setLog(FileLogger CarmenLog)
     {
         this.CarmenLog = CarmenLog;
     }
@@ -61,17 +61,8 @@ public class MultiPartsParse extends Observable implements Runnable
             while(nextPart)
             {
                 String headers = multipartStream.readHeaders();
-                this.pose = headers.substring(headers.lastIndexOf("X-Robot-Pose: ")+1);
-
-                if(!(CarmenLog == null)){
-                    double x = Double.parseDouble(pose.substring(pose.indexOf('X', pose.indexOf('Y'))));
-                    pose = pose.substring(pose.indexOf('Y' +1));
-                    double y = Double.parseDouble(pose.substring(0, pose.indexOf('A')));
-                    pose = pose.substring(pose.indexOf('g'+1));
-                    double theta = Double.parseDouble(pose);
-                    CarmenLog.logOdometryFormatter(x, y, theta);
-                }
-
+                this.pose = headers.substring(headers.indexOf("X-Robot-Pose") + 12);
+                System.out.println(headers);
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
                 multipartStream.readBodyData(out);
                 InputStream in = new ByteArrayInputStream(out.toByteArray());
@@ -93,10 +84,7 @@ public class MultiPartsParse extends Observable implements Runnable
         }
 
     }
-    /**
-     * @return calculated BobCar position
-     */
- String getPose(){
+public String getPose(){
     return this.pose;
 }
 }
