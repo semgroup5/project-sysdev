@@ -1,7 +1,6 @@
 package sem.group5.bob.client.streamReceiver;
 
 import org.apache.commons.fileupload.MultipartStream;
-import sem.group5.bob.client.mappGenerator.FileLogger;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -18,7 +17,6 @@ import java.util.Observable;
 public class MultiPartsParse extends Observable implements Runnable
 {
     private InputStream depthStream;
-    private FileLogger CarmenLog;
     boolean nextPart;
     private String pose;
 
@@ -29,15 +27,6 @@ public class MultiPartsParse extends Observable implements Runnable
     public MultiPartsParse(InputStream depthStream)
     {
         this.depthStream = depthStream;
-    }
-
-    /**
-     * todo
-     * @param CarmenLog log
-     */
-    public void setLog(FileLogger CarmenLog)
-    {
-        this.CarmenLog = CarmenLog;
     }
 
     /**
@@ -79,12 +68,10 @@ public class MultiPartsParse extends Observable implements Runnable
         }catch(Exception e){
             e.printStackTrace();
             System.out.println("Caught Error Receiving Stream");
-//            setChanged();
-//            notifyObservers("Error Receiving Stream");
         }
 
     }
-public String getPose(){
+String getPose(){
     return this.pose;
 }
 }

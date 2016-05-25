@@ -66,14 +66,12 @@ public class DepthJpegProvider extends Observable implements JpegProvider
         short[] depths = new short[640*480];
         ldf.get(depths);
 
-        System.out.println("Making Frame");
         for(int i = 0; i < 640*480; i++)
         {
             comboFrame[i] =(byte)(depths[i]/16);
         }
 
         processingDepth = false;
-        System.out.println("Compressing Frame");
 
         try
         {
@@ -87,7 +85,6 @@ public class DepthJpegProvider extends Observable implements JpegProvider
             byte[] compressed = tjc.compress(flags);
             byte[] compressedTruncated = new byte[tjc.getCompressedSize()];
             System.arraycopy(compressed, 0, compressedTruncated, 0, tjc.getCompressedSize());
-            System.out.println("Sending Frame");
             return compressedTruncated;
         }
         catch (Exception ignore) {}

@@ -30,7 +30,6 @@ public class SmartCarComm extends Observable
     {
         try
         {
-            System.out.println("Sending : " + data);
             output.write(data.getBytes());
         } catch (IOException e) {
             System.out.println("could not write to port");
@@ -44,7 +43,7 @@ public class SmartCarComm extends Observable
      * @param speed integer speed between 1 to 100.
      * @see SmartCarComm#writeData(String)
      */
-    public void setSpeed(int speed)
+    void setSpeed(int speed)
     {
         if((speed <= 100) && (speed >= -100))
         {
@@ -57,7 +56,7 @@ public class SmartCarComm extends Observable
      * @param angle angle to turn the car.
      * @see SmartCarComm#writeData(String)
      */
-    public void setAngle(int angle)
+    void setAngle(int angle)
     {
         if(angle <= 360 && angle >= -360)
         {
@@ -71,7 +70,7 @@ public class SmartCarComm extends Observable
      * @param direction direction to rotate the car
      * @see SmartCarComm#writeData(String)
      */
-    public void setRotate(int direction)
+    void setRotate(int direction)
     {
         if(direction >= -1 || direction <= 1)
         {

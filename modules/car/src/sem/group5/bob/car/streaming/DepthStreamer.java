@@ -40,7 +40,6 @@ public class DepthStreamer extends Observable implements Runnable
     {
         try
         {
-            System.out.println("Streaming depth");
             OutputStream out = socket.getOutputStream();
 
             out.write( ( "HTTP/1.0 200 OK\r\n" +
@@ -55,7 +54,6 @@ public class DepthStreamer extends Observable implements Runnable
             byte[] data;
             while (streaming)
             {
-                System.out.println("Sending frame depth");
                 if (Thread.interrupted()) throw new InterruptedException();
                 data = cjp.getLatestJpeg();
                 //PoseManager poseProvider =  new PoseManager();     getlatestpose   needs to be implemented on the pose class
@@ -64,7 +62,7 @@ public class DepthStreamer extends Observable implements Runnable
                         "Content-Length: " + data.length + "\r\n" +
                         "X-Robot-Pose: " + poseManagerManagerProvider.getLatestPose() + "\r\n\r\n").getBytes());
                 out.write(data);
-                System.out.print(poseManagerManagerProvider.getLatestPose());
+
                 if (Thread.interrupted()) throw new InterruptedException();
                 out.write("\r\n\r\n".getBytes());
                 out.flush();
@@ -72,7 +70,7 @@ public class DepthStreamer extends Observable implements Runnable
             }
         } catch (Exception e)
         {
-            System.out.println("Streaming Stopping");
+            System.out.println("Streaming Stopped Unexpectedly");
 //            setChanged();
 //            notifyObservers("Error Streaming");
         }

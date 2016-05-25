@@ -1,21 +1,22 @@
 package sem.group5.bob.client.mappGenerator;
 
-import sem.group5.bob.client.Pose;
 import sem.group5.bob.client.Telemetry;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Observable;
+import java.util.Observer;
 
 
 public class FileLogger implements Observer{
     private String fileLocation;
     private String OS = System.getProperty("os.name", "").toUpperCase();
-    private ArrayList<String> logData = new ArrayList<>() ;
+    private ArrayList<String> logData = new ArrayList<>();
     private PrintWriter writer;
-    private int[] scanLineArray;
     private  File createDirc;
 
     /**
@@ -27,7 +28,7 @@ public class FileLogger implements Observer{
        writer = new PrintWriter(fileLocation, "UTF-8");
     }
 
-    public void logTelemetry(Telemetry telemetry){
+    private void logTelemetry(Telemetry telemetry){
         String result;
 
         // (old) # FLASER num_readings [range_readings] x y theta odom_x odom_y odom_theta
