@@ -32,5 +32,10 @@ public class TextPoseHandler implements Observer {
         MultiPartsParse mpp = (MultiPartsParse) o;
         poseInfo.setText(mpp.getPose());
 
+//        TextPoseHandler textHandler = new TextPoseHandler;
+//        this.addObserver(textHandler);
+//        setChanged();
+//        notifyObservers(this.pose);
+
     }
 }
