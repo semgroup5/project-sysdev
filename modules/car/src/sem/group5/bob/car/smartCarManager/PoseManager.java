@@ -70,7 +70,7 @@ public class PoseManager extends SerialConnect implements Observer {
                 Y -= disp;
                 dispOld += dispTmp;
                 System.out.println("this is the X" + X);
-            } else if(angle != 90 && angle != 180 && angle != 270 && angle != 0) {
+            } else {
 
                 y = dispTmp * Math.cos(rdNum((Math.toRadians(angle)), 5));
                 x = dispTmp * Math.sin(rdNum((Math.toRadians(angle)), 5));

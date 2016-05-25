@@ -49,12 +49,12 @@
                   <StackPane>
                      <children>
                              <ImageView fx:id="kinectViewDepth" fitHeight="480.0" fitWidth="640.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;" BorderPane.alignment="CENTER" />
-                        <TextField fx:id="poseInfo" editable="false" opacity="0.13">
+                        <TextField fx:id="poseInfo" editable="false" style="-fx-background-color: transparent;" stylesheets="@client.css">
                            <StackPane.margin>
                               <Insets top="430.0" />
                            </StackPane.margin>
                            <font>
-                              <Font name="Bookman Old Style" size="15.0" />
+                              <Font name="Bookman Old Style" size="18.0" />
                            </font>
                         </TextField>
                      </children>
