@@ -33,14 +33,18 @@ public class VideoStreamHandler implements Observer
 
     }
 
-
-
+    /**
+     * todo
+     */
     public void startStreaming()
     {
         thread = new Thread(provider);
         thread.start();
     }
 
+    /**
+     * todo
+     */
     public void stopStreaming()
     {
         provider.nextPart = false;

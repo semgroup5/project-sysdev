@@ -1,6 +1,6 @@
 package sem.group5.bob.client.bobSmartCar;
 
-import sem.group5.bob.client.ConnectionManager;
+import sem.group5.bob.client.clientManager.ConnectionManager;
 
 import java.io.IOException;
 

@@ -1,6 +1,7 @@
-package sem.group5.bob.client;
+package sem.group5.bob.client.clientManager;
 
 import javafx.application.Platform;
+import sem.group5.bob.client.ControllerGUI;
 import sem.group5.bob.client.bobSmartCar.Smartcar;
 import sem.group5.bob.client.bobSmartCar.SmartcarController;
 import sem.group5.bob.client.mappGenerator.LogToFile;
@@ -17,22 +18,20 @@ import java.util.Observer;
  * Class that will track and update the state of the client depending on the arguments passed.
  * @see java.util.Observer
  */
-class ClientState implements Observer
+public class ClientState implements Observer
 {
     private ControllerGUI gui;
     private Smartcar smartcar;
     private ConnectionManager connectionManager;
     private SmartcarController smartcarController;
-    private ScanLineGenerator scanLineGenerator;
     private VideoStreamHandler videoHandlerDepth;
-    boolean isConnected;
-    private TextPoseHandler poseHandler;
+    public boolean isConnected;
 
     /**
      * Constructor
      * @param gui Client GUI
      */
-    ClientState(ControllerGUI gui)
+    public ClientState(ControllerGUI gui)
     {
         this.gui = gui;
         connectionManager = new ConnectionManager();
@@ -56,7 +55,7 @@ class ClientState implements Observer
      *  Method to return if the client is connected to the BobCar
      * @return true if the client is connected
      */
-    boolean isConnected()
+    public boolean isConnected()
     {
         return isConnected;
     }
@@ -76,16 +75,16 @@ class ClientState implements Observer
      * @see VideoStreamHandler
      * @see ScanLineGenerator
      */
-    void startMap()
+    public void startMap()
     {
         try
         {
             MultiPartsParse parseDepth = new MultiPartsParse(connectionManager.getDepthSocket().getInputStream());
-            scanLineGenerator = new ScanLineGenerator();
+            ScanLineGenerator scanLineGenerator = new ScanLineGenerator();
             parseDepth.addObserver(scanLineGenerator);
             videoHandlerDepth = new VideoStreamHandler(gui.kinectViewDepth, parseDepth);
             videoHandlerDepth.startStreaming();
-            poseHandler = new TextPoseHandler(gui.poseInfo, parseDepth);
+            new TextPoseHandler(gui.poseInfo, parseDepth);
             LogToFile CarmenLog = new LogToFile();
             parseDepth.setLog(CarmenLog);
             scanLineGenerator.setLog(CarmenLog);
@@ -100,7 +99,7 @@ class ClientState implements Observer
     /**
      * Method to stop mapping from the client side
      */
-    void stopMap()
+    public void stopMap()
     {
         // TODO: 20/05/2016
         try
@@ -117,7 +116,7 @@ class ClientState implements Observer
      * Method to return the smartCarController
      * @return this SmartCarController
      */
-    SmartcarController getSmartcarController()
+    public SmartcarController getSmartcarController()
     {
         return smartcarController;
     }
@@ -126,7 +125,7 @@ class ClientState implements Observer
      * Method that starts the video streaming
      */
 
-    void startStream()
+    public void startStream()
     {
         try
         {

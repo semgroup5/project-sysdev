@@ -1,4 +1,4 @@
-package sem.group5.bob.client;
+package sem.group5.bob.client.clientManager;
 
 import sem.group5.bob.client.bobSmartCar.Smartcar;
 import sem.group5.bob.client.bobSmartCar.SmartcarController;
