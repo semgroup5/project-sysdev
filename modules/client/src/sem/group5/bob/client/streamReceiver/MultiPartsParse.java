@@ -93,7 +93,10 @@ public class MultiPartsParse extends Observable implements Runnable
         }
 
     }
-String getPose(){
+    /**
+     * @return calculated BobCar position
+     */
+ String getPose(){
     return this.pose;
 }
 }

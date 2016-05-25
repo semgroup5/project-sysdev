@@ -9,8 +9,11 @@ import java.nio.ByteBuffer;
 import java.nio.ShortBuffer;
 import java.util.Observable;
 
+
 /**
- * todo
+ *
+ * @see java.util.Observable
+ * [JpegProvider]{@link sem.group5.bob.car.streaming.JpegProvider}
  */
 public class DepthJpegProvider extends Observable implements JpegProvider
 {
@@ -21,7 +24,7 @@ public class DepthJpegProvider extends Observable implements JpegProvider
     private byte[] comboFrame = new byte[imageSize];
 
     /**
-     * todo
+     *
      */
     public DepthJpegProvider()
     {

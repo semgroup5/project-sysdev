@@ -4,6 +4,9 @@ import sem.group5.bob.client.clientManager.ConnectionManager;
 
 import java.io.IOException;
 
+/**
+ * Class to set the control commands to BobCar and the viewing angle of the kinect.
+ */
 public class SmartcarController
 {
     private Smartcar smartcar;
@@ -18,7 +21,7 @@ public class SmartcarController
 
     /**
      *
-     * @param connectionManager connectionManager
+     * @param connectionManager BobCar connection manager
      * @throws IOException
      */
     public SmartcarController(ConnectionManager connectionManager) throws IOException
@@ -29,6 +32,11 @@ public class SmartcarController
         tilt = 0;
     }
 
+    /**
+     * Method to move the car forward
+     * @param speed the car speed
+     * @throws IOException
+     */
     public void pressForward(int speed) throws IOException
     {
         if(!backPressed && !driving)
@@ -45,6 +53,11 @@ public class SmartcarController
         }
     }
 
+    /**
+     * Method to move the car back
+     * @param speed the car speed
+     * @throws IOException
+     */
     public void pressBack(int speed) throws IOException
     {
         if(!forwardPressed && !driving)
@@ -61,6 +74,10 @@ public class SmartcarController
         }
     }
 
+    /**
+     * Method to move left
+     * @throws IOException
+     */
     public void pressLeft() throws IOException
     {
         if(!rightPressed)
@@ -84,6 +101,10 @@ public class SmartcarController
         }
     }
 
+    /**
+     * Method to move the car right
+     * @throws IOException
+     */
     public void pressRight() throws IOException
     {
         if(!leftPressed)
@@ -107,6 +128,10 @@ public class SmartcarController
         }
     }
 
+    /**
+     * Method to stop the car on button release.
+     * @throws IOException
+     */
     public void releaseForward() throws IOException
     {
         try
@@ -120,6 +145,10 @@ public class SmartcarController
         }
     }
 
+    /**
+     * Method to stop the car on button release.
+     * @throws IOException
+     */
     public void releaseBack() throws IOException
     {
         try
@@ -133,6 +162,10 @@ public class SmartcarController
         }
     }
 
+    /**
+     * Method to stop the car on button release.
+     * @throws IOException
+     */
     public void releaseLeft() throws IOException
     {
         try
@@ -152,6 +185,10 @@ public class SmartcarController
         }
     }
 
+    /**
+     * Method to stop the car on button release.
+     * @throws IOException
+     */
     public void releaseRight() throws IOException
     {
         try
@@ -172,6 +209,10 @@ public class SmartcarController
         }
     }
 
+    /**
+     * Control the motor to move the viewing area of the kinect up.
+     * @throws IOException
+     */
     public void pressTiltKinectUp() throws IOException
     {
         if (!kinectTilting)
@@ -185,6 +226,10 @@ public class SmartcarController
         }
     }
 
+    /**
+     * Control the motor to move the viewing area of the kinect down.
+     * @throws IOException
+     */
     public void pressTiltKinectDown() throws IOException
     {
         if (!kinectTilting)
@@ -198,6 +243,9 @@ public class SmartcarController
         }
     }
 
+    /**
+     * Snaps the kinect to its original position.
+     */
     public void tiltKinectReleased()
     {
         kinectTilting = false;

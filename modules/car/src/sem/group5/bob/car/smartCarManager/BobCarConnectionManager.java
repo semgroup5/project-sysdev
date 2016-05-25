@@ -14,6 +14,7 @@ import java.util.Observer;
 /**
  * This class is notified when an observed object is changed and updates the object with specific methods.
  * @see java.util.Observer
+ * @see java.util.Observable
  */
 public class BobCarConnectionManager extends Observable implements Observer
 {
@@ -28,6 +29,7 @@ public class BobCarConnectionManager extends Observable implements Observer
     private VideoStreamer videoStreamer;
     private Thread depthThread;
     private Thread videoThread;
+    PoseManager poseManager;
 
 
     /**
@@ -112,7 +114,7 @@ public class BobCarConnectionManager extends Observable implements Observer
     }
 
     /**
-     * The startFunction() method initialize a set of methods, its called in initialize() method when the observable object is updated.
+     * The startFunction() method initialize a set of methods, its called in initialize() when the observable object is updated.
      * @see BobCarConnectionManager#startRemoteListener(SmartCarComm)
      * @see BobCarConnectionManager#setDepthStreamSocket()
      * @see BobCarConnectionManager#startDiscoveryListener()
@@ -249,7 +251,7 @@ public class BobCarConnectionManager extends Observable implements Observer
 
             DepthJpegProvider depthJpegProvider = new DepthJpegProvider();
             VideoProvider videoProvider = new VideoProvider();
-            PoseManager PoseManagerManagerProvider = new PoseManager();
+            poseManager = new PoseManager();
 
             if (device != null)
             {
@@ -257,7 +259,7 @@ public class BobCarConnectionManager extends Observable implements Observer
                 device.startVideo(videoProvider::receiveVideo);
             }
 
-            depthStreamer = new DepthStreamer(depthSocket.getSocket(), depthJpegProvider, PoseManagerManagerProvider);
+            depthStreamer = new DepthStreamer(depthSocket.getSocket(), depthJpegProvider, poseManager);
             depthStreamer.addObserver(this);
             videoStreamer = new VideoStreamer(videoSocket.getSocket(), videoProvider);
             videoStreamer.addObserver(this);
@@ -278,7 +280,7 @@ public class BobCarConnectionManager extends Observable implements Observer
      */
     private void startSerialConnection()
     {
-        serialC = new SerialConnect();
+        serialC = new SerialConnect(poseManager);
         serialC.initialize();
         OutputStream out = serialC.getOutputStream();
         scc = new SmartCarComm(out);

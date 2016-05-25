@@ -1,3 +1,11 @@
+/*.text-field:focused{
+     input[type="text"]
+     {
+         background: rgba(0, 0, 0, 0);
+         border: none;
+         outline: none;
+     }*/
+}
 .text-area .scroll-pane .content{
     -fx-background-color: 
         linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),
@@ -31,6 +39,11 @@
         linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
         linear-gradient(#20262b, #191d22),
         radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));   
+}
+
+.text-field {
+    -fx-text-box-border: transparent;
+    -fx-text-fill: #006400;
 }
 
 #map {

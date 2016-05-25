@@ -25,7 +25,7 @@ public class ConnectionManager extends Observable
     Exception connectionException;
 
     /**
-     * Method to connect to bobCar
+     * Method to connect to bobCar.
      */
     void connect()
     {
@@ -168,6 +168,10 @@ public class ConnectionManager extends Observable
         return videoSocket;
     }
 
+    /**
+     * Method to close the depth socket.
+     * @throws IOException
+     */
     void DepthSocketClose() throws IOException
     {
         depthSocket.close();
@@ -175,7 +179,6 @@ public class ConnectionManager extends Observable
     }
 
     /**
-     * Method to get smartcar
      * @return smartcar
      * @throws IOException
      */
@@ -198,7 +201,7 @@ public class ConnectionManager extends Observable
     }
 
     /**
-     * "HeartBeat" method, checks the status of the connection by reading a string from the buffer sent from the car
+     * "HeartBeat" method, checks the status of the connection by reading a string from the buffer sent from the car.
      */
     void checkConnectionHeartBeat()
     {

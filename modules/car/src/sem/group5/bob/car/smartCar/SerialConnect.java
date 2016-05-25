@@ -18,24 +18,27 @@ public class SerialConnect extends Observable implements SerialPortEventListener
 {
     private SerialPort serialPort;
     private int retryArduinoConnect = 0;
+    PoseManager poseManager;
 
-    /**
-     * The port we're normally going to use.
-     */
+
+    // The port that's being used for the connection.
+
     private static final String PORT_NAMES[] = {
             "/dev/ttyACM0", // Raspberry Pi
     };
 
     private BufferedReader input;
     private OutputStream output;
-    /**
-     * Milliseconds to block while waiting for port open
-     */
+
+//      Milliseconds to block while waiting for port open
     private static final int TIME_OUT = 2000;
-    /**
-     * Default bits per second for COM port.
-     */
+
+    //Default bits per second for COM port.
     private static final int DATA_RATE = 9600;
+
+    public SerialConnect(PoseManager poseManager) {
+        this.poseManager = poseManager;
+    }
 
     /**
      * Method to establish the serial connection.
@@ -162,8 +165,8 @@ public class SerialConnect extends Observable implements SerialPortEventListener
         {
             try
             {
-                PoseManager pose = new PoseManager();
-                this.addObserver(pose);
+
+                this.addObserver(poseManager);
                 setChanged();
                 //Sends the input line to class PoseManager
                 String inputLine = input.readLine();

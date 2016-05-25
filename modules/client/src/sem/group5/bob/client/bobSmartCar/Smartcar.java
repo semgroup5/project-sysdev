@@ -37,6 +37,11 @@ public class Smartcar extends Observable
         }
     }
 
+    /**
+     * Moves the kinect's motor to change the viewing angle on a y axes.
+     * @param angle angle of the kinect view.
+     * @throws IOException
+     */
     void tiltkinect(double angle) throws IOException
     {
         try
@@ -54,6 +59,7 @@ public class Smartcar extends Observable
     /**
      * Set speed of the remote SmartCar
      * @param speed speed in percentage of max capacity
+     * @throws IOException
      */
     void setSpeed(int speed) throws IOException
     {
@@ -70,7 +76,7 @@ public class Smartcar extends Observable
     }
 
     /**
-     * Set angle at which to turn the remote SmartCar
+     * Set angle at which to turn BobCar.
      * @param angle angle in degrees
      */
     void setAngle(int angle) throws IOException
@@ -88,9 +94,11 @@ public class Smartcar extends Observable
         }
     }
 
+
     /**
-     * Rotate the remote smartcar on the spot
-     * @param angle amount of rotation in degrees
+     * Rotate the smartcar on the spot
+     * @param angle rotation angle.
+     * @throws IOException
      */
     void rotate(int angle) throws IOException
     {
@@ -137,8 +145,8 @@ public class Smartcar extends Observable
     }
 
     /**
-     * Method to get the IoException error
-     * @return  This error
+     * Gets IoException error
+     * @return Io Exception error
      */
     public IOException getE()
     {

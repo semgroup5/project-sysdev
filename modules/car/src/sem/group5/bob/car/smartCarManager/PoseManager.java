@@ -6,7 +6,8 @@ import java.util.Observable;
 import java.util.Observer;
 
 /**
- * todo
+ * This class will read a set distance and angle values provided by the car's sensors and will
+ * implement some mathematical calculations on it and will to return the current position of the car.
  */
 public class PoseManager extends SerialConnect implements Observer {
     private double angle;
@@ -42,7 +43,8 @@ public class PoseManager extends SerialConnect implements Observer {
     }
 
     /**
-     * todo
+     * Method that will calculate the position of the car and adds different arguments for 4 special cases depending on
+     * the angle of the car(angle Zero, 90, 180, 270) to avoid getting a zero value on an axes traveled by the car.
      */
     private void calculatePose() {
         double angTmp;
@@ -70,7 +72,7 @@ public class PoseManager extends SerialConnect implements Observer {
                 Y -= disp;
                 dispOld += dispTmp;
                 System.out.println("this is the X" + X);
-            } else if(angle != 90 && angle != 180 && angle != 270 && angle != 0) {
+            } else {
 
                 y = dispTmp * Math.cos(rdNum((Math.toRadians(angle)), 5));
                 x = dispTmp * Math.sin(rdNum((Math.toRadians(angle)), 5));
