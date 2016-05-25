@@ -18,6 +18,7 @@ public class SerialConnect extends Observable implements SerialPortEventListener
 {
     private SerialPort serialPort;
     private int retryArduinoConnect = 0;
+    PoseManager poseManager;
 
 
     // The port that's being used for the connection.
@@ -34,6 +35,10 @@ public class SerialConnect extends Observable implements SerialPortEventListener
 
     //Default bits per second for COM port.
     private static final int DATA_RATE = 9600;
+
+    public SerialConnect(PoseManager poseManager) {
+        this.poseManager = poseManager;
+    }
 
     /**
      * Method to establish the serial connection.
@@ -160,8 +165,8 @@ public class SerialConnect extends Observable implements SerialPortEventListener
         {
             try
             {
-                PoseManager pose = new PoseManager();
-                this.addObserver(pose);
+
+                this.addObserver(poseManager);
                 setChanged();
                 //Sends the input line to class PoseManager
                 String inputLine = input.readLine();

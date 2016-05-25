@@ -17,6 +17,7 @@ public class PoseManager extends SerialConnect implements Observer {
 
     /**
      * Round up the number the digits can be selected.
+     *
      * @param a todo
      * @param r todo
      * @return todo
@@ -32,6 +33,7 @@ public class PoseManager extends SerialConnect implements Observer {
 
     /**
      * Breaks down the raw data from the arduino to values
+     *
      * @param locationData String that holds the raw data
      */
     private void breakDown(String locationData) {
@@ -86,6 +88,8 @@ public class PoseManager extends SerialConnect implements Observer {
     }
 
     /**
+     * p
+     * todo
      *
      * @param o   todo v
      * @param arg todo
