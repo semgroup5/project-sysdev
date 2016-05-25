@@ -174,7 +174,11 @@ class SerialConnect extends Observable implements SerialPortEventListener
                 this.addObserver(pose);
                 setChanged();
                 //Sends the input line to class PoseManager
-                notifyObservers(input.readLine());
+                String inputLine = input.readLine();
+                if(inputLine.startsWith("pose")){
+                    notifyObservers(inputLine.substring(4));
+                }
+
                 //Catch and logs errors
             } catch (Exception e)
             {
