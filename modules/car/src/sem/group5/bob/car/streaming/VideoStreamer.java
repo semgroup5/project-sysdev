@@ -1,6 +1,6 @@
 package sem.group5.bob.car.streaming;
 
-import sem.group5.bob.car.BobCarConnectionManager;
+import sem.group5.bob.car.smartCarManager.BobCarConnectionManager;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -14,7 +14,6 @@ public class VideoStreamer extends Observable implements Runnable{
     private VideoProvider videoProvider;
     private Socket socket;
     private boolean streaming;
-    private OutputStream out;
 
     /**
      *  Constructor
@@ -37,7 +36,7 @@ public class VideoStreamer extends Observable implements Runnable{
     {
         try {
             System.out.println("Streaming video");
-            out = socket.getOutputStream();
+            OutputStream out = socket.getOutputStream();
 
             out.write( ( "HTTP/1.0 200 OK\r\n" +
                     "Server: YourServerName\r\n" +
@@ -71,7 +70,7 @@ public class VideoStreamer extends Observable implements Runnable{
     }
 
     /**
-     * Function used by the thread to run the stream.
+     * Function used by the thread to run the stream..
      */
     public void run()
     {

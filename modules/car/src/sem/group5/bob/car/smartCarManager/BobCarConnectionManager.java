@@ -1,7 +1,10 @@
-package sem.group5.bob.car;
+package sem.group5.bob.car.smartCarManager;
 
 import org.openkinect.freenect.*;
 import sem.group5.bob.car.network.DiscoveryBroadcaster;
+import sem.group5.bob.car.smartCar.RemoteControlListener;
+import sem.group5.bob.car.smartCar.SerialConnect;
+import sem.group5.bob.car.smartCar.SmartCarComm;
 import sem.group5.bob.car.streaming.*;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -19,7 +22,7 @@ public class BobCarConnectionManager extends Observable implements Observer
     private RemoteControlListener rcl;
     private DepthVideoStreamSocket depthSocket;
     private DepthVideoStreamSocket videoSocket;
-    static  Device device;
+    public static  Device device;
     private Context context;
     private DepthStreamer depthStreamer;
     private VideoStreamer videoStreamer;
@@ -99,7 +102,7 @@ public class BobCarConnectionManager extends Observable implements Observer
      * @see BobCarConnectionManager#startFunctions()
      * @see BobCarConnectionManager#startSerialConnection()
      */
-    void initialize()
+    public void initialize()
     {
         addObserver(this);
 
