@@ -1,7 +1,7 @@
 package sem.group5.bob.car.streaming;
 
-import sem.group5.bob.car.BobCarConnectionManager;
-import sem.group5.bob.car.PoseManager;
+import sem.group5.bob.car.smartCarManager.BobCarConnectionManager;
+import sem.group5.bob.car.smartCarManager.PoseManager;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
@@ -16,7 +16,6 @@ public class DepthStreamer extends Observable implements Runnable
     private PoseManager poseManagerManagerProvider;
     private Socket socket;
     private boolean streaming;
-    private OutputStream out;
 
     /**
      *  Constructor
@@ -42,7 +41,7 @@ public class DepthStreamer extends Observable implements Runnable
         try
         {
             System.out.println("Streaming depth");
-            out = socket.getOutputStream();
+            OutputStream out = socket.getOutputStream();
 
             out.write( ( "HTTP/1.0 200 OK\r\n" +
                     "Server: YourServerName\r\n" +
