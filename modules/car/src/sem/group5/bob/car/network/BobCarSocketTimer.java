@@ -1,4 +1,6 @@
-package sem.group5.bob.car;
+package sem.group5.bob.car.network;
+
+import sem.group5.bob.car.smartCar.RemoteControlListener;
 
 /**
  * The Timer class allows a graceful exit when an application
@@ -11,7 +13,7 @@ package sem.group5.bob.car;
  * the length of the timer in milliseconds.
  *
  */
-class BobCarSocketTimer extends Thread
+public class BobCarSocketTimer extends Thread
 {
     private RemoteControlListener rmt;
     // Length of timeout
@@ -24,9 +26,9 @@ class BobCarSocketTimer extends Thread
     /**
      * Creates a timer of a specified length
      * @param	length	Length of time before timeout occurs
-     * @see RemoteControlListener#RemoteControlListener(int, SmartCarComm)
+     * @see RemoteControlListener
      */
-    BobCarSocketTimer(int length, RemoteControlListener rmt)
+    public BobCarSocketTimer(int length, RemoteControlListener rmt)
     {
         this.rmt = rmt;
         // Assign to member variable
@@ -41,7 +43,7 @@ class BobCarSocketTimer extends Thread
     /**
      * Resets the timer back to zero
      */
-    synchronized void reset()
+    public synchronized void reset()
     {
         m_elapsed = 0;
     }
