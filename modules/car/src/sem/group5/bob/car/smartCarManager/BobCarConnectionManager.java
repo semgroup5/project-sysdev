@@ -29,7 +29,6 @@ public class BobCarConnectionManager extends Observable implements Observer
     private VideoStreamer videoStreamer;
     private Thread depthThread;
     private Thread videoThread;
-    PoseManager poseManager;
 
 
     /**
@@ -53,7 +52,7 @@ public class BobCarConnectionManager extends Observable implements Observer
                 if (videoThread.isAlive())videoThread.interrupt();
             } catch (IOException e)
             {
-                e.printStackTrace();
+                System.out.println("Could Not Stop Stream");
             }
 
             System.out.println("Closing Stream");
@@ -69,19 +68,13 @@ public class BobCarConnectionManager extends Observable implements Observer
                     {
                         device.setLed(LedStatus.BLINK_GREEN);
                         device.setTiltAngle(0);
-                        System.out.println(1);
                         device.stopDepth();
-                        System.out.println(2);
                         device.stopVideo();
-                        System.out.println(3);
                         device.close();
                     }
-                    System.out.println(4);
                     context.shutdown();
                 }
             } catch (Exception ignore) {}
-
-            System.out.println(5);
             startFunctions();
         }
         else if (arg.equals("Serial Port Failed"))
@@ -251,13 +244,13 @@ public class BobCarConnectionManager extends Observable implements Observer
 
             DepthJpegProvider depthJpegProvider = new DepthJpegProvider();
             VideoProvider videoProvider = new VideoProvider();
-            poseManager = new PoseManager();
-            serialC.setPose(poseManager);
+            PoseManager poseManager = new PoseManager();
+            serialC.addObserver(poseManager);
 
             if (device != null)
             {
                 device.startDepth(depthJpegProvider::receiveDepth);
-                device.startVideo(videoProvider::receiveVideo);
+//                device.startVideo(videoProvider::receiveVideo);
             }
 
             depthStreamer = new DepthStreamer(depthSocket.getSocket(), depthJpegProvider, poseManager);
@@ -266,8 +259,8 @@ public class BobCarConnectionManager extends Observable implements Observer
             videoStreamer.addObserver(this);
             depthThread = new Thread(depthStreamer);
             depthThread.start();
-            videoThread = new Thread(videoStreamer);
-            videoThread.start();
+//            videoThread = new Thread(videoStreamer);
+//            videoThread.start();
         }
         catch(Exception e)
         {

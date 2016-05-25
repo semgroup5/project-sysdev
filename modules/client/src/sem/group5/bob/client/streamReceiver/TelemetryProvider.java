@@ -3,18 +3,12 @@ package sem.group5.bob.client.streamReceiver;
 import sem.group5.bob.client.Pose;
 import sem.group5.bob.client.ScanLine;
 import sem.group5.bob.client.Telemetry;
-import sem.group5.bob.client.mappGenerator.FileLogger;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Observable;
 import java.util.Observer;
 
-/**
- * Created by jpp on 25/05/16.
- */
 public class TelemetryProvider extends Observable implements Observer{
-    private FileLogger log;
 
     /**
      * Method that will mimic a laser rangefinder data by passing a line of pixels captured from an image .
@@ -28,16 +22,6 @@ public class TelemetryProvider extends Observable implements Observer{
         }
         return distanceArray;
     }
-
-    /**
-     * todo
-     * @param log log
-     */
-    public void setLog(FileLogger log)
-    {
-        this.log = log;
-    }
-
 
     /**
      * The update() method updates an observed object.

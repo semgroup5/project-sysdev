@@ -14,7 +14,7 @@ public class TextPoseHandler implements Observer {
     /**
      *
      * @param poseInfo String with Position information
-     * @param provider
+     * @param provider p
      */
     public TextPoseHandler(TextField poseInfo, MultiPartsParse provider) {
         this.poseInfo = poseInfo;
@@ -23,8 +23,8 @@ public class TextPoseHandler implements Observer {
 
     /**
      * Updtate the TextField in the GUI with the latest position info
-     * @param o
-     * @param arg
+     * @param o o
+     * @param arg arg
      */
     @Override
     public void update(Observable o, Object arg) {

@@ -71,7 +71,6 @@ public class ClientState implements Observer
      * Method that starts mapping and change the state of the client to reflect the changes.
      * @see MultiPartsParse
      * @see VideoStreamHandler
-     * @see ScanLineGenerator
      */
     public void startMap()
     {
@@ -80,8 +79,6 @@ public class ClientState implements Observer
             FileLogger fileLogger = new FileLogger();
 
             MultiPartsParse parseDepth = new MultiPartsParse(connectionManager.getDepthSocket().getInputStream());
-            ScanLineGenerator scanLineGenerator = new ScanLineGenerator();
-            parseDepth.addObserver(scanLineGenerator);
             TelemetryProvider telemetryProvider = new TelemetryProvider();
             parseDepth.addObserver(telemetryProvider);
             telemetryProvider.addObserver(fileLogger);
@@ -90,9 +87,6 @@ public class ClientState implements Observer
             videoHandlerDepth.startStreaming();
 
             new TextPoseHandler(gui.poseInfo, parseDepth);
-
-            parseDepth.setLog(fileLogger);
-            scanLineGenerator.setLog(fileLogger);
 
             gui.replaceStatus("Stream connection successful.");
         }catch (Exception e)
@@ -179,7 +173,7 @@ public class ClientState implements Observer
                 this.smartcarController = connectionManager.getSmartcarController();
                 gui.replaceStatus("Connected!");
                 isConnected = true;
-                gui.stream();
+                //gui.stream();
                 connectionManager.checkConnectionHeartBeat();
                 Platform.runLater(()-> gui.setState("Connected"));
                 gui.loadImage.setVisible(false);
