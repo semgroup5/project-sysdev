@@ -121,7 +121,7 @@ public class ControllerGUI extends Observable
         }
     }
 
-    /**
+    /**a
      * Method to handle events like mapping, load and save.
      * @param event clicked button event
      */
