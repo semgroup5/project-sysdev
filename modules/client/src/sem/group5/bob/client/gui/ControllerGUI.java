@@ -9,7 +9,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
-import sem.group5.bob.client.smartcar.ClientState;
+import sem.group5.bob.client.smartCar.ClientState;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -121,7 +121,7 @@ public class ControllerGUI extends Observable
         }
     }
 
-    /**a
+    /**
      * Method to handle events like mapping, load and save.
      * @param event clicked button event
      */
@@ -320,7 +320,7 @@ public class ControllerGUI extends Observable
 
 
     /**
-     * Method to handle mouseReleased events on the smartcar control
+     * Method to handle mouseReleased events on the smartCar control
      * @param event mouse released event
      */
     public void mouseReleased(MouseEvent event) throws IOException
@@ -348,7 +348,7 @@ public class ControllerGUI extends Observable
     }
 
     /**
-     * Method to handle mousePressed events on the smartcar control.
+     * Method to handle mousePressed events on the smartCar control.
      * @param event mouse pressed event
      */
     public void mousePressed(MouseEvent event) throws IOException

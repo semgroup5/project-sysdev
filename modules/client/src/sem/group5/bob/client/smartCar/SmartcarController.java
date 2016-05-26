@@ -1,4 +1,4 @@
-package sem.group5.bob.client.smartcar;
+package sem.group5.bob.client.smartCar;
 
 import java.io.IOException;
 

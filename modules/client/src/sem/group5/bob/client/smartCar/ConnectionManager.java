@@ -1,4 +1,4 @@
-package sem.group5.bob.client.smartcar;
+package sem.group5.bob.client.smartCar;
 
 import sem.group5.bob.client.network.DiscoveryListener;
 
@@ -177,7 +177,7 @@ class ConnectionManager extends Observable
     }
 
     /**
-     * @return smartcar
+     * @return smartCar
      * @throws IOException
      */
     Smartcar getSmartCar() throws IOException

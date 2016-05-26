@@ -1,4 +1,4 @@
-package sem.group5.bob.car.smartcar;
+package sem.group5.bob.car.smartCar;
 
 import org.openkinect.freenect.TiltStatus;
 import sem.group5.bob.car.network.BobCarSocketTimer;
