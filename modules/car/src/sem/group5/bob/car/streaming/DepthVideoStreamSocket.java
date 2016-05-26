@@ -34,7 +34,7 @@ public class DepthVideoStreamSocket extends Observable
             this.socket = serverSocket.accept();
 
             // Sets true to turn off Nagle's algorithm to improve packet latency
-            this.socket.setTcpNoDelay(true);
+            // this.socket.setTcpNoDelay(true);
             this.socket.setReuseAddress(true);
             System.out.println("Stream socket established");
         }

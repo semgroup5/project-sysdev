@@ -250,4 +250,9 @@ public class SmartcarController
     {
         kinectTilting = false;
     }
+
+    public void resetArduino() throws IOException {
+        smartcar.resetArduino();
+    }
 }
+

@@ -33,6 +33,7 @@ public class ControllerGUI extends Observable
     public MenuItem mSave;
     public MenuItem mLoad;
     public MenuItem about;
+    public MenuItem mResetArduino;
     public ImageView kinectViewDepth;
     public Button map;
     public Button up;
@@ -125,8 +126,7 @@ public class ControllerGUI extends Observable
      * Method to handle events like mapping, load and save.
      * @param event clicked button event
      */
-    public void handle(ActionEvent event)
-    {
+    public void handle(ActionEvent event) throws IOException {
         FileChooser fileChooser;
         File file;
         if(event.getSource().equals(map) && clientState.isConnected)
@@ -171,6 +171,9 @@ public class ControllerGUI extends Observable
             if(file != null){
                 SaveFile("Map", file);
             }
+        }
+        else if(event.getSource().equals(mResetArduino)){
+            clientState.getSmartcarController().resetArduino();
         }
     }
 
