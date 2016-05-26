@@ -11,7 +11,7 @@ import java.util.Observer;
 
 
 /**
- * Class that will track and update the state of the client depending on the arguments passed.
+ * Class that will track and update the state of the client UI depending on the arguments passed.
  * @see java.util.Observer
  */
 public class ClientState implements Observer
@@ -36,7 +36,7 @@ public class ClientState implements Observer
     }
 
     /**
-     *  Method that initializes the connectionManager connection
+     *  Initializes the connectionManager connection
      *  see @ ConnectionManager
      */
     private void startConnection()
@@ -48,8 +48,8 @@ public class ClientState implements Observer
     }
 
     /**
-     *  Method to return if the client is connected to the BobCar
-     * @return true if the client is connected
+     * Returns if the client is connected to the BobCar
+     * @return true if the client is connected, false if not.
      */
     public boolean isConnected()
     {
@@ -57,8 +57,8 @@ public class ClientState implements Observer
     }
 
     /**
-     * Method that call disconnect from the connectionManager
-     * @see ConnectionManager
+     * Calls disconnect() from the connectionManager
+     * see @ ConnectionManager
      */
     private void disconnect()
     {
@@ -66,7 +66,7 @@ public class ClientState implements Observer
     }
 
     /**
-     * Method that starts mapping and change the state of the client to reflect the changes.
+     * Starts mapping and change the state of the client and displays the position info on the GUI.
      * @see MultiPartsParse
      * @see VideoStreamHandler
      */
@@ -95,7 +95,7 @@ public class ClientState implements Observer
 
 
     /**
-     * Method to stop mapping from the client side
+     * Stops mapping by stopping the incoming stream and closes the connection socket.
      */
     public void stopMap()
     {
@@ -111,7 +111,7 @@ public class ClientState implements Observer
     }
 
     /**
-     * Method to return the smartCarController
+     * getter to return the smartCarController
      * @return this SmartCarController
      */
     public SmartcarController getSmartcarController()
@@ -120,7 +120,7 @@ public class ClientState implements Observer
     }
 
     /**
-     * Method that starts the video streaming
+     * Starts video streaming and updates the GUI status accordingly.
      */
 
     public void startStream()
@@ -140,7 +140,7 @@ public class ClientState implements Observer
     }
 
     /**
-     *  Method to do the necessary updates when notified by the observable objects
+     * Updates methods applied when notified by failure in the methods called for the GUI.
      * @param observable observable object
      * @param o observable object
      */

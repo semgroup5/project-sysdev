@@ -20,7 +20,7 @@ public class DiscoveryListener
 
 
     /**
-     * listenIP() method will scan and filter incoming connections based on the pockets received,
+     * Scans and filter incoming connections based on the pockets received,
      * once BobCar pocket is received its IP will be accepted and stored to establish a connection..
      */
     public void listenIp()
@@ -64,7 +64,7 @@ public class DiscoveryListener
     }
 
     /**
-     * Method to close the IP listener
+     * Closes the IP listener
      * @see DiscoveryListener#listenIp()
      */
     private void close()
@@ -76,7 +76,7 @@ public class DiscoveryListener
     }
 
     /**
-     * Method to get BobCar IP
+     *Getter for BobCar IP
      * @return this IP
      */
 

@@ -8,12 +8,13 @@ import java.util.Observable;
 import java.util.Observer;
 
 /**
- * This class is notified when an observed object is changed and updates the object with specific methods.
+ * Manages the connections on the car components.
  * @see java.util.Observer
  * @see java.util.Observable
  */
 public class BobCarConnectionManager extends Observable implements Observer
 {
+
     private SmartCarComm scc;
     private SerialConnect serialC;
     private RemoteControlListener rcl;
@@ -28,8 +29,8 @@ public class BobCarConnectionManager extends Observable implements Observer
 
 
     /**
-     * The update() method updates an observed object.
-     * This is called by the notifyObservers() from Observable
+     * Updates an observed connection status.
+     * This is called by the notifyObservers() from Observable.
      * @param o observable object
      * @param arg the argument
      * @see BobCarConnectionManager
@@ -148,7 +149,7 @@ public class BobCarConnectionManager extends Observable implements Observer
     }
 
     /**
-     * Method to initiate broadcasting BobCar's IP and adds an observer.
+     * Initiate broadcasting BobCar's IP and adds an observer.
      * @see DiscoveryBroadcaster
      * @see java.util.Observer
      */
@@ -162,7 +163,7 @@ public class BobCarConnectionManager extends Observable implements Observer
     }
 
     /**
-     * Method to initiate the port listener that will be waiting for inputs from the client side to forward it then to the arduino.
+     * Initiate the port listener that will be waiting for inputs from the client side to forward it then to the arduino.
      * @param scc smartCarComm
      * @see SmartCarComm
      * @see RemoteControlListener#RemoteControlListener(int, SmartCarComm)
@@ -229,7 +230,6 @@ public class BobCarConnectionManager extends Observable implements Observer
 
     /**
      * Threaded method to start the video streaming.
-     * Catch and logs errors
      * @see DepthStreamer
      */
     private void streamVideo()

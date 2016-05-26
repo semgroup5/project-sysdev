@@ -114,6 +114,10 @@ class Smartcar extends Observable
         }
     }
 
+    /**
+     * Soft resets the arduino
+     * @throws IOException
+     */
     void resetArduino() throws IOException{
     try{
         String toSend = "x";
@@ -127,7 +131,7 @@ class Smartcar extends Observable
 }
 
     /**
-     * Method to close sockets in the client controller.
+     * Close sockets in the client controller.
      * @throws IOException
      */
     void close() throws IOException
@@ -139,7 +143,7 @@ class Smartcar extends Observable
     }
 
     /**
-     * Method to notify observer in case of connection error
+     * Notify observer in case of connection error
      */
     private void notifyConnectionLost()
     {

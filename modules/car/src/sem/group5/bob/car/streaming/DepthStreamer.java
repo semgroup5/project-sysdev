@@ -6,9 +6,11 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.util.Observable;
-
+//TODO
 /**
- * Class responsible for sending video or depth stream to the client.
+ * Class responsible for sending depth stream to the client over a socket connection.
+ *@see java.lang.Runnable
+ * @see java.util.Observable
  */
 public class DepthStreamer extends Observable implements Runnable
 {
@@ -18,7 +20,7 @@ public class DepthStreamer extends Observable implements Runnable
     private boolean streaming;
 
     /**
-     *  Constructor
+     * Constructor
      * @param s socket used for communication
      * @param cjp responsible for selecting which frames will be send to the client.
      */
@@ -81,7 +83,7 @@ public class DepthStreamer extends Observable implements Runnable
     }
 
     /**
-     * Function used by the thread to run the stream.
+     * Used by the thread to run the stream.
      */
     public void run()
     {
@@ -89,7 +91,7 @@ public class DepthStreamer extends Observable implements Runnable
     }
 
     /**
-     * todo
+     * True if depth is streaming and false when not.
      * @param b b
      * @throws IOException
      */

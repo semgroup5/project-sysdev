@@ -7,8 +7,11 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.util.Observable;
 
+
 /**
- * Class responsible for sending video or depth stream to the client.
+ * Class responsible for sending video stream to the client over a socket connection.
+ * @see java.util.Observable
+ * @see java.lang.Runnable
  */
 public class VideoStreamer extends Observable implements Runnable{
     private VideoProvider videoProvider;
@@ -16,7 +19,7 @@ public class VideoStreamer extends Observable implements Runnable{
     private boolean streaming;
 
     /**
-     *  Constructor
+     * Constructor
      * @param s socket used for communication
      * @param videoProvider responsible for selecting which frames will be send to the client.
      */
@@ -27,7 +30,7 @@ public class VideoStreamer extends Observable implements Runnable{
     }
 
     /**
-     * Function that sends hte latest frames to client with boundaries so the client will be able to organize them. In case of
+     * Sends the latest frames to client with boundaries so the client will be able to organize them. In case of
      * any error is found while streaming it will notify the class BobCarConnectionManager.
      * @see DepthJpegProvider
      * @see BobCarConnectionManager
@@ -68,13 +71,18 @@ public class VideoStreamer extends Observable implements Runnable{
     }
 
     /**
-     * Function used by the thread to run the stream..
+     * Used by the thread to run the stream..
      */
     public void run()
     {
         this.stream();
     }
 
+    /**
+     * Boolean to start streaming if true and set the stream off if false.
+     * @param b
+     * @throws IOException
+     */
     public void setStreaming(boolean b) throws IOException
     {
         this.streaming = b;

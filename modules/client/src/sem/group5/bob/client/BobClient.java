@@ -34,7 +34,7 @@ public class BobClient extends Application {
     }
 
     /**
-     * Main function
+     * Main function to compile.
      * @param args main args
      */
     public static void main(String[] args) {
