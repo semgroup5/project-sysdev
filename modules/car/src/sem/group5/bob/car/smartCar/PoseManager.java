@@ -1,4 +1,4 @@
-package sem.group5.bob.car.smartcar;
+package sem.group5.bob.car.smartCar;
 
 import java.util.Observable;
 import java.util.Observer;
