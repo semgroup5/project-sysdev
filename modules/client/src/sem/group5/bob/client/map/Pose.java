@@ -1,17 +1,29 @@
-package sem.group5.bob.client;
+package sem.group5.bob.client.map;
 
-
+/**
+ * todo
+ */
 public class Pose {
-    public double x;
-    public double y;
-    public double theta;
+    private double x;
+    private double y;
+    private double theta;
 
+    /**
+     * todo
+     * @param x x
+     * @param y y
+     * @param theta theta
+     */
     public Pose(double x, double y, double theta) {
         this.x = x;
         this.y = y;
         this.theta = theta;
     }
 
+    /**
+     * todo
+     * @param s s
+     */
     public Pose(String s)
     {
         s = s.substring(s.indexOf(':'));
@@ -22,16 +34,28 @@ public class Pose {
         this.theta = Double.parseDouble(s);
     }
 
-    public double getX(){
+    /**
+     *
+     * @return x
+     */
+    double getX(){
         return x;
     }
 
-    public double getY()
+    /**
+     *
+     * @return y
+     */
+    double getY()
     {
         return y;
     }
 
-    public double getTheta()
+    /**
+     *
+     * @return theta
+     */
+    double getTheta()
     {
         return theta;
     }

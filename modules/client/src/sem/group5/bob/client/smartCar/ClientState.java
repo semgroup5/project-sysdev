@@ -1,11 +1,9 @@
-package sem.group5.bob.client.clientManager;
+package sem.group5.bob.client.smartcar;
 
 import javafx.application.Platform;
-import sem.group5.bob.client.ControllerGUI;
-import sem.group5.bob.client.bobSmartCar.Smartcar;
-import sem.group5.bob.client.bobSmartCar.SmartcarController;
-import sem.group5.bob.client.mappGenerator.FileLogger;
-import sem.group5.bob.client.streamReceiver.*;
+import sem.group5.bob.client.gui.ControllerGUI;
+import sem.group5.bob.client.map.FileLogger;
+import sem.group5.bob.client.streaming.*;
 
 import java.io.IOException;
 import java.util.Observable;
@@ -60,7 +58,7 @@ public class ClientState implements Observer
 
     /**
      * Method that call disconnect from the connectionManager
-     * see @ ConnectionManager
+     * @see ConnectionManager
      */
     private void disconnect()
     {
@@ -157,6 +155,7 @@ public class ClientState implements Observer
         {
             try
             {
+                if (gui.isMapping) gui.map.fire();
                 smartcar.close();
                 disconnect();
             } catch (IOException e)
@@ -173,7 +172,7 @@ public class ClientState implements Observer
                 this.smartcarController = connectionManager.getSmartcarController();
                 gui.replaceStatus("Connected!");
                 isConnected = true;
-                //gui.stream();
+//                gui.stream();
                 connectionManager.checkConnectionHeartBeat();
                 Platform.runLater(()-> gui.setState("Connected"));
                 gui.loadImage.setVisible(false);

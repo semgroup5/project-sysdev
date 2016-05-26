@@ -1,6 +1,6 @@
 package sem.group5.bob.car.network;
 
-import sem.group5.bob.car.smartCar.RemoteControlListener;
+import sem.group5.bob.car.smartcar.RemoteControlListener;
 
 /**
  * The Timer class allows a graceful exit when an application

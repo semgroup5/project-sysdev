@@ -1,6 +1,6 @@
 package sem.group5.bob.car.streaming;
 
-import sem.group5.bob.car.smartCarManager.BobCarConnectionManager;
+import sem.group5.bob.car.smartcar.BobCarConnectionManager;
 
 import java.io.IOException;
 import java.io.OutputStream;

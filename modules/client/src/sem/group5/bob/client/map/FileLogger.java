@@ -1,6 +1,5 @@
-package sem.group5.bob.client.mappGenerator;
+package sem.group5.bob.client.map;
 
-import sem.group5.bob.client.Telemetry;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -30,7 +29,7 @@ public class FileLogger implements Observer{
     /**
      * Function responsible for concatenating the string containing telemtry data
      * and writing it to the log file
-     * @param telemetry
+     * @param telemetry t
      */
     private void logTelemetry(Telemetry telemetry){
         String result;

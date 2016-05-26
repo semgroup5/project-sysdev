@@ -1,10 +1,7 @@
-package sem.group5.bob.car.smartCarManager;
+package sem.group5.bob.car.smartcar;
 
 import org.openkinect.freenect.*;
 import sem.group5.bob.car.network.DiscoveryBroadcaster;
-import sem.group5.bob.car.smartCar.RemoteControlListener;
-import sem.group5.bob.car.smartCar.SerialConnect;
-import sem.group5.bob.car.smartCar.SmartCarComm;
 import sem.group5.bob.car.streaming.*;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -45,37 +42,37 @@ public class BobCarConnectionManager extends Observable implements Observer
     {
         if (arg.equals("Connection Closed"))
         {
-            try
-            {
-                videoStreamer.setStreaming(false);
-                depthStreamer.setStreaming(false);
-                if (depthThread.isAlive())depthThread.interrupt();
-                if (videoThread.isAlive())videoThread.interrupt();
-            } catch (IOException e)
-            {
-                System.out.println("Could Not Stop Stream");
-            }
-
-            System.out.println("Closing Stream");
-            depthSocket.closeSocketStream();
-            videoSocket.closeSocketStream();
-
-            try
-            {
-                System.out.println("Shutting Down Device");
-                if (context != null)
-                {
-                    if (device != null)
-                    {
-                        device.setLed(LedStatus.BLINK_GREEN);
-                        device.setTiltAngle(0);
-                        device.stopDepth();
-                        device.stopVideo();
-                        device.close();
-                    }
-                    context.shutdown();
-                }
-            } catch (Exception ignore) {}
+//            try
+//            {
+//                videoStreamer.setStreaming(false);
+//                depthStreamer.setStreaming(false);
+//                if (depthThread.isAlive())depthThread.interrupt();
+//                if (videoThread.isAlive())videoThread.interrupt();
+//            } catch (IOException e)
+//            {
+//                System.out.println("Could Not Stop Stream");
+//            }
+//
+//            System.out.println("Closing Stream");
+//            depthSocket.closeSocketStream();
+//            videoSocket.closeSocketStream();
+//
+//            try
+//            {
+//                System.out.println("Shutting Down Device");
+//                if (context != null)
+//                {
+//                    if (device != null)
+//                    {
+//                        device.setLed(LedStatus.BLINK_GREEN);
+//                        device.setTiltAngle(0);
+//                        device.stopDepth();
+//                        device.stopVideo();
+//                        device.close();
+//                    }
+//                    context.shutdown();
+//                }
+//            } catch (Exception ignore) {}
             startFunctions();
         }
         else if (arg.equals("Serial Port Failed"))
@@ -124,7 +121,7 @@ public class BobCarConnectionManager extends Observable implements Observer
 
         startDiscoveryListener();
 
-        kinectSetting();
+//        kinectSetting();
 
     }
 
@@ -251,7 +248,7 @@ public class BobCarConnectionManager extends Observable implements Observer
             if (device != null)
             {
                 device.startDepth(depthJpegProvider::receiveDepth);
-//                device.startVideo(videoProvider::receiveVideo);
+                device.startVideo(videoProvider::receiveVideo);
             }
 
             depthStreamer = new DepthStreamer(depthSocket.getSocket(), depthJpegProvider, poseManager);
@@ -260,8 +257,8 @@ public class BobCarConnectionManager extends Observable implements Observer
             videoStreamer.addObserver(this);
             depthThread = new Thread(depthStreamer);
             depthThread.start();
-//            videoThread = new Thread(videoStreamer);
-//            videoThread.start();
+            videoThread = new Thread(videoStreamer);
+            videoThread.start();
         }
         catch(Exception e)
         {

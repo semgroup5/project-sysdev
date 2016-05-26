@@ -1,4 +1,4 @@
-package sem.group5.bob.client.streamReceiver;
+package sem.group5.bob.client.streaming;
 
 import org.apache.commons.fileupload.MultipartStream;
 import javax.imageio.ImageIO;
@@ -46,7 +46,7 @@ public class MultiPartsParse extends Observable implements Runnable
         }
 
         try{
-            nextPart = multipartStream.skipPreamble();
+            if (depthStream.available() > 0)nextPart = multipartStream.skipPreamble();
             while(nextPart)
             {
                 String headers = multipartStream.readHeaders();
@@ -66,7 +66,6 @@ public class MultiPartsParse extends Observable implements Runnable
                 } catch (IOException ignore) {}
             }
         }catch(Exception e){
-            e.printStackTrace();
             System.out.println("Caught Error Receiving Stream");
         }
 
