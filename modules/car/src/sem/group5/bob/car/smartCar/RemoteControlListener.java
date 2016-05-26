@@ -25,7 +25,7 @@ public class RemoteControlListener extends Observable implements Runnable
     private SmartCarComm sc;
     private Socket socket;
     private ServerSocket listener;
-    public BobCarSocketTimer timer;
+    BobCarSocketTimer timer;
     private boolean socketOpen;
     private Thread threadHeartbeat;
 
