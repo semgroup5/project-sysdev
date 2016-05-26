@@ -1,9 +1,8 @@
-package sem.group5.bob.car.smartCar;
+package sem.group5.bob.car.smartcar;
 
 import org.openkinect.freenect.*;
 import sem.group5.bob.car.network.DiscoveryBroadcaster;
 import sem.group5.bob.car.streaming.*;
-
 import java.io.OutputStream;
 import java.util.Observable;
 import java.util.Observer;

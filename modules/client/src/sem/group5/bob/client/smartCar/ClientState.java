@@ -1,4 +1,4 @@
-package sem.group5.bob.client.smartCar;
+package sem.group5.bob.client.smartcar;
 
 import javafx.application.Platform;
 import sem.group5.bob.client.gui.ControllerGUI;

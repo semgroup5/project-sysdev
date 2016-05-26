@@ -1,4 +1,4 @@
-package sem.group5.bob.client.smartCar;
+package sem.group5.bob.client.smartcar;
 
 import java.io.*;
 import java.net.Socket;
@@ -15,7 +15,7 @@ class Smartcar extends Observable
     private IOException e;
 
     /**
-     * Initialize a new connection to a remote smartCar
+     * Initialize a new connection to a remote smartcar
      * @param socket the socket used for connection
      */
     Smartcar(Socket socket)
@@ -96,7 +96,7 @@ class Smartcar extends Observable
 
 
     /**
-     * Rotate the smartCar on the spot
+     * Rotate the smartcar on the spot
      * @param angle rotation angle.
      * @throws IOException
      */
