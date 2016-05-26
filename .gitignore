@@ -1,3 +1,12 @@
 # Created by .ignore support plugin (hsz.mobi)
 .idea
 /project-sysdev.iml
+.DS_Store
+modules/.DS_Store
+modules/car/.DS_Store
+modules/car/src/.DS_Store
+modules/car/src/sem/.DS_Store
+modules/car/src/sem/group5/.DS_Store
+modules/car/src/sem/group5/bob/.DS_Store
+modules/car/src/sem/group5/bob/car/.DS_Store
+src/
