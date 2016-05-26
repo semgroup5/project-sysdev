@@ -130,20 +130,20 @@ public class ControllerGUI extends Observable
         File file;
         if(event.getSource().equals(map) && clientState.isConnected)
         {
-//            if (!isMapping)
-//            {
-//                style.styleButton(map, "active");
-//                isMapping = true;
+            if (!isMapping)
+            {
+                style.styleButton(map, "active");
+                isMapping = true;
 //                clientState.startMap();
-//                replaceStatus("Mapping Started!");
-//            }
-//            else
-//            {
-//                style.styleButton(map, "");
-//                replaceStatus("Mapping stopped!");
-//                isMapping = false;
+                replaceStatus("Mapping Started!");
+            }
+            else
+            {
+                style.styleButton(map, "");
+                replaceStatus("Mapping stopped!");
+                isMapping = false;
 //                clientState.stopMap();
-//            }
+            }
         }
         else if (event.getSource().equals(load) || event.getSource().equals(mLoad))
         {
