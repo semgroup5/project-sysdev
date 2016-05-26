@@ -1,9 +1,12 @@
 package sem.group5.bob.car.smartcar;
 
 import org.openkinect.freenect.*;
-import sem.group5.bob.car.streaming.DepthVideoStreamSocket;
 import sem.group5.bob.car.network.DiscoveryBroadcaster;
-import sem.group5.bob.car.streaming.*;
+import sem.group5.bob.car.network.StreamSocket;
+import sem.group5.bob.car.streaming.DepthJpegProvider;
+import sem.group5.bob.car.streaming.DepthStreamer;
+import sem.group5.bob.car.streaming.VideoProvider;
+import sem.group5.bob.car.streaming.VideoStreamer;
 import java.io.OutputStream;
 import java.util.Observable;
 import java.util.Observer;
@@ -19,8 +22,8 @@ public class BobCarConnectionManager extends Observable implements Observer
     private SmartCarComm scc;
     private SerialConnect serialC;
     private RemoteControlListener rcl;
-    private DepthVideoStreamSocket depthSocket;
-    private DepthVideoStreamSocket videoSocket;
+    private StreamSocket depthSocket;
+    private StreamSocket videoSocket;
     static  Device device;
     private Context context;
     private DepthStreamer depthStreamer;
@@ -127,24 +130,24 @@ public class BobCarConnectionManager extends Observable implements Observer
 
     /**
      * Start a Depth Stream Socket
-     * @see DepthVideoStreamSocket
+     * @see sem.group5.bob.car.network.StreamSocket
      */
     private void setDepthStreamSocket()
     {
         Thread t = new Thread(()->{
-            depthSocket = new DepthVideoStreamSocket(50001);
+            depthSocket = new StreamSocket(50001);
         });
         t.start();
     }
 
     /**
      * Start a Video Stream Socket
-     * @see DepthVideoStreamSocket
+     * @see StreamSocket
      */
     private void setVideoStreamSocket()
     {
         Thread t = new Thread(()->{
-            videoSocket = new DepthVideoStreamSocket(50002);
+            videoSocket = new StreamSocket(50002);
         });
         t.start();
     }
