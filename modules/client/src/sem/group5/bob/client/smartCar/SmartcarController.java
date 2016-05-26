@@ -1,6 +1,4 @@
-package sem.group5.bob.client.bobSmartCar;
-
-import sem.group5.bob.client.clientManager.ConnectionManager;
+package sem.group5.bob.client.smartcar;
 
 import java.io.IOException;
 
@@ -24,7 +22,7 @@ public class SmartcarController
      * @param connectionManager BobCar connection manager
      * @throws IOException
      */
-    public SmartcarController(ConnectionManager connectionManager) throws IOException
+    SmartcarController(ConnectionManager connectionManager) throws IOException
     {
         smartcar = connectionManager.getSmartCar();
         driving = false;

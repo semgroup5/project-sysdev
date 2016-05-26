@@ -1,4 +1,4 @@
-package sem.group5.bob.client.streamReceiver;
+package sem.group5.bob.client.streaming;
 
 import javafx.scene.control.TextField;
 import java.util.Observable;

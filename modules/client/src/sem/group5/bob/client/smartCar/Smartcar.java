@@ -1,4 +1,4 @@
-package sem.group5.bob.client.bobSmartCar;
+package sem.group5.bob.client.smartcar;
 
 import java.io.*;
 import java.net.Socket;
@@ -8,7 +8,7 @@ import java.util.Observable;
  * Class that will establish the remote connection with BobCar and send the controls input from the controller.
  * @see java.util.Observable
  */
-public class Smartcar extends Observable
+class Smartcar extends Observable
 {
     private Socket socket;
     private Writer out;
@@ -18,7 +18,7 @@ public class Smartcar extends Observable
      * Initialize a new connection to a remote smartcar
      * @param socket the socket used for connection
      */
-    public Smartcar(Socket socket)
+    Smartcar(Socket socket)
     {
         try
         {
@@ -130,7 +130,7 @@ public class Smartcar extends Observable
      * Method to close sockets in the client controller.
      * @throws IOException
      */
-    public void close() throws IOException
+    void close() throws IOException
     {
         out.write("close/");
         out.flush();
@@ -151,7 +151,7 @@ public class Smartcar extends Observable
      * boolean checks if the socket is connected.
      * @return true if it is still connected to bobCar and the socket is open.
      */
-   public boolean isConnected()
+    boolean isConnected()
     {
         return socket.isConnected() && !socket.isClosed();
     }
@@ -160,7 +160,7 @@ public class Smartcar extends Observable
      * Gets IoException error
      * @return Io Exception error
      */
-    public IOException getE()
+    IOException getE()
     {
         return e;
     }

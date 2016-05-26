@@ -1,8 +1,7 @@
-package sem.group5.bob.car.smartCar;
+package sem.group5.bob.car.smartcar;
 
 import org.openkinect.freenect.TiltStatus;
 import sem.group5.bob.car.network.BobCarSocketTimer;
-import sem.group5.bob.car.smartCarManager.BobCarConnectionManager;
 
 import java.io.IOException;
 import java.io.InputStream;

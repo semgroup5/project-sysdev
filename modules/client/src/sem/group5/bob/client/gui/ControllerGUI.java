@@ -1,4 +1,4 @@
-package sem.group5.bob.client;
+package sem.group5.bob.client.gui;
 
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -9,8 +9,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
-import sem.group5.bob.client.clientManager.ClientState;
-import sem.group5.bob.client.componentStyle.ButtonsStyle;
+import sem.group5.bob.client.smartcar.ClientState;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -401,7 +400,7 @@ public class ControllerGUI extends Observable
     /**
      *TODO
      */
-    void fireConnection()
+    public void fireConnection()
     {
         connect.fire();
     }

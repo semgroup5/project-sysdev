@@ -1,7 +1,5 @@
-package sem.group5.bob.client.clientManager;
+package sem.group5.bob.client.smartcar;
 
-import sem.group5.bob.client.bobSmartCar.Smartcar;
-import sem.group5.bob.client.bobSmartCar.SmartcarController;
 import sem.group5.bob.client.network.DiscoveryListener;
 
 import java.io.IOException;
@@ -13,7 +11,7 @@ import java.util.Observable;
  * Class responsible for the connections between the client and BobCar
  * @see java.util.Observable
  */
-public class ConnectionManager extends Observable
+class ConnectionManager extends Observable
 {
     private String carIp;
     private Socket controlSocket;
@@ -182,7 +180,7 @@ public class ConnectionManager extends Observable
      * @return smartcar
      * @throws IOException
      */
-    public Smartcar getSmartCar() throws IOException
+    Smartcar getSmartCar() throws IOException
     {
         if(smartcar == null || !smartcar.isConnected())
         {

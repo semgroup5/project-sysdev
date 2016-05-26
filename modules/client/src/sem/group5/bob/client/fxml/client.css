@@ -1,11 +1,3 @@
-/*.text-field:focused{
-     input[type="text"]
-     {
-         background: rgba(0, 0, 0, 0);
-         border: none;
-         outline: none;
-     }*/
-}
 .text-area .scroll-pane .content{
     -fx-background-color: 
         linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),

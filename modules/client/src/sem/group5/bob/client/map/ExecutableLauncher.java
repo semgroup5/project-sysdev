@@ -1,4 +1,4 @@
-package sem.group5.bob.client.mappGenerator;
+package sem.group5.bob.client.map;
 
 import java.io.IOException;
 

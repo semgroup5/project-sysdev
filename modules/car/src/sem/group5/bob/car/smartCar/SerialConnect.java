@@ -1,4 +1,4 @@
-package sem.group5.bob.car.smartCar;
+package sem.group5.bob.car.smartcar;
 
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
