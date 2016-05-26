@@ -6,7 +6,7 @@ import java.net.Socket;
 import java.util.Observable;
 
 /**
- * Class implements client sockets that allows data read from the Kinect to be communicated to the PC side.
+ * Class implements client sockets that allows depth data read from the Kinect to be communicated to the PC side.
  * @see java.util.Observable
  */
 
@@ -16,7 +16,7 @@ public class DepthVideoStreamSocket extends Observable
     private ServerSocket serverSocket;
 
     /**
-     * A method that establishes a socket connection with a preset port and arguments.
+     * Establishes a socket connection with a preset port.
      */
     public DepthVideoStreamSocket(int port)
     {
@@ -48,7 +48,7 @@ public class DepthVideoStreamSocket extends Observable
     }
 
     /**
-     * Method to close the created depth stream socket
+     * Close the created depth stream socket
      */
     public void closeSocketStream()
     {
@@ -66,7 +66,7 @@ public class DepthVideoStreamSocket extends Observable
     }
 
     /**
-     * Method to return the value of the depth socket
+     * A getter for the value of the depth socket
      * @return socket
      */
     public Socket getSocket()

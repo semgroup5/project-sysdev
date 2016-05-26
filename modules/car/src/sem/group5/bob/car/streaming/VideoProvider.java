@@ -8,9 +8,11 @@ import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
 import java.nio.ShortBuffer;
 import java.util.Observable;
-//TODO
+
 /**
  *
+ * @see java.util.Observable
+ * @see sem.group5.bob.car.streaming.JpegProvider
  */
 public class VideoProvider extends Observable implements JpegProvider
 {
@@ -44,8 +46,8 @@ public class VideoProvider extends Observable implements JpegProvider
     }
 
     /**
-     *
-     * @return frame
+     * Getter to get the latest Jpeg
+     * @return dFram, Depth frame.
      * @throws Exception
      */
     public byte[] getLatestJpeg() throws Exception

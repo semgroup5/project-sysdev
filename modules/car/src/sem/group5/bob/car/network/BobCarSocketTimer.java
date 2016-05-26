@@ -90,6 +90,10 @@ public class BobCarSocketTimer extends Thread
         rmt.closeConnections();
     }
 
+    /**
+     * Start a timer to be used to time out the connection.
+     * @param b Set to true to start counting down.
+     */
     public void setCountingDown(boolean b)
     {
         countingDown = b;

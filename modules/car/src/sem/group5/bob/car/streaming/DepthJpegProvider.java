@@ -9,9 +9,8 @@ import java.nio.ByteBuffer;
 import java.nio.ShortBuffer;
 import java.util.Observable;
 
-//TODO
 /**
- * Cal
+ *
  * @see java.util.Observable
  * [JpegProvider]{@link sem.group5.bob.car.streaming.JpegProvider}
  */

@@ -23,7 +23,7 @@ class ConnectionManager extends Observable
     Exception connectionException;
 
     /**
-     * Method to connect to bobCar.
+     * Establishes the connection to BobCar.
      */
     void connect()
     {
@@ -59,8 +59,7 @@ class ConnectionManager extends Observable
     }
 
     /**
-     * Method to disconnect from bobCar
-     * @see ClientState
+     * Disconnects from bobCar.
      */
     void disconnect()
     {
@@ -93,7 +92,7 @@ class ConnectionManager extends Observable
     }
 
     /**
-     * Method to reconnect to bobCar.
+     * Reconnect to bobCar, called if a connection exception is caught in connect().
      * @see ConnectionManager#connect()
      * @see ConnectionManager#disconnect()
      */
@@ -104,7 +103,7 @@ class ConnectionManager extends Observable
     }
 
     /**
-     * Method to get smartcarController
+     * Getter for smartcarController
      * @return smartcarController
      * @throws IOException
      */
@@ -119,7 +118,7 @@ class ConnectionManager extends Observable
     }
 
     /**
-     * Method to get controlSocket
+     * Getter for controlSocket
      * @return controlSocket
      * @throws IOException
      */
@@ -135,7 +134,7 @@ class ConnectionManager extends Observable
     }
 
     /**
-     * Method to get depthSocket
+     * Getter for the depthSocket
      * @return depthSocket
      * @throws IOException
      */
@@ -151,8 +150,8 @@ class ConnectionManager extends Observable
     }
 
     /**
-     * Method to get depthSocket
-     * @return depthSocket
+     * Getter for videoSocket.
+     * @return videoSocket
      * @throws IOException
      */
     Socket getVideoSocket() throws IOException
@@ -167,7 +166,7 @@ class ConnectionManager extends Observable
     }
 
     /**
-     * Method to close the depth socket.
+     * Closes the depth socket.
      * @throws IOException
      */
     void DepthSocketClose() throws IOException
@@ -177,7 +176,8 @@ class ConnectionManager extends Observable
     }
 
     /**
-     * @return smartCar
+     * Getter for smartCar.
+     * @return smartcar
      * @throws IOException
      */
     Smartcar getSmartCar() throws IOException
@@ -190,8 +190,8 @@ class ConnectionManager extends Observable
     }
 
     /**
-     * Method to tell if it is connected to bobCar
-     * @return true if connected
+     * Boolean checks if the car is connected
+     * @return true if connected and return false if not.
      */
     private boolean isConnected()
     {

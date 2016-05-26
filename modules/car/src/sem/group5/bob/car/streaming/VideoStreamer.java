@@ -19,7 +19,7 @@ public class VideoStreamer extends Observable implements Runnable{
     private boolean streaming;
 
     /**
-     *  Constructor
+     * Constructor
      * @param s socket used for communication
      * @param videoProvider responsible for selecting which frames will be send to the client.
      */
@@ -79,8 +79,8 @@ public class VideoStreamer extends Observable implements Runnable{
     }
 
     /**
-     *
-     * @param b boolean
+     * Boolean to start streaming if true and set the stream off if false.
+     * @param b
      * @throws IOException
      */
     public void setStreaming(boolean b) throws IOException

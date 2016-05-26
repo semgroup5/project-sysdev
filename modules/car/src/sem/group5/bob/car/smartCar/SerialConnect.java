@@ -38,8 +38,7 @@ public class SerialConnect extends Observable implements SerialPortEventListener
     private static final int DATA_RATE = 9600;
 
     /**
-     * Method to establish the serial connection.
-     * Support for Windows, MAC and Linux.
+     * Establishes the serial connection, different arguments to offer support for Windows, MAC and Linux.
      */
     public void initialize()
     {
@@ -117,7 +116,7 @@ public class SerialConnect extends Observable implements SerialPortEventListener
     }
 
     /**
-     * Method to close the serial connection
+     * Closes the serial connection
      */
     public synchronized void close()
     {
@@ -142,7 +141,7 @@ public class SerialConnect extends Observable implements SerialPortEventListener
     }
 
     /**
-     * Method to return this OutputStream
+     * Getter for the output stream
      * @return output
      */
     public OutputStream getOutputStream()
@@ -152,7 +151,7 @@ public class SerialConnect extends Observable implements SerialPortEventListener
 
 
     /**
-     * Method that will be watching over events in the serial connection port
+     * Sends the available data through the serial connection port
      * @param oEvent Object event
      */
 
