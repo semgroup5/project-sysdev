@@ -4,25 +4,25 @@ import java.util.Observable;
 import java.util.Observer;
 
 /**
- * This class will read a set distance and angle values provided by the car's sensors and will
+ * This class will read a set distance and carAngle values provided by the car's sensors and will
  * implement some mathematical calculations on it and will to return the current position of the car.
  */
 public class PoseManager implements Observer {
-    private double angle;
-    private double disp;
-    private double dispOld = 0;
-    private double X = 0, Y = 0;
+    private double carAngle;
+    private double carDistance;
+    private double distOld = 0;
+    private double coordinateX = 0, coordinateY = 0;
 
 
     /**
      * Round up the number the digits can be selected.
      *
-     * @param a
-     * @param r
-     * @return todo
+     * @param a the car angle
+     * @param r how many decimals we use
+     * @return returns the roundup number
      */
 
-    private static double rdNum(Double a, int r) {
+    private static double roundupNum(Double a, int r) {
         if (r < 0) throw new IllegalArgumentException();
 
         long factor = (long) Math.pow(10, r);
@@ -34,60 +34,62 @@ public class PoseManager implements Observer {
     /**
      * Breaks down the raw data from the arduino to values
      *
-     * @param locationData String that holds the raw data
+     * @param locationData String that holds the raw data from arduino serial
      */
     private void breakDown(String locationData) {
-        this.angle = Double.parseDouble(locationData.substring(locationData.indexOf("d") + 1, locationData.indexOf("a")));
-        this.disp = Double.parseDouble(locationData.substring(locationData.indexOf("a") + 1, locationData.indexOf("/")));
+        this.carDistance = Double.parseDouble(locationData.substring(locationData.indexOf("d") + 1, locationData.indexOf("a")));
+        this.carAngle = Double.parseDouble(locationData.substring(locationData.indexOf("a") + 1, locationData.indexOf("/")));
         calculatePose();
     }
 
     /**
      * Method that will calculate the position of the car and adds different arguments for 4 special cases depending on
-     * the angle of the car(angle Zero, 90, 180, 270) to avoid getting a zero value on an axes traveled by the car.
+     * the carAngle of the car(carAngle Zero, 90, 180, 270) to avoid getting a zero value on an axes traveled by the car.
      */
     private void calculatePose()
     {
         double angTmp;
-        double x;
-        double y;
-        double dispTmp = disp - dispOld;
+        double xTmp;
+        double yTmp;
+        double dispTmp = carDistance - distOld;
         double angOld = 0;
-        angTmp = angle- angOld;
-        if (Math.abs(angle) >= 360) {
-            angle = angle % 360;
+        angTmp = carAngle - angOld;
+        if (Math.abs(carAngle) >= 360) {
+            this.carAngle = carAngle % 360;
         }
-        if(angTmp !=0 || dispTmp !=0) {
-            if (angle == 90) {
-                X += disp;
-                dispOld += dispTmp;
-            } else if (angle == 270) {
-                X -= disp;
-                dispOld += dispTmp;
-            } else if (angle == 0) {
-                Y += disp;
-                dispOld += dispTmp;
-            } else if (angle == 180) {
-                Y -= disp;
-                dispOld += dispTmp;
+        if (angTmp != 0 || dispTmp != 0) {
+            if (carAngle == 90) {
+                coordinateX += carDistance;
+                distOld += dispTmp;
+            } else if (carAngle == 270) {
+                coordinateX -= carDistance;
+                distOld += dispTmp;
+            } else if (carAngle == 0) {
+                coordinateY += carDistance;
+                distOld += dispTmp;
+            } else if (carAngle == 180) {
+                coordinateY -= carDistance;
+                distOld += dispTmp;
             } else {
-                y = dispTmp * Math.cos(rdNum((Math.toRadians(angle)), 5));
-                x = dispTmp * Math.sin(rdNum((Math.toRadians(angle)), 5));
 
-                this.X += rdNum(x, 2);
-                this.Y += rdNum(y, 2);
-                dispOld += dispTmp;
+                yTmp = dispTmp * Math.cos(roundupNum((Math.toRadians(carAngle)), 5));
+                xTmp = dispTmp * Math.sin(roundupNum((Math.toRadians(carAngle)), 5));
+
+                this.coordinateX += roundupNum(xTmp, 0);
+                this.coordinateY += roundupNum(yTmp, 0);
+                distOld += dispTmp;
+                System.out.println(coordinateX + "this is the coordinateX");
+                System.out.println(coordinateY + "this is the coordinateY");
+
             }
         }
 
     }
 
     /**
-     * p
-     * todo
-     *
-     * @param o   todo
-     * @param arg todo
+     * Method that gets the serial read from the arduino
+     * @param o   Unused variable
+     * @param arg Holds the data passed from the observable
      */
     public void update(Observable o, Object arg) {
         String locationData = (String) arg;
@@ -96,9 +98,9 @@ public class PoseManager implements Observer {
     }
 
     /**
-     * @return A string with X, Y and angle will be returned with the format of "X"+ X + "Y" + Y + "Ang" + angle.
+     * @return A string with X, Y and carAngle will be returned with the format of "X"+ coordinateX + "Y" + coordinateY + "Ang" + carAngle.
      */
     public String getLatestPose() {
-        return "X" + X + "Y" + Y + "Ang" + angle;
+        return "X" + coordinateX + "Y" + coordinateY + "Ang" + carAngle;
     }
 }
