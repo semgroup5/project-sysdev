@@ -8,11 +8,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import sem.group5.bob.client.clientManager.ClientState;
 import sem.group5.bob.client.componentStyle.ButtonsStyle;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -35,6 +33,7 @@ public class ControllerGUI extends Observable
     public MenuItem mSave;
     public MenuItem mLoad;
     public MenuItem about;
+    public MenuItem mResetArduino;
     public ImageView kinectViewDepth;
     public Button map;
     public Button up;
@@ -127,8 +126,7 @@ public class ControllerGUI extends Observable
      * Method to handle events like mapping, load and save.
      * @param event clicked button event
      */
-    public void handle(ActionEvent event)
-    {
+    public void handle(ActionEvent event) throws IOException {
         FileChooser fileChooser;
         File file;
         if(event.getSource().equals(map) && clientState.isConnected)
@@ -173,6 +171,9 @@ public class ControllerGUI extends Observable
             if(file != null){
                 SaveFile("Map", file);
             }
+        }
+        else if(event.getSource().equals(mResetArduino)){
+            clientState.getSmartcarController().resetArduino();
         }
     }
 

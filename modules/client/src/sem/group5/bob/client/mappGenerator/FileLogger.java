@@ -1,7 +1,6 @@
 package sem.group5.bob.client.mappGenerator;
 
 import sem.group5.bob.client.Telemetry;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -20,7 +19,7 @@ public class FileLogger implements Observer{
     private  File createDirc;
 
     /**
-     * The following function create a PringWriter and calls upon crtFile
+     * The following function create a PrintWriter and calls upon crtFile
      * @throws IOException
      */
     public FileLogger() throws IOException{
@@ -28,6 +27,11 @@ public class FileLogger implements Observer{
        writer = new PrintWriter(fileLocation, "UTF-8");
     }
 
+    /**
+     * Function responsible for concatenating the string containing telemtry data
+     * and writing it to the log file
+     * @param telemetry
+     */
     private void logTelemetry(Telemetry telemetry){
         String result;
 
@@ -71,20 +75,6 @@ public class FileLogger implements Observer{
         catch (Exception e){
             e.printStackTrace();
         }
-    }
-    /**
-     * Add the string into logData
-     * @param string The string that need to be stored in the logData
-     */
-    public void addToList(String string){
-        this.logData.add(string);
-    }
-
-    /**
-     * The following function reset the ArrayList logData
-     */
-    public void resetList(){
-        this.logData.clear();
     }
 
     /**

@@ -57,12 +57,15 @@ public class DepthStreamer extends Observable implements Runnable
                 if (Thread.interrupted()) throw new InterruptedException();
                 data = cjp.getLatestJpeg();
                 //PoseManager poseProvider =  new PoseManager();     getlatestpose   needs to be implemented on the pose class
+                poseManagerManagerProvider.getLatestPose();
+                String pose = poseManagerManagerProvider.getLatestPose();
                 out.write(("--BoundaryString\r\n" +
                         "Content-type: image/jpeg\r\n" +
                         "Content-Length: " + data.length + "\r\n" +
-                        "X-Robot-Pose: " + poseManagerManagerProvider.getLatestPose() + "\r\n\r\n").getBytes());
+                        "X-Robot-Pose: " + pose + "\r\n\r\n").getBytes());
                 out.write(data);
 
+                System.out.print(pose);
                 if (Thread.interrupted()) throw new InterruptedException();
                 out.write("\r\n\r\n".getBytes());
                 out.flush();

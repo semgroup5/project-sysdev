@@ -20,6 +20,8 @@ public class SerialConnect extends Observable implements SerialPortEventListener
     private SerialPort serialPort;
     private int retryArduinoConnect = 0;
 
+
+
     // The port that's being used for the connection.
 
     private static final String PORT_NAMES[] = {
