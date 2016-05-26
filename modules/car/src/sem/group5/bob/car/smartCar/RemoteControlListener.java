@@ -140,6 +140,9 @@ public class RemoteControlListener extends Observable implements Runnable
                         }
                         timer.reset();
                     }
+                    else if (first == 'x'){
+                        sc.resetArduino();
+                    }
                 }
 
                 // Catch and logs errors

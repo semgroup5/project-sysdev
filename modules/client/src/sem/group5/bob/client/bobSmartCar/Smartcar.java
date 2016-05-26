@@ -114,6 +114,18 @@ public class Smartcar extends Observable
         }
     }
 
+    void resetArduino() throws IOException{
+    try{
+        String toSend = "x";
+        out.write(toSend + "/");
+        out.flush();
+    }catch (InterruptedIOException e){
+        this.e = e;
+        notifyConnectionLost();
+    }
+
+}
+
     /**
      * Method to close sockets in the client controller.
      * @throws IOException
