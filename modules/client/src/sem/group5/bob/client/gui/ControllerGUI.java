@@ -1,4 +1,4 @@
-package sem.group5.bob.client;
+package sem.group5.bob.client.gui;
 
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -9,8 +9,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
-import sem.group5.bob.client.clientManager.ClientState;
-import sem.group5.bob.client.componentStyle.ButtonsStyle;
+import sem.group5.bob.client.smartCar.ClientState;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -45,7 +44,7 @@ public class ControllerGUI extends Observable
     public Button save;
     public Button load;
     public ImageView kinectViewVideo;
-    private boolean isMapping = false;
+    public boolean isMapping = false;
     private boolean connectClicked = false;
     public Slider speedControl;
     public ImageView loadImage;
@@ -54,7 +53,7 @@ public class ControllerGUI extends Observable
     public TextField poseInfo;
 
     /**
-     * Constructor constructs a object clientState and adds an observer to it.
+     * constructs a object clientState and adds an observer to it.
      * @see ClientState
      */
     public ControllerGUI()
@@ -87,7 +86,7 @@ public class ControllerGUI extends Observable
     }
 
     /**
-     * Method update the GUI depending on the string value.
+     * Updates the GUI depending on the string value.
      * @param state A string that represents the state of the Text annotation.
 
      */
@@ -109,7 +108,7 @@ public class ControllerGUI extends Observable
     }
 
     /**
-     * Method to start streaming on the client side
+     * Start streaming on the client UI side
      */
     public void stream()
     {
@@ -123,7 +122,7 @@ public class ControllerGUI extends Observable
     }
 
     /**
-     * Method to handle events like mapping, load and save.
+     * Handle events like mapping, load and save.
      * @param event clicked button event
      */
     public void handle(ActionEvent event) throws IOException {
@@ -135,7 +134,7 @@ public class ControllerGUI extends Observable
             {
                 style.styleButton(map, "active");
                 isMapping = true;
-                clientState.startMap();
+//                clientState.startMap();
                 replaceStatus("Mapping Started!");
             }
             else
@@ -143,7 +142,7 @@ public class ControllerGUI extends Observable
                 style.styleButton(map, "");
                 replaceStatus("Mapping stopped!");
                 isMapping = false;
-                clientState.stopMap();
+//                clientState.stopMap();
             }
         }
         else if (event.getSource().equals(load) || event.getSource().equals(mLoad))
@@ -178,7 +177,7 @@ public class ControllerGUI extends Observable
     }
 
     /**
-     * Method to shutdown the GUI
+     * To Shutdown the GUI
      */
     public void closeApplication()
     {
@@ -197,7 +196,7 @@ public class ControllerGUI extends Observable
     }
 
     /**
-     * Method to take off shadow effect of the buttons
+     * Removes the shadow effect on the buttons
      * @param event see @ButtonStyle
      */
     public void shadowOff(Event event)
@@ -206,7 +205,7 @@ public class ControllerGUI extends Observable
     }
 
     /**
-     * Method to handle the keylisteners when a key is pressed.
+     * Handle the keylisteners when a key is pressed.
      * @param event key pressed event
      * @throws IOException
      */
@@ -268,7 +267,7 @@ public class ControllerGUI extends Observable
     }
 
     /**
-     * Method to handle the keylisteners when a key is released.
+     * Handle the keylisteners when a key is released.
      * @param event key released event
      * @throws IOException
      */
@@ -309,7 +308,7 @@ public class ControllerGUI extends Observable
     }
 
     /**
-     * Method to set InnerShadow effect to buttons
+     * Sets an InnerShadow effect to buttons.
      * @param event ButtonStyle
      * @see ButtonsStyle
      */
@@ -321,7 +320,7 @@ public class ControllerGUI extends Observable
 
 
     /**
-     * Method to handle mouseReleased events on the smartcar control
+     * Handles mouseReleased events on the smartcar control UI.
      * @param event mouse released event
      */
     public void mouseReleased(MouseEvent event) throws IOException
@@ -349,7 +348,7 @@ public class ControllerGUI extends Observable
     }
 
     /**
-     * Method to handle mousePressed events on the smartcar control.
+     * Handles mousePressed events on the smartcar control UI.
      * @param event mouse pressed event
      */
     public void mousePressed(MouseEvent event) throws IOException
@@ -379,7 +378,7 @@ public class ControllerGUI extends Observable
 
 
     /**
-     * Method to save maps in the computer's directory.
+     * Save maps in the computer's directory.
      * @param content the data to be saved
      * @param file the file in which the content will be saved
      */
@@ -399,9 +398,9 @@ public class ControllerGUI extends Observable
     }
 
     /**
-     *TODO
+     * Starts the connections
      */
-    void fireConnection()
+    public void fireConnection()
     {
         connect.fire();
     }
@@ -417,7 +416,8 @@ public class ControllerGUI extends Observable
         textFeedback.setText(s);
     }
 
-    /**TODO
+    /**
+     * Boolean set to true if the connect button is clicked on the UI.
      * @param b boolean flag
      */
     public void setConnectClicked(boolean b)

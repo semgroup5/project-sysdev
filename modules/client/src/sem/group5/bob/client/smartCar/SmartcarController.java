@@ -1,6 +1,4 @@
-package sem.group5.bob.client.bobSmartCar;
-
-import sem.group5.bob.client.clientManager.ConnectionManager;
+package sem.group5.bob.client.smartCar;
 
 import java.io.IOException;
 
@@ -24,7 +22,7 @@ public class SmartcarController
      * @param connectionManager BobCar connection manager
      * @throws IOException
      */
-    public SmartcarController(ConnectionManager connectionManager) throws IOException
+    SmartcarController(ConnectionManager connectionManager) throws IOException
     {
         smartcar = connectionManager.getSmartCar();
         driving = false;
@@ -33,7 +31,7 @@ public class SmartcarController
     }
 
     /**
-     * Method to move the car forward
+     * Moves the car forward
      * @param speed the car speed
      * @throws IOException
      */
@@ -54,7 +52,7 @@ public class SmartcarController
     }
 
     /**
-     * Method to move the car back
+     * Move the car back
      * @param speed the car speed
      * @throws IOException
      */
@@ -75,7 +73,7 @@ public class SmartcarController
     }
 
     /**
-     * Method to move left
+     * Moves the car left direction
      * @throws IOException
      */
     public void pressLeft() throws IOException
@@ -102,7 +100,7 @@ public class SmartcarController
     }
 
     /**
-     * Method to move the car right
+     * Move the car right direction
      * @throws IOException
      */
     public void pressRight() throws IOException
@@ -129,7 +127,7 @@ public class SmartcarController
     }
 
     /**
-     * Method to stop the car on button release.
+     * Stop the car when forward button is release.
      * @throws IOException
      */
     public void releaseForward() throws IOException
@@ -146,7 +144,7 @@ public class SmartcarController
     }
 
     /**
-     * Method to stop the car on button release.
+     * Stop the car when back button is release.
      * @throws IOException
      */
     public void releaseBack() throws IOException
@@ -210,7 +208,7 @@ public class SmartcarController
     }
 
     /**
-     * Control the motor to move the viewing area of the kinect up.
+     * Control the motor to move the viewing angle of the kinect up.
      * @throws IOException
      */
     public void pressTiltKinectUp() throws IOException
@@ -227,7 +225,7 @@ public class SmartcarController
     }
 
     /**
-     * Control the motor to move the viewing area of the kinect down.
+     * Control the motor to move the viewing angle of the kinect down.
      * @throws IOException
      */
     public void pressTiltKinectDown() throws IOException
@@ -251,6 +249,10 @@ public class SmartcarController
         kinectTilting = false;
     }
 
+    /**
+     * Sodt resets the arduino.
+     * @throws IOException
+     */
     public void resetArduino() throws IOException {
         smartcar.resetArduino();
     }

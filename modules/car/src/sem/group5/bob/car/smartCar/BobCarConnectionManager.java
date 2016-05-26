@@ -1,23 +1,21 @@
-package sem.group5.bob.car.smartCarManager;
+package sem.group5.bob.car.smartCar;
 
 import org.openkinect.freenect.*;
 import sem.group5.bob.car.network.DiscoveryBroadcaster;
-import sem.group5.bob.car.smartCar.RemoteControlListener;
-import sem.group5.bob.car.smartCar.SerialConnect;
-import sem.group5.bob.car.smartCar.SmartCarComm;
 import sem.group5.bob.car.streaming.*;
-import java.io.IOException;
+
 import java.io.OutputStream;
 import java.util.Observable;
 import java.util.Observer;
 
 /**
- * This class is notified when an observed object is changed and updates the object with specific methods.
+ * Manages the connections on the car components.
  * @see java.util.Observer
  * @see java.util.Observable
  */
 public class BobCarConnectionManager extends Observable implements Observer
 {
+
     private SmartCarComm scc;
     private SerialConnect serialC;
     private RemoteControlListener rcl;
@@ -32,8 +30,8 @@ public class BobCarConnectionManager extends Observable implements Observer
 
 
     /**
-     * The update() method updates an observed object.
-     * This is called by the notifyObservers() from Observable
+     * Updates an observed connection status.
+     * This is called by the notifyObservers() from Observable.
      * @param o observable object
      * @param arg the argument
      * @see BobCarConnectionManager
@@ -44,37 +42,37 @@ public class BobCarConnectionManager extends Observable implements Observer
     {
         if (arg.equals("Connection Closed"))
         {
-            try
-            {
-                videoStreamer.setStreaming(false);
-                depthStreamer.setStreaming(false);
-                if (depthThread.isAlive())depthThread.interrupt();
-                if (videoThread.isAlive())videoThread.interrupt();
-            } catch (IOException e)
-            {
-                System.out.println("Could Not Stop Stream");
-            }
-
-            System.out.println("Closing Stream");
-            depthSocket.closeSocketStream();
-            videoSocket.closeSocketStream();
-
-            try
-            {
-                System.out.println("Shutting Down Device");
-                if (context != null)
-                {
-                    if (device != null)
-                    {
-                        device.setLed(LedStatus.BLINK_GREEN);
-                        device.setTiltAngle(0);
-                        device.stopDepth();
-                        device.stopVideo();
-                        device.close();
-                    }
-                    context.shutdown();
-                }
-            } catch (Exception ignore) {}
+//            try
+//            {
+//                videoStreamer.setStreaming(false);
+//                depthStreamer.setStreaming(false);
+//                if (depthThread.isAlive())depthThread.interrupt();
+//                if (videoThread.isAlive())videoThread.interrupt();
+//            } catch (IOException e)
+//            {
+//                System.out.println("Could Not Stop Stream");
+//            }
+//
+//            System.out.println("Closing Stream");
+//            depthSocket.closeSocketStream();
+//            videoSocket.closeSocketStream();
+//
+//            try
+//            {
+//                System.out.println("Shutting Down Device");
+//                if (context != null)
+//                {
+//                    if (device != null)
+//                    {
+//                        device.setLed(LedStatus.BLINK_GREEN);
+//                        device.setTiltAngle(0);
+//                        device.stopDepth();
+//                        device.stopVideo();
+//                        device.close();
+//                    }
+//                    context.shutdown();
+//                }
+//            } catch (Exception ignore) {}
             startFunctions();
         }
         else if (arg.equals("Serial Port Failed"))
@@ -123,7 +121,7 @@ public class BobCarConnectionManager extends Observable implements Observer
 
         startDiscoveryListener();
 
-        kinectSetting();
+//        kinectSetting();
 
     }
 
@@ -152,7 +150,7 @@ public class BobCarConnectionManager extends Observable implements Observer
     }
 
     /**
-     * Method to initiate broadcasting BobCar's IP and adds an observer.
+     * Initiate broadcasting BobCar's IP and adds an observer.
      * @see DiscoveryBroadcaster
      * @see java.util.Observer
      */
@@ -166,7 +164,7 @@ public class BobCarConnectionManager extends Observable implements Observer
     }
 
     /**
-     * Method to initiate the port listener that will be waiting for inputs from the client side to forward it then to the arduino.
+     * Initiate the port listener that will be waiting for inputs from the client side to forward it then to the arduino.
      * @param scc smartCarComm
      * @see SmartCarComm
      * @see RemoteControlListener#RemoteControlListener(int, SmartCarComm)
@@ -233,7 +231,6 @@ public class BobCarConnectionManager extends Observable implements Observer
 
     /**
      * Threaded method to start the video streaming.
-     * Catch and logs errors
      * @see DepthStreamer
      */
     private void streamVideo()
@@ -250,7 +247,7 @@ public class BobCarConnectionManager extends Observable implements Observer
             if (device != null)
             {
                 device.startDepth(depthJpegProvider::receiveDepth);
-//                device.startVideo(videoProvider::receiveVideo);
+                device.startVideo(videoProvider::receiveVideo);
             }
 
             depthStreamer = new DepthStreamer(depthSocket.getSocket(), depthJpegProvider, poseManager);
@@ -259,8 +256,8 @@ public class BobCarConnectionManager extends Observable implements Observer
             videoStreamer.addObserver(this);
             depthThread = new Thread(depthStreamer);
             depthThread.start();
-//            videoThread = new Thread(videoStreamer);
-//            videoThread.start();
+            videoThread = new Thread(videoStreamer);
+            videoThread.start();
         }
         catch(Exception e)
         {

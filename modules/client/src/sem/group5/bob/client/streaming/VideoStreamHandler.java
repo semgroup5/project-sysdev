@@ -1,4 +1,4 @@
-package sem.group5.bob.client.streamReceiver;
+package sem.group5.bob.client.streaming;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
@@ -48,8 +48,6 @@ public class VideoStreamHandler implements Observer
     {
         provider.nextPart = false;
         thread.interrupt();
-
-
     }
 
     /**

@@ -2,7 +2,6 @@ package sem.group5.bob.car.smartCar;
 
 import org.openkinect.freenect.TiltStatus;
 import sem.group5.bob.car.network.BobCarSocketTimer;
-import sem.group5.bob.car.smartCarManager.BobCarConnectionManager;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -42,7 +41,7 @@ public class RemoteControlListener extends Observable implements Runnable
     }
 
     /**
-     * Method to open up the port and handle received inputs in it.
+     * Opens up the port and handle received inputs in it.
      * Adds a timer to the socket.
      *
      * read received input from the remote control as char and adds arguments.
@@ -177,7 +176,7 @@ public class RemoteControlListener extends Observable implements Runnable
     }
 
     /**
-     * Method used by the thread to run this application simultaneously
+     * Used by the thread to run this application simultaneously
      */
     public void run()
     {
@@ -185,7 +184,7 @@ public class RemoteControlListener extends Observable implements Runnable
     }
 
     /**
-     * Method to close the network connections and notifies an observer, notifies observer.
+     * Closes the network connections and notifies an observer, notifies observer.
      */
     public void closeConnections()
     {

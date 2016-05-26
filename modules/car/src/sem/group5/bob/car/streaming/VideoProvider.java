@@ -10,7 +10,9 @@ import java.nio.ShortBuffer;
 import java.util.Observable;
 
 /**
- * todo
+ *
+ * @see java.util.Observable
+ * @see sem.group5.bob.car.streaming.JpegProvider
  */
 public class VideoProvider extends Observable implements JpegProvider
 {
@@ -21,7 +23,7 @@ public class VideoProvider extends Observable implements JpegProvider
     private byte[] comboFrame = new byte[imageSize];
 
     /**
-     * todo
+     *
      */
     public VideoProvider()
     {
@@ -44,8 +46,8 @@ public class VideoProvider extends Observable implements JpegProvider
     }
 
     /**
-     * todo
-     * @return frame
+     * Getter to get the latest Jpeg
+     * @return dFram, Depth frame.
      * @throws Exception
      */
     public byte[] getLatestJpeg() throws Exception

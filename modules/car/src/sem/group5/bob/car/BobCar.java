@@ -1,6 +1,6 @@
 package sem.group5.bob.car;
 
-import sem.group5.bob.car.smartCarManager.BobCarConnectionManager;
+import sem.group5.bob.car.smartCar.BobCarConnectionManager;
 
 /**
  * Main class for BobCar connections

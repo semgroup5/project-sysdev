@@ -1,11 +1,11 @@
-package sem.group5.bob.car.smartCarManager;
+package sem.group5.bob.car.smartCar;
 
 import java.util.Observable;
 import java.util.Observer;
 
 /**
- * This class will read a set distance and carAngle values provided by the car's sensors and will
- * implement some mathematical calculations on it and will to return the current position of the car.
+ * Class that reads a set data of distance and angle values provided by the car's sensors and
+ * return the current position of the car as a result.
  */
 public class PoseManager implements Observer {
     private double carAngle;

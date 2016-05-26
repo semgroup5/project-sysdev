@@ -1,8 +1,8 @@
-package sem.group5.bob.client.streamReceiver;
+package sem.group5.bob.client.streaming;
 
-import sem.group5.bob.client.Pose;
-import sem.group5.bob.client.ScanLine;
-import sem.group5.bob.client.Telemetry;
+import sem.group5.bob.client.map.Pose;
+import sem.group5.bob.client.map.ScanLine;
+import sem.group5.bob.client.map.Telemetry;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Observable;

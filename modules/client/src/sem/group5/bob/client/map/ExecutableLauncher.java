@@ -1,4 +1,4 @@
-package sem.group5.bob.client.mappGenerator;
+package sem.group5.bob.client.map;
 
 import java.io.IOException;
 
@@ -8,7 +8,7 @@ import java.io.IOException;
 public class ExecutableLauncher {
 
     /**
-     * Method will launches a desktop app depending on the operating system.
+     * Launches a desktop app depending on the operating system, used to launch Carmen map generator.
      * @throws IOException
      */
     private void OSDiscoverer() throws IOException
@@ -29,7 +29,7 @@ public class ExecutableLauncher {
     }
 
     /**
-     * Main function.
+     * Main function to compile the class.
      * @param args todo
      * @throws IOException
      */

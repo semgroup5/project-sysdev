@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import sem.group5.bob.client.gui.ControllerGUI;
 
 /**
  * Main class for the client interface, loads client.fxml.
@@ -33,7 +34,7 @@ public class BobClient extends Application {
     }
 
     /**
-     * Main function
+     * Main function to compile.
      * @param args main args
      */
     public static void main(String[] args) {

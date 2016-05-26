@@ -1,6 +1,5 @@
-package sem.group5.bob.client.mappGenerator;
+package sem.group5.bob.client.map;
 
-import sem.group5.bob.client.Telemetry;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -11,6 +10,9 @@ import java.util.Observable;
 import java.util.Observer;
 
 
+/**
+ * Output a log file in a PC directory containing the data needed to supply Carmen App in order to generate a map.
+ */
 public class FileLogger implements Observer{
     private String fileLocation;
     private String OS = System.getProperty("os.name", "").toUpperCase();
@@ -19,7 +21,7 @@ public class FileLogger implements Observer{
     private  File createDirc;
 
     /**
-     * The following function create a PrintWriter and calls upon crtFile
+     * Creates a PrintWriter and calls upon crtFile
      * @throws IOException
      */
     public FileLogger() throws IOException{
@@ -28,8 +30,8 @@ public class FileLogger implements Observer{
     }
 
     /**
-     * Function responsible for concatenating the string containing telemtry data
-     * and writing it to the log file
+     * Connects the string containing telemtry data
+     * and write it to the log file
      * @param telemetry
      */
     private void logTelemetry(Telemetry telemetry){
@@ -78,7 +80,8 @@ public class FileLogger implements Observer{
     }
 
     /**
-     * The following function creates a folder named "BobCar" according to the OS the program is currently running on
+     * Creates a folder named "BobCar" with different paths depending on the OS the program is currently running on.
+     * Support for Windows, Linux and Mac.
      */
     private void crtDirc() {
         if (OS.startsWith("WINDOWS")) {
@@ -101,10 +104,9 @@ public class FileLogger implements Observer{
     }
 
     /**
-     * The following functions creates a txt file according to the operating system
+     * Creates a txt file according to the operating system
      * at location stored in this.createDirc
-     * with the name formatted as:
-     * "HH：mm：ss@yyyy-MM-dd" Hours : mins : secs @(ar)Year-Month-date
+     * with the name formatted as: "HH：mm：ss@yyyy-MM-dd" Hours : mins : secs @(ar)Year-Month-date
      */
     private void crtFile() {
         crtDirc();
@@ -128,9 +130,10 @@ public class FileLogger implements Observer{
     }
 
     /**
-     * todo
-     * @param obs todo
-     * @param o todo
+     * Observes the Telemetry(); and update to logs telemetry when it gets an observed instant of it.
+     * @see Telemetry
+     * @param obs Telemetry
+     * @param o Object
      */
     @Override
     public void update(Observable obs, Object o)
