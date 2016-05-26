@@ -18,6 +18,7 @@ import java.util.Observer;
  */
 public class BobCarConnectionManager extends Observable implements Observer
 {
+
     private SmartCarComm scc;
     private SerialConnect serialC;
     private RemoteControlListener rcl;

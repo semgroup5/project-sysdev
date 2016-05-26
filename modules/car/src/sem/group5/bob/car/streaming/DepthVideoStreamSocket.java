@@ -6,7 +6,7 @@ import java.net.Socket;
 import java.util.Observable;
 
 /**
- * This class implements client sockets that allows data read from the Kinect to be communicated to the PC side.
+ * Class implements client sockets that allows data read from the Kinect to be communicated to the PC side.
  * @see java.util.Observable
  */
 

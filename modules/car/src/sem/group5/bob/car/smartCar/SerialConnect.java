@@ -55,9 +55,8 @@ public class SerialConnect extends Observable implements SerialPortEventListener
         CommPortIdentifier portId = null;
         Enumeration portEnum = CommPortIdentifier.getPortIdentifiers();
 
-        /**
-         * First, Find an instance of serial port as set in PORT_NAMES.
-         */
+
+// First, Find an instance of serial port as set in PORT_NAMES.
         while (portEnum.hasMoreElements())
         {
             CommPortIdentifier currPortId = (CommPortIdentifier) portEnum.nextElement();

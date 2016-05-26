@@ -8,9 +8,9 @@ import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
 import java.nio.ShortBuffer;
 import java.util.Observable;
-
+//TODO
 /**
- * todo
+ *
  */
 public class VideoProvider extends Observable implements JpegProvider
 {
@@ -21,7 +21,7 @@ public class VideoProvider extends Observable implements JpegProvider
     private byte[] comboFrame = new byte[imageSize];
 
     /**
-     * todo
+     *
      */
     public VideoProvider()
     {
@@ -44,7 +44,7 @@ public class VideoProvider extends Observable implements JpegProvider
     }
 
     /**
-     * todo
+     *
      * @return frame
      * @throws Exception
      */
