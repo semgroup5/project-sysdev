@@ -60,16 +60,16 @@ public class PoseManager implements Observer {
         if (angTmp != 0 || dispTmp != 0) {
             if (carAngle == 90) {
                 coordinateX += carDistance;
-                distOld += dispTmp;
+
             } else if (carAngle == 270) {
                 coordinateX -= carDistance;
-                distOld += dispTmp;
+
             } else if (carAngle == 0) {
                 coordinateY += carDistance;
-                distOld += dispTmp;
+
             } else if (carAngle == 180) {
                 coordinateY -= carDistance;
-                distOld += dispTmp;
+
             } else {
 
                 yTmp = dispTmp * Math.cos(roundupNum((Math.toRadians(carAngle)), 5));
@@ -82,6 +82,7 @@ public class PoseManager implements Observer {
                 System.out.println(coordinateY + "this is the coordinateY");
 
             }
+            distOld += dispTmp;
         }
 
     }
