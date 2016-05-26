@@ -56,7 +56,6 @@ public class DepthStreamer extends Observable implements Runnable
             {
                 if (Thread.interrupted()) throw new InterruptedException();
                 data = cjp.getLatestJpeg();
-                //PoseManager poseProvider =  new PoseManager();     getlatestpose   needs to be implemented on the pose class
                 out.write(("--BoundaryString\r\n" +
                         "Content-type: image/jpeg\r\n" +
                         "Content-Length: " + data.length + "\r\n" +
@@ -71,8 +70,6 @@ public class DepthStreamer extends Observable implements Runnable
         } catch (Exception e)
         {
             System.out.println("Streaming Stopped Unexpectedly");
-//            setChanged();
-//            notifyObservers("Error Streaming");
         }
 
     }

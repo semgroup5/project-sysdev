@@ -3,7 +3,6 @@ package sem.group5.bob.client.streamReceiver;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-
 import java.awt.image.BufferedImage;
 import java.util.Observable;
 import java.util.Observer;

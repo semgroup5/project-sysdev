@@ -51,7 +51,7 @@ public class MultiPartsParse extends Observable implements Runnable
             {
                 String headers = multipartStream.readHeaders();
                 this.pose = headers.substring(headers.indexOf("X-Robot-Pose") + 12);
-                System.out.println(headers);
+
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
                 multipartStream.readBodyData(out);
                 InputStream in = new ByteArrayInputStream(out.toByteArray());

@@ -17,8 +17,8 @@ public class PoseManager implements Observer {
     /**
      * Round up the number the digits can be selected.
      *
-     * @param a todo
-     * @param r todo
+     * @param a
+     * @param r
      * @return todo
      */
 

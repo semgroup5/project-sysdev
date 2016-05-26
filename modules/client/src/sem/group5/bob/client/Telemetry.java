@@ -1,8 +1,6 @@
 package sem.group5.bob.client;
 
-/**
- * Created by jpp on 25/05/16.
- */
+
 public class Telemetry {
     public Pose pose;
     public ScanLine scanLine;
