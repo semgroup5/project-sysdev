@@ -44,7 +44,7 @@ public class ControllerGUI extends Observable
     public Button save;
     public Button load;
     public ImageView kinectViewVideo;
-    private boolean isMapping = false;
+    public boolean isMapping = false;
     private boolean connectClicked = false;
     public Slider speedControl;
     public ImageView loadImage;
@@ -130,20 +130,20 @@ public class ControllerGUI extends Observable
         File file;
         if(event.getSource().equals(map) && clientState.isConnected)
         {
-            if (!isMapping)
-            {
-                style.styleButton(map, "active");
-                isMapping = true;
-                clientState.startMap();
-                replaceStatus("Mapping Started!");
-            }
-            else
-            {
-                style.styleButton(map, "");
-                replaceStatus("Mapping stopped!");
-                isMapping = false;
-                clientState.stopMap();
-            }
+//            if (!isMapping)
+//            {
+//                style.styleButton(map, "active");
+//                isMapping = true;
+//                clientState.startMap();
+//                replaceStatus("Mapping Started!");
+//            }
+//            else
+//            {
+//                style.styleButton(map, "");
+//                replaceStatus("Mapping stopped!");
+//                isMapping = false;
+//                clientState.stopMap();
+//            }
         }
         else if (event.getSource().equals(load) || event.getSource().equals(mLoad))
         {

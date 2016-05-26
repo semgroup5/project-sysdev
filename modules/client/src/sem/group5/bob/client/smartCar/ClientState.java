@@ -155,6 +155,7 @@ public class ClientState implements Observer
         {
             try
             {
+                if (gui.isMapping) gui.map.fire();
                 smartcar.close();
                 disconnect();
             } catch (IOException e)
@@ -171,7 +172,7 @@ public class ClientState implements Observer
                 this.smartcarController = connectionManager.getSmartcarController();
                 gui.replaceStatus("Connected!");
                 isConnected = true;
-                gui.stream();
+//                gui.stream();
                 connectionManager.checkConnectionHeartBeat();
                 Platform.runLater(()-> gui.setState("Connected"));
                 gui.loadImage.setVisible(false);
