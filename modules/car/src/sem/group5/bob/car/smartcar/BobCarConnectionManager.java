@@ -21,7 +21,7 @@ public class BobCarConnectionManager extends Observable implements Observer
     private RemoteControlListener rcl;
     private DepthVideoStreamSocket depthSocket;
     private DepthVideoStreamSocket videoSocket;
-    public static  Device device;
+    static  Device device;
     private Context context;
     private DepthStreamer depthStreamer;
     private VideoStreamer videoStreamer;
