@@ -35,7 +35,6 @@ public class VideoStreamer extends Observable implements Runnable{
     private void stream()
     {
         try {
-            System.out.println("Streaming video");
             OutputStream out = socket.getOutputStream();
 
             out.write( ( "HTTP/1.0 200 OK\r\n" +
@@ -49,7 +48,6 @@ public class VideoStreamer extends Observable implements Runnable{
                     "boundary=BoundaryString\r\n\r\n" ).getBytes() );
             byte[] data;
             while (streaming) {
-                System.out.println("Sending frame Video");
                 if (Thread.interrupted()) throw new InterruptedException();
                 data = videoProvider.getLatestJpeg();
                 out.write(("--BoundaryString\r\n" +
@@ -62,7 +60,7 @@ public class VideoStreamer extends Observable implements Runnable{
                 if (Thread.interrupted()) throw new InterruptedException();
             }
         } catch (Exception e) {
-            System.out.println("Streaming Stopping");
+            System.out.println("Streaming Stopped Unexpectedly");
 //            setChanged();
 //            notifyObservers("Error Streaming");
         }

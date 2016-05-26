@@ -4,11 +4,9 @@ import javafx.application.Platform;
 import sem.group5.bob.client.ControllerGUI;
 import sem.group5.bob.client.bobSmartCar.Smartcar;
 import sem.group5.bob.client.bobSmartCar.SmartcarController;
-import sem.group5.bob.client.mappGenerator.LogToFile;
-import sem.group5.bob.client.streamReceiver.MultiPartsParse;
-import sem.group5.bob.client.streamReceiver.ScanLineGenerator;
-import sem.group5.bob.client.streamReceiver.TextPoseHandler;
-import sem.group5.bob.client.streamReceiver.VideoStreamHandler;
+import sem.group5.bob.client.mappGenerator.FileLogger;
+import sem.group5.bob.client.streamReceiver.*;
+
 import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
@@ -73,21 +71,23 @@ public class ClientState implements Observer
      * Method that starts mapping and change the state of the client to reflect the changes.
      * @see MultiPartsParse
      * @see VideoStreamHandler
-     * @see ScanLineGenerator
      */
     public void startMap()
     {
         try
         {
+            FileLogger fileLogger = new FileLogger();
+
             MultiPartsParse parseDepth = new MultiPartsParse(connectionManager.getDepthSocket().getInputStream());
-            ScanLineGenerator scanLineGenerator = new ScanLineGenerator();
-            parseDepth.addObserver(scanLineGenerator);
+            TelemetryProvider telemetryProvider = new TelemetryProvider();
+            parseDepth.addObserver(telemetryProvider);
+            telemetryProvider.addObserver(fileLogger);
+
             videoHandlerDepth = new VideoStreamHandler(gui.kinectViewDepth, parseDepth);
             videoHandlerDepth.startStreaming();
+
             new TextPoseHandler(gui.poseInfo, parseDepth);
-            LogToFile CarmenLog = new LogToFile();
-            parseDepth.setLog(CarmenLog);
-            scanLineGenerator.setLog(CarmenLog);
+
             gui.replaceStatus("Stream connection successful.");
         }catch (Exception e)
         {
@@ -173,7 +173,7 @@ public class ClientState implements Observer
                 this.smartcarController = connectionManager.getSmartcarController();
                 gui.replaceStatus("Connected!");
                 isConnected = true;
-                gui.stream();
+                //gui.stream();
                 connectionManager.checkConnectionHeartBeat();
                 Platform.runLater(()-> gui.setState("Connected"));
                 gui.loadImage.setVisible(false);

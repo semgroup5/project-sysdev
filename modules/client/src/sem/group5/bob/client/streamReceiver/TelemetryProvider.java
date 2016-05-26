@@ -1,17 +1,14 @@
 package sem.group5.bob.client.streamReceiver;
 
-import sem.group5.bob.client.mappGenerator.LogToFile;
+import sem.group5.bob.client.Pose;
+import sem.group5.bob.client.ScanLine;
+import sem.group5.bob.client.Telemetry;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Observable;
 import java.util.Observer;
 
-/**
- * Class responsible for generating data to be used on mapping.
- */
-public class ScanLineGenerator extends Observable implements Observer
-{
-    private LogToFile log;
+public class TelemetryProvider extends Observable implements Observer{
 
     /**
      * Method that will mimic a laser rangefinder data by passing a line of pixels captured from an image .
@@ -26,20 +23,6 @@ public class ScanLineGenerator extends Observable implements Observer
         return distanceArray;
     }
 
-    private void scanLineToLog(int[] array){
-        log.logDepthData(array);
-    }
-
-    /**
-     * todo
-     * @param log log
-     */
-    public void setLog(LogToFile log)
-    {
-        this.log = log;
-    }
-
-
     /**
      * The update() method updates an observed object.
      * This is called by the notifyObservers() from Observable
@@ -47,14 +30,15 @@ public class ScanLineGenerator extends Observable implements Observer
      * @param o the argument passed to the notifyObservers method
      */@Override
     public void update(Observable observable, Object o) {
-        if(o instanceof BufferedImage ) {
-            BufferedImage image = (BufferedImage) o;
-            setChanged();
-            int[] pixelLine = generateLine(image);
-            notifyObservers(pixelLine);
-            scanLineToLog(pixelLine);
-        } else {
-            System.out.println("Did not receive a valid image at Scan line");
-        }
+        MultiPartsParse mpp = (MultiPartsParse) observable;
+
+        if(!(o instanceof BufferedImage)){ return; }
+
+        Pose p = new Pose(mpp.getPose());
+        ScanLine scl = new ScanLine(generateLine((BufferedImage) o));
+        Telemetry t = new Telemetry(p, scl);
+
+        setChanged();
+        notifyObservers(t);
     }
 }

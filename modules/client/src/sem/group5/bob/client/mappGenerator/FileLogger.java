@@ -1,54 +1,71 @@
 package sem.group5.bob.client.mappGenerator;
 
+import sem.group5.bob.client.Telemetry;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Observable;
+import java.util.Observer;
 
 
-public class LogToFile implements Observer{
+public class FileLogger implements Observer{
     private String fileLocation;
     private String OS = System.getProperty("os.name", "").toUpperCase();
-    private ArrayList<String> logData = new ArrayList<>() ;
+    private ArrayList<String> logData = new ArrayList<>();
     private PrintWriter writer;
-    private int[] scanLineArray;
     private  File createDirc;
 
     /**
      * The following function create a PringWriter and calls upon crtFile
      * @throws IOException
      */
-    public LogToFile() throws IOException{
+    public FileLogger() throws IOException{
         crtFile();
        writer = new PrintWriter(fileLocation, "UTF-8");
     }
 
-    /**
-     * The following function write the odometry data into the file
-     * @param x It's a double passed from PoseManager, the X coordinate of the car
-     * @param y It's a double passed from PoseManager, the Y coordinate of the car
-     * @param theta It's a double passed from PoseManager, the angle of the car
-     **/
-    public void logOdometryFormatter(double x, double y, double theta){
-        try{
-            writer.println(x + y + theta);
-            writer.flush();
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
+    private void logTelemetry(Telemetry telemetry){
+        String result;
 
-    /**
-     * The following function write the DepthData into the file
-     * @param array the array that will be assigned as the scanLineArray which is containing the array of Red Pixels
-     */
-    public void logDepthData(int [] array){
-        this.scanLineArray = array;
+        // (old) # FLASER num_readings [range_readings] x y theta odom_x odom_y odom_theta
+
+//        # ROBOTLASER1 laser_type start_angle field_of_view angular_resolution
+//        #   maximum_range accuracy remission_mode
+//        #   num_readings [range_readings] laser_pose_x laser_pose_y laser_pose_theta
+//        #   robot_pose_x robot_pose_y robot_pose_theta
+//        #   laser_tv laser_rv forward_safety_dist side_safty_dist
+
+
+        int laser_type              = 99;
+        double start_angle          = telemetry.getPose().getTheta() - 27.5;
+        double field_of_view        = 55;
+        double angular_resolution   = 0.0859375;
+        int maximum_range           = 4096;
+        int accuracy                = 50;
+        int remission_mode          = 1;
+        int num_readings            = telemetry.getScanLine().getDistanceCount();
+        int[] range_readings        = telemetry.getScanLine().distances;
+        double laser_x              = telemetry.pose.getX();
+        double laser_y              = telemetry.pose.getY();
+        double laser_theta          = telemetry.pose.getTheta();
+        double odom_x               = telemetry.pose.getX();
+        double odom_y               = telemetry.pose.getY();
+        double odom_theta           = telemetry.pose.getTheta();
+
+        result = "ROBOTLASER1 " + laser_type + " " + start_angle + " " + field_of_view + " " + angular_resolution + " ";
+        result += maximum_range + " " + accuracy + " " + remission_mode + " " + num_readings +" ";
+
+        for(int range_reading : range_readings) {
+            result += range_reading + " ";
+        }
+        result += laser_x + " " + laser_y + " " + laser_theta + " " + odom_x + " " + odom_y + " " + odom_theta;
+
         try{
-            writer.println(/*add depth data here*/);
+            writer.println(result);
             writer.flush();
         }
         catch (Exception e){
@@ -128,7 +145,9 @@ public class LogToFile implements Observer{
     @Override
     public void update(Observable obs, Object o)
     {
-        String pixels = (String) o;
-        addToList(pixels);
+        if(o instanceof Telemetry)
+        {
+            logTelemetry((Telemetry)o);
+        }
     }
 }

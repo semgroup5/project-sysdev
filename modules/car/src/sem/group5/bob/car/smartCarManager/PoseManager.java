@@ -1,7 +1,5 @@
 package sem.group5.bob.car.smartCarManager;
 
-import sem.group5.bob.car.smartCar.SerialConnect;
-
 import java.util.Observable;
 import java.util.Observer;
 
@@ -12,7 +10,7 @@ import java.util.Observer;
 public class PoseManager implements Observer {
     private double angle;
     private double disp;
-    private double dispOld = 0 , angOld =0;
+    private double dispOld = 0;
     private double X = 0, Y = 0;
 
 
@@ -48,42 +46,37 @@ public class PoseManager implements Observer {
      * Method that will calculate the position of the car and adds different arguments for 4 special cases depending on
      * the angle of the car(angle Zero, 90, 180, 270) to avoid getting a zero value on an axes traveled by the car.
      */
-    private void calculatePose() {
+    private void calculatePose()
+    {
         double angTmp;
         double x;
         double y;
         double dispTmp = disp - dispOld;
-        angTmp = angle-this.angOld;
+        double angOld = 0;
+        angTmp = angle- angOld;
         if (Math.abs(angle) >= 360) {
-            this.angle = angle % 360;
+            angle = angle % 360;
         }
         if(angTmp !=0 || dispTmp !=0) {
             if (angle == 90) {
                 X += disp;
                 dispOld += dispTmp;
-                System.out.println("this is the Y" + Y);
             } else if (angle == 270) {
                 X -= disp;
                 dispOld += dispTmp;
-                System.out.println("this is the Y" + Y);
             } else if (angle == 0) {
                 Y += disp;
                 dispOld += dispTmp;
-                System.out.println("this is the X" + X);
             } else if (angle == 180) {
                 Y -= disp;
                 dispOld += dispTmp;
-                System.out.println("this is the X" + X);
             } else {
-
                 y = dispTmp * Math.cos(rdNum((Math.toRadians(angle)), 5));
                 x = dispTmp * Math.sin(rdNum((Math.toRadians(angle)), 5));
 
-                this.X += rdNum(x, 0);
-                this.Y += rdNum(y, 0);
+                this.X += rdNum(x, 2);
+                this.Y += rdNum(y, 2);
                 dispOld += dispTmp;
-                System.out.println(X + "this is the X");
-                System.out.println(Y + "this is the Y");
             }
         }
 
@@ -93,7 +86,7 @@ public class PoseManager implements Observer {
      * p
      * todo
      *
-     * @param o   todo v
+     * @param o   todo
      * @param arg todo
      */
     public void update(Observable o, Object arg) {
@@ -106,7 +99,6 @@ public class PoseManager implements Observer {
      * @return A string with X, Y and angle will be returned with the format of "X"+ X + "Y" + Y + "Ang" + angle.
      */
     public String getLatestPose() {
-        System.out.print("This is the data sent from getLatestPose: " + "X" + X + "Y" + Y + "Ang" + angle);
         return "X" + X + "Y" + Y + "Ang" + angle;
     }
 }

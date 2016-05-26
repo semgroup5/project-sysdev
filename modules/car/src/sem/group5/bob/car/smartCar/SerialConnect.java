@@ -4,9 +4,10 @@ import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
-import sem.group5.bob.car.smartCarManager.PoseManager;
-
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.util.Enumeration;
 import java.util.Observable;
 import java.util.Properties;
@@ -18,8 +19,6 @@ public class SerialConnect extends Observable implements SerialPortEventListener
 {
     private SerialPort serialPort;
     private int retryArduinoConnect = 0;
-    PoseManager poseManager;
-
 
     // The port that's being used for the connection.
 
@@ -35,10 +34,6 @@ public class SerialConnect extends Observable implements SerialPortEventListener
 
     //Default bits per second for COM port.
     private static final int DATA_RATE = 9600;
-
-    public void setPose(PoseManager poseManager) {
-        this.poseManager = poseManager;
-    }
 
     /**
      * Method to establish the serial connection.
@@ -166,12 +161,10 @@ public class SerialConnect extends Observable implements SerialPortEventListener
         {
             try
             {
-
-                this.addObserver(poseManager);
-                setChanged();
                 //Sends the input line to class PoseManager
                 String inputLine = input.readLine();
                 if(inputLine.startsWith("pose")){
+                    setChanged();
                     notifyObservers(inputLine.substring(4));
                 }
 
