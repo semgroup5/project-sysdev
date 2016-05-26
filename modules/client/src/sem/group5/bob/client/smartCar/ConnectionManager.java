@@ -1,4 +1,4 @@
-package sem.group5.bob.client.smartCar;
+package sem.group5.bob.client.smartcar;
 
 import sem.group5.bob.client.network.DiscoveryListener;
 
@@ -23,7 +23,7 @@ class ConnectionManager extends Observable
     Exception connectionException;
 
     /**
-     * Establishes the connection to BobCar.
+     * Method to connect to bobCar.
      */
     void connect()
     {
@@ -59,7 +59,8 @@ class ConnectionManager extends Observable
     }
 
     /**
-     * Disconnects from bobCar.
+     * Method to disconnect from bobCar
+     * @see ClientState
      */
     void disconnect()
     {
@@ -92,7 +93,7 @@ class ConnectionManager extends Observable
     }
 
     /**
-     * Reconnect to bobCar, called if a connection exception is caught in connect().
+     * Method to reconnect to bobCar.
      * @see ConnectionManager#connect()
      * @see ConnectionManager#disconnect()
      */
@@ -103,7 +104,7 @@ class ConnectionManager extends Observable
     }
 
     /**
-     * Getter for smartcarController
+     * Method to get smartcarController
      * @return smartcarController
      * @throws IOException
      */
@@ -118,7 +119,7 @@ class ConnectionManager extends Observable
     }
 
     /**
-     * Getter for controlSocket
+     * Method to get controlSocket
      * @return controlSocket
      * @throws IOException
      */
@@ -134,7 +135,7 @@ class ConnectionManager extends Observable
     }
 
     /**
-     * Getter for the depthSocket
+     * Method to get depthSocket
      * @return depthSocket
      * @throws IOException
      */
@@ -150,8 +151,8 @@ class ConnectionManager extends Observable
     }
 
     /**
-     * Getter for videoSocket.
-     * @return videoSocket
+     * Method to get depthSocket
+     * @return depthSocket
      * @throws IOException
      */
     Socket getVideoSocket() throws IOException
@@ -166,7 +167,7 @@ class ConnectionManager extends Observable
     }
 
     /**
-     * Closes the depth socket.
+     * Method to close the depth socket.
      * @throws IOException
      */
     void DepthSocketClose() throws IOException
@@ -176,7 +177,6 @@ class ConnectionManager extends Observable
     }
 
     /**
-     * Getter for smartCar.
      * @return smartcar
      * @throws IOException
      */
@@ -190,8 +190,8 @@ class ConnectionManager extends Observable
     }
 
     /**
-     * Boolean checks if the car is connected
-     * @return true if connected and return false if not.
+     * Method to tell if it is connected to bobCar
+     * @return true if connected
      */
     private boolean isConnected()
     {

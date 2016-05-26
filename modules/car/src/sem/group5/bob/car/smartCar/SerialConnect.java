@@ -1,4 +1,4 @@
-package sem.group5.bob.car.smartCar;
+package sem.group5.bob.car.smartcar;
 
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
@@ -38,7 +38,8 @@ public class SerialConnect extends Observable implements SerialPortEventListener
     private static final int DATA_RATE = 9600;
 
     /**
-     * Establishes the serial connection, different arguments to offer support for Windows, MAC and Linux.
+     * Method to establish the serial connection.
+     * Support for Windows, MAC and Linux.
      */
     public void initialize()
     {
@@ -56,8 +57,9 @@ public class SerialConnect extends Observable implements SerialPortEventListener
         CommPortIdentifier portId = null;
         Enumeration portEnum = CommPortIdentifier.getPortIdentifiers();
 
-
-// First, Find an instance of serial port as set in PORT_NAMES.
+        /**
+         * First, Find an instance of serial port as set in PORT_NAMES.
+         */
         while (portEnum.hasMoreElements())
         {
             CommPortIdentifier currPortId = (CommPortIdentifier) portEnum.nextElement();
@@ -116,7 +118,7 @@ public class SerialConnect extends Observable implements SerialPortEventListener
     }
 
     /**
-     * Closes the serial connection
+     * Method to close the serial connection
      */
     public synchronized void close()
     {
@@ -141,7 +143,7 @@ public class SerialConnect extends Observable implements SerialPortEventListener
     }
 
     /**
-     * Getter for the output stream
+     * Method to return this OutputStream
      * @return output
      */
     public OutputStream getOutputStream()
@@ -151,7 +153,7 @@ public class SerialConnect extends Observable implements SerialPortEventListener
 
 
     /**
-     * Sends the available data through the serial connection port
+     * Method that will be watching over events in the serial connection port
      * @param oEvent Object event
      */
 

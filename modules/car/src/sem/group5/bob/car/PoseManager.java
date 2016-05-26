@@ -6,7 +6,7 @@ import java.util.Observer;
 /**
  * todo
  */
-public class PoseManager extends SerialConnect implements Observer {
+public class PoseManager implements Observer {
     private double angle;
     private double disp;
     private double X = 0, Y = 0;
