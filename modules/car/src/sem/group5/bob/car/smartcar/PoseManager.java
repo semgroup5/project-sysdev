@@ -13,6 +13,7 @@ public class PoseManager implements Observer {
     private double trueDistance = 0;
     private double carAngle;
     private double carDistance;
+    private double tmpDistance = 1;
     private double coordinateX = 0, coordinateY = 0;
 
 
@@ -58,14 +59,14 @@ public class PoseManager implements Observer {
         double xTmp;
         double yTmp;
 
-
-        if (Math.abs(carAngle) >= 360) {
-            this.carAngle = carAngle % 360;
-        }
+        if (tmpDistance != carDistance) {
         yTmp = trueDistance * Math.cos(Math.toRadians(carAngle));
         xTmp = trueDistance * Math.sin(Math.toRadians(carAngle));
         this.coordinateX += xTmp;
         this.coordinateY += yTmp;
+        }
+        tmpDistance = carDistance;
+
         System.out.println(coordinateX + "  this is the coordinateX");
         System.out.println(coordinateY + "  this is the coordinateY");
     }
