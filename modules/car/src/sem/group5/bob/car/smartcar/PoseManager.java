@@ -47,23 +47,16 @@ public class PoseManager implements Observer {
      * the carAngle of the car(carAngle Zero, 90, 180, 270) to avoid getting a zero value on an axes traveled by the car.
      */
     private void calculatePose() {
+        double xTmp;
+        double yTmp;
+
         if (tmpDistance != carDistance) {
-            if (carAngle == 90) {
-                coordinateX += carDistance;
-
-            } else if (carAngle == 270) {
-                coordinateX -= carDistance;
-
-            } else if (carAngle == 0) {
-                coordinateY += carDistance;
-
-            } else if (carAngle == 180) {
-                coordinateY -= carDistance;
-
-            } else {
-                this.coordinateX += Math.cos(carAngle);
-                this.coordinateY += Math.sin(carAngle);
-            }
+            yTmp = carDistance * Math.cos(Math.toRadians(carAngle));
+            xTmp = carDistance * Math.sin(Math.toRadians(carAngle));
+            this.coordinateX += xTmp;
+            this.coordinateY += yTmp;
+            System.out.println(coordinateX + "  this is the coordinateX");
+            System.out.println(coordinateY + "  this is the coordinateY");
         }
 
         tmpDistance = carDistance;
