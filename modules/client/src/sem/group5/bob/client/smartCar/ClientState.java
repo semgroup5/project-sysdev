@@ -170,6 +170,7 @@ public class ClientState implements Observer
                 this.smartcar = connectionManager.getSmartCar();
                 this.smartcar.addObserver(this);
                 this.smartcarController = connectionManager.getSmartcarController();
+                gui.mResetArduino.fire();
                 gui.replaceStatus("Connected!");
                 isConnected = true;
 //                gui.stream();
