@@ -12,6 +12,8 @@ public class PoseManager implements Observer {
     private double oldDistance = 0;
     private double trueDistance = 0;
     private double carAngle;
+    private double carDistance;
+    private double tmpDistance = 1;
     private double coordinateX = 0, coordinateY = 0;
 
 
@@ -42,8 +44,7 @@ public class PoseManager implements Observer {
     private void breakDown(String locationData) {
         oldDistance = carDistance;
         this.carDistance = Double.parseDouble(locationData.substring(locationData.indexOf("d") + 1, locationData.indexOf("a")));
-        this.carAngle = Double.parseDouble(locationData.substring(locationData.indexOf("a") + 1, locationData.indexOf("/")));
-        trueDistance = carDistance - oldDistance;
+        this.carAngle = Double.parseDouble(locationData.substring(locationData.indexOf("a") + 1));
         calculatePose();
     }
 
@@ -72,6 +73,7 @@ public class PoseManager implements Observer {
 
     /**
      * Method that gets the serial read from the arduino
+     *
      * @param o   Unused variable
      * @param arg Holds the data passed from the observable
      */
@@ -82,7 +84,7 @@ public class PoseManager implements Observer {
     }
 
     /**
-     * @return A string with X, Y and newAngle will be returned with the format of "X"+ coordinateX + "Y" + coordinateY + "Ang" + newAngle.
+     * @return A string with X, Y and carAngle will be returned with the format of "X"+ coordinateX + "Y" + coordinateY + "Ang" + carAngle.
      */
     public String getLatestPose() {
         return "X" + coordinateX + "Y" + coordinateY + "Ang" + carAngle;
