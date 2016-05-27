@@ -8,12 +8,11 @@ import java.util.Observer;
  * return the current position of the car as a result.
  */
 public class PoseManager implements Observer {
-    private double carDistance = 0;
+
     private double oldDistance = 0;
     private double trueDistance = 0;
     private double carAngle;
     private double carDistance;
-    private double tmpDistance = 1;
     private double coordinateX = 0, coordinateY = 0;
 
 
@@ -42,10 +41,12 @@ public class PoseManager implements Observer {
      * @param locationData String that holds the raw data from arduino serial
      */
     private void breakDown(String locationData) {
-        oldDistance = carDistance;
+
         this.carDistance = Double.parseDouble(locationData.substring(locationData.indexOf("d") + 1, locationData.indexOf("a")));
         this.carAngle = Double.parseDouble(locationData.substring(locationData.indexOf("a") + 1));
         calculatePose();
+        trueDistance = carDistance - oldDistance;
+        oldDistance = carDistance;
     }
 
     /**
