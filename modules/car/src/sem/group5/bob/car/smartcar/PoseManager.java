@@ -8,9 +8,10 @@ import java.util.Observer;
  * return the current position of the car as a result.
  */
 public class PoseManager implements Observer {
+    private double carDistance = 0;
+    private double oldDistance = 0;
+    private double trueDistance = 0;
     private double carAngle;
-    private double carDistance;
-    private double tmpDistance = 1;
     private double coordinateX = 0, coordinateY = 0;
 
 
@@ -29,6 +30,8 @@ public class PoseManager implements Observer {
         a = a * factor;
         long tmp = Math.round(a);
         return (double) tmp / factor;
+
+
     }
 
     /**
@@ -37,8 +40,10 @@ public class PoseManager implements Observer {
      * @param locationData String that holds the raw data from arduino serial
      */
     private void breakDown(String locationData) {
+        oldDistance = carDistance;
         this.carDistance = Double.parseDouble(locationData.substring(locationData.indexOf("d") + 1, locationData.indexOf("a")));
-        this.carAngle = Double.parseDouble(locationData.substring(locationData.indexOf("a") + 1));
+        this.carAngle = Double.parseDouble(locationData.substring(locationData.indexOf("a") + 1, locationData.indexOf("/")));
+        trueDistance = carDistance - oldDistance;
         calculatePose();
     }
 
@@ -46,35 +51,27 @@ public class PoseManager implements Observer {
      * Method that will calculate the position of the car and adds different arguments for 4 special cases depending on
      * the carAngle of the car(carAngle Zero, 90, 180, 270) to avoid getting a zero value on an axes traveled by the car.
      */
-    private void calculatePose() {
-        if (tmpDistance != carDistance) {
-            if (carAngle == 90) {
-                coordinateX += carDistance;
+    private void calculatePose()
+    {
+        double xTmp;
+        double yTmp;
 
-            } else if (carAngle == 270) {
-                coordinateX -= carDistance;
 
-            } else if (carAngle == 0) {
-                coordinateY += carDistance;
-
-            } else if (carAngle == 180) {
-                coordinateY -= carDistance;
-
-            } else {
-                this.coordinateX += Math.cos(carAngle);
-                this.coordinateY += Math.sin(carAngle);
-            }
+        if (Math.abs(carAngle) >= 360) {
+            this.carAngle = carAngle % 360;
         }
-
-        tmpDistance = carDistance;
-
-        System.out.println(coordinateX + "this is the coordinateX");
-        System.out.println(coordinateY + "this is the coordinateY");
+        yTmp = trueDistance * Math.cos(Math.toRadians(carAngle));
+        xTmp = trueDistance * Math.sin(Math.toRadians(carAngle));
+        this.coordinateX += xTmp;
+        this.coordinateY += yTmp;
+        System.out.println(coordinateX + "  this is the coordinateX");
+        System.out.println(coordinateY + "  this is the coordinateY");
     }
+
+
 
     /**
      * Method that gets the serial read from the arduino
-     *
      * @param o   Unused variable
      * @param arg Holds the data passed from the observable
      */
@@ -85,7 +82,7 @@ public class PoseManager implements Observer {
     }
 
     /**
-     * @return A string with X, Y and carAngle will be returned with the format of "X"+ coordinateX + "Y" + coordinateY + "Ang" + carAngle.
+     * @return A string with X, Y and newAngle will be returned with the format of "X"+ coordinateX + "Y" + coordinateY + "Ang" + newAngle.
      */
     public String getLatestPose() {
         return "X" + coordinateX + "Y" + coordinateY + "Ang" + carAngle;
