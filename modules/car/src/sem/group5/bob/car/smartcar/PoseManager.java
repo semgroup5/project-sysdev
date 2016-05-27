@@ -44,9 +44,9 @@ public class PoseManager implements Observer {
 
         this.carDistance = Double.parseDouble(locationData.substring(locationData.indexOf("d") + 1, locationData.indexOf("a")));
         this.carAngle = Double.parseDouble(locationData.substring(locationData.indexOf("a") + 1));
-        calculatePose();
         trueDistance = carDistance - oldDistance;
         oldDistance = carDistance;
+        calculatePose();
     }
 
     /**
