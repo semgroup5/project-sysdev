@@ -10,7 +10,7 @@ import java.util.Observer;
 public class PoseManager implements Observer {
     private double carAngle;
     private double carDistance;
-    private double distOld = 0;
+    private double tmpDistance = 1;
     private double coordinateX = 0, coordinateY = 0;
 
 
@@ -38,7 +38,7 @@ public class PoseManager implements Observer {
      */
     private void breakDown(String locationData) {
         this.carDistance = Double.parseDouble(locationData.substring(locationData.indexOf("d") + 1, locationData.indexOf("a")));
-        this.carAngle = Double.parseDouble(locationData.substring(locationData.indexOf("a") + 1, locationData.indexOf("/")));
+        this.carAngle = Double.parseDouble(locationData.substring(locationData.indexOf("a") + 1));
         calculatePose();
     }
 
@@ -46,18 +46,8 @@ public class PoseManager implements Observer {
      * Method that will calculate the position of the car and adds different arguments for 4 special cases depending on
      * the carAngle of the car(carAngle Zero, 90, 180, 270) to avoid getting a zero value on an axes traveled by the car.
      */
-    private void calculatePose()
-    {
-        double angTmp;
-        double xTmp;
-        double yTmp;
-        double dispTmp = carDistance - distOld;
-        double angOld = 0;
-        angTmp = carAngle - angOld;
-        if (Math.abs(carAngle) >= 360) {
-            this.carAngle = carAngle % 360;
-        }
-        if (angTmp != 0 || dispTmp != 0) {
+    private void calculatePose() {
+        if (tmpDistance != carDistance) {
             if (carAngle == 90) {
                 coordinateX += carDistance;
 
@@ -71,24 +61,20 @@ public class PoseManager implements Observer {
                 coordinateY -= carDistance;
 
             } else {
-
-                yTmp = dispTmp * Math.cos(roundupNum((Math.toRadians(carAngle)), 5));
-                xTmp = dispTmp * Math.sin(roundupNum((Math.toRadians(carAngle)), 5));
-
-                this.coordinateX += roundupNum(xTmp, 0);
-                this.coordinateY += roundupNum(yTmp, 0);
-                distOld += dispTmp;
-                System.out.println(coordinateX + "this is the coordinateX");
-                System.out.println(coordinateY + "this is the coordinateY");
-
+                this.coordinateX += Math.cos(carAngle);
+                this.coordinateY += Math.sin(carAngle);
             }
-            distOld += dispTmp;
         }
 
+        tmpDistance = carDistance;
+
+        System.out.println(coordinateX + "this is the coordinateX");
+        System.out.println(coordinateY + "this is the coordinateY");
     }
 
     /**
      * Method that gets the serial read from the arduino
+     *
      * @param o   Unused variable
      * @param arg Holds the data passed from the observable
      */

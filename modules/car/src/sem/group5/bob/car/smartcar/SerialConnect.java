@@ -4,6 +4,7 @@ import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
@@ -15,11 +16,9 @@ import java.util.Properties;
 /**
  * Class responsible for establishing the serial port connection between the raspberry pi and the arduino.
  */
-public class SerialConnect extends Observable implements SerialPortEventListener
-{
+public class SerialConnect extends Observable implements SerialPortEventListener {
     private SerialPort serialPort;
     private int retryArduinoConnect = 0;
-
 
 
     // The port that's being used for the connection.
@@ -31,7 +30,7 @@ public class SerialConnect extends Observable implements SerialPortEventListener
     private BufferedReader input;
     private OutputStream output;
 
-//      Milliseconds to block while waiting for port open
+    //      Milliseconds to block while waiting for port open
     private static final int TIME_OUT = 2000;
 
     //Default bits per second for COM port.
@@ -41,16 +40,13 @@ public class SerialConnect extends Observable implements SerialPortEventListener
      * Method to establish the serial connection.
      * Support for Windows, MAC and Linux.
      */
-    public void initialize()
-    {
+    public void initialize() {
         Properties properties = System.getProperties();
         String currentPorts = properties.getProperty("gnu.io.rxtx.SerialPorts", "/dev/ttyACM0");
 
-        if (currentPorts.equals("/dev/ttyACM0"))
-        {
+        if (currentPorts.equals("/dev/ttyACM0")) {
             properties.setProperty("gnu.io.rxtx.SerialPorts", "/dev/ttyACM0");
-        } else
-        {
+        } else {
             properties.setProperty("gnu.io.rxtx.SerialPorts", currentPorts + File.pathSeparator + "/dev/ttyACM0");
         }
 
@@ -60,37 +56,29 @@ public class SerialConnect extends Observable implements SerialPortEventListener
         /**
          * First, Find an instance of serial port as set in PORT_NAMES.
          */
-        while (portEnum.hasMoreElements())
-        {
+        while (portEnum.hasMoreElements()) {
             CommPortIdentifier currPortId = (CommPortIdentifier) portEnum.nextElement();
 
-            for (String portName : PORT_NAMES)
-            {
-                if (currPortId.getName().equals(portName))
-                {
+            for (String portName : PORT_NAMES) {
+                if (currPortId.getName().equals(portName)) {
                     portId = currPortId;
                     break;
                 }
             }
         }
-        if (portId == null)
-        {
-            try
-            {
-                if(retryArduinoConnect < 3)
-                {
+        if (portId == null) {
+            try {
+                if (retryArduinoConnect < 3) {
                     System.out.println("Retrying connection to Arduino..");
                     retryArduinoConnect++;
                     initialize();
                 }
-            }catch(Exception e)
-            {
+            } catch (Exception e) {
                 System.out.println("Could not find COM port.");
             }
         }
 
-        try
-        {
+        try {
             System.out.println("Opening port.");
             assert portId != null;
             serialPort = (SerialPort) portId.open(this.getClass().getName(), TIME_OUT);
@@ -110,8 +98,7 @@ public class SerialConnect extends Observable implements SerialPortEventListener
             serialPort.notifyOnDataAvailable(true);
 
             //Catch and logs errors
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             System.out.println("Caught exception");
             System.err.println(e.toString());
         }
@@ -120,13 +107,10 @@ public class SerialConnect extends Observable implements SerialPortEventListener
     /**
      * Method to close the serial connection
      */
-    public synchronized void close()
-    {
+    public synchronized void close() {
         // If the port is open
-        if (serialPort != null)
-        {
-            try
-            {
+        if (serialPort != null) {
+            try {
                 //Close the port connections.
                 output.close();
                 input.close();
@@ -135,8 +119,7 @@ public class SerialConnect extends Observable implements SerialPortEventListener
                 System.out.println("Serial Port Closed Successfully");
 
                 //Catch and logs errors
-            }catch (Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -144,35 +127,31 @@ public class SerialConnect extends Observable implements SerialPortEventListener
 
     /**
      * Method to return this OutputStream
+     *
      * @return output
      */
-    public OutputStream getOutputStream()
-    {
+    public OutputStream getOutputStream() {
         return this.output;
     }
 
 
     /**
      * Method that will be watching over events in the serial connection port
+     *
      * @param oEvent Object event
      */
 
-    public synchronized void serialEvent(SerialPortEvent oEvent)
-    {
-        if (oEvent.getEventType() == SerialPortEvent.DATA_AVAILABLE)
-        {
-            try
-            {
+    public synchronized void serialEvent(SerialPortEvent oEvent) {
+        if (oEvent.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
+            try {
                 //Sends the input line to class PoseManager
                 String inputLine = input.readLine();
-                if(inputLine.startsWith("pose")){
-                    setChanged();
-                    notifyObservers(inputLine.substring(4));
-                }
+                System.out.println(inputLine);
+                setChanged();
+                notifyObservers(inputLine);
 
                 //Catch and logs errors
-            } catch (Exception e)
-            {
+            } catch (Exception e) {
                 System.err.println(e.toString());
             }
         }

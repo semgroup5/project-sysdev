@@ -1,5 +1,6 @@
 package sem.group5.bob.client.gui;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.scene.control.*;
@@ -61,6 +62,7 @@ public class ControllerGUI extends Observable
         clientState = new ClientState(this);
         addObserver(clientState);
         style = new ButtonsStyle(this);
+        Platform.runLater(()-> up.requestFocus());
     }
 
     /**

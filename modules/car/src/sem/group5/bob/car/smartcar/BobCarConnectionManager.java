@@ -124,6 +124,10 @@ public class BobCarConnectionManager extends Observable implements Observer
 
         startDiscoveryListener();
 
+        PoseManager poseManager = new PoseManager();
+        serialC.addObserver(poseManager);
+        System.out.println("pose added");
+
 //        kinectSetting();
 
     }
