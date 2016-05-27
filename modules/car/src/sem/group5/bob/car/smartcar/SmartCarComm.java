@@ -8,7 +8,7 @@ import java.util.Observable;
  * SmartCarComm handles the received input from the client and forward it to the arduino attached to the smartcar.
  * @see java.util.Observable
  */
-public class SmartCarComm extends Observable
+class SmartCarComm extends Observable
 {
     private OutputStream output;
 
@@ -17,7 +17,7 @@ public class SmartCarComm extends Observable
      * @param output OutputStream used for the serialConnect class
      * @throws NoSuchFieldError
      */
-    public SmartCarComm(OutputStream output) throws NoSuchFieldError
+    SmartCarComm(OutputStream output) throws NoSuchFieldError
     {
         this.output = output;
     }
@@ -81,7 +81,7 @@ public class SmartCarComm extends Observable
     /**
      * todo
      */
-    public void resetArduino()
+    void resetArduino()
     {
         writeData("x/");
     }

@@ -136,7 +136,7 @@ public class ControllerGUI extends Observable
             {
                 style.styleButton(map, "active");
                 isMapping = true;
-//                clientState.startMap();
+                clientState.startMap();
                 replaceStatus("Mapping Started!");
             }
             else
@@ -144,7 +144,7 @@ public class ControllerGUI extends Observable
                 style.styleButton(map, "");
                 replaceStatus("Mapping stopped!");
                 isMapping = false;
-//                clientState.stopMap();
+                clientState.stopMap();
             }
         }
         else if (event.getSource().equals(load) || event.getSource().equals(mLoad))

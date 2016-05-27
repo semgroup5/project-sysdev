@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Observable;
 import java.util.Observer;
@@ -16,7 +15,6 @@ import java.util.Observer;
 public class FileLogger implements Observer{
     private String fileLocation;
     private String OS = System.getProperty("os.name", "").toUpperCase();
-    private ArrayList<String> logData = new ArrayList<>();
     private PrintWriter writer;
     private  File createDirc;
 
@@ -32,7 +30,7 @@ public class FileLogger implements Observer{
     /**
      * Connects the string containing telemtry data
      * and write it to the log file
-     * @param telemetry
+     * @param telemetry t
      */
     private void logTelemetry(Telemetry telemetry){
         String result;

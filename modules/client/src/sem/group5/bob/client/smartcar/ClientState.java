@@ -173,7 +173,7 @@ public class ClientState implements Observer
                 gui.mResetArduino.fire();
                 gui.replaceStatus("Connected!");
                 isConnected = true;
-//                gui.stream();
+                gui.stream();
                 connectionManager.checkConnectionHeartBeat();
                 Platform.runLater(()-> gui.setState("Connected"));
                 gui.loadImage.setVisible(false);

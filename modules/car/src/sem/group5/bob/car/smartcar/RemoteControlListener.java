@@ -34,7 +34,7 @@ public class RemoteControlListener extends Observable implements Runnable
      * @param port socket port for communication
      * @param sc smartCarComm to send data to arduino
      */
-    public RemoteControlListener(int port, SmartCarComm sc)
+    RemoteControlListener(int port, SmartCarComm sc)
     {
         this.port = port;
         this.sc = sc;

@@ -2,7 +2,7 @@
 #include <Wire.h>
 #include <Servo.h>
 Odometer encoderLeft, encoderRight;
-Gyroscope gyro(26);
+Gyroscope gyro(23);
 Car car;
 const int encoderLeftPin = 2;
 const int encoderRightPin = 3;
@@ -12,14 +12,14 @@ String a = "a";
 String d = "d";
 int currentAngle;
 long lastUpdate = 0;
-long trueDistance;
-long falseDistance;
-long differenceDistance = 0;
+long prevEncoderDistance = 0;
+long curEncoderDistance = 0;
+long distance = 0;
 
 void setup() {
   Serial.begin(9600);
   encoderLeft.attach(encoderLeftPin);
-  encoderRight.attach(encoderRightPin);
+  encoderLeft.attach(encoderRightPin);
   encoderLeft.begin();
   encoderRight.begin();
   Serial.setTimeout(200);
@@ -33,6 +33,7 @@ void(* resetFunc) (void) = 0; //declare reset function @ address 0
 void loop() {
   handleInput();
   sendData();
+  gyro.update();
 }
 
 void handleInput() { //handle serial input if there is any
@@ -40,6 +41,7 @@ void handleInput() { //handle serial input if there is any
     String input = Serial.readStringUntil('/');
 
     if (input.startsWith("w")) {
+      isRotate = false;
       int throttle = input.substring(1).toInt(); // Example: recieve 'w100' = move forward with speed 100.
       if (throttle > 0 || throttle < 0) {
         car.setSpeed(throttle);
@@ -73,30 +75,34 @@ void rotateOnSpot(int orientation){
   }else{
     car.setMotorSpeed(0,0); //stop rotation
   }
+  gyro.update();
 }
 
 void sendData() {
   if (lastUpdate < millis() - 500) {
-      if(isRotate != true){
-          trueDistance = ((encoderLeft.getDistance() + encoderRight.getDistance()) / 2) - differenceDistance;
-          Serial.print(d + trueDistance);
-          getCurrentAngle();
+      updatedOdometry();
+      Serial.print(d + distance);
+      getCurrentAngle();
+      lastUpdate = millis();
     }
-     else if(isRotate){
-         falseDistance = ((encoderLeft.getDistance() + encoderRight.getDistance()) / 2);
-         differenceDistance = falseDistance - trueDistance;
-         getCurrentAngle();
-         isRotate = false;
-      }
-   lastUpdate = millis();
-   }
 }
 
 void getCurrentAngle() {
    gyro.update();
    currentAngle = gyro.getAngularDisplacement();
-   if(gyro.getAngularDisplacement() > 360 || gyro.getAngularDisplacement() < 0){
+   if(gyro.getAngularDisplacement() >= 360 || gyro.getAngularDisplacement() < 0){
       currentAngle = ((gyro.getAngularDisplacement() % 360) + 360) % 360;
    }
    Serial.println(a + currentAngle);
+}
+
+void updatedOdometry(){
+    curEncoderDistance = ((encoderLeft.getDistance() + encoderRight.getDistance()) / 2);
+
+    if(!isRotate)
+    {
+        distance += curEncoderDistance - prevEncoderDistance;
+    }
+
+    prevEncoderDistance = curEncoderDistance;
 }

@@ -7,6 +7,8 @@ import sem.group5.bob.car.streaming.DepthJpegProvider;
 import sem.group5.bob.car.streaming.DepthStreamer;
 import sem.group5.bob.car.streaming.VideoProvider;
 import sem.group5.bob.car.streaming.VideoStreamer;
+
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Observable;
 import java.util.Observer;
@@ -45,37 +47,37 @@ public class BobCarConnectionManager extends Observable implements Observer
     {
         if (arg.equals("Connection Closed"))
         {
-//            try
-//            {
-//                videoStreamer.setStreaming(false);
-//                depthStreamer.setStreaming(false);
-//                if (depthThread.isAlive())depthThread.interrupt();
-//                if (videoThread.isAlive())videoThread.interrupt();
-//            } catch (IOException e)
-//            {
-//                System.out.println("Could Not Stop Stream");
-//            }
-//
-//            System.out.println("Closing Stream");
-//            depthSocket.closeSocketStream();
-//            videoSocket.closeSocketStream();
-//
-//            try
-//            {
-//                System.out.println("Shutting Down Device");
-//                if (context != null)
-//                {
-//                    if (device != null)
-//                    {
-//                        device.setLed(LedStatus.BLINK_GREEN);
-//                        device.setTiltAngle(0);
-//                        device.stopDepth();
-//                        device.stopVideo();
-//                        device.close();
-//                    }
-//                    context.shutdown();
-//                }
-//            } catch (Exception ignore) {}
+            try
+            {
+                videoStreamer.setStreaming(false);
+                depthStreamer.setStreaming(false);
+                if (depthThread.isAlive())depthThread.interrupt();
+                if (videoThread.isAlive())videoThread.interrupt();
+            } catch (IOException e)
+            {
+                System.out.println("Could Not Stop Stream");
+            }
+
+            System.out.println("Closing Stream");
+            depthSocket.closeSocketStream();
+            videoSocket.closeSocketStream();
+
+            try
+            {
+                System.out.println("Shutting Down Device");
+                if (context != null)
+                {
+                    if (device != null)
+                    {
+                        device.setLed(LedStatus.BLINK_GREEN);
+                        device.setTiltAngle(0);
+                        device.stopDepth();
+                        device.stopVideo();
+                        device.close();
+                    }
+                    context.shutdown();
+                }
+            } catch (Exception ignore) {}
             startFunctions();
         }
         else if (arg.equals("Serial Port Failed"))
@@ -124,11 +126,7 @@ public class BobCarConnectionManager extends Observable implements Observer
 
         startDiscoveryListener();
 
-        PoseManager poseManager = new PoseManager();
-        serialC.addObserver(poseManager);
-        System.out.println("pose added");
-
-//        kinectSetting();
+        kinectSetting();
 
     }
 
@@ -250,6 +248,7 @@ public class BobCarConnectionManager extends Observable implements Observer
             VideoProvider videoProvider = new VideoProvider();
             PoseManager poseManager = new PoseManager();
             serialC.addObserver(poseManager);
+            System.out.println("Pose Added");
 
             if (device != null)
             {

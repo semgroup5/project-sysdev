@@ -64,8 +64,8 @@ public class DiscoveryBroadcaster implements Runnable, Observer {
 
     /**
      *
-     * @param o
-     * @param arg
+     * @param o o
+     * @param arg arg
      */
     @Override
     public void update(Observable o, Object arg)

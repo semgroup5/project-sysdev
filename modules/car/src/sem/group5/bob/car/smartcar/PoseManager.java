@@ -12,29 +12,7 @@ public class PoseManager implements Observer {
     private double oldDistance = 0;
     private double trueDistance = 0;
     private double carAngle;
-    private double carDistance;
-    private double tmpDistance = 1;
     private double coordinateX = 0, coordinateY = 0;
-
-
-    /**
-     * Round up the number the digits can be selected.
-     *
-     * @param a the car angle
-     * @param r how many decimals we use
-     * @return returns the roundup number
-     */
-
-    private static double roundupNum(Double a, int r) {
-        if (r < 0) throw new IllegalArgumentException();
-
-        long factor = (long) Math.pow(10, r);
-        a = a * factor;
-        long tmp = Math.round(a);
-        return (double) tmp / factor;
-
-
-    }
 
     /**
      * Breaks down the raw data from the arduino to values
@@ -43,7 +21,7 @@ public class PoseManager implements Observer {
      */
     private void breakDown(String locationData) {
 
-        this.carDistance = Double.parseDouble(locationData.substring(locationData.indexOf("d") + 1, locationData.indexOf("a")));
+        double carDistance = Double.parseDouble(locationData.substring(locationData.indexOf("d") + 1, locationData.indexOf("a")));
         this.carAngle = Double.parseDouble(locationData.substring(locationData.indexOf("a") + 1));
         trueDistance = carDistance - oldDistance;
         oldDistance = carDistance;
@@ -59,13 +37,10 @@ public class PoseManager implements Observer {
         double xTmp;
         double yTmp;
 
-        if (tmpDistance != carDistance) {
         yTmp = trueDistance * Math.cos(Math.toRadians(carAngle));
         xTmp = trueDistance * Math.sin(Math.toRadians(carAngle));
         this.coordinateX += xTmp;
         this.coordinateY += yTmp;
-        }
-        tmpDistance = carDistance;
 
         System.out.println(coordinateX + "  this is the coordinateX");
         System.out.println(coordinateY + "  this is the coordinateY");

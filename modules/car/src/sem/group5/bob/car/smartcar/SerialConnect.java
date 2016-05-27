@@ -16,7 +16,7 @@ import java.util.Properties;
 /**
  * Class responsible for establishing the serial port connection between the raspberry pi and the arduino.
  */
-public class SerialConnect extends Observable implements SerialPortEventListener {
+class SerialConnect extends Observable implements SerialPortEventListener {
     private SerialPort serialPort;
     private int retryArduinoConnect = 0;
 
@@ -40,7 +40,7 @@ public class SerialConnect extends Observable implements SerialPortEventListener
      * Method to establish the serial connection.
      * Support for Windows, MAC and Linux.
      */
-    public void initialize() {
+    void initialize() {
         Properties properties = System.getProperties();
         String currentPorts = properties.getProperty("gnu.io.rxtx.SerialPorts", "/dev/ttyACM0");
 
@@ -107,7 +107,7 @@ public class SerialConnect extends Observable implements SerialPortEventListener
     /**
      * Method to close the serial connection
      */
-    public synchronized void close() {
+    synchronized void close() {
         // If the port is open
         if (serialPort != null) {
             try {
@@ -130,7 +130,7 @@ public class SerialConnect extends Observable implements SerialPortEventListener
      *
      * @return output
      */
-    public OutputStream getOutputStream() {
+    OutputStream getOutputStream() {
         return this.output;
     }
 

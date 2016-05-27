@@ -80,7 +80,7 @@ public class VideoStreamer extends Observable implements Runnable{
 
     /**
      * Boolean to start streaming if true and set the stream off if false.
-     * @param b
+     * @param b b
      * @throws IOException
      */
     public void setStreaming(boolean b) throws IOException
