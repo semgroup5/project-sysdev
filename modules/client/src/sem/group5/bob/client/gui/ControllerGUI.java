@@ -55,6 +55,7 @@ public class ControllerGUI extends Observable implements Observer
     public TextField poseInfo;
 
     /**
+     *
      * constructs a object clientState and adds an observer to it.
      * @see ClientState
      */
