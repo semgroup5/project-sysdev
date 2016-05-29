@@ -187,11 +187,7 @@ public class ClientState extends Observable implements Observer
         {
             gui.replaceStatus("Disconnected!");
             isConnected = false;
-            Platform.runLater(()-> {
-                gui.setState("Disconnected");
-                setChanged();
-                notifyObservers("Disconnected   ");
-            });
+            Platform.runLater(()-> gui.setState("Disconnected"));
             gui.loadImage.setVisible(false);
             gui.setConnectClicked(false);
         }
