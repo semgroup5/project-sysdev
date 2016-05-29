@@ -14,7 +14,7 @@ import java.util.Observer;
  * Class that will track and update the state of the client UI depending on the arguments passed.
  * @see java.util.Observer
  */
-public class ClientState extends Observable implements Observer
+public class ClientState implements Observer
 {
     private ControllerGUI gui;
     private Smartcar smartcar;
