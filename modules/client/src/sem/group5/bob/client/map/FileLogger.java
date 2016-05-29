@@ -16,16 +16,22 @@ public class FileLogger implements Observer{
     private String fileLocation;
     private String OS = System.getProperty("os.name", "").toUpperCase();
     private PrintWriter writer;
-    private  File createDirc;
-
+    private File logDirectory;
+    private File logFile;
     /**
-     * Creates a PrintWriter and calls upon crtFile
+     * Creates a PrintWriter and calls upon createFile
      * @throws IOException
      */
     public FileLogger() throws IOException{
-        crtFile();
+        createFile();
        writer = new PrintWriter(fileLocation, "UTF-8");
     }
+
+    /**
+     *
+     * @return Current log file
+     */
+    public File getLogFile(){ return logFile; }
 
     /**
      * Connects the string containing telemtry data
@@ -34,16 +40,11 @@ public class FileLogger implements Observer{
      */
     private void logTelemetry(Telemetry telemetry){
         String result;
-
-        // (old) # FLASER num_readings [range_readings] x y theta odom_x odom_y odom_theta
-
 //        # ROBOTLASER1 laser_type start_angle field_of_view angular_resolution
 //        #   maximum_range accuracy remission_mode
 //        #   num_readings [range_readings] laser_pose_x laser_pose_y laser_pose_theta
 //        #   robot_pose_x robot_pose_y robot_pose_theta
 //        #   laser_tv laser_rv forward_safety_dist side_safty_dist
-
-
         int laser_type              = 99;
         double start_angle          = telemetry.getPose().getTheta() - 27.5;
         double field_of_view        = 55;
@@ -81,20 +82,20 @@ public class FileLogger implements Observer{
      * Creates a folder named "BobCar" with different paths depending on the OS the program is currently running on.
      * Support for Windows, Linux and Mac.
      */
-    private void crtDirc() {
+    private void createDirectory() {
         if (OS.startsWith("WINDOWS")) {
-            this.createDirc = new File(System.getenv("HOMEDRIVE") + System.getenv("HOMEPATH")
+            this.logDirectory = new File(System.getenv("HOMEDRIVE") + System.getenv("HOMEPATH")
                     + File.separator +"BobCar");
-            createDirc.mkdirs();
+            logDirectory.mkdirs();
         } else if (OS.startsWith("LINUX"))
         {
-            this.createDirc = new File(System.getProperty("user.home")+File.separator+ "BobCar");
-            createDirc.mkdirs();
+            this.logDirectory = new File(System.getProperty("user.home")+File.separator+ "BobCar");
+            logDirectory.mkdirs();
         } else if (OS.startsWith("MAC"))
         {
-            this.createDirc = new File(System.getProperty("user.home")+File.separator+"Documents"
+            this.logDirectory = new File(System.getProperty("user.home")+File.separator+"Documents"
                     +File.separator+"BobCar");
-            createDirc.mkdirs();
+            logDirectory.mkdirs();
         } else
         {
             System.err.println("Sorry, We can't recognize your Operating System!");
@@ -103,11 +104,11 @@ public class FileLogger implements Observer{
 
     /**
      * Creates a txt file according to the operating system
-     * at location stored in this.createDirc
+     * at location stored in this.logDirectory
      * with the name formatted as: "HH：mm：ss@yyyy-MM-dd" Hours : mins : secs @(ar)Year-Month-date
      */
-    private void crtFile() {
-        crtDirc();
+    private void createFile() {
+        createDirectory();
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("HH：mm：ss@yyyy-MM-dd");
         String time = sdf.format(cal.getTime());
@@ -115,16 +116,18 @@ public class FileLogger implements Observer{
 
         if(OS.startsWith("WINDOWS"))
         {
-            this.fileLocation = this.createDirc + File.separator + fileName;
+            this.fileLocation = this.logDirectory + File.separator + fileName;
         }
         else if(OS.startsWith("LINUX"))
         {
-            this.fileLocation =  this.createDirc + File.separator+ fileName;
+            this.fileLocation =  this.logDirectory + File.separator+ fileName;
         }
         else if(OS.startsWith("MAC"))
         {
-            this.fileLocation =  this.createDirc + File.separator+ fileName;
+            this.fileLocation =  this.logDirectory + File.separator+ fileName;
         }
+
+        this.logFile = new File(this.fileLocation);
     }
 
     /**

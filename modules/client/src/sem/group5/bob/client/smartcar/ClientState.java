@@ -2,6 +2,7 @@ package sem.group5.bob.client.smartcar;
 
 import javafx.application.Platform;
 import sem.group5.bob.client.gui.ControllerGUI;
+import sem.group5.bob.client.map.ExecutableLauncher;
 import sem.group5.bob.client.map.FileLogger;
 import sem.group5.bob.client.streaming.*;
 
@@ -22,7 +23,7 @@ public class ClientState implements Observer
     private SmartcarController smartcarController;
     private VideoStreamHandler videoHandlerDepth;
     public boolean isConnected;
-
+    private FileLogger fileLogger;
     /**
      * Constructor
      * @param gui Client GUI
@@ -74,7 +75,7 @@ public class ClientState implements Observer
     {
         try
         {
-            FileLogger fileLogger = new FileLogger();
+            fileLogger = new FileLogger();
 
             MultiPartsParse parseDepth = new MultiPartsParse(connectionManager.getDepthSocket().getInputStream());
             TelemetryProvider telemetryProvider = new TelemetryProvider();
@@ -104,6 +105,7 @@ public class ClientState implements Observer
         {
             videoHandlerDepth.stopStreaming();
             connectionManager.DepthSocketClose();
+            ExecutableLauncher.runGmappingGUI(fileLogger.getLogFile());
         } catch (IOException e)
         {
             System.err.print("Could not close DepthSocket");
