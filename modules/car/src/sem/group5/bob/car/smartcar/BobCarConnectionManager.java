@@ -7,6 +7,7 @@ import sem.group5.bob.car.streaming.DepthJpegProvider;
 import sem.group5.bob.car.streaming.DepthStreamer;
 import sem.group5.bob.car.streaming.VideoProvider;
 import sem.group5.bob.car.streaming.VideoStreamer;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Observable;
@@ -77,7 +78,6 @@ public class BobCarConnectionManager extends Observable implements Observer
                     context.shutdown();
                 }
             } catch (Exception ignore) {}
-
             startFunctions();
         }
         else if (arg.equals("Serial Port Failed"))

@@ -22,6 +22,23 @@ public class TextPoseHandler implements Observer {
     }
 
     /**
+     * todo
+     * @param s s
+     * @return s
+     */
+    private String roundPose(String s)
+    {
+        s = s.substring(s.indexOf(':'));
+        double x = Math.round(Double.parseDouble(s.substring(s.indexOf('X') + 1, s.indexOf('Y'))));
+        s = s.substring(s.indexOf('Y') + 1);
+        double y = Math.round(Double.parseDouble(s.substring(0, s.indexOf('A'))));
+        s = s.substring(s.indexOf('g') + 1);
+        double theta = Math.round(Double.parseDouble(s));
+
+        return "X: " + x + " Y: " + y + " A: " + theta;
+    }
+
+    /**
      * Updtate the TextField in the GUI with the latest position info
      * @param o o
      * @param arg arg
@@ -29,6 +46,6 @@ public class TextPoseHandler implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         MultiPartsParse mpp = (MultiPartsParse) o;
-        poseInfo.setText(mpp.getPose());
+        poseInfo.setText(roundPose(mpp.getPose()));
     }
 }

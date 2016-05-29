@@ -46,7 +46,7 @@ public class MultiPartsParse extends Observable implements Runnable
         }
 
         try{
-            if (depthStream.available() > 0)nextPart = multipartStream.skipPreamble();
+            nextPart = multipartStream.skipPreamble();
             while(nextPart)
             {
                 String headers = multipartStream.readHeaders();

@@ -32,7 +32,7 @@ public class DiscoveryBroadcaster implements Runnable, Observer {
             socket.setBroadcast(true);
             socket.setReuseAddress(true);
 
-            while(broadcasting)
+            while(isBroadcasting())
             {
                 System.out.println(getClass().getName() + " Broadcasting packets to the network");
 
@@ -51,6 +51,15 @@ public class DiscoveryBroadcaster implements Runnable, Observer {
         {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Get if the socket is broadcasting packets for the network.
+     * @return True if it is broadcasting.
+     */
+    private boolean isBroadcasting()
+    {
+        return broadcasting;
     }
 
     /**

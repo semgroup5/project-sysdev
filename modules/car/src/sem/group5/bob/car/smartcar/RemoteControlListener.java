@@ -97,7 +97,7 @@ public class RemoteControlListener extends Observable implements Runnable
             e.printStackTrace();
         }
         // While the socket is open
-        while (socketOpen)
+        while (isSocketOpen())
         {
             try
             {
@@ -158,7 +158,7 @@ public class RemoteControlListener extends Observable implements Runnable
     private void sendHeartBeatToClient()
     {
         threadHeartbeat = new Thread(()->{
-            while (socketOpen)
+            while (isSocketOpen())
             {
                 try
                 {
@@ -183,29 +183,36 @@ public class RemoteControlListener extends Observable implements Runnable
         listen();
     }
 
+    private boolean isSocketOpen()
+    {
+        return socketOpen;
+    }
     /**
      * Closes the network connections and notifies an observer, notifies observer.
      */
     public void closeConnections()
     {
-        try
+        if (isSocketOpen())
         {
-            socketOpen = false;
-            if (threadHeartbeat.isAlive())threadHeartbeat.interrupt();
-            timer.setCountingDown(false);
-            if (timer.isAlive())timer.interrupt();
-            listener.close();
-            in.close();
-            socket.close();
-            System.out.println("All connections were closed!");
-            setChanged();
-            notifyObservers("Connection Closed");
+            try
+            {
+                socketOpen = false;
+                if (threadHeartbeat.isAlive())threadHeartbeat.interrupt();
+                timer.setCountingDown(false);
+                if (timer.isAlive())timer.interrupt();
+                listener.close();
+                in.close();
+                socket.close();
+                System.out.println("All connections were closed!");
+                setChanged();
+                notifyObservers("Connection Closed");
 
-            // Catches and logs errors
-        }catch (Exception e)
-        {
-            System.out.println();
-            e.printStackTrace();
+                // Catches and logs errors
+            }catch (Exception e)
+            {
+                System.out.println();
+                e.printStackTrace();
+            }
         }
     }
 }

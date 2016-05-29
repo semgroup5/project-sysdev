@@ -15,7 +15,7 @@ import java.util.Observer;
  * Class that will track and update the state of the client UI depending on the arguments passed.
  * @see java.util.Observer
  */
-public class ClientState implements Observer
+public class ClientState extends Observable implements Observer
 {
     private ControllerGUI gui;
     private Smartcar smartcar;
@@ -125,10 +125,11 @@ public class ClientState implements Observer
      * Starts video streaming and updates the GUI status accordingly.
      */
 
-    public void startStream()
+    private void startStream()
     {
         try
         {
+            gui.replaceStatus("Starting Video Stream...");
             MultiPartsParse parseVideo = new MultiPartsParse(connectionManager.getVideoSocket().getInputStream());
             parseVideo.addObserver(this);
             VideoStreamHandler videoHandlerVideo = new VideoStreamHandler(gui.kinectViewVideo, parseVideo);
@@ -174,12 +175,12 @@ public class ClientState implements Observer
                 this.smartcarController = connectionManager.getSmartcarController();
                 gui.mResetArduino.fire();
                 gui.replaceStatus("Connected!");
-                isConnected = true;
-                gui.stream();
                 connectionManager.checkConnectionHeartBeat();
                 Platform.runLater(()-> gui.setState("Connected"));
+                isConnected = true;
                 gui.loadImage.setVisible(false);
                 gui.setConnectClicked(false);
+                startStream();
             } catch (IOException e)
             {
                 gui.replaceStatus("Couldn't connect, reason:" + e.getMessage());
@@ -189,7 +190,11 @@ public class ClientState implements Observer
         {
             gui.replaceStatus("Disconnected!");
             isConnected = false;
-            Platform.runLater(()-> gui.setState("Disconnected"));
+            Platform.runLater(()-> {
+                gui.setState("Disconnected");
+                setChanged();
+                notifyObservers("Disconnected   ");
+            });
             gui.loadImage.setVisible(false);
             gui.setConnectClicked(false);
         }
