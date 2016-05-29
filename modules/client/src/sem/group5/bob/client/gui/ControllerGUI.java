@@ -110,20 +110,6 @@ public class ControllerGUI extends Observable
     }
 
     /**
-     * Start streaming on the client UI side
-     */
-    public void stream()
-    {
-        try
-        {
-            clientState.startStream();
-        }catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
-
-    /**
      * Handle events like mapping, load and save.
      * @param event clicked button event
      */

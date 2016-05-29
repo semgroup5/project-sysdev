@@ -54,7 +54,7 @@ public class BobCarSocketTimer extends Thread
     public void run()
     {
         // Keep looping
-        while (countingDown)
+        while (isCountingDownown())
         {
             /* Rate at which timer is checked */
             int m_rate = 100;
@@ -72,7 +72,7 @@ public class BobCarSocketTimer extends Thread
                 m_elapsed += m_rate;
 
                 // Check to see if the time has been exceeded
-                if (m_elapsed > m_length)
+                if ((m_elapsed > m_length) && isCountingDownown())
                 {
                     // Trigger a timeout
                     timeout();
@@ -97,5 +97,14 @@ public class BobCarSocketTimer extends Thread
     public void setCountingDown(boolean b)
     {
         countingDown = b;
+    }
+
+    /**
+     * Get if the count down is active
+     * @return true if the timer is active.
+     */
+    private boolean isCountingDownown()
+    {
+        return countingDown;
     }
 }

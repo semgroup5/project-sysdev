@@ -123,10 +123,11 @@ public class ClientState implements Observer
      * Starts video streaming and updates the GUI status accordingly.
      */
 
-    public void startStream()
+    private void startStream()
     {
         try
         {
+            System.out.println("Starting Video Stream");
             MultiPartsParse parseVideo = new MultiPartsParse(connectionManager.getVideoSocket().getInputStream());
             parseVideo.addObserver(this);
             VideoStreamHandler videoHandlerVideo = new VideoStreamHandler(gui.kinectViewVideo, parseVideo);
@@ -173,11 +174,11 @@ public class ClientState implements Observer
                 gui.mResetArduino.fire();
                 gui.replaceStatus("Connected!");
                 isConnected = true;
-                gui.stream();
                 connectionManager.checkConnectionHeartBeat();
                 Platform.runLater(()-> gui.setState("Connected"));
                 gui.loadImage.setVisible(false);
                 gui.setConnectClicked(false);
+                startStream();
             } catch (IOException e)
             {
                 gui.replaceStatus("Couldn't connect, reason:" + e.getMessage());

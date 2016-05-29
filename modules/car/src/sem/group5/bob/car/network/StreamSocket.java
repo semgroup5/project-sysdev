@@ -3,7 +3,6 @@ package sem.group5.bob.car.network;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketAddress;
 import java.util.Observable;
 
 /**
@@ -15,7 +14,6 @@ public class StreamSocket extends Observable
 {
     private Socket socket;
     private ServerSocket serverSocket;
-    private SocketAddress socketAddress;
 
     /**
      * Establishes a socket connection with a preset port.
