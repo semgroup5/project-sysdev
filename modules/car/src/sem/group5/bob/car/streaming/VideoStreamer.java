@@ -51,21 +51,17 @@ public class VideoStreamer extends Observable implements Runnable{
                     "boundary=BoundaryString\r\n\r\n" ).getBytes() );
             byte[] data;
             while (streaming) {
-                if (Thread.interrupted()) throw new InterruptedException();
                 data = videoProvider.getLatestJpeg();
                 out.write(("--BoundaryString\r\n" +
                         "Content-type: image/jpeg\r\n" +
                         "Content-Length: " + data.length + "\r\n\r\n").getBytes());
-                out.write(data);
                 if (Thread.interrupted()) throw new InterruptedException();
+                out.write(data);
                 out.write("\r\n\r\n".getBytes());
                 out.flush();
-                if (Thread.interrupted()) throw new InterruptedException();
             }
         } catch (Exception e) {
             System.out.println("Streaming Stopped Unexpectedly");
-//            setChanged();
-//            notifyObservers("Error Streaming");
         }
 
     }

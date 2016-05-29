@@ -3,6 +3,7 @@ package sem.group5.bob.car.network;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketAddress;
 import java.util.Observable;
 
 /**
@@ -14,6 +15,7 @@ public class StreamSocket extends Observable
 {
     private Socket socket;
     private ServerSocket serverSocket;
+    private SocketAddress socketAddress;
 
     /**
      * Establishes a socket connection with a preset port.
@@ -35,16 +37,14 @@ public class StreamSocket extends Observable
             this.socket = serverSocket.accept();
 
             // Sets true to turn off Nagle's algorithm to improve packet latency
-            // this.socket.setTcpNoDelay(true);
+            this.socket.setTcpNoDelay(true);
             this.socket.setReuseAddress(true);
+
             System.out.println("Stream socket established");
         }
-
         catch(Exception e)
         {
             System.out.println("Couldn't Create Socket!");
-            setChanged();
-            notifyObservers(this);
         }
     }
 

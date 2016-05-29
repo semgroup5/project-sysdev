@@ -76,7 +76,7 @@ public class DepthJpegProvider extends Observable implements JpegProvider
         {
             TJCompressor tjc = new TJCompressor();
 
-            tjc.setJPEGQuality(20);
+            tjc.setJPEGQuality(100);
             tjc.setSubsamp(TJ.SAMP_GRAY);
             tjc.setSourceImage(comboFrame, 640, (640*pixelWidth), 480, TJ.PF_GRAY);
 

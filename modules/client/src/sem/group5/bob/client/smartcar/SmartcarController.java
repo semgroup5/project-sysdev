@@ -137,6 +137,7 @@ public class SmartcarController
             forwardPressed = false;
             driving = false;
             smartcar.setSpeed(0);
+            smartcar.setAngle(0);
         } catch (IOException e)
         {
             e.printStackTrace();
@@ -154,6 +155,7 @@ public class SmartcarController
             backPressed = false;
             driving = false;
             smartcar.setSpeed(0);
+            smartcar.setAngle(0);
         } catch (IOException e)
         {
             e.printStackTrace();
