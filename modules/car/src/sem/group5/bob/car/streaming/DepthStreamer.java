@@ -71,6 +71,8 @@ public class DepthStreamer extends Observable implements Runnable
         } catch (Exception e)
         {
             System.out.println("Streaming Stopped Unexpectedly");
+            setChanged();
+            notifyObservers("Error Streaming");
         }
 
     }

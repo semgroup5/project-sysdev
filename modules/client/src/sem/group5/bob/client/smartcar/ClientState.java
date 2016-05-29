@@ -14,7 +14,7 @@ import java.util.Observer;
  * Class that will track and update the state of the client UI depending on the arguments passed.
  * @see java.util.Observer
  */
-public class ClientState implements Observer
+public class ClientState extends Observable implements Observer
 {
     private ControllerGUI gui;
     private Smartcar smartcar;
@@ -75,7 +75,6 @@ public class ClientState implements Observer
         try
         {
             FileLogger fileLogger = new FileLogger();
-
             MultiPartsParse parseDepth = new MultiPartsParse(connectionManager.getDepthSocket().getInputStream());
             TelemetryProvider telemetryProvider = new TelemetryProvider();
             parseDepth.addObserver(telemetryProvider);
@@ -127,7 +126,7 @@ public class ClientState implements Observer
     {
         try
         {
-            System.out.println("Starting Video Stream");
+            gui.replaceStatus("Starting Video Stream...");
             MultiPartsParse parseVideo = new MultiPartsParse(connectionManager.getVideoSocket().getInputStream());
             parseVideo.addObserver(this);
             VideoStreamHandler videoHandlerVideo = new VideoStreamHandler(gui.kinectViewVideo, parseVideo);
@@ -173,9 +172,9 @@ public class ClientState implements Observer
                 this.smartcarController = connectionManager.getSmartcarController();
                 gui.mResetArduino.fire();
                 gui.replaceStatus("Connected!");
-                isConnected = true;
                 connectionManager.checkConnectionHeartBeat();
                 Platform.runLater(()-> gui.setState("Connected"));
+                isConnected = true;
                 gui.loadImage.setVisible(false);
                 gui.setConnectClicked(false);
                 startStream();
@@ -188,7 +187,11 @@ public class ClientState implements Observer
         {
             gui.replaceStatus("Disconnected!");
             isConnected = false;
-            Platform.runLater(()-> gui.setState("Disconnected"));
+            Platform.runLater(()-> {
+                gui.setState("Disconnected");
+                setChanged();
+                notifyObservers("Disconnected   ");
+            });
             gui.loadImage.setVisible(false);
             gui.setConnectClicked(false);
         }

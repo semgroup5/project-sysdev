@@ -14,6 +14,7 @@ public class StreamSocket extends Observable
 {
     private Socket socket;
     private ServerSocket serverSocket;
+    private boolean socketOpen = false;
 
     /**
      * Establishes a socket connection with a preset port.
@@ -33,6 +34,7 @@ public class StreamSocket extends Observable
             serverSocket.setReuseAddress(true);
 
             this.socket = serverSocket.accept();
+            socketOpen = true;
 
             // Sets true to turn off Nagle's algorithm to improve packet latency
             this.socket.setTcpNoDelay(true);
@@ -51,16 +53,23 @@ public class StreamSocket extends Observable
      */
     public void closeSocketStream()
     {
-        try
-        {
-            serverSocket.close();
-            socket.close();
-            System.out.println("Stream Socket Closed!");
+        if (isSocketOpen()) {
+            try
+            {
+                serverSocket.close();
+                socket.close();
+                System.out.println("Stream Socket Closed!");
 
-        } catch (IOException e)
-        {
-            System.out.println("Caught Exception");
+            } catch (IOException e)
+            {
+                System.out.println("Caught Exception");
+            }
         }
+    }
+
+    private boolean isSocketOpen()
+    {
+        return socketOpen;
     }
 
     /**
