@@ -67,6 +67,7 @@ public class MultiPartsParse extends Observable implements Runnable
             }
         }catch(Exception e){
             System.out.println("Caught Error Receiving Stream");
+            e.printStackTrace();
         }
 
     }
