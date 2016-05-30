@@ -83,7 +83,7 @@ public class ControllerGUI extends Observable
             connectClicked = true;
             setState("Disconnected");
             setChanged();
-            notifyObservers("Disconnect");
+             notifyObservers("Disconnect");
         }
     }
 
