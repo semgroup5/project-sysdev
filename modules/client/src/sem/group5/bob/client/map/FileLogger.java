@@ -54,12 +54,12 @@ public class FileLogger implements Observer{
         int remission_mode          = 1;
         int num_readings            = telemetry.getScanLine().getDistanceCount();
         int[] range_readings        = telemetry.getScanLine().distances;
-        double laser_x              = telemetry.pose.getX();
-        double laser_y              = telemetry.pose.getY();
-        double laser_theta          = telemetry.pose.getTheta();
-        double odom_x               = telemetry.pose.getX();
-        double odom_y               = telemetry.pose.getY();
-        double odom_theta           = telemetry.pose.getTheta();
+        double laser_x              = telemetry.pose.getX()/100;
+        double laser_y              = telemetry.pose.getY()/100;
+        double laser_theta          = telemetry.pose.getTheta()/100;
+        double odom_x               = telemetry.pose.getX()/100;
+        double odom_y               = telemetry.pose.getY()/100;
+        double odom_theta           = telemetry.pose.getTheta()/100;
 
         result = "ROBOTLASER1 " + laser_type + " " + start_angle + " " + field_of_view + " " + angular_resolution + " ";
         result += maximum_range + " " + accuracy + " " + remission_mode + " " + num_readings +" ";
