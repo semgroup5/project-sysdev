@@ -56,23 +56,29 @@ public class DepthStreamer extends Observable implements Runnable
             byte[] data;
             while (streaming)
             {
-                data = cjp.getLatestJpeg();
-                poseManagerManagerProvider.getLatestPose();
-                String pose = poseManagerManagerProvider.getLatestPose();
-                out.write(("--BoundaryString\r\n" +
-                        "Content-type: image/jpeg\r\n" +
-                        "Content-Length: " + data.length + "\r\n" +
-                        "X-Robot-Pose: " + pose + "\r\n\r\n").getBytes());
-                if (Thread.interrupted()) throw new InterruptedException();
-                out.write(data);
-                out.write("\r\n\r\n".getBytes());
-                out.flush();
+
+                try{
+                    data = cjp.getLatestJpeg();
+                    poseManagerManagerProvider.getLatestPose();
+                    String pose = poseManagerManagerProvider.getLatestPose();
+                    out.write(("--BoundaryString\r\n" +
+                            "Content-type: image/jpeg\r\n" +
+                            "Content-Length: " + data.length + "\r\n" +
+                            "X-Robot-Pose: " + pose + "\r\n\r\n").getBytes());
+                    if (Thread.interrupted()) throw new InterruptedException();
+                    out.write(data);
+                    out.write("\r\n\r\n".getBytes());
+                    out.flush();
+                } catch (Exception e)
+                {
+                    System.out.println("Caught Exception while streaming: " + e.getMessage() );
+                }
             }
         } catch (Exception e)
         {
             System.out.println("Streaming Stopped Unexpectedly");
-            setChanged();
-            notifyObservers("Error Streaming");
+            //setChanged();
+            //notifyObservers("Error Streaming");
         }
 
     }

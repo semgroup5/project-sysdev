@@ -30,7 +30,8 @@ public class DiscoveryListener
 
             listening = true;
 
-            socket = new DatagramSocket(1235, InetAddress.getByName("0.0.0.0"));
+            //socket = new DatagramSocket(1235, InetAddress.getByName("0.0.0.0"));
+            socket = new DatagramSocket(1235, InetAddress.getByName("127.0.0.2"));
             socket.setBroadcast(true);
             socket.setReuseAddress(true);
 

@@ -270,6 +270,7 @@ public class BobCarConnectionManager extends Observable implements Observer
         catch(Exception e)
         {
             System.out.println("Could Not Start Stream");
+            System.out.println(e.getMessage());
         }
     }
 

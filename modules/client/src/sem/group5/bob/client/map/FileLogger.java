@@ -46,9 +46,9 @@ public class FileLogger implements Observer{
 //        #   robot_pose_x robot_pose_y robot_pose_theta
 //        #   laser_tv laser_rv forward_safety_dist side_safty_dist
         int laser_type              = 99;
-        double start_angle          = telemetry.getPose().getTheta() - 27.5;
-        double field_of_view        = 55;
-        double angular_resolution   = 0.0859375;
+        double start_angle          = Math.toRadians(telemetry.getPose().getTheta() - 27.5);
+        double field_of_view        = Math.toRadians(55);
+        double angular_resolution   = Math.toRadians(0.0859375);
         int maximum_range           = 4096;
         int accuracy                = 50;
         int remission_mode          = 1;

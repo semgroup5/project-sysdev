@@ -24,7 +24,10 @@ class SerialConnect extends Observable implements SerialPortEventListener {
     // The port that's being used for the connection.
 
     private static final String PORT_NAMES[] = {
+            //"/dev/ttyACM0", // Raspberry Pi
             "/dev/ttyACM0", // Raspberry Pi
+            //"/dev/ttyACM2", // Raspberry Pi
+            //"/dev/ttyACM3", // Raspberry Pi
     };
 
     private BufferedReader input;
@@ -43,12 +46,8 @@ class SerialConnect extends Observable implements SerialPortEventListener {
     void initialize() {
         Properties properties = System.getProperties();
         String currentPorts = properties.getProperty("gnu.io.rxtx.SerialPorts", "/dev/ttyACM0");
+        properties.setProperty("gnu.io.rxtx.SerialPorts", "/dev/ttyACM0");
 
-        if (currentPorts.equals("/dev/ttyACM0")) {
-            properties.setProperty("gnu.io.rxtx.SerialPorts", "/dev/ttyACM0");
-        } else {
-            properties.setProperty("gnu.io.rxtx.SerialPorts", currentPorts + File.pathSeparator + "/dev/ttyACM0");
-        }
 
         CommPortIdentifier portId = null;
         Enumeration portEnum = CommPortIdentifier.getPortIdentifiers();
@@ -58,7 +57,6 @@ class SerialConnect extends Observable implements SerialPortEventListener {
          */
         while (portEnum.hasMoreElements()) {
             CommPortIdentifier currPortId = (CommPortIdentifier) portEnum.nextElement();
-
             for (String portName : PORT_NAMES) {
                 if (currPortId.getName().equals(portName)) {
                     portId = currPortId;
@@ -66,21 +64,10 @@ class SerialConnect extends Observable implements SerialPortEventListener {
                 }
             }
         }
-        if (portId == null) {
-            try {
-                if (retryArduinoConnect < 3) {
-                    System.out.println("Retrying connection to Arduino..");
-                    retryArduinoConnect++;
-                    initialize();
-                }
-            } catch (Exception e) {
-                System.out.println("Could not find COM port.");
-            }
-        }
 
         try {
             System.out.println("Opening port.");
-            assert portId != null;
+            if(portId == null) throw new Exception("portId Null");
             serialPort = (SerialPort) portId.open(this.getClass().getName(), TIME_OUT);
             System.out.println("Setting parameter");
             serialPort.setSerialPortParams(DATA_RATE, SerialPort.DATABITS_8,
@@ -100,7 +87,7 @@ class SerialConnect extends Observable implements SerialPortEventListener {
             //Catch and logs errors
         } catch (Exception e) {
             System.out.println("Caught exception");
-            System.err.println(e.toString());
+            e.printStackTrace();
         }
     }
 
