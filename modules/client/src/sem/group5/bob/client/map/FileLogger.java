@@ -65,7 +65,7 @@ public class FileLogger implements Observer{
         result += maximum_range + " " + accuracy + " " + remission_mode + " " + num_readings +" ";
 
         for(int range_reading : range_readings) {
-            result += range_reading + " ";
+            result += range_reading / 1000 + " ";
         }
         result += laser_x + " " + laser_y + " " + laser_theta + " " + odom_x + " " + odom_y + " " + odom_theta;
 
