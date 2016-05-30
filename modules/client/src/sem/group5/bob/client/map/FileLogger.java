@@ -49,8 +49,8 @@ public class FileLogger implements Observer{
         double start_angle          = Math.toRadians(telemetry.getPose().getTheta() - 27.5);
         double field_of_view        = Math.toRadians(55);
         double angular_resolution   = Math.toRadians(0.0859375);
-        int maximum_range           = 4096;
-        int accuracy                = 50;
+        double maximum_range        = 4.096;
+        double accuracy             = 0.050;
         int remission_mode          = 1;
         int num_readings            = telemetry.getScanLine().getDistanceCount();
         int[] range_readings        = telemetry.getScanLine().distances;
