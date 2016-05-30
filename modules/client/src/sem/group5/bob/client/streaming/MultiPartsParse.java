@@ -62,7 +62,7 @@ public class MultiPartsParse extends Observable implements Runnable
                     img = ImageIO.read(in);
                     nextPart = multipartStream.readBoundary();
                     setChanged();
-                    notifyObservers(img);
+                    if (img != null)notifyObservers(img);
                 } catch (IOException ignore) {}
             }
         }catch(Exception e){

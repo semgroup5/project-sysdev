@@ -15,7 +15,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Observable;
-import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,7 +24,7 @@ import java.util.logging.Logger;
  */
 
 
-public class ControllerGUI extends Observable implements Observer
+public class ControllerGUI extends Observable
 {
 
     public MenuBar menuBar;
@@ -61,7 +60,6 @@ public class ControllerGUI extends Observable implements Observer
     public ControllerGUI()
     {
         clientState = new ClientState(this);
-        clientState.addObserver(this);
         addObserver(clientState);
         style = new ButtonsStyle(this);
         Platform.runLater(()-> up.requestFocus());
@@ -413,17 +411,5 @@ public class ControllerGUI extends Observable implements Observer
     public void setConnectClicked(boolean b)
     {
         connectClicked = b;
-    }
-
-    @Override
-    public void update(Observable o, Object arg) {
-        if (arg.equals("Connected"))
-        {
-            loadImage.setVisible(false);
-        }
-        else
-        {
-            loadImage.setVisible(true);
-        }
     }
 }

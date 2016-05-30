@@ -15,7 +15,7 @@ import java.util.Observer;
  * Class that will track and update the state of the client UI depending on the arguments passed.
  * @see java.util.Observer
  */
-public class ClientState extends Observable implements Observer
+public class ClientState implements Observer
 {
     private ControllerGUI gui;
     private Smartcar smartcar;
@@ -190,11 +190,7 @@ public class ClientState extends Observable implements Observer
         {
             gui.replaceStatus("Disconnected!");
             isConnected = false;
-            Platform.runLater(()-> {
-                gui.setState("Disconnected");
-                setChanged();
-                notifyObservers("Disconnected   ");
-            });
+            Platform.runLater(()-> gui.setState("Disconnected"));
             gui.loadImage.setVisible(false);
             gui.setConnectClicked(false);
         }
